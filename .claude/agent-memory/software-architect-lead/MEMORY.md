@@ -1,0 +1,1 @@
+- [Pillyway domain model](project_domain.md) — domain entities, relationships, roles, and phase 2 extensibility notes

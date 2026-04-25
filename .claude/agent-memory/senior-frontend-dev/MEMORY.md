@@ -1,0 +1,1 @@
+- [Pillyway domain model](project_domain.md) — core entities, role-based UI access rules, and phased scope

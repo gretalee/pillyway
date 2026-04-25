@@ -1,0 +1,1 @@
+- [Pillyway domain model](project_domain.md) — feature phases, domain entities, and user roles for writing tickets

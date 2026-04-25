@@ -1,0 +1,1 @@
+- [Pillyway domain model](project_domain.md) — core entities (Route/Stage/Accommodation/Review/User), role matrix, and phased scope

@@ -1,0 +1,1 @@
+- [Pillyway domain model](project_domain.md) — authorization model and write-permission matrix for security validation
