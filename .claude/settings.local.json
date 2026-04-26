@@ -10,7 +10,8 @@
       "Bash(mv apps/api app/backend)",
       "Bash(rm -rf apps/mobile apps)",
       "Bash(mkdir -p app/e2e)",
-      "Bash(npx shadcn@latest *)"
+      "Bash(npx shadcn@latest *)",
+      "Bash(yarn test *)"
     ]
   }
 }
