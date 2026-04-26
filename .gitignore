@@ -15,12 +15,12 @@ build/
 .env.local
 .env.*.local
 
-# Expo
-apps/mobile/.expo/
-apps/mobile/expo-env.d.ts
-
 # NestJS
-apps/api/dist/
+app/backend/dist/
+
+# Playwright
+app/e2e/test-results/
+app/e2e/playwright-report/
 
 # OS
 .DS_Store
