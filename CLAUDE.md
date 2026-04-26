@@ -76,11 +76,11 @@ pillyway/
 
 Pure web application. The source code is open-source.
 
-- **Frontend**: Next.js 16 (App Router), Tailwind CSS v4, shadcn/ui 4, CVA (class-variance-authority), TanStack Query — **Next.js 16 is beyond the Claude training cutoff; read `node_modules/next/dist/docs/` or the official docs before assuming API behaviour**
+- **Frontend**: Next.js 16 (App Router), Tailwind CSS v4, shadcn/ui 4, CVA (class-variance-authority), TanStack Query, Zustand — **Next.js 16 is beyond the Claude training cutoff; read `node_modules/next/dist/docs/` or the official docs before assuming API behaviour**
 - **Backend & API**: NestJS + TypeScript, hosted on Hetzner via Coolify
 - **Database**: Supabase (PostgreSQL)
 - **Auth**: Kinde or Clerk
-- **State**: TanStack Query for server state
+- **State**: TanStack Query for server state; Zustand for client-side state
 - **Testing**: Playwright (E2E)
 
 ## Agents
@@ -151,8 +151,9 @@ All agents must follow this workflow for every iteration.
 - Supabase client is initialised in `lib/supabase.ts`
 - The `Providers` component wraps `QueryClientProvider` and is mounted in the root layout
 
-### Data Fetching
+### State Management
 - Use **TanStack Query** for all server state and data fetching — no ad-hoc `fetch` calls outside of query functions
+- Use **Zustand** for client-side state (UI state, user preferences, cross-component state not tied to server data)
 
 ### Layout & Interaction
 - Every page scrolls by default — do not set `overflow: hidden` on page roots
