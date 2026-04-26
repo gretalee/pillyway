@@ -3,6 +3,12 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "test": "echo \"No e2e tests yet\""
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.59.1"
   }
 }

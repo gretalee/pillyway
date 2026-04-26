@@ -11,7 +11,9 @@
       "Bash(rm -rf apps/mobile apps)",
       "Bash(mkdir -p app/e2e)",
       "Bash(npx shadcn@latest *)",
-      "Bash(yarn test *)"
+      "Bash(yarn test *)",
+      "Bash(yarn build:frontend)",
+      "Bash(yarn test:e2e *)"
     ]
   }
 }
