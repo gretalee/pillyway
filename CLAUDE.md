@@ -31,26 +31,64 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Runtime & Package Manager
 
-- Node.js 24.14.0 (see `.node-version`). Use `nvm` or `fnm` to switch before installing.
-- Use **yarn** exclusively — never `npm` or `pnpm`.
+- Node.js 24.14.0 (see `.node-version`). Activate with `nodenv` or `fnm` before installing.
+- Use **yarn** exclusively — never `npm` or `pnpm`. Enable via `corepack enable` if yarn is missing.
+
+## Commands
+
+```bash
+# Install all workspace dependencies (run from repo root)
+yarn install
+
+# Backend (NestJS)
+yarn dev:backend          # start with hot-reload
+yarn build:backend        # production build
+
+# Frontend (Next.js)
+yarn dev:frontend         # start Next.js dev server
+yarn build:frontend       # production build
+
+# E2E tests (Playwright)
+yarn test:e2e
+
+# Target a specific workspace
+yarn workspace @pillyway/backend <script>
+yarn workspace @pillyway/frontend <script>
+
+# Add a shadcn/ui component (run from app/frontend/)
+npx shadcn@latest add <component>
+```
+
+## Monorepo Structure
+
+```
+pillyway/
+├── app/
+│   ├── backend/    # NestJS + TypeScript (@pillyway/backend)
+│   ├── frontend/   # Next.js App Router (@pillyway/frontend)
+│   └── e2e/        # Playwright E2E tests (@pillyway/e2e)
+├── packages/       # shared packages (future use)
+├── package.json    # yarn workspaces
+└── CLAUDE.md
+```
 
 ## Architecture Overview
 
-Single Expo codebase that compiles to iOS, Android, and Web. The source code is open-source.
+Pure web application. The source code is open-source.
 
-- **Frontend**: Expo (React Native), NativeWind v4, shadcn-react-native, CVA (class-variance-authority)
+- **Frontend**: Next.js 16 (App Router), Tailwind CSS v4, shadcn/ui 4, CVA (class-variance-authority), TanStack Query — **Next.js 16 is beyond the Claude training cutoff; read `node_modules/next/dist/docs/` or the official docs before assuming API behaviour**
 - **Backend & API**: NestJS + TypeScript, hosted on Hetzner via Coolify
 - **Database**: Supabase (PostgreSQL)
-- **Auth**: Kinde or Clerk via Expo `AuthSession`
-- **State**: TanStack Query for server state; Zustand or Jotai for client state
-- **Testing**: Vitest + React Testing Library (unit/integration), Playwright (web E2E), Detox or Maestro (mobile E2E)
+- **Auth**: Kinde or Clerk
+- **State**: TanStack Query for server state
+- **Testing**: Playwright (E2E)
 
 ## Agents
 
 Specialized sub-agents are defined in `.claude/agents/` and invoked automatically for their domains:
 
 - `nestjs-backend-developer` — backend API work
-- `senior-frontend-dev` — React Native / Expo / web frontend
+- `senior-frontend-dev` — Next.js / web frontend
 - `qa-security-validator` — security review and QA
 - `product-owner` — user stories, tickets, acceptance criteria
 - `software-architect-lead` — architecture and system design
@@ -95,22 +133,32 @@ All agents must follow this workflow for every iteration.
 - Use `@Exclude()` / `@Expose()` serialization — never expose sensitive fields raw
 - Constructor-based DI only — never instantiate services manually
 
-## Frontend Conventions
+## Frontend Conventions (Next.js)
 
 ### Code Style
 - TypeScript strict mode; no `any`
-- Expo Router for file-based navigation with type-safe route params
+- Next.js App Router — use the `app/` directory; there is no `pages/` directory
 - Write **explicit, readable code** — prefer clear conditional logic over clever one-liners
-- Minimize `useEffect()` — use it only when truly necessary (external subscriptions, imperative DOM/native APIs). Derive state from existing state instead of syncing it via effects.
+- Minimize `useEffect()` — use it only when truly necessary (external subscriptions, imperative DOM APIs). Derive state from existing state instead of syncing it via effects.
 - No hardcoded strings — use i18n keys
 - No `console.log` in production code
 - Components go into the shared library if used in more than one place
 
-### Layout & Interaction
-- Every page scrolls by default — wrap content in `ScrollView` (or equivalent) unless there is an explicit reason not to
-- No interactive elements (buttons, tappable areas) placed at the outermost horizontal edges — always apply safe horizontal padding
-- Font sizes must respect OS accessibility settings — use relative units or `useWindowDimensions` / `PixelRatio`; never hardcode `fontSize` in absolute px
+### Styling & Components
+- Tailwind CSS classes are always preferred over custom CSS
+- Use **shadcn/ui** for all base UI components; add new components with `npx shadcn@latest add <component>` run from `app/frontend/`
+- Use **CVA** (class-variance-authority) for custom component variants alongside shadcn
+- Supabase client is initialised in `lib/supabase.ts`
+- The `Providers` component wraps `QueryClientProvider` and is mounted in the root layout
 
-### Web-Specific
+### Data Fetching
+- Use **TanStack Query** for all server state and data fetching — no ad-hoc `fetch` calls outside of query functions
+
+### Layout & Interaction
+- Every page scrolls by default — do not set `overflow: hidden` on page roots
+- No interactive elements (buttons, tappable areas) placed at the outermost horizontal edges — always apply safe horizontal padding
+- Font sizes must respect browser accessibility settings — use relative units (`rem`); never hardcode font sizes in absolute `px`
+
+### Accessibility & SEO
 - Web output must meet WCAG accessibility standards: semantic HTML, ARIA labels on interactive elements, sufficient color contrast, keyboard navigability
-- Every web page must include SEO-relevant meta tags: `<title>`, `<meta name="description">`, Open Graph tags (`og:title`, `og:description`, `og:image`)
+- Every page must include SEO-relevant meta tags: `<title>`, `<meta name="description">`, Open Graph tags (`og:title`, `og:description`, `og:image`)

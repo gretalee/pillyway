@@ -1,0 +1,23 @@
+{
+  "name": "pillyway",
+  "private": true,
+  "workspaces": [
+    "app/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:backend": "yarn workspace @pillyway/backend start:dev",
+    "dev:frontend": "yarn workspace @pillyway/frontend dev",
+    "build:backend": "yarn workspace @pillyway/backend build",
+    "build:frontend": "yarn workspace @pillyway/frontend build",
+    "test:e2e": "yarn workspace @pillyway/e2e test",
+    "lint": "yarn workspaces run lint",
+    "test": "yarn workspaces run test"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  },
+  "engines": {
+    "node": ">=24.14.0"
+  }
+}

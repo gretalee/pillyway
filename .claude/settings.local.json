@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(corepack enable *)",
+      "Bash(yarn --version)",
+      "Bash(yarn add *)",
+      "Bash(npx create-expo-app@latest mobile --template default)",
+      "Bash(yarn install *)",
+      "Bash(mkdir -p app)",
+      "Bash(mv apps/api app/backend)",
+      "Bash(rm -rf apps/mobile apps)",
+      "Bash(mkdir -p app/e2e)",
+      "Bash(npx shadcn@latest *)"
+    ]
+  }
+}
