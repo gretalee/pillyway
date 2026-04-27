@@ -3,8 +3,9 @@
   "private": true,
   "packageManager": "yarn@1.22.22",
   "scripts": {
+    "install": "yarn --cwd app/frontend install && yarn --cwd app/backend install && yarn --cwd app/e2e install",
     "dev:backend": "yarn --cwd app/backend start:dev",
-    "dev:frontend": "yarn --cwd app/frontend dev",
+    "dev:frontend": "NODE_PATH=app/frontend/node_modules yarn --cwd app/frontend dev",
     "build:backend": "yarn --cwd app/backend build",
     "build:frontend": "yarn --cwd app/frontend build",
     "test:e2e": "yarn --cwd app/e2e test",

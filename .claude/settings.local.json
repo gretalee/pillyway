@@ -13,7 +13,12 @@
       "Bash(npx shadcn@latest *)",
       "Bash(yarn test *)",
       "Bash(yarn build:frontend)",
-      "Bash(yarn test:e2e *)"
+      "Bash(yarn test:e2e *)",
+      "Bash(node *)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d.get\\('dependencies',{}\\), indent=2\\)\\)\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('version:', d.get\\('version'\\)\\)\")",
+      "Bash(grep -v \"compiled\\\\|node_modules/next/node_modules\\\\|\\\\.map$\")",
+      "Bash(node_modules/.bin/next --version)"
     ]
   }
 }
