@@ -5,8 +5,11 @@ import { cn } from "@/lib/utils";
 import { UserMenu } from "./UserMenu";
 
 export async function Header() {
-  const { isAuthenticated } = getKindeServerSession();
+  const { isAuthenticated, getRoles, getUser } = getKindeServerSession();
   const authenticated = await isAuthenticated();
+  const roles = authenticated ? (await getRoles()) ?? [] : [];
+  const user = authenticated ? await getUser() : null;
+  const isOwner = roles.some((role) => role.key === "owner");
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -19,19 +22,41 @@ export async function Header() {
           Pillyway
         </Link>
 
-        <nav aria-label="Account navigation">
-          {authenticated ? (
-            <UserMenu />
-          ) : (
-            <a
-              href="/api/auth/login"
-              aria-label="Log in"
+        <div className="flex items-center gap-4">
+          {authenticated && (
+            <span className="text-xs text-muted-foreground font-mono">
+              roles:{" "}
+              {roles.length > 0
+                ? roles.map((r) => r.key).join(", ")
+                : "none"}
+            </span>
+          )}
+
+          {isOwner && (
+            <Link
+              href="/backoffice"
               className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
             >
-              Log in
-            </a>
+              Backoffice
+            </Link>
           )}
-        </nav>
+
+          <nav aria-label="Account navigation">
+            {authenticated ? (
+              <UserMenu firstName={user?.given_name ?? null} />
+            ) : (
+              <a
+                href="/api/auth/login"
+                aria-label="Log in"
+                className={cn(
+                  buttonVariants({ variant: "outline", size: "sm" }),
+                )}
+              >
+                Log in
+              </a>
+            )}
+          </nav>
+        </div>
       </div>
     </header>
   );

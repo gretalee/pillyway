@@ -4,7 +4,11 @@ import { Menu } from "@base-ui/react/menu";
 import { CircleUser } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export function UserMenu() {
+interface UserMenuProps {
+  firstName: string | null;
+}
+
+export function UserMenu({ firstName }: UserMenuProps) {
   return (
     <Menu.Root>
       <Menu.Trigger
@@ -28,6 +32,16 @@ export function UserMenu() {
               "transition-opacity duration-150",
             )}
           >
+            {firstName && (
+              <div
+                className={cn(
+                  "px-2 py-1.5 text-sm font-medium text-foreground",
+                  "border-b border-border mb-1",
+                )}
+              >
+                {firstName}
+              </div>
+            )}
             <Menu.LinkItem
               href="/api/auth/logout"
               closeOnClick

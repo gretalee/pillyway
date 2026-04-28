@@ -6,5 +6,5 @@ export default function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/caminos/new"],
+  matcher: ["/caminos/new", "/backoffice/:path*"],
 };
