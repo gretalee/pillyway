@@ -1,1 +1,2 @@
 - [Pillyway domain model](project_domain.md) — core entities (Route/Stage/Accommodation/Review/User), role matrix, and phased scope
+- [Auth Strategy — Kinde JWT (AUTH-001)](project_auth_strategy.md) — Kinde RS256 via jwks-rsa + passport-jwt; never use @kinde-oss/kinde-auth-node
