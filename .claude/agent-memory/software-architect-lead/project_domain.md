@@ -4,7 +4,7 @@ description: "What Pillyway is and its domain model — context for architecture
 type: project
 ---
 
-Pillyway is a pilgrimage route planning app. Single Expo codebase (iOS / Android / Web), NestJS backend on Hetzner/Coolify, Supabase (PostgreSQL), Kinde or Clerk for auth.
+Pillyway is a pilgrimage route planning app. Next.js 16 App Router frontend (web only), NestJS backend on Hetzner/Coolify, Supabase (PostgreSQL), Kinde for auth (SDK v2.12.1).
 
 **Why:** Architecture decisions (API shape, DB schema, auth strategy) must fit the domain and phased rollout plan.
 

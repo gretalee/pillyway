@@ -1,0 +1,34 @@
+{
+  "header": {
+    "home_label": "Pillyway",
+    "login": "Log in",
+    "backoffice": "Backoffice",
+    "aria_home": "Pillyway home",
+    "aria_login": "Log in",
+    "aria_user_menu": "User menu",
+    "aria_account_nav": "Account navigation",
+    "aria_language_switcher": "Select language"
+  },
+  "user_menu": {
+    "logout": "Log out",
+    "aria_greeting": "Signed in as {name}"
+  },
+  "meta": {
+    "title": "Pillyway",
+    "description": "Plan your pilgrimage journey."
+  },
+  "caminos": {
+    "title": "Caminos",
+    "browse": "Browse pilgrimage routes.",
+    "create_link": "Create New Camino"
+  },
+  "caminos_new": {
+    "title": "Create new Camino"
+  },
+  "backoffice": {
+    "title": "Backoffice | Pillyway",
+    "description": "Administrative backoffice for Pillyway.",
+    "heading": "Backoffice",
+    "subtitle": "Administrative area."
+  }
+}

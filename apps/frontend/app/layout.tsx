@@ -1,14 +1,19 @@
-import type { Metadata } from "next";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { Providers } from "@/providers/providers";
-import { Header } from "@/app/components/layout/Header";
-import type { AuthUser } from "@/store/user-store";
-import "./globals.css";
+import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale, getTranslations } from 'next-intl/server';
+import { Providers } from '@/providers/providers';
+import { Header } from '@/app/components/layout/Header';
+import type { AuthUser } from '@/store/user-store';
+import type { Locale } from '@/i18n/detectLocale';
+import './globals.css';
 
-export const metadata: Metadata = {
-  title: "Pillyway",
-  description: "Plan your pilgrimage journey.",
-};
+export async function generateMetadata() {
+  const t = await getTranslations('meta');
+  return {
+    title: t('title'),
+    description: t('description'),
+  };
+}
 
 export default async function RootLayout({
   children,
@@ -33,14 +38,17 @@ export default async function RootLayout({
     }
   }
 
+  const locale = (await getLocale()) as Locale;
+
   return (
-    <html
-      lang="en"
-      className="h-full antialiased"
-    >
+    <html lang={locale} className="h-full antialiased">
       <body className="min-h-full flex flex-col">
         <Header user={authUser} />
-        <Providers user={authUser}>{children}</Providers>
+        <NextIntlClientProvider>
+          <Providers user={authUser} locale={locale}>
+            {children}
+          </Providers>
+        </NextIntlClientProvider>
       </body>
     </html>
   );
