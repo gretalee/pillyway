@@ -26,7 +26,8 @@
       "Bash(yarn build:backend *)",
       "Bash(yarn workspace *)",
       "Bash(yarn tsc *)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(yarn build *)"
     ]
   }
 }

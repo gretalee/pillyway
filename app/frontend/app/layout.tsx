@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import "@/lib/fonts";
 import { Providers } from "@/providers/providers";
 import { Header } from "@/app/components/layout/Header";
 import type { AuthUser } from "@/store/user-store";

@@ -4,8 +4,8 @@ const config = {
   theme: {
     extend: {
       fontFamily: {
-        geistSans: ["Geist", "system-ui", "sans-serif"],
-        geistMono: ["Geist Mono", "ui-monospace", "monospace"],
+        sans: ["system-ui", "sans-serif"],
+        mono: ["ui-monospace", "monospace"],
       },
     },
   },
