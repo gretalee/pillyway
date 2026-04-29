@@ -16,8 +16,13 @@ export function resolveLocale(raw: string | undefined | null): Locale {
     return DEFAULT_LOCALE;
   }
 
-  // Strip subtag and normalise: "en-US" → "en", "de-AT" → "de", "DE" → "de"
-  const normalised = raw.toLowerCase().split('-')[0];
+  // Accept-Language headers may contain multiple language-ranges and
+  // quality values, e.g. "en-US,en;q=0.9" or "de,de;q=0.9".
+  // Extract the first language-range, remove any parameters, then strip
+  // the locale subtag: "en-US,en;q=0.9" → "en", "DE,de;q=0.9" → "de".
+  const firstLanguageRange = raw.toLowerCase().split(',')[0]?.trim() ?? '';
+  const languageTag = firstLanguageRange.split(';')[0]?.trim() ?? '';
+  const normalised = languageTag.split('-')[0];
 
   // Guard against malformed values that happen to have a valid prefix
   // but contain invalid characters after the split (e.g. "de!nk" → "de!nk").
