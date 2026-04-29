@@ -1,0 +1,39 @@
+{
+  "header": {
+    "home_label": "Pillyway",
+    "login": "Anmelden",
+    "backoffice": "Backoffice",
+    "aria_home": "Pillyway Startseite",
+    "aria_login": "Anmelden",
+    "aria_user_menu": "Benutzermenü",
+    "aria_account_nav": "Kontonavigation",
+    "aria_language_switcher": "Sprache auswählen"
+  },
+  "user_menu": {
+    "logout": "Abmelden",
+    "aria_greeting": "Angemeldet als {name}"
+  },
+  "meta": {
+    "title": "Pillyway",
+    "description": "Plane deine Pilgerreise."
+  },
+  "home": {
+    "heading": "Pillyway",
+    "tagline": "Plane deine Pilgerreise.",
+    "explore_link": "Caminos erkunden"
+  },
+  "caminos": {
+    "title": "Caminos",
+    "browse": "Pilgerrouten erkunden.",
+    "create_link": "Neue Route erstellen"
+  },
+  "caminos_new": {
+    "title": "Neue Route erstellen"
+  },
+  "backoffice": {
+    "title": "Backoffice | Pillyway",
+    "description": "Administrationsbereich für Pillyway.",
+    "heading": "Backoffice",
+    "subtitle": "Administrationsbereich."
+  }
+}

@@ -16,13 +16,13 @@ build/
 .env.*.local
 
 # NestJS
-app/backend/dist/
+apps/backend/dist/
 
 # Playwright
-app/e2e/test-results/
-app/e2e/test-results/*
-app/e2e/playwright-report/
-app/e2e/playwright-report/*
+apps/e2e/test-results/
+apps/e2e/test-results/*
+apps/e2e/playwright-report/
+apps/e2e/playwright-report/*
 
 # OS
 .DS_Store

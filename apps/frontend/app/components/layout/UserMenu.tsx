@@ -2,6 +2,7 @@
 
 import { Menu } from "@base-ui/react/menu";
 import { CircleUser } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 
 interface UserMenuProps {
@@ -9,10 +10,13 @@ interface UserMenuProps {
 }
 
 export function UserMenu({ firstName }: UserMenuProps) {
+  const t = useTranslations("user_menu");
+  const tHeader = useTranslations("header");
+
   return (
     <Menu.Root>
       <Menu.Trigger
-        aria-label="User menu"
+        aria-label={tHeader("aria_user_menu")}
         className={cn(
           "inline-flex items-center justify-center rounded-lg p-1.5",
           "text-foreground transition-colors",
@@ -34,6 +38,7 @@ export function UserMenu({ firstName }: UserMenuProps) {
           >
             {firstName && (
               <div
+                aria-label={t("aria_greeting", { name: firstName })}
                 className={cn(
                   "px-2 py-1.5 text-sm font-medium text-foreground",
                   "border-b border-border mb-1",
@@ -52,7 +57,7 @@ export function UserMenu({ firstName }: UserMenuProps) {
                 "transition-colors duration-100",
               )}
             >
-              Log out
+              {t("logout")}
             </Menu.LinkItem>
           </Menu.Popup>
         </Menu.Positioner>

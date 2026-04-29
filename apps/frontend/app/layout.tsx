@@ -1,14 +1,23 @@
-import type { Metadata } from "next";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import {
+  getLocale,
+  getMessages,
+  getTimeZone,
+  getTranslations,
+} from "next-intl/server";
 import { Providers } from "@/providers/providers";
 import { Header } from "@/app/components/layout/Header";
 import type { AuthUser } from "@/store/user-store";
+import type { Locale } from "@/i18n/detectLocale";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: "Pillyway",
-  description: "Plan your pilgrimage journey.",
-};
+export async function generateMetadata() {
+  const t = await getTranslations("meta");
+  return {
+    title: t("title"),
+    description: t("description"),
+  };
+}
 
 export default async function RootLayout({
   children,
@@ -33,14 +42,22 @@ export default async function RootLayout({
     }
   }
 
+  const locale = (await getLocale()) as Locale;
+  const messages = await getMessages();
+  const timeZone = await getTimeZone();
+
   return (
-    <html
-      lang="en"
-      className="h-full antialiased"
-    >
+    <html lang={locale} className="h-full antialiased">
       <body className="min-h-full flex flex-col">
-        <Header user={authUser} />
-        <Providers user={authUser}>{children}</Providers>
+        <Providers
+          user={authUser}
+          locale={locale}
+          messages={messages}
+          timeZone={timeZone}
+        >
+          <Header user={authUser} />
+          {children}
+        </Providers>
       </body>
     </html>
   );

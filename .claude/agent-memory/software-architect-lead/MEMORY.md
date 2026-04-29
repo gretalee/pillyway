@@ -1,1 +1,2 @@
 - [Pillyway domain model](project_domain.md) — domain entities, relationships, roles, and phase 2 extensibility notes
+- [Language Switch (i18n) Architecture](feature_language_switch_arch.md) — next-intl v4, cookie-only locale, single middleware, ESM __dirname bug, hydration flow

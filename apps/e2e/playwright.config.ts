@@ -27,10 +27,16 @@ export default defineConfig({
     url: BASE_URL,
     reuseExistingServer: !process.env.CI,
     timeout: 30000,
-    cwd: path.resolve(__dirname, '../../app/frontend'),
+    cwd: path.resolve(__dirname, '../../apps/frontend'),
     env: {
       NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL ?? 'http://127.0.0.1:54321',
       NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? 'placeholder',
+      KINDE_CLIENT_ID: process.env.KINDE_CLIENT_ID ?? 'e2e_placeholder_client_id',
+      KINDE_CLIENT_SECRET: process.env.KINDE_CLIENT_SECRET ?? 'e2e_placeholder_client_secret',
+      KINDE_ISSUER_URL: process.env.KINDE_ISSUER_URL ?? 'https://placeholder.kinde.com',
+      KINDE_SITE_URL: BASE_URL,
+      KINDE_POST_LOGOUT_REDIRECT_URL: BASE_URL,
+      KINDE_POST_LOGIN_REDIRECT_URL: BASE_URL,
     },
   },
 });
