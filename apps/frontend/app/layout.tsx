@@ -1,6 +1,5 @@
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
-import { NextIntlClientProvider } from 'next-intl';
-import { getLocale, getTranslations } from 'next-intl/server';
+import { getLocale, getMessages, getTranslations } from 'next-intl/server';
 import { Providers } from '@/providers/providers';
 import { Header } from '@/app/components/layout/Header';
 import type { AuthUser } from '@/store/user-store';
@@ -39,16 +38,15 @@ export default async function RootLayout({
   }
 
   const locale = (await getLocale()) as Locale;
+  const messages = await getMessages();
 
   return (
     <html lang={locale} className="h-full antialiased">
       <body className="min-h-full flex flex-col">
-        <NextIntlClientProvider>
-          <Providers user={authUser} locale={locale}>
-            <Header user={authUser} />
-            {children}
-          </Providers>
-        </NextIntlClientProvider>
+        <Providers user={authUser} locale={locale} messages={messages}>
+          <Header user={authUser} />
+          {children}
+        </Providers>
       </body>
     </html>
   );

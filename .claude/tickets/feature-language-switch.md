@@ -17,11 +17,11 @@ author: product-owner agent
 
 ## User Personas
 
-| Persona | Role | Relevance |
-|---|---|---|
-| Pilgrim (browser) | Guest / unauthenticated | Uses the app to discover routes; expects the UI in their native language without creating an account |
-| Pilgrim (reviewer) | Reviewer (authenticated) | Writes reviews; language preference should persist across sessions |
-| Route Editor | Route Editor (authenticated) | Manages route data; works in their preferred language |
+| Persona            | Role                         | Relevance                                                                                            |
+| ------------------ | ---------------------------- | ---------------------------------------------------------------------------------------------------- |
+| Pilgrim (browser)  | Guest / unauthenticated      | Uses the app to discover routes; expects the UI in their native language without creating an account |
+| Pilgrim (reviewer) | Reviewer (authenticated)     | Writes reviews; language preference should persist across sessions                                   |
+| Route Editor       | Route Editor (authenticated) | Manages route data; works in their preferred language                                                |
 
 All three roles are affected equally — the language switch is a global, cross-cutting concern.
 
@@ -91,6 +91,7 @@ The app has no `next.config.ts` i18n routing block today, and uses the Next.js 1
 **`next-intl`** is the recommended choice for this project.
 
 Rationale:
+
 - Native, first-class support for Next.js App Router Server Components and Client Components without layout wrappers or provider gymnastics
 - Supports cookie-based locale detection without URL-based routing (via `next-intl`'s "pathname-less" / navigation-free setup)
 - Typed message keys out of the box (TypeScript module augmentation)
@@ -129,7 +130,7 @@ Rationale:
 
 ```typescript
 // store/locale-store.ts
-type Locale = 'de' | 'en';
+type Locale = "de" | "en";
 
 interface LocaleState {
   locale: Locale;
@@ -137,7 +138,7 @@ interface LocaleState {
 }
 
 export const useLocaleStore = create<LocaleState>()((set) => ({
-  locale: 'de',           // overwritten by LocaleStoreInitializer on mount
+  locale: "de", // overwritten by LocaleStoreInitializer on mount
   setLocale: (locale) => {
     set({ locale });
     document.cookie = `pillyway-locale=${locale};max-age=31536000;path=/;SameSite=Lax`;
@@ -152,8 +153,10 @@ The switcher must be inserted into the `flex items-center gap-4` container in `H
 ```tsx
 <div className="flex items-center gap-4">
   {/* ...existing role debug span and backoffice link... */}
-  <LanguageSwitcher />          {/* NEW — left of user icon */}
-  <nav aria-label="...">        {/* existing */}
+  <LanguageSwitcher /> {/* NEW — left of user icon */}
+  <nav aria-label="...">
+    {" "}
+    {/* existing */}
     ...
   </nav>
 </div>
@@ -219,13 +222,13 @@ Each file is a flat or lightly namespaced JSON object:
 
 ## Edge Cases and Error Handling
 
-| Scenario | Expected Behaviour |
-|---|---|
-| `navigator.language` is unavailable (e.g., server-side or old browser) | Fall back to `Accept-Language` header in middleware; if that is also absent, use `'de'` |
-| Cookie is set to an unrecognised value (e.g., `pillyway-locale=fr`) | Treat as absent; re-run detection logic, default to `'de'` |
-| A translation key is missing in the active locale's JSON | `next-intl` logs a warning in development; in production, falls back to the key string to avoid blank UI |
-| User agent sends `Accept-Language: *` | Treat as no language preference; fall back to `'de'` |
-| Rapid successive clicks on the switcher | Debounce is NOT required; each click writes the cookie and triggers `router.refresh()` — the UI is idempotent |
+| Scenario                                                               | Expected Behaviour                                                                                            |
+| ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `navigator.language` is unavailable (e.g., server-side or old browser) | Fall back to `Accept-Language` header in middleware; if that is also absent, use `'de'`                       |
+| Cookie is set to an unrecognised value (e.g., `pillyway-locale=fr`)    | Treat as absent; re-run detection logic, default to `'de'`                                                    |
+| A translation key is missing in the active locale's JSON               | `next-intl` logs a warning in development; in production, falls back to the key string to avoid blank UI      |
+| User agent sends `Accept-Language: *`                                  | Treat as no language preference; fall back to `'de'`                                                          |
+| Rapid successive clicks on the switcher                                | Debounce is NOT required; each click writes the cookie and triggers `router.refresh()` — the UI is idempotent |
 
 ---
 
@@ -314,7 +317,7 @@ export const config = {
      *   - /favicon.ico, /robots.txt, /sitemap.xml (static files at root)
      *   - Files with an extension (images, fonts, etc.)
      */
-    '/((?!api|_next/static|_next/image|favicon\\.ico|robots\\.txt|sitemap\\.xml|.*\\..*).*)',
+    "/((?!api|_next/static|_next/image|favicon\\.ico|robots\\.txt|sitemap\\.xml|.*\\..*).*)",
   ],
 };
 ```
@@ -337,6 +340,7 @@ The project runs **Next.js 16.2.4** and **React 19.2.4**, both within the declar
 **Version to install**: `next-intl@^3.26.0` (latest stable 3.x) is the conservative choice if caution is needed. However, `next-intl@^4.x` is the actively maintained line as of early 2026, includes ESM-only build (aligned with this project's `"type": "module"` in `package.json`), and GDPR-compliant cookie handling. **Recommendation: install `next-intl@^4.0.0`** — the ESM-only build matches the project's `"type": "module"` declaration.
 
 Key 4.x changes relevant to this feature:
+
 - `NextIntlClientProvider` inherits messages and formats automatically from `i18n/request.ts` — no `messages` prop needed in `layout.tsx`
 - Type augmentation consolidated under `AppConfig` interface (cleaner typed keys)
 - GDPR session-cookie behaviour by default for locale cookies (Kinde does not conflict here)
@@ -372,16 +376,16 @@ The middleware does **not** redirect. It does **not** call any Kinde SDK functio
 Create `apps/frontend/i18n/request.ts`. This is the file next-intl's plugin reads at build-time registration:
 
 ```typescript
-import { getRequestConfig } from 'next-intl/server';
-import { cookies, headers } from 'next/headers';
+import { getRequestConfig } from "next-intl/server";
+import { cookies, headers } from "next/headers";
 
-const SUPPORTED_LOCALES = ['de', 'en'] as const;
+const SUPPORTED_LOCALES = ["de", "en"] as const;
 export type Locale = (typeof SUPPORTED_LOCALES)[number];
-const DEFAULT_LOCALE: Locale = 'de';
+const DEFAULT_LOCALE: Locale = "de";
 
 function resolveLocale(raw: string | undefined): Locale {
   if (!raw) return DEFAULT_LOCALE;
-  const normalised = raw.toLowerCase().split('-')[0];
+  const normalised = raw.toLowerCase().split("-")[0];
   return (SUPPORTED_LOCALES as readonly string[]).includes(normalised)
     ? (normalised as Locale)
     : DEFAULT_LOCALE;
@@ -394,8 +398,8 @@ export default getRequestConfig(async () => {
   const headerStore = await headers();
   const cookieStore = await cookies();
 
-  const fromHeader = headerStore.get('x-pillyway-locale') ?? undefined;
-  const fromCookie = cookieStore.get('pillyway-locale')?.value ?? undefined;
+  const fromHeader = headerStore.get("x-pillyway-locale") ?? undefined;
+  const fromCookie = cookieStore.get("pillyway-locale")?.value ?? undefined;
   const locale = resolveLocale(fromHeader ?? fromCookie);
 
   return {
@@ -449,8 +453,8 @@ Option A (simpler — preferred): wrap `<Providers>` with `<NextIntlClientProvid
 
 ```tsx
 // layout.tsx (Server Component)
-import { NextIntlClientProvider } from 'next-intl';
-import { getLocale } from 'next-intl/server';
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale } from "next-intl/server";
 
 export default async function RootLayout({ children }) {
   // ...Kinde session logic (unchanged)...
@@ -477,10 +481,10 @@ Mirror `UserStoreInitializer` exactly:
 
 ```tsx
 // providers/LocaleStoreInitializer.tsx
-'use client';
-import { useEffect } from 'react';
-import { useLocaleStore } from '@/store/locale-store';
-import type { Locale } from '@/i18n/request';
+"use client";
+import { useEffect } from "react";
+import { useLocaleStore } from "@/store/locale-store";
+import type { Locale } from "@/i18n/request";
 
 export function LocaleStoreInitializer({ locale }: { locale: Locale }) {
   useEffect(() => {
@@ -501,12 +505,12 @@ Confirmed as proposed. Path: `apps/frontend/messages/de.json` and `apps/frontend
 After installing next-intl, add `apps/frontend/global.d.ts` (or extend existing):
 
 ```typescript
-import de from './messages/de.json';
+import de from "./messages/de.json";
 
-declare module 'next-intl' {
+declare module "next-intl" {
   interface AppConfig {
     messages: typeof de;
-    locale: 'de' | 'en';
+    locale: "de" | "en";
   }
 }
 ```
@@ -518,11 +522,11 @@ This provides compile-time exhaustiveness for all translation key lookups. Missi
 Wrap the existing config with the next-intl plugin:
 
 ```typescript
-import createNextIntlPlugin from 'next-intl/plugin';
-import path from 'path';
-import type { NextConfig } from 'next';
+import createNextIntlPlugin from "next-intl/plugin";
+import path from "path";
+import type { NextConfig } from "next";
 
-const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
+const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 const nextConfig: NextConfig = {
   outputFileTracingRoot: path.resolve(import.meta.dirname),
@@ -546,9 +550,10 @@ Note: `__dirname` is not available in ESM (`"type": "module"`). The existing `ne
 4. **Dynamic import of message JSON in `i18n/request.ts`** — `import(`../messages/${locale}.json`)` is a dynamic expression. Webpack (this project runs `--webpack`) may not statically bundle these. Add both locales to the dynamic import to help the bundler:
 
    ```typescript
-   const messages = locale === 'de'
-     ? (await import('../messages/de.json')).default
-     : (await import('../messages/en.json')).default;
+   const messages =
+     locale === "de"
+       ? (await import("../messages/de.json")).default
+       : (await import("../messages/en.json")).default;
    ```
 
    This ensures both files are included in the build output without relying on glob/dynamic-expression bundling.

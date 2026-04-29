@@ -15,7 +15,9 @@ export function BackofficeUserDebug() {
       </p>
       <p>
         <span className="text-muted-foreground">roles: </span>
-        {user.roles.length > 0 ? user.roles.map((r) => r.key).join(", ") : "none"}
+        {user.roles.length > 0
+          ? user.roles.map((r) => r.key).join(", ")
+          : "none"}
       </p>
     </div>
   );
