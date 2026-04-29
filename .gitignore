@@ -20,7 +20,9 @@ app/backend/dist/
 
 # Playwright
 app/e2e/test-results/
+app/e2e/test-results/*
 app/e2e/playwright-report/
+app/e2e/playwright-report/*
 
 # OS
 .DS_Store

@@ -18,7 +18,17 @@
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d.get\\('dependencies',{}\\), indent=2\\)\\)\")",
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('version:', d.get\\('version'\\)\\)\")",
       "Bash(grep -v \"compiled\\\\|node_modules/next/node_modules\\\\|\\\\.map$\")",
-      "Bash(node_modules/.bin/next --version)"
+      "Bash(node_modules/.bin/next --version)",
+      "WebSearch",
+      "WebFetch(domain:docs.kinde.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(yarn --cwd app/backend add jwks-rsa)",
+      "Bash(yarn build:backend *)",
+      "Bash(yarn workspace *)",
+      "Bash(yarn tsc *)",
+      "Bash(npx tsc *)",
+      "Bash(yarn build *)",
+      "Bash(gh pr *)"
     ]
   }
 }

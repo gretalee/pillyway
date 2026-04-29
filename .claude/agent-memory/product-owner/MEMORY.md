@@ -1,1 +1,2 @@
 - [Pillyway domain model](project_domain.md) — feature phases, domain entities, and user roles for writing tickets
+- [Pillyway auth decisions](project_auth.md) — Kinde as auth provider, protected routes, header UX, JWT backend verification

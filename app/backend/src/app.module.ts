@@ -3,10 +3,17 @@ import { ConfigModule } from '@nestjs/config';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
+import { RoutesModule } from './routes/routes.module';
 import { SupabaseModule } from './supabase/supabase.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), SupabaseModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    SupabaseModule,
+    AuthModule,
+    RoutesModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
