@@ -13,12 +13,23 @@ interface ProvidersProps {
   user: AuthUser | null;
   locale: Locale;
   messages: AbstractIntlMessages;
+  timeZone: string | undefined;
 }
 
-export function Providers({ children, user, locale, messages }: ProvidersProps) {
+export function Providers({
+  children,
+  user,
+  locale,
+  messages,
+  timeZone,
+}: ProvidersProps) {
   const [queryClient] = useState(() => new QueryClient());
   return (
-    <NextIntlClientProvider locale={locale} messages={messages}>
+    <NextIntlClientProvider
+      locale={locale}
+      messages={messages}
+      timeZone={timeZone}
+    >
       <QueryClientProvider client={queryClient}>
         <UserStoreInitializer user={user} />
         <LocaleStoreInitializer locale={locale} />
