@@ -1,4 +1,4 @@
-import de from './messages/de.json';
+import de from './i18n/messages/de.json';
 
 declare module 'next-intl' {
   interface AppConfig {

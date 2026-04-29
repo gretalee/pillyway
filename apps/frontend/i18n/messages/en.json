@@ -17,6 +17,11 @@
     "title": "Pillyway",
     "description": "Plan your pilgrimage journey."
   },
+  "home": {
+    "heading": "Pillyway",
+    "tagline": "Plan your pilgrimage journey.",
+    "explore_link": "Explore Caminos"
+  },
   "caminos": {
     "title": "Caminos",
     "browse": "Browse pilgrimage routes.",

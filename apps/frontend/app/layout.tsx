@@ -43,9 +43,9 @@ export default async function RootLayout({
   return (
     <html lang={locale} className="h-full antialiased">
       <body className="min-h-full flex flex-col">
-        <Header user={authUser} />
         <NextIntlClientProvider>
           <Providers user={authUser} locale={locale}>
+            <Header user={authUser} />
             {children}
           </Providers>
         </NextIntlClientProvider>
