@@ -1,11 +1,11 @@
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss';
 
 const config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["system-ui", "sans-serif"],
-        mono: ["ui-monospace", "monospace"],
+        sans: ['system-ui', 'sans-serif'],
+        mono: ['ui-monospace', 'monospace'],
       },
     },
   },

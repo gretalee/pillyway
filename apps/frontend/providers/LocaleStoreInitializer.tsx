@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import { useLocaleStore } from "@/store/locale-store";
-import type { Locale } from "@/i18n/detectLocale";
+import { useEffect } from 'react';
+import { useLocaleStore } from '@/store/locale-store';
+import type { Locale } from '@/i18n/detectLocale';
 
 /**
  * Synchronises the server-resolved locale into the Zustand store on mount.

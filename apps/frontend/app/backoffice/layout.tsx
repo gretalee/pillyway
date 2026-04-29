@@ -1,5 +1,5 @@
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { redirect } from "next/navigation";
+import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
+import { redirect } from 'next/navigation';
 
 export default async function BackofficeLayout({
   children,
@@ -9,10 +9,10 @@ export default async function BackofficeLayout({
   const { getRoles } = getKindeServerSession();
   const roles = await getRoles();
 
-  const isOwner = roles?.some((role) => role.key === "owner") ?? false;
+  const isOwner = roles?.some((role) => role.key === 'owner') ?? false;
 
   if (!isOwner) {
-    redirect("/");
+    redirect('/');
   }
 
   return <>{children}</>;

@@ -20,26 +20,15 @@ export async function Header({ user }: HeaderProps) {
         <Link
           href="/"
           className="text-base font-semibold tracking-tight text-foreground hover:opacity-80 transition-opacity"
-          aria-label={t('aria_home')}
-        >
+          aria-label={t('aria_home')}>
           {t('home_label')}
         </Link>
 
         <div className="flex items-center gap-4">
-          {user && (
-            <span className="text-xs text-muted-foreground font-mono">
-              roles:{' '}
-              {user.roles.length > 0
-                ? user.roles.map((r) => r.key).join(', ')
-                : 'none'}
-            </span>
-          )}
-
           {isOwner && (
             <Link
               href="/backoffice"
-              className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}
-            >
+              className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>
               {t('backoffice')}
             </Link>
           )}
@@ -53,10 +42,7 @@ export async function Header({ user }: HeaderProps) {
               <Link
                 href="/api/auth/login"
                 aria-label={t('aria_login')}
-                className={cn(
-                  buttonVariants({ variant: 'outline', size: 'sm' }),
-                )}
-              >
+                className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>
                 {t('login')}
               </Link>
             )}

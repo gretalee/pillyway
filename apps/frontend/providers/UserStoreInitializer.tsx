@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import { useUserStore, type AuthUser } from "@/store/user-store";
+import { useEffect } from 'react';
+import { useUserStore, type AuthUser } from '@/store/user-store';
 
 export function UserStoreInitializer({ user }: { user: AuthUser | null }) {
   useEffect(() => {

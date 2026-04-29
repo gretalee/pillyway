@@ -1,0 +1,27 @@
+{
+  "useTabs": false,
+  "tabWidth": 2,
+  "singleQuote": true,
+  "trailingComma": "all",
+  "printWidth": 90,
+  "htmlWhitespaceSensitivity": "ignore",
+  "bracketSameLine": true,
+  "endOfLine": "auto",
+  "overrides": [
+    {
+      "files": ["packages/**/docs/rules/*.md"],
+      "options": {
+        "embeddedLanguageFormatting": "off",
+        "bracketSameLine": true
+      }
+    },
+    {
+      "files": ["*.html"],
+      "options": {
+        "htmlWhitespaceSensitivity": "ignore",
+        "bracketSameLine": true
+      }
+    }
+  ],
+  "plugins": []
+}
