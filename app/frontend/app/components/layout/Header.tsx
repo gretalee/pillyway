@@ -1,13 +1,13 @@
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "../ui/button";
 import { cn } from "@/lib/utils";
 import { UserMenu } from "./UserMenu";
 
 export async function Header() {
   const { isAuthenticated, getRoles, getUser } = getKindeServerSession();
   const authenticated = await isAuthenticated();
-  const roles = authenticated ? (await getRoles()) ?? [] : [];
+  const roles = authenticated ? ((await getRoles()) ?? []) : [];
   const user = authenticated ? await getUser() : null;
   const isOwner = roles.some((role) => role.key === "owner");
 
@@ -26,9 +26,7 @@ export async function Header() {
           {authenticated && (
             <span className="text-xs text-muted-foreground font-mono">
               roles:{" "}
-              {roles.length > 0
-                ? roles.map((r) => r.key).join(", ")
-                : "none"}
+              {roles.length > 0 ? roles.map((r) => r.key).join(", ") : "none"}
             </span>
           )}
 
