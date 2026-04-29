@@ -1,8 +1,6 @@
 import { ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { vi } from 'vitest';
-
-import { ROLES_KEY } from './decorators/roles.decorator';
+import { vi, describe, beforeEach, it, expect } from 'vitest';
 import { KindeJwtPayload } from './kinde-jwt.strategy';
 import { RolesGuard } from './roles.guard';
 
@@ -29,9 +27,7 @@ describe('RolesGuard', () => {
 
   describe('when no @Roles() decorator is present', () => {
     beforeEach(() => {
-      vi
-        .spyOn(reflector, 'getAllAndOverride')
-        .mockReturnValue(undefined);
+      vi.spyOn(reflector, 'getAllAndOverride').mockReturnValue(undefined);
     });
 
     it('allows any authenticated user through', () => {
@@ -58,9 +54,7 @@ describe('RolesGuard', () => {
 
   describe('when @Roles(["owner"]) is required', () => {
     beforeEach(() => {
-      vi
-        .spyOn(reflector, 'getAllAndOverride')
-        .mockReturnValue(['owner']);
+      vi.spyOn(reflector, 'getAllAndOverride').mockReturnValue(['owner']);
     });
 
     it('allows a user with the owner role', () => {
@@ -92,17 +86,26 @@ describe('RolesGuard', () => {
 
   describe('when multiple roles are required', () => {
     beforeEach(() => {
-      vi
-        .spyOn(reflector, 'getAllAndOverride')
-        .mockReturnValue([ROLES_KEY, 'owner']);
+      vi.spyOn(reflector, 'getAllAndOverride').mockReturnValue([
+        'reviewer',
+        'owner',
+      ]);
     });
 
     it('allows access when the user has one of the required roles', () => {
       const ctx = buildContext({
         sub: 'user-1',
-        roles: [{ id: 'r1', key: 'owner', name: 'Owner' }],
+        roles: [{ id: 'r1', key: 'reviewer', name: 'Reviewer' }],
       });
       expect(guard.canActivate(ctx)).toBe(true);
+    });
+
+    it('throws ForbiddenException when the user has none of the required roles', () => {
+      const ctx = buildContext({
+        sub: 'user-2',
+        roles: [{ id: 'r2', key: 'editor', name: 'Editor' }],
+      });
+      expect(() => guard.canActivate(ctx)).toThrow(ForbiddenException);
     });
   });
 });
