@@ -1,20 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import "@/lib/fonts";
 import { Providers } from "@/providers/providers";
 import { Header } from "@/app/components/layout/Header";
 import type { AuthUser } from "@/store/user-store";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Pillyway",
@@ -47,10 +37,10 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className="h-full antialiased"
     >
       <body className="min-h-full flex flex-col">
-        <Header />
+        <Header user={authUser} />
         <Providers user={authUser}>{children}</Providers>
       </body>
     </html>

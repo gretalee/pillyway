@@ -1,15 +1,15 @@
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import Link from "next/link";
 import { buttonVariants } from "../ui/button";
 import { cn } from "@/lib/utils";
 import { UserMenu } from "./UserMenu";
+import type { AuthUser } from "@/store/user-store";
 
-export async function Header() {
-  const { isAuthenticated, getRoles, getUser } = getKindeServerSession();
-  const authenticated = await isAuthenticated();
-  const roles = authenticated ? ((await getRoles()) ?? []) : [];
-  const user = authenticated ? await getUser() : null;
-  const isOwner = roles.some((role) => role.key === "owner");
+interface HeaderProps {
+  user: AuthUser | null;
+}
+
+export function Header({ user }: HeaderProps) {
+  const isOwner = user?.roles.some((r) => r.key === "owner") ?? false;
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -23,10 +23,12 @@ export async function Header() {
         </Link>
 
         <div className="flex items-center gap-4">
-          {authenticated && (
+          {user && (
             <span className="text-xs text-muted-foreground font-mono">
               roles:{" "}
-              {roles.length > 0 ? roles.map((r) => r.key).join(", ") : "none"}
+              {user.roles.length > 0
+                ? user.roles.map((r) => r.key).join(", ")
+                : "none"}
             </span>
           )}
 
@@ -40,10 +42,10 @@ export async function Header() {
           )}
 
           <nav aria-label="Account navigation">
-            {authenticated ? (
-              <UserMenu firstName={user?.given_name ?? null} />
+            {user ? (
+              <UserMenu firstName={user.firstName} />
             ) : (
-              <a
+              <Link
                 href="/api/auth/login"
                 aria-label="Log in"
                 className={cn(
@@ -51,7 +53,7 @@ export async function Header() {
                 )}
               >
                 Log in
-              </a>
+              </Link>
             )}
           </nav>
         </div>

@@ -1,13 +1,11 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect } from "react";
 import { useUserStore, type AuthUser } from "@/store/user-store";
 
 export function UserStoreInitializer({ user }: { user: AuthUser | null }) {
-  const initialized = useRef(false);
-  if (!initialized.current) {
+  useEffect(() => {
     useUserStore.setState({ user, isAuthenticated: user !== null });
-    initialized.current = true;
-  }
+  }, [user]);
   return null;
 }
