@@ -6,43 +6,72 @@ async function clearLocaleCookie(page: import('@playwright/test').Page) {
   await page.context().clearCookies({ name: 'pillyway-locale' });
 }
 
+// Helper: add the pillyway-locale cookie before navigating so the SSR
+// middleware picks it up on the very first request.
+async function setLocaleCookie(
+  page: import('@playwright/test').Page,
+  locale: 'de' | 'en',
+) {
+  await page.context().addCookies([
+    {
+      name: 'pillyway-locale',
+      value: locale,
+      domain: 'localhost',
+      path: '/',
+      sameSite: 'Lax',
+    },
+  ]);
+}
+
 // ---------------------------------------------------------------------------
 // First-load locale detection
 // ---------------------------------------------------------------------------
 
 test.describe('Language detection on first load', () => {
-  test.todo(
-    'first load without cookie uses browser language "de" → UI renders in German',
-    // Rationale: AC-1 — browser language de maps to German; no cookie present.
-    // Setup: clear cookie, set Accept-Language: de, navigate to /.
-    // Assert: a known DE string is visible (e.g., header aria-label or login button text).
-    // Assert: <html lang> attribute equals "de".
-  );
+  // Each nested describe block overrides the browser locale (and therefore
+  // the Accept-Language header) to test the Accept-Language fallback path.
 
-  test.todo(
-    'first load without cookie uses browser language "en" → UI renders in English',
-    // Rationale: AC-1 variant — browser language en maps to English.
-    // Setup: clear cookie, set Accept-Language: en-US, navigate to /.
-    // Assert: a known EN string is visible.
-    // Assert: <html lang> attribute equals "en".
-  );
+  test.describe('Accept-Language: de-DE', () => {
+    test.use({ locale: 'de-DE' });
 
-  test.todo(
-    'first load without cookie and unsupported browser language defaults to German',
-    // Rationale: AC-2 — French (or any unsupported) browser language falls
-    // back to German.
-    // Setup: clear cookie, set Accept-Language: fr-FR, navigate to /.
-    // Assert: a known DE string is visible.
-    // Assert: <html lang> attribute equals "de".
-  );
+    test('first load without cookie uses browser language "de" → UI renders in German', async ({ page }) => {
+      await clearLocaleCookie(page);
+      await page.goto('/');
+      // DE login label is "Anmelden"; EN is "Log in".
+      await expect(page.getByRole('link', { name: 'Anmelden' })).toBeVisible();
+      await expect(page.locator('html')).toHaveAttribute('lang', 'de');
+    });
+  });
 
-  test.todo(
-    'first load with existing pillyway-locale=en cookie overrides browser language',
-    // Rationale: AC-3 — cookie takes precedence over Accept-Language.
-    // Setup: set pillyway-locale=en cookie, set Accept-Language: de, navigate to /.
-    // Assert: a known EN string is visible.
-    // Assert: <html lang> attribute equals "en".
-  );
+  test.describe('Accept-Language: en-US', () => {
+    test.use({ locale: 'en-US' });
+
+    test('first load without cookie uses browser language "en" → UI renders in English', async ({ page }) => {
+      await clearLocaleCookie(page);
+      await page.goto('/');
+      await expect(page.getByRole('link', { name: 'Log in' })).toBeVisible();
+      await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+    });
+  });
+
+  test.describe('Accept-Language: fr-FR (unsupported)', () => {
+    test.use({ locale: 'fr-FR' });
+
+    test('first load without cookie and unsupported browser language defaults to German', async ({ page }) => {
+      await clearLocaleCookie(page);
+      await page.goto('/');
+      await expect(page.getByRole('link', { name: 'Anmelden' })).toBeVisible();
+      await expect(page.locator('html')).toHaveAttribute('lang', 'de');
+    });
+  });
+
+  test('first load with existing pillyway-locale=en cookie overrides browser language', async ({ page }) => {
+    // Cookie takes precedence over Accept-Language (AC-3).
+    await setLocaleCookie(page, 'en');
+    await page.goto('/');
+    await expect(page.getByRole('link', { name: 'Log in' })).toBeVisible();
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -50,14 +79,24 @@ test.describe('Language detection on first load', () => {
 // ---------------------------------------------------------------------------
 
 test.describe('Language switcher — immediate UI update', () => {
-  test.todo(
-    'clicking EN in the language switcher immediately shows English strings',
-    // Rationale: AC-4 — strings must update without a full page navigation.
-    // Setup: load page in de, locate the language switcher, click EN.
-    // Assert: a string that differs between DE and EN is now showing the EN
-    //   version (e.g., login button text "Log in" vs "Anmelden").
-    // Assert: no full page navigation occurred (check page.url() is unchanged).
-  );
+  test('clicking EN in the language switcher immediately shows English strings', async ({ page }) => {
+    // Start in German (no cookie → middleware falls back to Accept-Language;
+    // we force de via cookie so the test is locale-independent).
+    await setLocaleCookie(page, 'de');
+    await page.goto('/');
+    await expect(page.getByRole('link', { name: 'Anmelden' })).toBeVisible();
+    const urlBefore = page.url();
+
+    // Click the EN button in the language switcher.
+    await page.getByRole('button', { name: 'EN' }).click();
+
+    // After router.refresh() the server re-renders with the EN cookie:
+    // the login link text switches from "Anmelden" to "Log in".
+    await expect(page.getByRole('link', { name: 'Log in' })).toBeVisible();
+
+    // No full-page navigation should have occurred.
+    expect(page.url()).toBe(urlBefore);
+  });
 
   test.todo(
     'clicking DE after EN switches back to German strings',
@@ -66,20 +105,27 @@ test.describe('Language switcher — immediate UI update', () => {
     // Assert: known DE string is now visible.
   );
 
-  test.todo(
-    'switching language updates the <html lang> attribute immediately',
-    // Rationale: AC-7 — the lang attribute must reflect the active locale
-    //   after the router.refresh() triggered by setLocale.
-    // Setup: load page in de, click EN.
-    // Assert: await page.locator('html').getAttribute('lang') equals "en".
-  );
+  test('switching language updates the <html lang> attribute immediately', async ({ page }) => {
+    await setLocaleCookie(page, 'de');
+    await page.goto('/');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'de');
 
-  test.todo(
-    'the active language button has a visible distinct state',
-    // Rationale: Design requirement — current selection must be
-    //   "unambiguous at a glance". Verify via accessible attribute
-    //   (aria-pressed=true) rather than a fragile CSS class check.
-  );
+    // Switch to English via the language switcher.
+    await page.getByRole('button', { name: 'EN' }).click();
+
+    // router.refresh() causes the root layout to re-render with locale="en".
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+  });
+
+  test('the active language button has a visible distinct state', async ({ page }) => {
+    // Load with EN cookie so the EN button starts as the active selection.
+    await setLocaleCookie(page, 'en');
+    await page.goto('/');
+
+    // EN button must report aria-pressed="true"; DE must be false.
+    await expect(page.getByRole('button', { name: 'EN' })).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByRole('button', { name: 'DE' })).toHaveAttribute('aria-pressed', 'false');
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -96,22 +142,31 @@ test.describe('Language preference persistence', () => {
     // Assert: EN strings are still visible on the return page.
   );
 
-  test.todo(
-    'pillyway-locale cookie is present and equals "en" after switching',
-    // Rationale: FR-4 — verifies the cookie was actually written by
-    //   setLocale, not just that state looks correct on-screen.
-    // Setup: switch to EN.
-    // Assert: page.context().cookies() contains { name: 'pillyway-locale',
-    //   value: 'en' }.
-  );
+  test('pillyway-locale cookie is present and equals "en" after switching', async ({ page }) => {
+    await setLocaleCookie(page, 'de');
+    await page.goto('/');
 
-  test.todo(
-    'pillyway-locale cookie has SameSite=Lax attribute',
-    // Rationale: Security checklist — SameSite=Lax is required by the ticket.
-    // Setup: switch to EN.
-    // Assert: the cookie returned by page.context().cookies() has
-    //   sameSite === 'Lax'.
-  );
+    // Switch to English via the language switcher.
+    await page.getByRole('button', { name: 'EN' }).click();
+
+    // Verify setLocale() wrote the cookie with the correct value.
+    const cookies = await page.context().cookies();
+    const localeCookie = cookies.find((c) => c.name === 'pillyway-locale');
+    expect(localeCookie).toBeDefined();
+    expect(localeCookie?.value).toBe('en');
+  });
+
+  test('pillyway-locale cookie has SameSite=Lax attribute', async ({ page }) => {
+    await setLocaleCookie(page, 'de');
+    await page.goto('/');
+
+    await page.getByRole('button', { name: 'EN' }).click();
+
+    const cookies = await page.context().cookies();
+    const localeCookie = cookies.find((c) => c.name === 'pillyway-locale');
+    expect(localeCookie).toBeDefined();
+    expect(localeCookie?.sameSite).toBe('Lax');
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -119,21 +174,21 @@ test.describe('Language preference persistence', () => {
 // ---------------------------------------------------------------------------
 
 test.describe('<html lang> attribute', () => {
-  test.todo(
-    '<html lang> is "de" on first load when default locale is German',
-    // Rationale: AC-7 — the lang attribute must be correct from the first
-    //   SSR response, not just after client-side hydration.
-    // Assert on initial page load before any JS executes
-    //   (use page.goto() and immediately read the attribute).
-  );
+  test('<html lang> is "de" on first load when default locale is German', async ({ page }) => {
+    // Use an explicit de cookie so the assertion is deterministic regardless
+    // of the CI runner's system locale.
+    await setLocaleCookie(page, 'de');
+    await page.goto('/');
+    // Read immediately after goto — lang must be set in the SSR response,
+    // not deferred to client-side hydration.
+    await expect(page.locator('html')).toHaveAttribute('lang', 'de');
+  });
 
-  test.todo(
-    '<html lang> is "en" when pillyway-locale=en cookie is set before load',
-    // Rationale: AC-7 + NFR SSR compatibility — the Server Component must
-    //   resolve the locale from the cookie and set lang before sending HTML.
-    // Setup: set cookie, page.goto('/').
-    // Assert: attribute equals "en" without waiting for client-side code.
-  );
+  test('<html lang> is "en" when pillyway-locale=en cookie is set before load', async ({ page }) => {
+    await setLocaleCookie(page, 'en');
+    await page.goto('/');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+  });
 });
 
 // ---------------------------------------------------------------------------
