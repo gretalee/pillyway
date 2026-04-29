@@ -98,12 +98,18 @@ test.describe('Language switcher — immediate UI update', () => {
     expect(page.url()).toBe(urlBefore);
   });
 
-  test.todo(
-    'clicking DE after EN switches back to German strings',
-    // Rationale: AC-4 — reverse direction; idempotency of the toggle.
-    // Setup: load page in en (cookie), click DE.
-    // Assert: known DE string is now visible.
-  );
+  test('clicking DE after EN switches back to German strings', async ({ page }) => {
+    // Start in English.
+    await setLocaleCookie(page, 'en');
+    await page.goto('/');
+    await expect(page.getByRole('link', { name: 'Log in' })).toBeVisible();
+
+    // Switch back to German.
+    await page.getByRole('button', { name: 'DE' }).click();
+
+    // After router.refresh() the server re-renders with the DE cookie.
+    await expect(page.getByRole('link', { name: 'Anmelden' })).toBeVisible();
+  });
 
   test('switching language updates the <html lang> attribute immediately', async ({ page }) => {
     await setLocaleCookie(page, 'de');
@@ -133,14 +139,21 @@ test.describe('Language switcher — immediate UI update', () => {
 // ---------------------------------------------------------------------------
 
 test.describe('Language preference persistence', () => {
-  test.todo(
-    'language remains English after navigating to another page',
-    // Rationale: AC-5 — the pillyway-locale cookie keeps the preference
-    //   across same-session navigation.
-    // Setup: switch to EN, navigate to a second route (e.g., /backoffice or
-    //   any route that exists), navigate back to /.
-    // Assert: EN strings are still visible on the return page.
-  );
+  test('language remains English after navigating to another page', async ({ page }) => {
+    // Switch to English by setting the cookie and loading the home page.
+    await setLocaleCookie(page, 'en');
+    await page.goto('/');
+    await expect(page.getByRole('link', { name: 'Log in' })).toBeVisible();
+
+    // Navigate to a second route that doesn't require authentication.
+    await page.goto('/caminos');
+    // The header login link is present on every page — it must still be in EN.
+    await expect(page.getByRole('link', { name: 'Log in' })).toBeVisible();
+
+    // Navigate back to the home page.
+    await page.goto('/');
+    await expect(page.getByRole('link', { name: 'Log in' })).toBeVisible();
+  });
 
   test('pillyway-locale cookie is present and equals "en" after switching', async ({ page }) => {
     await setLocaleCookie(page, 'de');
