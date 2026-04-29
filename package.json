@@ -3,14 +3,14 @@
   "private": true,
   "packageManager": "yarn@1.22.22",
   "scripts": {
-    "install": "yarn --cwd app/frontend install && yarn --cwd app/backend install && yarn --cwd app/e2e install",
-    "dev:backend": "yarn --cwd app/backend start:dev",
-    "dev:frontend": "NODE_PATH=app/frontend/node_modules yarn --cwd app/frontend dev",
-    "build:backend": "yarn --cwd app/backend build",
-    "build:frontend": "yarn --cwd app/frontend build",
-    "test:e2e": "yarn build:frontend && yarn --cwd app/e2e test",
-    "lint": "yarn --cwd app/backend lint && yarn --cwd app/frontend lint",
-    "test": "yarn --cwd app/backend test && yarn --cwd app/frontend test"
+    "install": "yarn --cwd apps/frontend install && yarn --cwd apps/backend install && yarn --cwd apps/e2e install",
+    "dev:backend": "yarn --cwd apps/backend start:dev",
+    "dev:frontend": "NODE_PATH=apps/frontend/node_modules yarn --cwd apps/frontend dev",
+    "build:backend": "yarn --cwd apps/backend build",
+    "build:frontend": "yarn --cwd apps/frontend build",
+    "test:e2e": "yarn build:frontend && yarn --cwd apps/e2e test",
+    "lint": "yarn --cwd apps/backend lint && yarn --cwd apps/frontend lint",
+    "test": "yarn --cwd apps/backend test && yarn --cwd apps/frontend test"
   },
   "engines": {
     "node": ">=24.14.0"

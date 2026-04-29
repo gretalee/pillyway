@@ -28,7 +28,9 @@
       "Bash(yarn tsc *)",
       "Bash(npx tsc *)",
       "Bash(yarn build *)",
-      "Bash(gh pr *)"
+      "Bash(gh pr *)",
+      "Bash(git checkout *)",
+      "Bash(git pull *)"
     ]
   }
 }

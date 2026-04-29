@@ -99,6 +99,19 @@ Each agent maintains persistent memory under `.claude/agent-memory/<agent-name>/
 
 All agents must follow this workflow for every iteration.
 
+### 0. Precondition — Feature Branch
+Before any work begins, create a dedicated branch from `main`:
+
+```bash
+git checkout main
+git pull
+git checkout -b feature/<short-description>
+```
+
+- Branch names use the `feature/` prefix followed by a kebab-case description (e.g. `feature/user-reviews`).
+- Never commit feature work directly to `main`.
+- All subsequent steps happen on this branch.
+
 ### 1. Requirements & Contextual Preparation
 - The `product-owner` agent defines functional requirements for the iteration.
 - The `software-architect-lead` reviews for technical feasibility and enriches the task with contextual anchors (API endpoints, data models, architectural patterns).
