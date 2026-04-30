@@ -2,13 +2,23 @@ import {
   BadRequestException,
   ConflictException,
   InternalServerErrorException,
+  Logger,
 } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { SupabaseService } from '../supabase/supabase.service';
 import { CaminosService } from './caminos.service';
 import { CreateCaminoDto } from './dto/create-camino.dto';
+
+// Suppress NestJS Logger output for error-path tests — the errors are expected.
+beforeEach(() => {
+  vi.spyOn(Logger.prototype, 'error').mockImplementation(() => {});
+});
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -32,7 +42,9 @@ function buildModule(supabaseClientStub: object): Promise<TestingModule> {
         useValue: { client: supabaseClientStub },
       },
     ],
-  }).compile();
+  })
+    .setLogger(false)
+    .compile();
 }
 
 // ─── Shared DTOs ─────────────────────────────────────────────────────────────

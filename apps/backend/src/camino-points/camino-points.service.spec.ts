@@ -1,9 +1,18 @@
-import { InternalServerErrorException } from '@nestjs/common';
+import { InternalServerErrorException, Logger } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { SupabaseService } from '../supabase/supabase.service';
 import { CaminoPointsService } from './camino-points.service';
+
+// Suppress NestJS Logger output for error-path tests — the errors are expected.
+beforeEach(() => {
+  vi.spyOn(Logger.prototype, 'error').mockImplementation(() => {});
+});
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 // ─── Proxy stub ──────────────────────────────────────────────────────────────
 
@@ -42,7 +51,9 @@ async function buildModule(clientStub: object): Promise<CaminoPointsService> {
         useValue: { client: clientStub },
       },
     ],
-  }).compile();
+  })
+    .setLogger(false)
+    .compile();
   return module.get(CaminoPointsService);
 }
 

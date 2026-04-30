@@ -270,7 +270,9 @@ function CaminoPointRow({
 
       {/* Name */}
       <div className="mb-3">
-        <Label htmlFor={nameId}>{t('point_name')}</Label>
+        <Label htmlFor={nameId}>
+          {t('point_name')} <span aria-hidden="true" className="text-destructive">*</span>
+        </Label>
         <div className="relative mt-1">
           <Input
             id={nameId}
@@ -316,7 +318,9 @@ function CaminoPointRow({
 
       {/* Country */}
       <div className="mb-3">
-        <Label htmlFor={countryId}>{t('point_country')}</Label>
+        <Label htmlFor={countryId}>
+          {t('point_country')} <span aria-hidden="true" className="text-destructive">*</span>
+        </Label>
         <div className="mt-1">
           <Select
             id={countryId}
@@ -503,7 +507,9 @@ export function CreateCaminoForm() {
 
       {/* Camino name */}
       <div>
-        <Label htmlFor={nameId}>{t('field_name')}</Label>
+        <Label htmlFor={nameId}>
+          {t('field_name')} <span aria-hidden="true" className="text-destructive">*</span>
+        </Label>
         <div className="mt-1">
           <Input
             id={nameId}
