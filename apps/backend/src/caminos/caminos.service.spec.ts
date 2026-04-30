@@ -45,9 +45,7 @@ const newPointDto: CreateCaminoDto = {
 
 const existingPointDto: CreateCaminoDto = {
   name: 'Camino del Norte',
-  caminoPoints: [
-    { caminoPointId: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890' },
-  ],
+  caminoPoints: [{ caminoPointId: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890' }],
 };
 
 const mixedDto: CreateCaminoDto = {
@@ -100,7 +98,7 @@ describe('CaminosService.create()', () => {
       p_name: newPointDto.name,
       p_description: newPointDto.description,
       p_created_by: 'kinde-user-001',
-      p_points: JSON.stringify(newPointDto.caminoPoints),
+      p_points: newPointDto.caminoPoints,
     });
     expect(result).toEqual(CREATED_CAMINO);
   });
@@ -194,8 +192,7 @@ describe('CaminosService.create() — RPC error mapping', () => {
     const rpcMock = makeRpcMock({
       data: null,
       error: {
-        message:
-          'CAMINO_POINT_NOT_FOUND:a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+        message: 'CAMINO_POINT_NOT_FOUND:a1b2c3d4-e5f6-7890-abcd-ef1234567890',
       },
     });
     const module = await buildModule({ rpc: rpcMock });

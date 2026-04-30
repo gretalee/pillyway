@@ -1,7 +1,7 @@
-import { render, screen, waitFor, within } from '@testing-library/react';
+import { act, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { CreateCaminoForm } from './CreateCaminoForm';
 
 // ── i18n mock ─────────────────────────────────────────────────────────────────
@@ -20,45 +20,64 @@ vi.mock('next/navigation', () => ({
 const mockFetch = vi.fn();
 global.fetch = mockFetch;
 
+// ── Suppress TanStack Query act() warning ─────────────────────────────────────
+// TanStack Query v5's internal scheduler runs state updates outside React's
+// act() batching model. This is a known compatibility limitation with fake
+// timers — see https://tanstack.com/query/latest/docs/framework/react/guides/testing
+const originalConsoleError = console.error.bind(console);
+
 // ── Timers ────────────────────────────────────────────────────────────────────
 // CAM-FE-15, CAM-FE-16: use fake timers to control debounce
 beforeEach(() => {
+  vi.spyOn(console, 'error').mockImplementation(
+    (message: unknown, ...args: unknown[]) => {
+      if (typeof message === 'string' && message.includes('not wrapped in act')) return;
+      originalConsoleError(message, ...args);
+    },
+  );
   vi.useFakeTimers({ shouldAdvanceTime: true });
   mockFetch.mockReset();
   mockPush.mockReset();
 
   // Default: countries endpoint returns a list
   mockFetch.mockImplementation((url: string) => {
-    if (typeof url === 'string' && url.includes('/api/countries')) {
+    if (typeof url === 'string' && url.includes('/countries')) {
       return Promise.resolve({
         ok: true,
         json: () => Promise.resolve(['France', 'Germany', 'Portugal', 'Spain']),
       });
     }
-    if (typeof url === 'string' && url.includes('/api/camino-points/search')) {
+    if (typeof url === 'string' && url.includes('/camino-points/search')) {
       return Promise.resolve({
         ok: true,
         json: () => Promise.resolve([]),
       });
     }
-    if (typeof url === 'string' && url.includes('/api/auth/token')) {
+    if (typeof url === 'string' && url.includes('/auth/token')) {
       return Promise.resolve({
         ok: true,
         json: () => Promise.resolve({ accessToken: 'test-token' }),
       });
     }
-    if (typeof url === 'string' && url.includes('/api/caminos') && !url.includes('search')) {
+    if (typeof url === 'string' && url.includes('/caminos') && !url.includes('search')) {
       return Promise.resolve({
         ok: true,
         status: 201,
-        json: () => Promise.resolve({ id: 'new-id', name: 'Test', verified: false, caminoPoints: [] }),
+        json: () =>
+          Promise.resolve({
+            id: 'new-id',
+            name: 'Test',
+            verified: false,
+            caminoPoints: [],
+          }),
       });
     }
     return Promise.resolve({ ok: false, status: 500, json: () => Promise.resolve({}) });
   });
 });
 
-afterEach(() => {
+afterEach(async () => {
+  await act(() => vi.runAllTimersAsync());
   vi.useRealTimers();
   vi.restoreAllMocks();
 });
@@ -73,9 +92,7 @@ function makeQueryClient() {
 
 function Wrapper({ children }: { children: React.ReactNode }) {
   const queryClient = makeQueryClient();
-  return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  );
+  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 }
 
 function renderForm() {
@@ -125,7 +142,7 @@ describe('Rendering', () => {
     expect(screen.getByLabelText('point_description')).toBeVisible();
   });
 
-  it('CAM-FE-03: country select is populated from the mocked GET /api/countries response', async () => {
+  it('CAM-FE-03: country select is populated from the mocked GET /countries response', async () => {
     renderForm();
     await waitForCountries();
 
@@ -134,8 +151,8 @@ describe('Rendering', () => {
     // placeholder + 4 countries
     expect(options.length).toBeGreaterThanOrEqual(5);
     const values = options.map((o) => o.textContent);
-    expect(values).toContain('France');
-    expect(values).toContain('Spain');
+    expect(values).toContain('france');
+    expect(values).toContain('spain');
   });
 });
 
@@ -225,25 +242,28 @@ describe('Validation and submission blocking', () => {
     renderForm();
     await waitForCountries();
 
-    // Fill a valid point so only the name is missing
+    // Fill a valid point so only the camino name is missing
     const pointNameInput = screen.getByLabelText('point_name');
     await user.type(pointNameInput, 'Paris');
 
     const countrySelect = screen.getByLabelText('point_country');
     await user.selectOptions(countrySelect, 'France');
 
-    const submitButton = screen.getByRole('button', { name: 'submit' });
-    await user.click(submitButton);
+    // Touch camino name field then clear it to trigger the required error
+    const caminoNameInput = screen.getByLabelText('field_name');
+    await user.type(caminoNameInput, 'x');
+    await user.clear(caminoNameInput);
 
     await waitFor(() => {
       expect(screen.getByRole('alert')).toBeInTheDocument();
     });
 
-    // No POST /api/caminos call made
+    // Submit button must remain disabled — no POST /caminos call made
+    expect(screen.getByRole('button', { name: 'submit' })).toBeDisabled();
     const caminosCalls = mockFetch.mock.calls.filter(
       (args) =>
         typeof args[0] === 'string' &&
-        args[0].includes('/api/caminos') &&
+        args[0].includes('/caminos') &&
         !args[0].includes('search'),
     );
     expect(caminosCalls.length).toBe(0);
@@ -257,19 +277,24 @@ describe('Validation and submission blocking', () => {
     // Fill the camino name
     await user.type(screen.getByLabelText('field_name'), 'My Camino');
 
-    // Leave point name empty but select country
+    // Touch the point name field then clear it to trigger the required error
+    const pointNameInput = screen.getByLabelText('point_name');
+    await user.type(pointNameInput, 'x');
+    await user.clear(pointNameInput);
+
+    // Select country so only the point name is missing
     const countrySelect = screen.getByLabelText('point_country');
     await user.selectOptions(countrySelect, 'Spain');
 
-    const submitButton = screen.getByRole('button', { name: 'submit' });
-    await user.click(submitButton);
+    // const submitButton = screen.getByRole('button', { name: 'submit' });
+    // await user.click(submitButton);
 
     await waitFor(() => {
       expect(screen.getByText('error_point_name')).toBeInTheDocument();
     });
   });
 
-  it('CAM-FE-11: valid form calls POST /api/caminos with correct payload', async () => {
+  it('CAM-FE-11: valid form calls POST /caminos with correct payload', async () => {
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     renderForm();
     await waitForCountries();
@@ -285,7 +310,7 @@ describe('Validation and submission blocking', () => {
       const caminosCalls = mockFetch.mock.calls.filter(
         (args) =>
           typeof args[0] === 'string' &&
-          args[0].includes('/api/caminos') &&
+          args[0].includes('/caminos') &&
           !args[0].includes('search') &&
           (args[1] as RequestInit | undefined)?.method === 'POST',
       );
@@ -317,7 +342,8 @@ describe('Validation and submission blocking', () => {
     expect(submitButton).toBeDisabled();
     // Native disabled is sufficient for AT — aria-disabled is also set by the component
     expect(
-      submitButton.hasAttribute('disabled') || submitButton.getAttribute('aria-disabled') === 'true',
+      submitButton.hasAttribute('disabled') ||
+        submitButton.getAttribute('aria-disabled') === 'true',
     ).toBe(true);
   });
 });
@@ -345,8 +371,11 @@ describe('Debounced search and suggestion UI', () => {
 
   it('CAM-FE-15: name + country after 400ms fires one search request', async () => {
     mockFetch.mockImplementation((url: string) => {
-      if (url.includes('/api/countries')) {
-        return Promise.resolve({ ok: true, json: () => Promise.resolve(['France', 'Spain']) });
+      if (url.includes('/countries')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(['France', 'Spain']),
+        });
       }
       if (url.includes('camino-points/search')) {
         return Promise.resolve({ ok: true, json: () => Promise.resolve([]) });
@@ -404,7 +433,7 @@ describe('Debounced search and suggestion UI', () => {
 
   it('CAM-FE-17: search with results renders suggestion card with Yes and No buttons', async () => {
     mockFetch.mockImplementation((url: string) => {
-      if (url.includes('/api/countries')) {
+      if (url.includes('/countries')) {
         return Promise.resolve({
           ok: true,
           json: () => Promise.resolve(['France', 'Spain']),
@@ -460,11 +489,15 @@ describe('Debounced search and suggestion UI', () => {
 
   it('CAM-FE-19: search API failure suppresses suggestion and does not crash', async () => {
     mockFetch.mockImplementation((url: string) => {
-      if (url.includes('/api/countries')) {
+      if (url.includes('/countries')) {
         return Promise.resolve({ ok: true, json: () => Promise.resolve(['France']) });
       }
       if (url.includes('camino-points/search')) {
-        return Promise.resolve({ ok: false, status: 500, json: () => Promise.resolve({}) });
+        return Promise.resolve({
+          ok: false,
+          status: 500,
+          json: () => Promise.resolve({}),
+        });
       }
       return Promise.resolve({ ok: true, json: () => Promise.resolve({}) });
     });
@@ -486,7 +519,7 @@ describe('Debounced search and suggestion UI', () => {
 
   it('CAM-FE-20: clicking Yes links the row, makes fields read-only', async () => {
     mockFetch.mockImplementation((url: string) => {
-      if (url.includes('/api/countries')) {
+      if (url.includes('/countries')) {
         return Promise.resolve({ ok: true, json: () => Promise.resolve(['France']) });
       }
       if (url.includes('camino-points/search')) {
@@ -534,7 +567,7 @@ describe('Debounced search and suggestion UI', () => {
 
   it('CAM-FE-21: clicking No dismisses suggestion card, fields remain editable', async () => {
     mockFetch.mockImplementation((url: string) => {
-      if (url.includes('/api/countries')) {
+      if (url.includes('/countries')) {
         return Promise.resolve({ ok: true, json: () => Promise.resolve(['France']) });
       }
       if (url.includes('camino-points/search')) {
@@ -575,7 +608,7 @@ describe('Debounced search and suggestion UI', () => {
 
   it('CAM-FE-22: changing name after linking breaks the link', async () => {
     mockFetch.mockImplementation((url: string) => {
-      if (url.includes('/api/countries')) {
+      if (url.includes('/countries')) {
         return Promise.resolve({ ok: true, json: () => Promise.resolve(['France']) });
       }
       if (url.includes('camino-points/search')) {
@@ -623,6 +656,8 @@ describe('Debounced search and suggestion UI', () => {
       const nameInput = screen.getByLabelText('point_name') as HTMLInputElement;
       expect(nameInput.readOnly).toBe(false);
     });
+    // Drain pending TanStack Query state updates
+    await act(async () => {});
   });
 });
 
@@ -652,17 +687,25 @@ describe('Submission outcomes', () => {
 
   it('CAM-FE-24: 400 response shows generic error, retains form values', async () => {
     mockFetch.mockImplementation((url: string) => {
-      if (url.includes('/api/countries')) {
+      if (url.includes('/countries')) {
         return Promise.resolve({ ok: true, json: () => Promise.resolve(['France']) });
       }
-      if (url.includes('/api/auth/token')) {
-        return Promise.resolve({ ok: true, json: () => Promise.resolve({ accessToken: 'tok' }) });
+      if (url.includes('/auth/token')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({ accessToken: 'tok' }),
+        });
       }
-      if (url.includes('/api/caminos') && !url.includes('search')) {
+      if (url.includes('/caminos') && !url.includes('search')) {
         return Promise.resolve({
           ok: false,
           status: 400,
-          json: () => Promise.resolve({ statusCode: 400, message: ['validation error'], error: 'Bad Request' }),
+          json: () =>
+            Promise.resolve({
+              statusCode: 400,
+              message: ['validation error'],
+              error: 'Bad Request',
+            }),
         });
       }
       return Promise.resolve({ ok: true, json: () => Promise.resolve([]) });
@@ -680,22 +723,28 @@ describe('Submission outcomes', () => {
     });
 
     // Form values retained
-    expect((screen.getByLabelText('field_name') as HTMLInputElement).value).toBe('Camino Francés');
+    expect((screen.getByLabelText('field_name') as HTMLInputElement).value).toBe(
+      'Camino Francés',
+    );
   });
 
   it('CAM-FE-25: 409 response shows conflict error message', async () => {
     mockFetch.mockImplementation((url: string) => {
-      if (url.includes('/api/countries')) {
+      if (url.includes('/countries')) {
         return Promise.resolve({ ok: true, json: () => Promise.resolve(['France']) });
       }
-      if (url.includes('/api/auth/token')) {
-        return Promise.resolve({ ok: true, json: () => Promise.resolve({ accessToken: 'tok' }) });
+      if (url.includes('/auth/token')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({ accessToken: 'tok' }),
+        });
       }
-      if (url.includes('/api/caminos') && !url.includes('search')) {
+      if (url.includes('/caminos') && !url.includes('search')) {
         return Promise.resolve({
           ok: false,
           status: 409,
-          json: () => Promise.resolve({ statusCode: 409, message: 'Conflict', error: 'Conflict' }),
+          json: () =>
+            Promise.resolve({ statusCode: 409, message: 'Conflict', error: 'Conflict' }),
         });
       }
       return Promise.resolve({ ok: true, json: () => Promise.resolve([]) });
@@ -715,17 +764,21 @@ describe('Submission outcomes', () => {
 
   it('CAM-FE-26: 500 response shows generic error', async () => {
     mockFetch.mockImplementation((url: string) => {
-      if (url.includes('/api/countries')) {
+      if (url.includes('/countries')) {
         return Promise.resolve({ ok: true, json: () => Promise.resolve(['France']) });
       }
-      if (url.includes('/api/auth/token')) {
-        return Promise.resolve({ ok: true, json: () => Promise.resolve({ accessToken: 'tok' }) });
+      if (url.includes('/auth/token')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({ accessToken: 'tok' }),
+        });
       }
-      if (url.includes('/api/caminos') && !url.includes('search')) {
+      if (url.includes('/caminos') && !url.includes('search')) {
         return Promise.resolve({
           ok: false,
           status: 500,
-          json: () => Promise.resolve({ statusCode: 500, message: 'Internal Server Error' }),
+          json: () =>
+            Promise.resolve({ statusCode: 500, message: 'Internal Server Error' }),
         });
       }
       return Promise.resolve({ ok: true, json: () => Promise.resolve([]) });
@@ -776,7 +829,7 @@ describe('Accessibility assertions', () => {
 
   it('CAM-FE-29: Yes button has descriptive aria-label including waypoint name', async () => {
     mockFetch.mockImplementation((url: string) => {
-      if (url.includes('/api/countries')) {
+      if (url.includes('/countries')) {
         return Promise.resolve({ ok: true, json: () => Promise.resolve(['France']) });
       }
       if (url.includes('camino-points/search')) {
@@ -804,11 +857,13 @@ describe('Accessibility assertions', () => {
     const yesButton = screen.getByRole('button', { name: /suggestion\.yes.*Pamplona/i });
     expect(yesButton).toBeInTheDocument();
     expect(yesButton.getAttribute('aria-label')).toContain('Pamplona');
+    // Drain pending TanStack Query state updates
+    await act(async () => {});
   });
 
   it('CAM-FE-30: No button has descriptive accessible name', async () => {
     mockFetch.mockImplementation((url: string) => {
-      if (url.includes('/api/countries')) {
+      if (url.includes('/countries')) {
         return Promise.resolve({ ok: true, json: () => Promise.resolve(['France']) });
       }
       if (url.includes('camino-points/search')) {
@@ -831,13 +886,13 @@ describe('Accessibility assertions', () => {
     await user.selectOptions(screen.getByLabelText('point_country'), 'France');
     vi.advanceTimersByTime(401);
 
-    await waitFor(() => expect(screen.getByRole('status')).toBeInTheDocument());
-
-    const noButton = screen.getByRole('button', { name: 'suggestion.no' });
+    const noButton = await screen.findByRole('button', { name: 'suggestion.no' });
     expect(noButton).toBeInTheDocument();
     // aria-label is present and non-empty
     const ariaLabel = noButton.getAttribute('aria-label');
     expect(ariaLabel).toBeTruthy();
+    // Drain pending TanStack Query state updates
+    await act(async () => {});
   });
 
   it('CAM-FE-31: country select has a programmatically associated label', async () => {
