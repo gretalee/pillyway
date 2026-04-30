@@ -24,18 +24,32 @@ export class XorCaminoPointItemConstraint
 {
   validate(_value: unknown, args: ValidationArguments): boolean {
     const obj = args.object as Record<string, unknown>;
-    const hasRef = obj['caminoPointId'] !== undefined;
+    // treat null the same as absent — caminoPointId must be a non-null string
+    const hasRef =
+      obj['caminoPointId'] !== undefined && obj['caminoPointId'] !== null;
     const hasDef =
-      obj['name'] !== undefined || obj['country'] !== undefined;
-    // XOR: exactly one branch must be present
-    return hasRef !== hasDef;
+      (obj['name'] !== undefined && obj['name'] !== null) ||
+      (obj['country'] !== undefined && obj['country'] !== null);
+
+    if (hasRef && hasDef) return false; // both branches present
+    if (!hasRef && !hasDef) return false; // neither branch present
+
+    // New-point branch: name and country must be non-empty strings
+    if (!hasRef) {
+      if (typeof obj['name'] !== 'string' || obj['name'].trim().length === 0)
+        return false;
+      if (typeof obj['country'] !== 'string' || obj['country'].trim().length === 0)
+        return false;
+    }
+
+    return true;
   }
 
   defaultMessage(): string {
     return (
-      'Each caminoPoint must be either an existing-point ref ' +
-      '({ caminoPointId }) or a new-point definition ' +
-      '({ name, country, description? }), never both and never neither.'
+      'Each caminoPoint must be either { caminoPointId: "<uuid>" } (existing-point ref) ' +
+      'or { name: "<non-empty>", country: "<non-empty>", description? } (new-point definition), ' +
+      'never both and never neither. caminoPointId must not be null.'
     );
   }
 }

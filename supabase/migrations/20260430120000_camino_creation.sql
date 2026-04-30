@@ -36,13 +36,17 @@ CREATE TABLE IF NOT EXISTS camino_point_order (
 
 -- ─── 4. Indexes ───────────────────────────────────────────────────────────────
 
--- Case-insensitive camino name uniqueness guard (powers the 409 check in the RPC)
-CREATE INDEX IF NOT EXISTS idx_caminos_lower_name
+-- Unique constraint on lower-cased camino name — prevents duplicates and makes
+-- the RPC uniqueness guard race-safe (two concurrent inserts: one succeeds, one
+-- hits this constraint and the RPC returns 409).
+CREATE UNIQUE INDEX IF NOT EXISTS idx_caminos_lower_name_unique
   ON caminos (LOWER(name));
 
--- ILIKE search on camino_points.name without full-table scan
-CREATE INDEX IF NOT EXISTS idx_camino_points_lower_name_tpo
-  ON camino_points (LOWER(name) text_pattern_ops);
+-- Trigram GIN index for efficient ILIKE '%term%' search on camino_points.name.
+-- text_pattern_ops cannot accelerate leading-wildcard patterns; pg_trgm can.
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+CREATE INDEX IF NOT EXISTS idx_camino_points_name_trgm
+  ON camino_points USING GIN (name gin_trgm_ops);
 
 -- Ordered point retrieval for a given camino
 CREATE INDEX IF NOT EXISTS idx_camino_point_order_camino_position
@@ -75,6 +79,7 @@ CREATE OR REPLACE FUNCTION create_camino(
 RETURNS JSONB
 LANGUAGE plpgsql
 SECURITY DEFINER
+SET search_path = ''
 AS $$
 DECLARE
   v_camino_id UUID;
@@ -152,3 +157,8 @@ BEGIN
   RETURN v_result;
 END;
 $$;
+
+-- Restrict EXECUTE to service_role only — prevents anon/authenticated keys from
+-- calling this function directly and bypassing NestJS auth guards.
+REVOKE EXECUTE ON FUNCTION create_camino(TEXT, TEXT, TEXT, JSONB) FROM PUBLIC;
+GRANT  EXECUTE ON FUNCTION create_camino(TEXT, TEXT, TEXT, JSONB) TO service_role;

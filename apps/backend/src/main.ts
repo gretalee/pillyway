@@ -1,4 +1,4 @@
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -28,12 +28,10 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api/docs', app, document);
-  console.log(
-    '********* Swagger docs available at ',
-    configService.get<string>('FRONTEND_URL') + '/api/docs *********',
-  );
 
-  await app.listen(configService.get<number>('PORT') ?? 3001);
+  const port = configService.get<number>('PORT') ?? 3001;
+  await app.listen(port);
+  Logger.log(`Swagger docs available at http://localhost:${port}/api/docs`, 'Bootstrap');
 }
 
 void bootstrap();

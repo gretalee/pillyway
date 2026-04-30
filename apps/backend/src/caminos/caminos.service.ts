@@ -52,12 +52,7 @@ export class CaminosService {
   }
 
   async create(dto: CreateCaminoDto, userId: string): Promise<CaminoDetail> {
-    console.log(
-      '[CaminoService] Creating camino with data:',
-      JSON.stringify(dto, null, 2),
-      'for userId:',
-      userId,
-    );
+    this.logger.debug('Creating camino');
     const response = await this.supabase.client.rpc('create_camino', {
       p_name: dto.name,
       p_description: dto.description ?? null,

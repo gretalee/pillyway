@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { buttonVariants } from '@/app/components/ui/button';
 import { useUserStore } from '@/store/user-store';
 
 interface CaminoSummary {
@@ -64,9 +65,7 @@ export function CaminoList() {
     <section className="mt-8">
       {isPilgrim && (
         <div className="mb-6">
-          <Link
-            href="/caminos/new"
-            className="inline-flex items-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+          <Link href="/caminos/new" className={buttonVariants({ variant: 'default' })}>
             {t('create_link')}
           </Link>
         </div>

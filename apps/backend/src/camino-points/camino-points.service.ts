@@ -47,8 +47,7 @@ export class CaminoPointsService {
     }
 
     if (country) {
-      // Case-insensitive country match
-      query = query.ilike('country', country);
+      query = query.eq('country', country);
     }
 
     const { data, error } = await query.limit(5).order('name');
