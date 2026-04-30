@@ -1,16 +1,26 @@
 import { getTranslations } from 'next-intl/server';
-import Link from 'next/link';
+import { CaminoList } from './components/CaminoList';
+
+export async function generateMetadata() {
+  const t = await getTranslations('caminos');
+  return {
+    title: t('meta_title'),
+    description: t('meta_description'),
+    openGraph: {
+      title: t('meta_title'),
+      description: t('meta_description'),
+    },
+  };
+}
 
 export default async function CaminosPage() {
   const t = await getTranslations('caminos');
 
   return (
-    <main className="flex flex-1 flex-col px-4 py-16 sm:px-6 lg:px-8">
+    <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-4 py-16 sm:px-6 lg:px-8">
       <h1 className="text-3xl font-bold tracking-tight">{t('title')}</h1>
       <p className="mt-2 text-muted-foreground">{t('browse')}</p>
-      <Link href="/caminos/new" className="mt-4 text-blue-500 underline">
-        {t('create_link')}
-      </Link>
+      <CaminoList />
     </main>
   );
 }

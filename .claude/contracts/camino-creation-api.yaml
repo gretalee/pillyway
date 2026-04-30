@@ -1,0 +1,434 @@
+openapi: 3.0.3
+info:
+  title: Pillyway API — Camino Creation Contract
+  description: |
+    OpenAPI contract for the Camino Creation feature (PILLY-CAM-001).
+    This spec is the binding interface contract between backend and frontend.
+    Neither side may change an endpoint, request body shape, or response schema
+    unilaterally — all contract changes require both agents to update their
+    implementations in the same PR.
+  version: '1.0.0'
+
+servers:
+  - url: http://localhost:3000
+    description: Local development
+  - url: https://api.pillyway.com
+    description: Production
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Kinde-issued RS256 JWT. The token must carry a `roles` claim containing the `pilgrim` role key for write endpoints.
+
+  schemas:
+    # ── Camino ──────────────────────────────────────────────────────────────
+    CaminoSummary:
+      type: object
+      description: Lightweight camino representation returned in list responses.
+      required: [id, name, verified]
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
+        name:
+          type: string
+          example: 'Camino Francés'
+        description:
+          type: string
+          nullable: true
+          example: 'The most popular route of the Camino de Santiago.'
+        verified:
+          type: boolean
+          description: Whether a Route Editor has verified this camino.
+          example: false
+
+    CaminoPointInResponse:
+      type: object
+      description: A single waypoint as returned within a camino response.
+      required: [id, name, country, position]
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890'
+        name:
+          type: string
+          example: 'Saint-Jean-Pied-de-Port'
+        country:
+          type: string
+          example: 'France'
+        position:
+          type: integer
+          minimum: 1
+          description: 1-based ordering index of this point within the camino.
+          example: 1
+
+    CaminoDetail:
+      type: object
+      description: Full camino representation returned after creation.
+      required: [id, name, verified, caminoPoints]
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
+        name:
+          type: string
+          example: 'Camino Francés'
+        description:
+          type: string
+          nullable: true
+          example: 'The most popular route of the Camino de Santiago.'
+        verified:
+          type: boolean
+          example: false
+        caminoPoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/CaminoPointInResponse'
+
+    # ── Camino Point (search) ────────────────────────────────────────────────
+    CaminoPointSearchResult:
+      type: object
+      required: [id, name, country]
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890'
+        name:
+          type: string
+          example: 'Saint-Jean-Pied-de-Port'
+        country:
+          type: string
+          example: 'France'
+        description:
+          type: string
+          nullable: true
+          example: 'Traditional French starting point of the Camino Francés.'
+
+    # ── Request bodies ───────────────────────────────────────────────────────
+    ExistingCaminoPointRef:
+      type: object
+      description: |
+        Reference to an existing camino_points row by its ID.
+        Must contain ONLY `caminoPointId` — no other fields allowed
+        (the global ValidationPipe is set to forbidNonWhitelisted: true).
+      required: [caminoPointId]
+      properties:
+        caminoPointId:
+          type: string
+          format: uuid
+          example: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890'
+
+    NewCaminoPointDefinition:
+      type: object
+      description: |
+        Inline definition of a brand-new camino point.
+        Must contain `name` and `country`; `description` is optional.
+        Must NOT contain `caminoPointId`.
+      required: [name, country]
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 120
+          example: 'Roncesvalles'
+        country:
+          type: string
+          minLength: 2
+          maxLength: 60
+          example: 'Spain'
+        description:
+          type: string
+          maxLength: 1000
+          nullable: true
+          example: 'First major stop on the Spanish side of the Pyrenees.'
+
+    CreateCaminoRequest:
+      type: object
+      required: [name, caminoPoints]
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 120
+          example: 'Camino Francés'
+        description:
+          type: string
+          maxLength: 2000
+          nullable: true
+          example: 'The most popular route of the Camino de Santiago.'
+        caminoPoints:
+          type: array
+          minItems: 1
+          description: |
+            Ordered list of waypoints. Each element is EITHER an existing-point
+            reference OR a new-point definition — never both, never neither.
+            The array index (0-based) determines the `position` (stored as
+            index + 1) in `camino_point_order`.
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/ExistingCaminoPointRef'
+              - $ref: '#/components/schemas/NewCaminoPointDefinition'
+
+    # ── Error responses ──────────────────────────────────────────────────────
+    ValidationError:
+      type: object
+      required: [statusCode, message, error]
+      properties:
+        statusCode:
+          type: integer
+          example: 400
+        message:
+          type: array
+          items:
+            type: string
+          example:
+            - 'caminoPoints.0: each point must be either an existing-point ref or a new-point definition, not both'
+        error:
+          type: string
+          example: 'Bad Request'
+
+    UnauthorizedError:
+      type: object
+      required: [statusCode, message]
+      properties:
+        statusCode:
+          type: integer
+          example: 401
+        message:
+          type: string
+          example: 'Unauthorized'
+
+    ForbiddenError:
+      type: object
+      required: [statusCode, message]
+      properties:
+        statusCode:
+          type: integer
+          example: 403
+        message:
+          type: string
+          example: 'You do not have the required role to access this resource.'
+
+    ConflictError:
+      type: object
+      required: [statusCode, message, error]
+      properties:
+        statusCode:
+          type: integer
+          example: 409
+        message:
+          type: string
+          example: 'A camino with this name already exists.'
+        error:
+          type: string
+          example: 'Conflict'
+
+paths:
+  # ── GET /api/caminos ───────────────────────────────────────────────────────
+  /api/caminos:
+    get:
+      summary: List all caminos
+      description: |
+        Returns a flat list of all caminos. No authentication required.
+        Results are ordered by `created_at` descending.
+      operationId: listCaminos
+      tags: [Caminos]
+      responses:
+        '200':
+          description: List of caminos (may be empty).
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CaminoSummary'
+              example:
+                - id: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
+                  name: 'Camino Francés'
+                  description: 'The most popular route of the Camino de Santiago.'
+                  verified: true
+
+    # ── POST /api/caminos ────────────────────────────────────────────────────
+    post:
+      summary: Create a new camino
+      description: |
+        Creates a camino with an ordered list of waypoints in a single atomic
+        operation. Requires a valid Kinde JWT with the `pilgrim` role.
+
+        **Atomicity**: the operation creates or re-uses `camino_points` rows and
+        inserts `camino_point_order` rows in one database transaction. If any step
+        fails the entire operation is rolled back and no partial data is persisted.
+
+        **Duplicate point handling**: if a `NewCaminoPointDefinition` matches an
+        existing (name, country) pair, the existing row is reused (upsert on
+        the unique constraint) — no error is raised. This prevents phantom
+        duplicates when two users create the same point concurrently.
+
+        **Camino name uniqueness**: names are unique (case-insensitive). A 409
+        is returned if a camino with the same name already exists.
+      operationId: createCamino
+      tags: [Caminos]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCaminoRequest'
+            examples:
+              mixed_points:
+                summary: Mix of existing and new points
+                value:
+                  name: 'Camino Francés'
+                  description: 'The most popular route.'
+                  caminoPoints:
+                    - caminoPointId: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890'
+                    - name: 'Roncesvalles'
+                      country: 'Spain'
+                    - name: 'Pamplona'
+                      country: 'Spain'
+                      description: 'Home of the Running of the Bulls.'
+              all_new_points:
+                summary: All new inline points
+                value:
+                  name: 'Camino del Norte'
+                  caminoPoints:
+                    - name: 'Irún'
+                      country: 'Spain'
+                    - name: 'San Sebastián'
+                      country: 'Spain'
+      responses:
+        '201':
+          description: Camino created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CaminoDetail'
+        '400':
+          description: |
+            Validation error. Possible causes:
+            - Missing required fields (`name`, `caminoPoints`)
+            - `caminoPoints` array is empty
+            - A point entry contains both `caminoPointId` AND `name`/`country` (XOR violation)
+            - A point entry contains neither `caminoPointId` nor `name`/`country`
+            - A `NewCaminoPointDefinition` entry is missing `name` or `country`
+            - Field length violations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '401':
+          description: No valid JWT provided or token is expired.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: Authenticated user does not have the `pilgrim` role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '409':
+          description: A camino with this name already exists (case-insensitive).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+
+  # ── GET /api/camino-points/search ─────────────────────────────────────────
+  /api/camino-points/search:
+    get:
+      summary: Search camino points by name and/or country
+      description: |
+        Case-insensitive ILIKE search on the `name` column. An exact (case-insensitive)
+        match on `country` is applied when the query parameter is provided.
+        Returns at most 5 results, ordered by name ascending.
+        No authentication required.
+      operationId: searchCaminoPoints
+      tags: [CaminoPoints]
+      parameters:
+        - name: name
+          in: query
+          required: false
+          description: Partial name to search (ILIKE `%value%`). Minimum 1 character when provided.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 120
+          example: 'saint'
+        - name: country
+          in: query
+          required: false
+          description: Exact country match (case-insensitive).
+          schema:
+            type: string
+            minLength: 2
+            maxLength: 60
+          example: 'France'
+      responses:
+        '200':
+          description: |
+            List of matching camino points (0–5 items).
+            Returns an empty array when no query parameters are supplied.
+          content:
+            application/json:
+              schema:
+                type: array
+                maxItems: 5
+                items:
+                  $ref: '#/components/schemas/CaminoPointSearchResult'
+              example:
+                - id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890'
+                  name: 'Saint-Jean-Pied-de-Port'
+                  country: 'France'
+                  description: 'Traditional French starting point.'
+        '400':
+          description: Query parameter validation error (e.g. name too long).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  # ── GET /api/countries ─────────────────────────────────────────────────────
+  /api/countries:
+    get:
+      summary: List allowed countries
+      description: |
+        Returns the static allow-list of country strings used to populate
+        country select inputs in the frontend. No authentication required.
+        The list is sorted alphabetically.
+      operationId: listCountries
+      tags: [Countries]
+      responses:
+        '200':
+          description: Array of country name strings.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+                - 'Austria'
+                - 'France'
+                - 'Germany'
+                - 'Italy'
+                - 'Portugal'
+                - 'Spain'
+
+tags:
+  - name: Caminos
+    description: Camino route management
+  - name: CaminoPoints
+    description: Waypoint search and management
+  - name: Countries
+    description: Country allow-list

@@ -1,2 +1,3 @@
-- [Pillyway domain model](project_domain.md) — core entities (Route/Stage/Accommodation/Review/User), role matrix, and phased scope
+- [Pillyway domain model](project_domain.md) — core entities (Camino/CaminoPoint/Accommodation/Review/User), role matrix (`pilgrim` key), and phased scope
 - [Auth Strategy — Kinde JWT (AUTH-001)](project_auth_strategy.md) — Kinde RS256 via jwks-rsa + passport-jwt; never use @kinde-oss/kinde-auth-node
+- [Supabase patterns](project_supabase_patterns.md) — query chain order, RPC error mapping, Proxy-based Vitest mock pattern

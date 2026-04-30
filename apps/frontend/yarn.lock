@@ -4921,6 +4921,11 @@ react-dom@19.2.4:
   dependencies:
     scheduler "^0.27.0"
 
+react-hook-form@^7.56.2:
+  version "7.74.0"
+  resolved "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.74.0.tgz#7c55ac360290e7e7a78cc3169b0f07bce11a36c0"
+  integrity sha512-yR6wHr99p9wFv686jhRWVSFhUvDvNbdUf2dKlbno8/VKOCuoNobDGC6S+M2dua9A9Yo8vpcrp8assIYbsZCQ9g==
+
 react-is@^16.13.1:
   version "16.13.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"

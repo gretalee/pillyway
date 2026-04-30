@@ -4,7 +4,9 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { RoutesModule } from './routes/routes.module';
+import { CaminoPointsModule } from './camino-points/camino-points.module';
+import { CaminosModule } from './caminos/caminos.module';
+import { CountriesModule } from './countries/countries.module';
 import { SupabaseModule } from './supabase/supabase.module';
 
 @Module({
@@ -12,7 +14,9 @@ import { SupabaseModule } from './supabase/supabase.module';
     ConfigModule.forRoot({ isGlobal: true }),
     SupabaseModule,
     AuthModule,
-    RoutesModule,
+    CaminosModule,
+    CaminoPointsModule,
+    CountriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

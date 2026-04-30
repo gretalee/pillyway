@@ -1,2 +1,4 @@
 - [Pillyway domain model](project_domain.md) — domain entities, relationships, roles, and phase 2 extensibility notes
 - [Language Switch (i18n) Architecture](feature_language_switch_arch.md) — next-intl v4, cookie-only locale, single middleware, ESM __dirname bug, hydration flow
+- [Supabase transaction strategy](pattern_supabase_transactions.md) — use Supabase RPC (pg function, SECURITY DEFINER) for atomic multi-step writes; no raw pg client
+- [NestJS XOR DTO validation](pattern_nestjs_xor_dto.md) — custom ValidatorConstraint for mutually exclusive field groups; class-validator has no native XOR

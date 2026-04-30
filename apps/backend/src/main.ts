@@ -1,4 +1,5 @@
 import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
@@ -11,7 +12,12 @@ async function bootstrap() {
     new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
   );
 
-  app.enableCors();
+  const configService = app.get(ConfigService);
+  const frontendUrl =
+    configService.get<string>('FRONTEND_URL') ?? 'http://localhost:3000';
+  app.enableCors({
+    origin: frontendUrl,
+  });
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Pillyway API')
@@ -22,8 +28,12 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api/docs', app, document);
+  console.log(
+    '********* Swagger docs available at ',
+    configService.get<string>('FRONTEND_URL') + '/api/docs *********',
+  );
 
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(configService.get<number>('PORT') ?? 3001);
 }
 
 void bootstrap();
