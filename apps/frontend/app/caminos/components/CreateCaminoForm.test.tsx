@@ -18,7 +18,8 @@ vi.mock('next/navigation', () => ({
 }));
 
 // ── Kinde browser client mock ──────────────────────────────────────────────────
-// Provides a stable accessTokenEncoded so unit tests don't need a real browser session.
+// useCreateCamino (app/api/use-create-camino.ts) uses useKindeBrowserClient internally
+// to attach the Bearer token. Mock it here so tests don't need a real browser session.
 vi.mock('@kinde-oss/kinde-auth-nextjs', () => ({
   useKindeBrowserClient: () => ({ accessTokenEncoded: 'test-access-token' }),
 }));

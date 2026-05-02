@@ -1,0 +1,43 @@
+'use client';
+
+import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
+import { useMutation } from '@tanstack/react-query';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? '';
+
+export type ExistingPointPayload = { caminoPointId: string };
+export type NewPointPayload = { name: string; country: string; description?: string };
+export type CaminoPointPayload = ExistingPointPayload | NewPointPayload;
+
+export interface CreateCaminoPayload {
+  name: string;
+  description?: string;
+  caminoPoints: CaminoPointPayload[];
+}
+
+export async function createCamino(
+  payload: CreateCaminoPayload,
+  token: string,
+): Promise<void> {
+  const response = await fetch(`${API_URL}/caminos`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    throw Object.assign(new Error('Create failed'), { status: response.status });
+  }
+}
+
+export function useCreateCamino() {
+  const { accessTokenEncoded } = useKindeBrowserClient();
+
+  return useMutation({
+    mutationFn: (payload: CreateCaminoPayload) =>
+      createCamino(payload, accessTokenEncoded ?? ''),
+  });
+}
