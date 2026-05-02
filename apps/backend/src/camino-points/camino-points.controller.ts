@@ -28,7 +28,7 @@ export class CaminoPointsController {
   @ApiQuery({
     name: 'country',
     required: false,
-    description: 'Exact country match (case-insensitive).',
+    description: 'Exact country match.',
   })
   @ApiOkResponse({ description: 'Array of up to 5 matching camino points.' })
   async search(
