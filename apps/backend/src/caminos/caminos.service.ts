@@ -90,6 +90,8 @@ export class CaminosService {
       );
     }
 
+    this.logger.debug('Camino created successfully with ID: ' + data?.id);
+
     return data as CaminoDetail;
   }
 }

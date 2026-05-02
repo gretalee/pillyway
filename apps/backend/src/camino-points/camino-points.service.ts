@@ -57,6 +57,6 @@ export class CaminoPointsService {
       throw new InternalServerErrorException('Failed to search camino points.');
     }
 
-    return (data ?? []) as CaminoPointSearchResult[];
+    return data ?? [];
   }
 }

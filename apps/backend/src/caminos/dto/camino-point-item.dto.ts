@@ -19,9 +19,7 @@ import {
  * validators and has access to the whole object via args.object.
  */
 @ValidatorConstraint({ name: 'xorCaminoPointItem', async: false })
-export class XorCaminoPointItemConstraint
-  implements ValidatorConstraintInterface
-{
+export class XorCaminoPointItemConstraint implements ValidatorConstraintInterface {
   validate(_value: unknown, args: ValidationArguments): boolean {
     const obj = args.object as Record<string, unknown>;
     // treat null the same as absent — caminoPointId must be a non-null string
@@ -38,7 +36,10 @@ export class XorCaminoPointItemConstraint
     if (!hasRef) {
       if (typeof obj['name'] !== 'string' || obj['name'].trim().length === 0)
         return false;
-      if (typeof obj['country'] !== 'string' || obj['country'].trim().length === 0)
+      if (
+        typeof obj['country'] !== 'string' ||
+        obj['country'].trim().length === 0
+      )
         return false;
     }
 
@@ -96,7 +97,7 @@ export class CaminoPointItemDto {
   country?: string;
 
   @IsString()
-  @MaxLength(1000)
+  @MaxLength(2000)
   @IsOptional()
   description?: string;
 }
