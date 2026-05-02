@@ -380,7 +380,6 @@ export function CreateCaminoForm() {
     control,
     handleSubmit,
     setValue,
-    setError,
     formState: { errors, isValid },
   } = useForm<CaminoFormValues>({
     mode: 'onChange',

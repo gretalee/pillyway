@@ -30,8 +30,9 @@ CREATE TABLE IF NOT EXISTS camino_points (
 CREATE TABLE IF NOT EXISTS camino_point_order (
   camino_id        UUID    NOT NULL REFERENCES caminos(id)        ON DELETE CASCADE,
   camino_point_id  UUID    NOT NULL REFERENCES camino_points(id)  ON DELETE CASCADE,
-  position         INTEGER NOT NULL,
-  CONSTRAINT camino_point_order_pk PRIMARY KEY (camino_id, camino_point_id)
+  position         INTEGER NOT NULL CHECK (position > 0),
+  CONSTRAINT camino_point_order_pk       PRIMARY KEY (camino_id, camino_point_id),
+  CONSTRAINT camino_point_order_pos_uniq UNIQUE      (camino_id, position)
 );
 
 -- ─── 4. Indexes ───────────────────────────────────────────────────────────────
@@ -79,7 +80,7 @@ CREATE OR REPLACE FUNCTION create_camino(
 RETURNS JSONB
 LANGUAGE plpgsql
 SECURITY DEFINER
-SET search_path = ''
+SET search_path = 'pg_catalog, public'
 AS $$
 DECLARE
   v_camino_id UUID;
@@ -112,7 +113,7 @@ BEGIN
 
   FOR v_point IN SELECT * FROM jsonb_array_elements(p_points)
   LOOP
-    IF v_point ? 'caminoPointId' THEN
+    IF v_point->>'caminoPointId' IS NOT NULL THEN
       v_point_id := (v_point->>'caminoPointId')::UUID;
       IF NOT EXISTS (SELECT 1 FROM camino_points WHERE id = v_point_id) THEN
         RAISE EXCEPTION 'CAMINO_POINT_NOT_FOUND:%', v_point_id;
@@ -155,6 +156,12 @@ BEGIN
   WHERE c.id = v_camino_id;
 
   RETURN v_result;
+
+EXCEPTION
+  WHEN unique_violation THEN
+    -- Catches the race window between the IF EXISTS check and the INSERT on
+    -- caminos.LOWER(name) when two concurrent requests create the same name.
+    RAISE EXCEPTION 'CAMINO_NAME_EXISTS';
 END;
 $$;
 

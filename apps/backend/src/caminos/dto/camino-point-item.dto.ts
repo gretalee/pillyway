@@ -1,4 +1,5 @@
 import {
+  IsIn,
   IsOptional,
   IsString,
   IsUUID,
@@ -8,6 +9,8 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
+
+import { COUNTRIES } from '../../countries/countries.constants';
 
 /**
  * Enforces XOR: each caminoPoint must be either
@@ -91,8 +94,7 @@ export class CaminoPointItemDto {
   @IsOptional()
   name?: string;
 
-  @IsString()
-  @MaxLength(60)
+  @IsIn([...COUNTRIES])
   @IsOptional()
   country?: string;
 
