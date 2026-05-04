@@ -7,7 +7,7 @@ import {
 import { Test, TestingModule } from '@nestjs/testing';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { SupabaseService } from '../supabase/supabase.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { CaminosService } from './caminos.service';
 import { CreateCaminoDto } from './dto/create-camino.dto';
 
@@ -22,25 +22,42 @@ afterEach(() => {
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-function makeRpcMock(result: { data: unknown; error: unknown }) {
-  return vi.fn().mockResolvedValue(result);
+/**
+ * Builds the transaction mock object used inside the $transaction callback.
+ * Each method can be overridden by callers via spread to set up specific scenarios.
+ */
+function makeTx() {
+  return {
+    camino: {
+      findFirst: vi.fn().mockResolvedValue(null),
+      create: vi.fn().mockResolvedValue({
+        id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        name: 'Camino Francés',
+        description: 'The most popular route.',
+        verified: false,
+        createdBy: 'kinde-user-001',
+      }),
+    },
+    caminoPoint: {
+      findUnique: vi.fn(),
+      upsert: vi.fn().mockResolvedValue({
+        id: 'b2c3d4e5-f6a7-8901-bcde-f12345678901',
+        name: 'Saint-Jean-Pied-de-Port',
+        country: 'France',
+        description: null,
+      }),
+    },
+    caminoPointOrder: {
+      create: vi.fn().mockResolvedValue({}),
+    },
+  };
 }
 
-function makeSelectMock(result: { data: unknown; error: unknown }) {
-  const orderMock = vi.fn().mockResolvedValue(result);
-  const selectMock = vi.fn().mockReturnValue({ order: orderMock });
-  const fromMock = vi.fn().mockReturnValue({ select: selectMock });
-  return { fromMock, selectMock, orderMock };
-}
-
-function buildModule(supabaseClientStub: object): Promise<TestingModule> {
+function buildModule(prismaMock: object): Promise<TestingModule> {
   return Test.createTestingModule({
     providers: [
       CaminosService,
-      {
-        provide: SupabaseService,
-        useValue: { client: supabaseClientStub },
-      },
+      { provide: PrismaService, useValue: prismaMock },
     ],
   })
     .setLogger(false)
@@ -77,93 +94,87 @@ const threeNewPointsDto: CreateCaminoDto = {
   ],
 };
 
-const CREATED_CAMINO = {
-  id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-  name: 'Camino Francés',
-  description: 'The most popular route.',
-  verified: false,
-  caminoPoints: [
-    {
-      id: 'b2c3d4e5-f6a7-8901-bcde-f12345678901',
-      name: 'Saint-Jean-Pied-de-Port',
-      country: 'France',
-      position: 1,
-    },
-  ],
-};
-
 // ─── CaminosService.create() — Happy paths ───────────────────────────────────
 
 describe('CaminosService.create()', () => {
-  let service: CaminosService;
-
   // CAM-BE-01: creates camino + one brand-new caminoPoint
-  it('CAM-BE-01: creates camino with one new caminoPoint via RPC', async () => {
-    const rpcMock = makeRpcMock({ data: CREATED_CAMINO, error: null });
-    const module = await buildModule({ rpc: rpcMock });
-    service = module.get(CaminosService);
+  it('CAM-BE-01: creates camino with one new caminoPoint via Prisma transaction', async () => {
+    const tx = makeTx();
+    const prismaMock = {
+      $transaction: vi.fn().mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
 
     const result = await service.create(newPointDto, 'kinde-user-001');
 
-    expect(rpcMock).toHaveBeenCalledOnce();
-    expect(rpcMock).toHaveBeenCalledWith('create_camino', {
-      p_name: newPointDto.name,
-      p_description: newPointDto.description,
-      p_created_by: 'kinde-user-001',
-      p_points: newPointDto.caminoPoints,
-    });
-    expect(result).toEqual(CREATED_CAMINO);
+    expect(prismaMock.$transaction).toHaveBeenCalledOnce();
+    expect(tx.camino.create).toHaveBeenCalledOnce();
+    expect(tx.caminoPoint.upsert).toHaveBeenCalledOnce();
+    expect(tx.caminoPointOrder.create).toHaveBeenCalledOnce();
+    expect(result.id).toBe('3fa85f64-5717-4562-b3fc-2c963f66afa6');
+    expect(result.caminoPoints).toHaveLength(1);
+    expect(result.caminoPoints[0].position).toBe(1);
   });
 
   // CAM-BE-02: creates camino + links one existing caminoPoint by ID
   it('CAM-BE-02: creates camino linking an existing caminoPoint by ID', async () => {
-    const rpcResult = {
-      ...CREATED_CAMINO,
+    const tx = makeTx();
+    tx.camino.create = vi.fn().mockResolvedValue({
+      id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
       name: 'Camino del Norte',
-      caminoPoints: [
-        {
-          id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
-          name: 'Irún',
-          country: 'Spain',
-          position: 1,
-        },
-      ],
+      description: null,
+      verified: false,
+      createdBy: 'kinde-user-001',
+    });
+    tx.caminoPoint.findUnique = vi.fn().mockResolvedValue({
+      id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+      name: 'Irún',
+      country: 'Spain',
+      description: null,
+    });
+    const prismaMock = {
+      $transaction: vi.fn().mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
     };
-    const rpcMock = makeRpcMock({ data: rpcResult, error: null });
-    const module = await buildModule({ rpc: rpcMock });
-    service = module.get(CaminosService);
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
 
     const result = await service.create(existingPointDto, 'kinde-user-001');
 
     expect(result.caminoPoints[0].id).toBe(
       'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
     );
-    expect(rpcMock).toHaveBeenCalledOnce();
+    expect(tx.caminoPoint.findUnique).toHaveBeenCalledOnce();
+    expect(tx.caminoPoint.upsert).not.toHaveBeenCalled();
   });
 
   // CAM-BE-03: mixed array — existing + new
   it('CAM-BE-03: creates camino with mixed existing and new points', async () => {
-    const rpcResult = {
-      ...CREATED_CAMINO,
+    const tx = makeTx();
+    tx.camino.create = vi.fn().mockResolvedValue({
+      id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
       name: 'Camino Mixto',
-      caminoPoints: [
-        {
-          id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
-          name: 'Irún',
-          country: 'Spain',
-          position: 1,
-        },
-        {
-          id: 'c3d4e5f6-a7b8-9012-cdef-123456789012',
-          name: 'Roncesvalles',
-          country: 'Spain',
-          position: 2,
-        },
-      ],
+      description: null,
+      verified: false,
+      createdBy: 'kinde-user-001',
+    });
+    tx.caminoPoint.findUnique = vi.fn().mockResolvedValue({
+      id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+      name: 'Irún',
+      country: 'Spain',
+      description: null,
+    });
+    tx.caminoPoint.upsert = vi.fn().mockResolvedValue({
+      id: 'c3d4e5f6-a7b8-9012-cdef-123456789012',
+      name: 'Roncesvalles',
+      country: 'Spain',
+      description: null,
+    });
+    const prismaMock = {
+      $transaction: vi.fn().mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
     };
-    const rpcMock = makeRpcMock({ data: rpcResult, error: null });
-    const module = await buildModule({ rpc: rpcMock });
-    service = module.get(CaminosService);
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
 
     const result = await service.create(mixedDto, 'kinde-user-001');
 
@@ -174,18 +185,28 @@ describe('CaminosService.create()', () => {
 
   // CAM-BE-04: three new points in order
   it('CAM-BE-04: creates camino with three new points and correct positions', async () => {
-    const rpcResult = {
-      ...CREATED_CAMINO,
+    const tx = makeTx();
+    tx.camino.create = vi.fn().mockResolvedValue({
+      id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
       name: 'Camino Triple',
-      caminoPoints: [
-        { id: 'id-1', name: 'Irún', country: 'Spain', position: 1 },
-        { id: 'id-2', name: 'San Sebastián', country: 'Spain', position: 2 },
-        { id: 'id-3', name: 'Zarautz', country: 'Spain', position: 3 },
-      ],
+      description: null,
+      verified: false,
+      createdBy: 'kinde-user-001',
+    });
+    let upsertCallCount = 0;
+    const upsertResults = [
+      { id: 'id-1', name: 'Irún', country: 'Spain', description: null },
+      { id: 'id-2', name: 'San Sebastián', country: 'Spain', description: null },
+      { id: 'id-3', name: 'Zarautz', country: 'Spain', description: null },
+    ];
+    tx.caminoPoint.upsert = vi.fn().mockImplementation(() =>
+      Promise.resolve(upsertResults[upsertCallCount++]),
+    );
+    const prismaMock = {
+      $transaction: vi.fn().mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
     };
-    const rpcMock = makeRpcMock({ data: rpcResult, error: null });
-    const module = await buildModule({ rpc: rpcMock });
-    service = module.get(CaminosService);
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
 
     const result = await service.create(threeNewPointsDto, 'kinde-user-001');
 
@@ -196,19 +217,16 @@ describe('CaminosService.create()', () => {
 
 // ─── CaminosService.create() — Exception mapping ─────────────────────────────
 
-describe('CaminosService.create() — RPC error mapping', () => {
-  let service: CaminosService;
-
+describe('CaminosService.create() — error mapping', () => {
   // CAM-BE-07: non-existent caminoPointId → BadRequestException
   it('CAM-BE-07: throws BadRequestException when caminoPointId is not found in DB', async () => {
-    const rpcMock = makeRpcMock({
-      data: null,
-      error: {
-        message: 'CAMINO_POINT_NOT_FOUND:a1b2c3d4-e5f6-7890-abcd-ef1234567890',
-      },
-    });
-    const module = await buildModule({ rpc: rpcMock });
-    service = module.get(CaminosService);
+    const tx = makeTx();
+    tx.caminoPoint.findUnique = vi.fn().mockResolvedValue(null);
+    const prismaMock = {
+      $transaction: vi.fn().mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
 
     await expect(
       service.create(existingPointDto, 'kinde-user-001'),
@@ -218,54 +236,86 @@ describe('CaminosService.create() — RPC error mapping', () => {
   // CAM-BE-07 message content
   it('CAM-BE-07: BadRequestException message contains the missing point ID', async () => {
     const pointId = 'a1b2c3d4-e5f6-7890-abcd-ef1234567890';
-    const rpcMock = makeRpcMock({
-      data: null,
-      error: { message: `CAMINO_POINT_NOT_FOUND:${pointId}` },
-    });
-    const module = await buildModule({ rpc: rpcMock });
-    service = module.get(CaminosService);
+    const tx = makeTx();
+    tx.caminoPoint.findUnique = vi.fn().mockResolvedValue(null);
+    const prismaMock = {
+      $transaction: vi.fn().mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
 
     await expect(
       service.create(existingPointDto, 'kinde-user-001'),
     ).rejects.toThrow(pointId);
   });
 
-  // CAMINO_NAME_EXISTS → ConflictException (409)
-  it('maps CAMINO_NAME_EXISTS RPC error to ConflictException (409)', async () => {
-    const rpcMock = makeRpcMock({
-      data: null,
-      error: { message: 'CAMINO_NAME_EXISTS' },
+  // Camino name already exists → ConflictException (409)
+  it('maps existing camino name to ConflictException (409)', async () => {
+    const tx = makeTx();
+    tx.camino.findFirst = vi.fn().mockResolvedValue({
+      id: 'x',
+      name: 'Camino Francés',
     });
-    const module = await buildModule({ rpc: rpcMock });
-    service = module.get(CaminosService);
+    const prismaMock = {
+      $transaction: vi.fn().mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
 
     await expect(
       service.create(newPointDto, 'kinde-user-001'),
     ).rejects.toBeInstanceOf(ConflictException);
   });
 
-  // DUPLICATE_POINT_IN_REQUEST → BadRequestException
-  it('maps DUPLICATE_POINT_IN_REQUEST RPC error to BadRequestException (400)', async () => {
-    const rpcMock = makeRpcMock({
-      data: null,
-      error: { message: 'DUPLICATE_POINT_IN_REQUEST' },
-    });
-    const module = await buildModule({ rpc: rpcMock });
-    service = module.get(CaminosService);
+  // Duplicate new-point definitions in request → BadRequestException
+  it('maps duplicate new-point definitions in request to BadRequestException (400)', async () => {
+    const tx = makeTx();
+    const prismaMock = {
+      $transaction: vi.fn().mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
+
+    const duplicateDto: CreateCaminoDto = {
+      name: 'Camino Duplicado',
+      caminoPoints: [
+        { name: 'Irún', country: 'Spain' },
+        { name: 'irún', country: 'spain' }, // same point, different casing
+      ],
+    };
+
+    await expect(
+      service.create(duplicateDto, 'kinde-user-001'),
+    ).rejects.toBeInstanceOf(BadRequestException);
+  });
+
+  // Prisma P2002 unique constraint violation → ConflictException
+  it('maps Prisma P2002 unique constraint error to ConflictException', async () => {
+    // Construct an error that matches the instanceof check in the service's catch block.
+    // Prisma.PrismaClientKnownRequestError is the canonical export from @prisma/client.
+    const { Prisma } = await import('@prisma/client');
+    const p2002Error = new Prisma.PrismaClientKnownRequestError(
+      'Unique constraint failed',
+      { code: 'P2002', clientVersion: '7.0.0' },
+    );
+    const prismaMock = {
+      $transaction: vi.fn().mockRejectedValue(p2002Error),
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
 
     await expect(
       service.create(newPointDto, 'kinde-user-001'),
-    ).rejects.toBeInstanceOf(BadRequestException);
+    ).rejects.toBeInstanceOf(ConflictException);
   });
 
   // Unrecognised DB error → InternalServerErrorException
   it('throws InternalServerErrorException for unknown DB errors', async () => {
-    const rpcMock = makeRpcMock({
-      data: null,
-      error: { message: 'unexpected pg error' },
-    });
-    const module = await buildModule({ rpc: rpcMock });
-    service = module.get(CaminosService);
+    const prismaMock = {
+      $transaction: vi.fn().mockRejectedValue(new Error('unexpected pg error')),
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
 
     await expect(
       service.create(newPointDto, 'kinde-user-001'),
@@ -285,20 +335,23 @@ describe('CaminosService.findAll()', () => {
         verified: true,
       },
     ];
-
-    const { fromMock } = makeSelectMock({ data: summaries, error: null });
-    const module = await buildModule({ from: fromMock });
+    const prismaMock = {
+      camino: { findMany: vi.fn().mockResolvedValue(summaries) },
+    };
+    const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
     const result = await service.findAll();
 
     expect(result).toEqual(summaries);
-    expect(fromMock).toHaveBeenCalledWith('caminos');
+    expect(prismaMock.camino.findMany).toHaveBeenCalledOnce();
   });
 
   it('returns an empty array when no caminos exist', async () => {
-    const { fromMock } = makeSelectMock({ data: [], error: null });
-    const module = await buildModule({ from: fromMock });
+    const prismaMock = {
+      camino: { findMany: vi.fn().mockResolvedValue([]) },
+    };
+    const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
     const result = await service.findAll();
@@ -307,25 +360,14 @@ describe('CaminosService.findAll()', () => {
   });
 
   it('throws InternalServerErrorException when DB query fails', async () => {
-    const { fromMock } = makeSelectMock({
-      data: null,
-      error: { message: 'connection timeout' },
-    });
-    const module = await buildModule({ from: fromMock });
+    const prismaMock = {
+      camino: { findMany: vi.fn().mockRejectedValue(new Error('timeout')) },
+    };
+    const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
     await expect(service.findAll()).rejects.toBeInstanceOf(
       InternalServerErrorException,
     );
-  });
-
-  it('returns null-safe empty array when data is null (no DB error)', async () => {
-    const { fromMock } = makeSelectMock({ data: null, error: null });
-    const module = await buildModule({ from: fromMock });
-    const service = module.get(CaminosService);
-
-    const result = await service.findAll();
-
-    expect(result).toEqual([]);
   });
 });

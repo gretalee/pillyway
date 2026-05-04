@@ -1,12 +1,14 @@
 import {
   BadRequestException,
   ConflictException,
+  HttpException,
   Injectable,
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 
-import { SupabaseService } from '../supabase/supabase.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreateCaminoDto } from './dto/create-camino.dto';
 
 export interface CaminoSummary {
@@ -35,63 +37,147 @@ export interface CaminoDetail {
 export class CaminosService {
   private readonly logger = new Logger(CaminosService.name);
 
-  constructor(private readonly supabase: SupabaseService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async findAll(): Promise<CaminoSummary[]> {
-    const { data, error } = await this.supabase.client
-      .from('caminos')
-      .select('id, name, description, verified')
-      .order('created_at', { ascending: false });
-
-    if (error) {
-      this.logger.error('Failed to fetch caminos', error);
+    try {
+      return await this.prisma.camino.findMany({
+        select: { id: true, name: true, description: true, verified: true },
+        orderBy: { createdAt: 'desc' },
+      });
+    } catch (err) {
+      this.logger.error('Failed to fetch caminos', err);
       throw new InternalServerErrorException('Failed to fetch caminos.');
     }
-
-    return data ?? [];
   }
 
   async create(dto: CreateCaminoDto, userId: string): Promise<CaminoDetail> {
     this.logger.debug('Creating camino');
-    const response = await this.supabase.client.rpc('create_camino', {
-      p_name: dto.name,
-      p_description: dto.description ?? null,
-      p_created_by: userId,
-      p_points: dto.caminoPoints,
-    });
 
-    const { data, error } = response as {
-      data: CaminoDetail | null;
-      error: Error | null;
-    };
+    try {
+      return await this.prisma.$transaction(async (tx) => {
+        // 1. Case-insensitive name uniqueness check
+        const existing = await tx.camino.findFirst({
+          where: { name: { equals: dto.name, mode: 'insensitive' } },
+        });
+        if (existing) {
+          throw new ConflictException(
+            'A camino with this name already exists.',
+          );
+        }
 
-    if (error) {
-      const msg: string = error.message ?? '';
+        // 2. Detect duplicate new-point definitions in the request (same lowercase name+country)
+        const newPointDefs = dto.caminoPoints.filter((p) => !p.caminoPointId);
+        const seen = new Set<string>();
+        for (const point of newPointDefs) {
+          const key = `${point.name!.toLowerCase()}|${point.country!.toLowerCase()}`;
+          if (seen.has(key)) {
+            throw new BadRequestException(
+              'The request contains duplicate camino point definitions (same name and country).',
+            );
+          }
+          seen.add(key);
+        }
 
-      if (msg.includes('CAMINO_NAME_EXISTS')) {
+        // 3. Create the camino record
+        const camino = await tx.camino.create({
+          data: {
+            name: dto.name,
+            description: dto.description ?? null,
+            createdBy: userId,
+          },
+        });
+
+        // 4. Resolve each point and create its order record
+        const caminoPoints: CaminoPointInResponse[] = [];
+
+        for (let i = 0; i < dto.caminoPoints.length; i++) {
+          const item = dto.caminoPoints[i];
+          let pointId: string;
+          let pointName: string;
+          let pointCountry: string;
+
+          if (item.caminoPointId) {
+            // Existing point — verify it exists
+            const found = await tx.caminoPoint.findUnique({
+              where: { id: item.caminoPointId },
+            });
+            if (!found) {
+              throw new BadRequestException(
+                `CaminoPoint not found: ${item.caminoPointId}`,
+              );
+            }
+            pointId = found.id;
+            pointName = found.name;
+            pointCountry = found.country;
+          } else {
+            // New point — upsert by name+country composite unique key
+            const upserted = await tx.caminoPoint.upsert({
+              where: {
+                name_country: {
+                  name: item.name!,
+                  country: item.country!,
+                },
+              },
+              create: {
+                name: item.name!,
+                country: item.country!,
+                description: item.description ?? null,
+              },
+              update: {},
+            });
+            pointId = upserted.id;
+            pointName = upserted.name;
+            pointCountry = upserted.country;
+          }
+
+          const position = i + 1;
+          await tx.caminoPointOrder.create({
+            data: {
+              caminoId: camino.id,
+              caminoPointId: pointId,
+              position,
+            },
+          });
+
+          caminoPoints.push({
+            id: pointId,
+            name: pointName,
+            country: pointCountry,
+            position,
+          });
+        }
+
+        this.logger.debug(
+          'Camino created successfully with ID: ' + camino.id,
+        );
+
+        return {
+          id: camino.id,
+          name: camino.name,
+          description: camino.description,
+          verified: camino.verified,
+          caminoPoints,
+        };
+      });
+    } catch (err) {
+      // Re-throw NestJS HTTP exceptions as-is (ConflictException, BadRequestException, etc.)
+      if (err instanceof HttpException) {
+        throw err;
+      }
+
+      // Prisma unique-constraint violation (e.g. race condition on camino name index)
+      if (
+        err instanceof Prisma.PrismaClientKnownRequestError &&
+        err.code === 'P2002'
+      ) {
         throw new ConflictException('A camino with this name already exists.');
       }
 
-      if (msg.includes('CAMINO_POINT_NOT_FOUND')) {
-        const uuidMatch = msg.match(/CAMINO_POINT_NOT_FOUND:([0-9a-f-]{36})/i);
-        const pointId = uuidMatch ? uuidMatch[1] : 'unknown';
-        throw new BadRequestException(`CaminoPoint not found: ${pointId}`);
-      }
-
-      if (msg.includes('DUPLICATE_POINT_IN_REQUEST')) {
-        throw new BadRequestException(
-          'The request contains duplicate camino point definitions (same name and country).',
-        );
-      }
-
-      this.logger.error('create_camino RPC failed', error);
+      this.logger.error('Failed to create camino', err);
       throw new InternalServerErrorException(
         'Failed to create camino. Please try again.',
       );
     }
-
-    this.logger.debug('Camino created successfully with ID: ' + data?.id);
-
-    return data as CaminoDetail;
   }
 }
