@@ -8,7 +8,6 @@ const config = {
         mono: ['ui-monospace', 'monospace'],
       },
       colors: {
-        green: '#238855',
         pillyGreen: {
           50: '#f1fcf6',
           100: '#e0f8eb',

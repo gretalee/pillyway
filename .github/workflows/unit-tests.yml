@@ -3,7 +3,7 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: ["**"]
+    branches: ['**']
 jobs:
   test:
     name: Unit Tests (backend + frontend)
@@ -22,9 +22,6 @@ jobs:
 
       - name: Install backend dependencies
         run: yarn --cwd apps/backend install --frozen-lockfile
-        env:
-          # prisma generate runs via postinstall; it does not need a real DB connection
-          DATABASE_URL: ""
 
       - name: Install frontend dependencies
         run: yarn --cwd apps/frontend install --frozen-lockfile

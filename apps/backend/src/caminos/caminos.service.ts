@@ -148,9 +148,7 @@ export class CaminosService {
           });
         }
 
-        this.logger.debug(
-          'Camino created successfully with ID: ' + camino.id,
-        );
+        this.logger.debug('Camino created successfully with ID: ' + camino.id);
 
         return {
           id: camino.id,
@@ -173,14 +171,24 @@ export class CaminosService {
         err.code === 'P2002'
       ) {
         const target = Array.isArray(err.meta?.target)
-          ? (err.meta.target as string[])
-          : [];
-        if (target.includes('name')) {
+          ? err.meta.target
+          : typeof err.meta?.target === 'string'
+            ? [err.meta.target]
+            : [];
+        const modelName =
+          typeof err.meta?.modelName === 'string'
+            ? err.meta.modelName
+            : undefined;
+        const isCaminoNameConflict =
+          target.length === 1 &&
+          target[0] === 'name' &&
+          (!modelName || modelName === 'Camino');
+        if (isCaminoNameConflict) {
           throw new ConflictException(
             'A camino with this name already exists.',
           );
         }
-        // Another unique constraint was violated — rethrow for the generic handler below.
+        throw new ConflictException('A camino with this name already exists.');
       }
 
       this.logger.error('Failed to create camino', err);

@@ -50,9 +50,6 @@ jobs:
 
       - name: Install backend dependencies
         run: yarn --cwd apps/backend install --frozen-lockfile
-        env:
-          # prisma generate (postinstall) does not need a live DB connection
-          DATABASE_URL: ""
 
       - name: Install frontend dependencies
         run: yarn --cwd apps/frontend install --frozen-lockfile
@@ -81,15 +78,13 @@ jobs:
 
       - name: Install backend dependencies
         run: yarn --cwd apps/backend install --frozen-lockfile
-        env:
-          DATABASE_URL: ""
 
       - name: Run database migrations
         working-directory: apps/backend
         run: npx prisma migrate deploy
         env:
           DIRECT_URL: ${{ secrets.DIRECT_URL }}
-          DATABASE_URL: ""
+          DATABASE_URL: ${{ secrets.DIRECT_URL }}
 
   # ---------------------------------------------------------------------------
   # Job 2b: Build Docker images and push to GitHub Container Registry
