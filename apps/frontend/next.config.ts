@@ -5,6 +5,7 @@ import type { NextConfig } from 'next';
 const withNextIntl = createNextIntlPlugin('./i18n/geti18nConfig.ts');
 
 const nextConfig: NextConfig = {
+  output: 'standalone',
   outputFileTracingRoot: path.resolve(import.meta.dirname),
 };
 

@@ -21,10 +21,13 @@ jobs:
         run: corepack enable
 
       - name: Install backend dependencies
-        run: yarn --cwd app/backend install --frozen-lockfile
+        run: yarn --cwd apps/backend install --frozen-lockfile
+        env:
+          # prisma generate runs via postinstall; it does not need a real DB connection
+          DATABASE_URL: ""
 
       - name: Install frontend dependencies
-        run: yarn --cwd app/frontend install --frozen-lockfile
+        run: yarn --cwd apps/frontend install --frozen-lockfile
 
       - name: Run unit tests
         run: yarn test
