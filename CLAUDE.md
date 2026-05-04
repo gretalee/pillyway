@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Non-Negotiable Rules
+
+- **Never open, read, or write any `.env` file.** The only exception is `.env.example` (no real credentials, safe to edit). If a task requires changing environment variables, print the exact lines the user must add or remove and ask them to apply the change themselves.
+
 ## Project Description
 
 **Pillyway** is a pilgrimage route planning app. It helps users discover and plan personal pilgrimages.
