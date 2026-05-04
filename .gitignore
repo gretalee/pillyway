@@ -54,6 +54,8 @@ yarn-error.log*
 # testing
 coverage/
 /coverage
+/test-results
+/test-results/*
 
 # vercel
 .vercel
