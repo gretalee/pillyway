@@ -10,7 +10,10 @@
     "build:frontend": "yarn --cwd apps/frontend build",
     "test:e2e": "yarn build:frontend && yarn --cwd apps/e2e test",
     "lint": "yarn --cwd apps/backend lint && yarn --cwd apps/frontend lint",
-    "test": "yarn --cwd apps/backend test && yarn --cwd apps/frontend test"
+    "test": "yarn test:backend && yarn test:frontend",
+    "test:backend": "yarn --cwd apps/backend test",
+    "test:frontend": "yarn --cwd apps/frontend test",
+    "prettier:frontend": "yarn --cwd apps/frontend prettier --write ."
   },
   "engines": {
     "node": ">=24.14.0"

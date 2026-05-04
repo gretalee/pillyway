@@ -19,5 +19,18 @@ Pillyway is a pilgrimage route planning app.
 **Phase 2 (later)**
 - Authenticated users compose a personal route from existing stages
 
-## Domain Entities
-Route → Stage → Accommodation → Review → User
+## Domain Entities (canonical naming — use these terms in all tickets)
+- **Camino** — a named pilgrimage route (the codebase and UI use "camino", not "route")
+- **CaminoPoint** — a village/city waypoint on a camino (not "stage")
+- **CaminoStage** — the leg between two CaminoPoints (planned, not yet implemented)
+- **Accommodation** — lodging linked to a CaminoPoint
+- **Sight** — point of interest linked to a CaminoPoint
+- **Review** — user-authored rating + text, attached to a Camino or Accommodation
+- **User** — authenticated user with a Kinde role
+
+## User Roles (Kinde role keys)
+- `owner` — admin/backoffice access (already in header logic)
+- `reviewer` — default for new users; can write reviews
+- `pilgrim` — can create and manage caminos via input forms (replaces "Route Editor" from CLAUDE.md)
+
+Note: CLAUDE.md still uses "Route / Stage / Route Editor" terminology — the codebase and product have since adopted "Camino / CaminoPoint / pilgrim". Tickets should use the codebase terms.

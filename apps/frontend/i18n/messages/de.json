@@ -25,10 +25,54 @@
   "caminos": {
     "title": "Caminos",
     "browse": "Pilgerrouten erkunden.",
-    "create_link": "Neue Route erstellen"
+    "empty": "Noch keine Caminos vorhanden. Sei der Erste und erstelle einen!",
+    "create_link": "Neuen Camino erstellen",
+    "meta_title": "Caminos | Pillyway",
+    "meta_description": "Entdecke und erkunde Pilgerrouten aus aller Welt.",
+    "og_image_alt": "Pillyway Caminos",
+    "error_loading": "Die Caminos konnten nicht geladen werden. Bitte versuche es erneut.",
+    "verified": "Verifiziert"
   },
   "caminos_new": {
-    "title": "Neue Route erstellen"
+    "title": "Neuen Camino erstellen",
+    "meta_title": "Neuen Camino erstellen | Pillyway",
+    "meta_description": "Erstelle einen neuen Camino und trage zur Pilgergemeinschaft bei.",
+    "field_name": "Name",
+    "field_description": "Beschreibung (optional)",
+    "title_points": "Orte (Wegpunkte)",
+    "add_point": "Ort hinzufügen",
+    "remove_point": "Ort entfernen",
+    "point_name": "Ortsname",
+    "point_country": "Land",
+    "point_description": "Beschreibung (optional)",
+    "move_up": "Nach oben verschieben",
+    "move_down": "Nach unten verschieben",
+    "unlink": "Verknüpfung aufheben",
+    "submit": "Camino erstellen",
+    "submitting": "Wird erstellt…",
+    "access_denied": "Du hast keine Berechtigung, diese Seite aufzurufen. Die Pilgrim-Rolle ist erforderlich.",
+    "error_generic": "Ein Fehler ist aufgetreten. Bitte versuche es erneut.",
+    "error_conflict": "Ein Camino mit diesem Namen existiert bereits. Bitte wähle einen anderen Namen.",
+    "error_name_required": "Der Name des Caminos ist erforderlich.",
+    "error_desc_required": "Beschreibung ist erforderlich.",
+    "error_point_country": "Bitte wähle ein Land aus.",
+    "error_point_name": "Der Ortsname ist erforderlich.",
+    "suggestion": {
+      "prompt": "Meintest du diesen Ort?",
+      "yes": "Ja, diesen Ort verwenden",
+      "no": "Nein, neuen Ort erstellen"
+    }
+  },
+  "countries": {
+    "denmark": "Dänemark",
+    "france": "Frankreich",
+    "germany": "Deutschland",
+    "italy": "Italien",
+    "netherlands": "Niederlande",
+    "poland": "Polen",
+    "portugal": "Portugal",
+    "spain": "Spanien",
+    "sweden": "Schweden"
   },
   "backoffice": {
     "title": "Backoffice | Pillyway",

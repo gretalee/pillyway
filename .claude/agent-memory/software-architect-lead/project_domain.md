@@ -15,11 +15,19 @@ Pillyway is a pilgrimage route planning app. Next.js 16 App Router frontend (web
 - Stage 1──* Accommodation
 - Review *──1 Route (or) Accommodation  (polymorphic)
 - User 1──* Review
+- Camino 1──* CaminoPointOrder *──1 CaminoPoint (many-to-many with ordering)
+
+## Camino Entity Model (PILLY-CAM-001)
+- `caminos`: id, name, description, verified, created_by (NOT NULL), created_at, updated_at
+- `camino_points`: id, name, country, description, created_at; UNIQUE(name, country)
+- `camino_point_order`: camino_id FK, camino_point_id FK, position; composite PK
+- Write path uses `create_camino` Supabase RPC (pg function, SECURITY DEFINER) for atomicity
 
 ## Roles
 - Guest (unauthenticated): read-only
 - Reviewer (default): + write reviews
 - Route Editor (assigned): + write routes / stages / accommodations
+- `pilgrim` — Kinde role key for route creation; UNCONFIRMED if this maps to "Route Editor" or is a new role (verify against Kinde dashboard before implementation)
 
 ## Phase 2 (later)
 - UserRoute: a user-assembled ordered set of Stages from one or more Routes

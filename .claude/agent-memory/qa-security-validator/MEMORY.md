@@ -1,2 +1,3 @@
-- [Pillyway domain model](project_domain.md) — authorization model and write-permission matrix for security validation
+- [Pillyway domain model](project_domain.md) — authorization model, role matrix, CORS finding, and write-permission matrix for security validation
 - [i18n / locale-switch feature patterns](project_i18n_patterns.md) — security risks, test stubs, and mocking conventions for the language-switch feature
+- [Camino creation feature (PILLY-CAM-001)](project_camino_creation.md) — critical security risks, test file locations, open questions for camino creation
