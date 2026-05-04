@@ -168,6 +168,15 @@ git checkout -b feature/<short-description>
 - Use **TanStack Query** for all server state and data fetching — no ad-hoc `fetch` calls outside of query functions
 - Use **Zustand** for client-side state (UI state, user preferences, cross-component state not tied to server data)
 
+### API Request Rules
+Follow this checklist whenever a component needs to call the backend:
+
+1. **Check first** — look for an existing hook in `apps/frontend/app/api/`. If one covers the endpoint, use it directly; do not duplicate.
+2. **Create a hook if missing** — add a file `apps/frontend/app/api/use-<resource>.ts`. Export the raw async fetch function and a named hook (`use<Resource>`) that wraps it with TanStack Query.
+3. **TanStack Query for every request type** — GET requests use `useQuery`; POST / PUT / PATCH / DELETE use `useMutation`. No bare `fetch` calls inside components.
+4. **Follow the Swagger contract** — align request/response shapes with the backend's OpenAPI definition (`GET /api/docs`). Never guess field names or types.
+5. **Auth token injection belongs in `app/api/`** — hooks that call authenticated endpoints must retrieve the Kinde token internally (`useKindeBrowserClient`). Components must never access `accessTokenEncoded` directly.
+
 ### Layout & Interaction
 - Every page scrolls by default — do not set `overflow: hidden` on page roots
 - No interactive elements (buttons, tappable areas) placed at the outermost horizontal edges — always apply safe horizontal padding

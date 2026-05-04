@@ -1,28 +1,10 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { buttonVariants } from '@/app/components/ui/button';
 import { useUserStore } from '@/store/user-store';
-
-interface CaminoSummary {
-  id: string;
-  name: string;
-  description: string | null;
-  verified: boolean;
-}
-
-async function fetchCaminos(): Promise<CaminoSummary[]> {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? '';
-  const response = await fetch(`${apiUrl}/caminos`);
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch caminos');
-  }
-
-  return response.json() as Promise<CaminoSummary[]>;
-}
+import { useCaminos } from '@/app/api/use-caminos';
 
 export function CaminoList() {
   const t = useTranslations('caminos');
@@ -32,10 +14,7 @@ export function CaminoList() {
     data: caminos,
     isLoading,
     isError,
-  } = useQuery({
-    queryKey: ['caminos'],
-    queryFn: fetchCaminos,
-  });
+  } = useCaminos();
 
   if (isLoading) {
     return (

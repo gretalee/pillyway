@@ -47,8 +47,12 @@ export class CaminosController {
   @ApiOperation({ summary: 'Create a new camino (requires pilgrim role)' })
   @ApiCreatedResponse({ description: 'Camino created successfully.' })
   @ApiUnauthorizedResponse({ description: 'Missing or invalid JWT.' })
-  @ApiForbiddenResponse({ description: 'JWT present but missing pilgrim role.' })
-  @ApiConflictResponse({ description: 'A camino with this name already exists.' })
+  @ApiForbiddenResponse({
+    description: 'JWT present but missing pilgrim role.',
+  })
+  @ApiConflictResponse({
+    description: 'A camino with this name already exists.',
+  })
   async create(
     @Body() dto: CreateCaminoDto,
     @Req() req: Request & { user: KindeJwtPayload },
