@@ -17,6 +17,7 @@ model Camino {
 
   caminoPointOrder CaminoPointOrder[]
 
+  @@unique([name])
   @@map("caminos")
 }
 

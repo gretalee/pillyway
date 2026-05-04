@@ -166,12 +166,21 @@ export class CaminosService {
         throw err;
       }
 
-      // Prisma unique-constraint violation (e.g. race condition on camino name index)
+      // Prisma unique-constraint violation — only map to camino-name conflict
+      // when the violated constraint is specifically the camino name index.
       if (
         err instanceof Prisma.PrismaClientKnownRequestError &&
         err.code === 'P2002'
       ) {
-        throw new ConflictException('A camino with this name already exists.');
+        const target = Array.isArray(err.meta?.target)
+          ? (err.meta.target as string[])
+          : [];
+        if (target.includes('name')) {
+          throw new ConflictException(
+            'A camino with this name already exists.',
+          );
+        }
+        // Another unique constraint was violated — rethrow for the generic handler below.
       }
 
       this.logger.error('Failed to create camino', err);
