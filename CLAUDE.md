@@ -161,12 +161,14 @@ git checkout -b feature/<short-description>
 - Tailwind CSS classes are always preferred over custom CSS
 - Use **shadcn/ui** for all base UI components; add new components with `npx shadcn@latest add <component>` run from `app/frontend/`
 - Use **CVA** (class-variance-authority) for custom component variants alongside shadcn
-- Supabase client is initialised in `lib/supabase.ts`
 - The `Providers` component wraps `QueryClientProvider` and is mounted in the root layout
 
 ### State Management
 - Use **TanStack Query** for all server state and data fetching — no ad-hoc `fetch` calls outside of query functions
 - Use **Zustand** for client-side state (UI state, user preferences, cross-component state not tied to server data)
+
+### Data Access Architecture
+The frontend **never contacts Supabase directly**. All data retrieval and mutation goes through the NestJS backend API. The `@supabase/supabase-js` package is not a frontend dependency; there are no Supabase env vars in the frontend. Any PR that adds a Supabase client, `NEXT_PUBLIC_SUPABASE_*` env vars, or direct PostgREST calls to the frontend must be rejected.
 
 ### API Request Rules
 Follow this checklist whenever a component needs to call the backend:
