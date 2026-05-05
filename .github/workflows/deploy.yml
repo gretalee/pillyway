@@ -26,8 +26,7 @@
 name: CD — Deploy
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
   # ---------------------------------------------------------------------------
@@ -78,6 +77,8 @@ jobs:
 
       - name: Install backend dependencies
         run: yarn --cwd apps/backend install --frozen-lockfile
+        env:
+          DATABASE_URL: ""
 
       - name: Run database migrations
         working-directory: apps/backend
