@@ -289,14 +289,16 @@ describe('CaminosService.create() — error mapping', () => {
     ).rejects.toBeInstanceOf(BadRequestException);
   });
 
-  // Prisma P2002 unique constraint violation → ConflictException
-  it('maps Prisma P2002 unique constraint error to ConflictException', async () => {
-    // Construct an error that matches the instanceof check in the service's catch block.
-    // Prisma.PrismaClientKnownRequestError is the canonical export from @prisma/client.
+  // Prisma P2002 on camino name index → ConflictException
+  it('maps Prisma P2002 on camino name index to ConflictException', async () => {
     const { Prisma } = await import('@prisma/client');
     const p2002Error = new Prisma.PrismaClientKnownRequestError(
-      'Unique constraint failed',
-      { code: 'P2002', clientVersion: '7.0.0' },
+      'Unique constraint failed on the fields: (`name`)',
+      {
+        code: 'P2002',
+        clientVersion: '7.0.0',
+        meta: { target: ['name'], modelName: 'Camino' },
+      },
     );
     const prismaMock = {
       $transaction: vi.fn().mockRejectedValue(p2002Error),
@@ -307,6 +309,28 @@ describe('CaminosService.create() — error mapping', () => {
     await expect(
       service.create(newPointDto, 'kinde-user-001'),
     ).rejects.toBeInstanceOf(ConflictException);
+  });
+
+  // Prisma P2002 on a non-name constraint → InternalServerErrorException (not a name conflict)
+  it('maps Prisma P2002 on non-name constraint to InternalServerErrorException', async () => {
+    const { Prisma } = await import('@prisma/client');
+    const p2002Error = new Prisma.PrismaClientKnownRequestError(
+      'Unique constraint failed on the fields: (`camino_id`, `position`)',
+      {
+        code: 'P2002',
+        clientVersion: '7.0.0',
+        meta: { target: ['camino_id', 'position'], modelName: 'CaminoPointOrder' },
+      },
+    );
+    const prismaMock = {
+      $transaction: vi.fn().mockRejectedValue(p2002Error),
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
+
+    await expect(
+      service.create(newPointDto, 'kinde-user-001'),
+    ).rejects.toBeInstanceOf(InternalServerErrorException);
   });
 
   // Unrecognised DB error → InternalServerErrorException

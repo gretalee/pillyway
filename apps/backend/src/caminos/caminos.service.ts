@@ -188,7 +188,7 @@ export class CaminosService {
             'A camino with this name already exists.',
           );
         }
-        throw new ConflictException('A camino with this name already exists.');
+        // Other P2002 (e.g. position or point name+country conflict) — fall through to InternalServerErrorException.
       }
 
       this.logger.error('Failed to create camino', err);
