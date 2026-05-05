@@ -74,6 +74,12 @@
     "spain": "Spanien",
     "sweden": "Schweden"
   },
+  "auth_error": {
+    "meta_title": "Anmeldung fehlgeschlagen | Pillyway",
+    "heading": "Anmeldesitzung abgelaufen",
+    "message": "Deine Anmeldesitzung ist abgelaufen oder nicht mehr gültig. Bitte versuche dich erneut anzumelden.",
+    "retry": "Erneut anmelden"
+  },
   "backoffice": {
     "title": "Backoffice | Pillyway",
     "description": "Administrationsbereich für Pillyway.",

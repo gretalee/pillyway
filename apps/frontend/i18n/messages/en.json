@@ -74,6 +74,12 @@
     "spain": "Spain",
     "sweden": "Sweden"
   },
+  "auth_error": {
+    "meta_title": "Login failed | Pillyway",
+    "heading": "Login session expired",
+    "message": "Your login session has expired or is no longer valid. Please try logging in again.",
+    "retry": "Log in again"
+  },
   "backoffice": {
     "title": "Backoffice | Pillyway",
     "description": "Administrative backoffice for Pillyway.",
