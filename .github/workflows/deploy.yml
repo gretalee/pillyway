@@ -79,7 +79,7 @@ jobs:
       - name: Install backend dependencies
         run: yarn --cwd apps/backend install --frozen-lockfile
         env:
-          DATABASE_URL: ""
+          DATABASE_URL: ''
 
       - name: Run database migrations
         working-directory: apps/backend
@@ -153,7 +153,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Copy docker-compose to server
-        uses: appleboy/scp-action@v0
+        uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.HETZNER_HOST }}
           username: ${{ secrets.HETZNER_USER }}
