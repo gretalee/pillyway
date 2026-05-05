@@ -150,6 +150,31 @@ git checkout -b feature/<short-description>
 - Use `@Exclude()` / `@Expose()` serialization — never expose sensitive fields raw
 - Constructor-based DI only — never instantiate services manually
 
+### Database (Prisma)
+
+Prisma 7 is the ORM. The schema lives at `apps/backend/prisma/schema.prisma`; the client is provided globally by `PrismaModule` / `PrismaService`.
+
+**Connection split (two URLs required):**
+| Variable | Purpose | Value |
+|---|---|---|
+| `DATABASE_URL` | Runtime queries via `PrismaClient` | Direct URL locally; pooler URL (Supavisor) on Supabase Cloud |
+| `DIRECT_URL` | `prisma migrate` commands | Always the direct connection; never a pooler |
+
+**When to run migrations:**
+
+| Situation | Command | Who runs it |
+|---|---|---|
+| Schema change during development | `yarn prisma:migrate:dev --name <description>` | Developer locally — creates a migration file and applies it to the local DB |
+| After pulling a branch with new migrations | `yarn prisma:migrate:deploy` | Developer locally, or CI/CD pipeline |
+| Production deploy (CI/CD) | `yarn prisma:migrate:deploy` | CI pipeline, before the app process starts |
+| Regenerate TypeScript types after schema edit | `yarn prisma:generate` | Automatically via `postinstall`; also run manually after editing the schema |
+
+**Rules:**
+- Schema changes → always go through `prisma migrate dev` (never hand-edit the database)
+- Custom SQL (expression indexes, RLS policies, stored procedures) → add manually to the generated migration file before committing
+- Never run `prisma migrate reset` in production — it drops the entire database
+- `prisma.config.ts` at the backend root controls the migration URL; do not add `url`/`directUrl` back to `schema.prisma`
+
 ## Frontend Conventions (Next.js)
 
 ### Code Style

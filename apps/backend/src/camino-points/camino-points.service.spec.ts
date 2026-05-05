@@ -2,7 +2,7 @@ import { InternalServerErrorException, Logger } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { SupabaseService } from '../supabase/supabase.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { CaminoPointsService } from './camino-points.service';
 
 // Suppress NestJS Logger output for error-path tests — the errors are expected.
@@ -14,41 +14,17 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-// ─── Proxy stub ──────────────────────────────────────────────────────────────
+// ─── Helper ───────────────────────────────────────────────────────────────────
 
-/**
- * Returns a Proxy object that accepts any chain of method calls and,
- * when the resulting promise is awaited, resolves with `result`.
- *
- * This avoids enumerating every Supabase query-builder method by name.
- */
-function makeQueryStub(result: { data: unknown; error: unknown }): object {
-  function makeProxy(): object {
-    return new Proxy(
-      {},
-      {
-        get(_target, prop) {
-          if (prop === 'then') {
-            return (
-              resolve: (v: unknown) => void,
-              _reject: (r?: unknown) => void,
-            ) => resolve(result);
-          }
-          return (..._args: unknown[]) => makeProxy();
-        },
-      },
-    );
-  }
-  return makeProxy();
-}
-
-async function buildModule(clientStub: object): Promise<CaminoPointsService> {
+async function buildModule(
+  findManyMock: ReturnType<typeof vi.fn>,
+): Promise<CaminoPointsService> {
   const module: TestingModule = await Test.createTestingModule({
     providers: [
       CaminoPointsService,
       {
-        provide: SupabaseService,
-        useValue: { client: clientStub },
+        provide: PrismaService,
+        useValue: { caminoPoint: { findMany: findManyMock } },
       },
     ],
   })
@@ -62,29 +38,29 @@ async function buildModule(clientStub: object): Promise<CaminoPointsService> {
 describe('CaminoPointsService.search()', () => {
   // CAM-BE-18/19: short-circuit — must not hit DB when both params absent
   it('CAM-BE-18: returns [] immediately when both name and country are absent', async () => {
-    const fromMock = vi.fn();
-    const service = await buildModule({ from: fromMock });
+    const findManyMock = vi.fn();
+    const service = await buildModule(findManyMock);
 
     const result = await service.search(undefined, undefined);
 
     expect(result).toEqual([]);
-    expect(fromMock).not.toHaveBeenCalled();
+    expect(findManyMock).not.toHaveBeenCalled();
   });
 
   it('CAM-BE-19: returns [] immediately when name is empty string and country absent', async () => {
-    const fromMock = vi.fn();
-    const service = await buildModule({ from: fromMock });
+    const findManyMock = vi.fn();
+    const service = await buildModule(findManyMock);
 
     const result = await service.search('', undefined);
 
     expect(result).toEqual([]);
-    expect(fromMock).not.toHaveBeenCalled();
+    expect(findManyMock).not.toHaveBeenCalled();
   });
 
   // CAM-BE-17: no matches → empty array (not null, not undefined)
   it('CAM-BE-17: returns empty array when search finds no results', async () => {
-    const stub = makeQueryStub({ data: [], error: null });
-    const service = await buildModule({ from: () => stub });
+    const findManyMock = vi.fn().mockResolvedValue([]);
+    const service = await buildModule(findManyMock);
 
     const result = await service.search('xyz', 'Spain');
 
@@ -113,8 +89,8 @@ describe('CaminoPointsService.search()', () => {
         description: null,
       },
     ];
-    const stub = makeQueryStub({ data: records, error: null });
-    const service = await buildModule({ from: () => stub });
+    const findManyMock = vi.fn().mockResolvedValue(records);
+    const service = await buildModule(findManyMock);
 
     const result = await service.search('santi', 'Spain');
 
@@ -130,8 +106,8 @@ describe('CaminoPointsService.search()', () => {
       country: 'Spain',
       description: null,
     }));
-    const stub = makeQueryStub({ data: fiveRecords, error: null });
-    const service = await buildModule({ from: () => stub });
+    const findManyMock = vi.fn().mockResolvedValue(fiveRecords);
+    const service = await buildModule(findManyMock);
 
     const result = await service.search('point', 'Spain');
 
@@ -143,8 +119,8 @@ describe('CaminoPointsService.search()', () => {
     const records = [
       { id: 'id-1', name: 'Saint-Jean', country: 'France', description: null },
     ];
-    const stub = makeQueryStub({ data: records, error: null });
-    const service = await buildModule({ from: () => stub });
+    const findManyMock = vi.fn().mockResolvedValue(records);
+    const service = await buildModule(findManyMock);
 
     const result = await service.search('saint', undefined);
 
@@ -156,8 +132,8 @@ describe('CaminoPointsService.search()', () => {
     const records = [
       { id: 'id-1', name: 'Pamplona', country: 'Spain', description: null },
     ];
-    const stub = makeQueryStub({ data: records, error: null });
-    const service = await buildModule({ from: () => stub });
+    const findManyMock = vi.fn().mockResolvedValue(records);
+    const service = await buildModule(findManyMock);
 
     const result = await service.search(undefined, 'Spain');
 
@@ -166,24 +142,11 @@ describe('CaminoPointsService.search()', () => {
 
   // DB error → InternalServerErrorException
   it('throws InternalServerErrorException when DB query fails', async () => {
-    const stub = makeQueryStub({
-      data: null,
-      error: { message: 'connection timeout' },
-    });
-    const service = await buildModule({ from: () => stub });
+    const findManyMock = vi.fn().mockRejectedValue(new Error('connection timeout'));
+    const service = await buildModule(findManyMock);
 
     await expect(service.search('saint', 'France')).rejects.toBeInstanceOf(
       InternalServerErrorException,
     );
-  });
-
-  // null data with no error → empty array (defensive null-safety)
-  it('returns [] when DB returns null data without an error', async () => {
-    const stub = makeQueryStub({ data: null, error: null });
-    const service = await buildModule({ from: () => stub });
-
-    const result = await service.search('any', 'Spain');
-
-    expect(result).toEqual([]);
   });
 });

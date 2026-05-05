@@ -33,7 +33,9 @@
       "Bash(git pull *)",
       "WebFetch(domain:next-intl.dev)",
       "WebFetch(domain:www.npmjs.com)",
-      "Bash(yarn test:frontend *)"
+      "Bash(yarn test:frontend *)",
+      "WebFetch(domain:www.prisma.io)",
+      "WebFetch(domain:pris.ly)"
     ]
   }
 }

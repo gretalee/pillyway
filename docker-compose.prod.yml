@@ -1,0 +1,27 @@
+# All variables are injected by the GitHub Actions deploy job on every deployment.
+# No manual env file setup is required on the server.
+
+services:
+  backend:
+    image: ${IMAGE_BACKEND}
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3033:3033"
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - PORT=3033
+      - FRONTEND_URL=${FRONTEND_URL}
+      - KINDE_ISSUER_URL=${KINDE_ISSUER_URL}
+
+  frontend:
+    image: ${IMAGE_FRONTEND}
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      - KINDE_CLIENT_ID=${KINDE_CLIENT_ID}
+      - KINDE_CLIENT_SECRET=${KINDE_CLIENT_SECRET}
+      - KINDE_ISSUER_URL=${KINDE_ISSUER_URL}
+      - KINDE_SITE_URL=${KINDE_SITE_URL}
+      - KINDE_POST_LOGOUT_REDIRECT_URL=${KINDE_POST_LOGOUT_REDIRECT_URL}
+      - KINDE_POST_LOGIN_REDIRECT_URL=${KINDE_POST_LOGIN_REDIRECT_URL}
