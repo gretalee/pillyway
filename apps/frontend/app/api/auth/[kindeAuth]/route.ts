@@ -1,15 +1,14 @@
 import { handleAuth } from '@kinde-oss/kinde-auth-nextjs/server';
 import { NextRequest, NextResponse } from 'next/server';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const kindeHandler = handleAuth() as (req: NextRequest, ctx: any) => Promise<Response>;
+const kindeHandler = handleAuth();
 
 export async function GET(
   request: NextRequest,
   context: { params: { kindeAuth: string } },
 ) {
   try {
-    const response = await kindeHandler(request, context);
+    const response = (await kindeHandler(request, context)) as Response;
     // 3xx redirects are successful auth steps — pass them through unchanged.
     // 4xx/5xx (e.g. "State not found" after an expired session) get a friendly redirect.
     if (response.status >= 400) {
