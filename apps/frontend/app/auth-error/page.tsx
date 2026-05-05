@@ -1,5 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
+import { buttonVariants } from '../components/ui/button';
+import { cn } from '@/lib/utils';
 
 export async function generateMetadata() {
   const t = await getTranslations('auth_error');
@@ -15,7 +17,7 @@ export default async function AuthErrorPage() {
       <p className="mt-3 max-w-sm text-muted-foreground">{t('message')}</p>
       <Link
         href="/api/auth/login"
-        className="mt-6 inline-flex items-center rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+        className={cn(buttonVariants(), 'mt-6')}>
         {t('retry')}
       </Link>
     </main>
