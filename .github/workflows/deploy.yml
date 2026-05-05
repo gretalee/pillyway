@@ -63,6 +63,7 @@ jobs:
     name: Prisma Migrate Deploy
     runs-on: ubuntu-latest
     needs: test
+    environment: PROD
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -95,6 +96,7 @@ jobs:
     name: Build & Push Docker Images
     runs-on: ubuntu-latest
     needs: test
+    environment: PROD
     permissions:
       contents: read
       packages: write
@@ -129,6 +131,12 @@ jobs:
           tags: ghcr.io/${{ github.repository_owner }}/pillyway-frontend:latest
           build-args: |
             NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
+            KINDE_ISSUER_URL=${{ secrets.KINDE_ISSUER_URL }}
+            KINDE_CLIENT_ID=${{ secrets.KINDE_CLIENT_ID }}
+            KINDE_CLIENT_SECRET=${{ secrets.KINDE_CLIENT_SECRET }}
+            KINDE_SITE_URL=${{ secrets.KINDE_SITE_URL }}
+            KINDE_POST_LOGOUT_REDIRECT_URL=${{ secrets.KINDE_POST_LOGOUT_REDIRECT_URL }}
+            KINDE_POST_LOGIN_REDIRECT_URL=${{ secrets.KINDE_POST_LOGIN_REDIRECT_URL }}
           cache-from: type=gha,scope=frontend
           cache-to: type=gha,mode=max,scope=frontend
 
@@ -139,6 +147,7 @@ jobs:
     name: Deploy to Hetzner
     runs-on: ubuntu-latest
     needs: [migrate, build]
+    environment: PROD
     steps:
       - name: Checkout
         uses: actions/checkout@v6
