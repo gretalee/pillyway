@@ -6,7 +6,7 @@ const kindeHandler = handleAuth() as (req: NextRequest, ctx: any) => Promise<Res
 
 export async function GET(
   request: NextRequest,
-  context: { params: Promise<{ kindeAuth: string }> },
+  context: { params: { kindeAuth: string } },
 ) {
   try {
     const response = await kindeHandler(request, context);
