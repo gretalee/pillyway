@@ -9,6 +9,7 @@ import {
   MinLength,
   registerDecorator,
   ValidationArguments,
+  ValidateIf,
   ValidateNested,
   ValidatorConstraint,
   ValidatorConstraintInterface,
@@ -72,7 +73,9 @@ export class UpdateCaminoDto {
   /**
    * New description for the camino. Pass `null` explicitly to clear an
    * existing description. Omitting the field leaves the description unchanged.
+   * @IsString is skipped when the value is explicitly null so that clearing works.
    */
+  @ValidateIf((o: UpdateCaminoDto) => o.description !== null)
   @IsString()
   @MaxLength(2000)
   @IsOptional()

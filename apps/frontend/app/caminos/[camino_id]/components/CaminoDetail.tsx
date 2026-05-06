@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { Pencil } from 'lucide-react';
@@ -34,18 +34,21 @@ interface InlineFieldProps {
 
 function InlineField({ value, onSave, onCancel, as: Tag, ariaLabel }: InlineFieldProps) {
   const [draft, setDraft] = useState(value);
+  const cancelledRef = useRef(false);
 
-  function handleKeyDown(e: React.KeyboardEvent) {
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Escape') {
+      cancelledRef.current = true;
       onCancel();
     }
     if (e.key === 'Enter' && Tag === 'input') {
       e.preventDefault();
       onSave(draft);
     }
-  }
+  }, [Tag, draft, onCancel, onSave]);
 
   function handleBlur() {
+    if (cancelledRef.current) return;
     onSave(draft);
   }
 

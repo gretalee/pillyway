@@ -38,7 +38,9 @@ export function useUpdateCamino() {
   const { accessTokenEncoded } = useKindeBrowserClient();
 
   return useMutation({
-    mutationFn: ({ id, payload }: { id: string; payload: UpdateCaminoPayload }) =>
-      updateCamino(id, payload, accessTokenEncoded ?? ''),
+    mutationFn: ({ id, payload }: { id: string; payload: UpdateCaminoPayload }) => {
+      if (!accessTokenEncoded) throw new Error('Not authenticated');
+      return updateCamino(id, payload, accessTokenEncoded);
+    },
   });
 }

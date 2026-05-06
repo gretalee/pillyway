@@ -39,6 +39,7 @@
     "delete_dialog_body": "Möchtest du \"{name}\" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
     "delete_dialog_cancel": "Abbrechen",
     "delete_dialog_confirm": "Löschen",
+    "delete_dialog_deleting": "Wird gelöscht…",
     "delete_dialog_error": "Der Camino konnte nicht gelöscht werden. Bitte versuche es erneut.",
     "edit_name_aria": "Caminonamen bearbeiten",
     "edit_description_aria": "Caminobeschreibung bearbeiten",

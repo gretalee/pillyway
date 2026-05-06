@@ -22,6 +22,9 @@ export function useDeleteCamino() {
   const { accessTokenEncoded } = useKindeBrowserClient();
 
   return useMutation({
-    mutationFn: (id: string) => deleteCamino(id, accessTokenEncoded ?? ''),
+    mutationFn: (id: string) => {
+      if (!accessTokenEncoded) throw new Error('Not authenticated');
+      return deleteCamino(id, accessTokenEncoded);
+    },
   });
 }

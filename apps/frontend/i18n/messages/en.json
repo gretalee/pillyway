@@ -39,6 +39,7 @@
     "delete_dialog_body": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
     "delete_dialog_cancel": "Cancel",
     "delete_dialog_confirm": "Delete",
+    "delete_dialog_deleting": "Deleting…",
     "delete_dialog_error": "Failed to delete the camino. Please try again.",
     "edit_name_aria": "Edit camino name",
     "edit_description_aria": "Edit camino description",

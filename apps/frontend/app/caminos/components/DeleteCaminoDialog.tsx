@@ -78,7 +78,7 @@ export function DeleteCaminoDialog({ camino, open, onClose }: DeleteCaminoDialog
             {mutation.isPending ? (
               <>
                 <Loader2 className="mr-2 size-4 animate-spin" aria-hidden="true" />
-                {t('delete_dialog_cancel')}
+                {t('delete_dialog_deleting')}
               </>
             ) : (
               t('delete_dialog_confirm')

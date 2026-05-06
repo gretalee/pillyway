@@ -326,7 +326,20 @@ export class CaminosService {
           // 4a. Delete existing waypoint orders for this camino
           await tx.caminoPointOrder.deleteMany({ where: { caminoId: id } });
 
-          // 4b. Detect duplicate new-point definitions in the payload
+          // 4b. Detect duplicate references to the same existing caminoPointId
+          const seenIds = new Set<string>();
+          for (const item of dto.caminoPoints!) {
+            if (item.caminoPointId) {
+              if (seenIds.has(item.caminoPointId)) {
+                throw new BadRequestException(
+                  'The request contains duplicate caminoPointId references.',
+                );
+              }
+              seenIds.add(item.caminoPointId);
+            }
+          }
+
+          // 4c. Detect duplicate new-point definitions in the payload
           const newPointDefs = dto.caminoPoints!.filter(
             (p) => !p.caminoPointId,
           );
@@ -341,7 +354,7 @@ export class CaminosService {
             seen.add(key);
           }
 
-          // 4c. Re-insert using the same create-or-link logic as create()
+          // 4d. Re-insert using the same create-or-link logic as create()
           for (let i = 0; i < dto.caminoPoints!.length; i++) {
             const item = dto.caminoPoints![i];
             let pointId: string;
