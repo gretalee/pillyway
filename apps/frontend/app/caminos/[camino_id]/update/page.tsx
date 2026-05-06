@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import { UpdateCaminoForm } from '../components/UpdateCaminoForm';
 
 interface Props {
-  params: { camino_id: string };
+  params: Promise<{ camino_id: string }>;
 }
 
 export async function generateMetadata() {
@@ -20,7 +20,7 @@ export async function generateMetadata() {
 }
 
 export default async function UpdateCaminoPage({ params }: Props) {
-  const { camino_id } = params;
+  const { camino_id } = await params;
   const { isAuthenticated } = getKindeServerSession();
   const authenticated = await isAuthenticated();
 
