@@ -31,7 +31,18 @@
     "meta_description": "Discover and explore pilgrimage routes from around the world.",
     "og_image_alt": "Pillyway Caminos",
     "error_loading": "Failed to load caminos. Please try again.",
-    "verified": "Verified"
+    "verified": "Verified",
+    "actions_menu_aria": "Actions for {name}",
+    "menu_change_data": "Change camino data",
+    "menu_delete": "Delete camino",
+    "delete_dialog_title": "Delete camino",
+    "delete_dialog_body": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+    "delete_dialog_cancel": "Cancel",
+    "delete_dialog_confirm": "Delete",
+    "delete_dialog_error": "Failed to delete the camino. Please try again.",
+    "edit_name_aria": "Edit camino name",
+    "edit_description_aria": "Edit camino description",
+    "no_description": "No description provided."
   },
   "caminos_new": {
     "title": "Create New Camino",
@@ -73,6 +84,25 @@
     "portugal": "Portugal",
     "spain": "Spain",
     "sweden": "Sweden"
+  },
+  "camino_detail": {
+    "meta_title": "Camino Detail | Pillyway",
+    "meta_description": "View the full details of this pilgrimage route.",
+    "waypoints_heading": "Waypoints",
+    "edit_waypoints": "Edit waypoints",
+    "error_loading": "Failed to load camino. Please try again.",
+    "inline_save_error": "Failed to save changes. Reverted to previous value."
+  },
+  "caminos_update": {
+    "title": "Update Camino",
+    "meta_title": "Update Camino | Pillyway",
+    "meta_description": "Edit this pilgrimage route.",
+    "submit": "Save changes",
+    "submitting": "Saving…",
+    "error_generic": "Failed to update camino. Please try again.",
+    "error_conflict": "A camino with this name already exists. Please choose a different name.",
+    "error_forbidden": "You are not authorized to edit this camino.",
+    "error_loading": "Failed to load camino data for editing."
   },
   "backoffice": {
     "title": "Backoffice | Pillyway",

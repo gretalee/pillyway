@@ -9,6 +9,7 @@ export interface CaminoSummary {
   name: string;
   description: string | null;
   verified: boolean;
+  createdBy: string;
 }
 
 export async function fetchCaminos(): Promise<CaminoSummary[]> {
