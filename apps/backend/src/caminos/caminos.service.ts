@@ -305,30 +305,33 @@ export class CaminosService {
     }
 
     try {
-      // 3. Name-conflict check (only when name is being changed)
-      if (dto.name !== undefined) {
-        const conflict = await this.prisma.camino.findFirst({
-          where: {
-            name: { equals: dto.name, mode: 'insensitive' },
-            id: { not: id },
-          },
-        });
-        if (conflict) {
-          throw new ConflictException(
-            'A camino with this name already exists.',
-          );
+      // 3–5. Run the name check, waypoint replacement, and scalar camino update in a
+      //      single transaction so the operation is fully atomic. If any step fails,
+      //      all changes are rolled back — including waypoint deletions.
+      await this.prisma.$transaction(async (tx) => {
+        // 3. Name-conflict check (only when name is being changed)
+        if (dto.name !== undefined) {
+          const conflict = await tx.camino.findFirst({
+            where: {
+              name: { equals: dto.name, mode: 'insensitive' },
+              id: { not: id },
+            },
+          });
+          if (conflict) {
+            throw new ConflictException(
+              'A camino with this name already exists.',
+            );
+          }
         }
-      }
 
-      // 4. Waypoint replacement inside a transaction (only when caminoPoints is supplied)
-      if (dto.caminoPoints !== undefined) {
-        await this.prisma.$transaction(async (tx) => {
+        // 4. Waypoint replacement (only when caminoPoints is supplied)
+        if (dto.caminoPoints !== undefined) {
           // 4a. Delete existing waypoint orders for this camino
           await tx.caminoPointOrder.deleteMany({ where: { caminoId: id } });
 
           // 4b. Detect duplicate references to the same existing caminoPointId
           const seenIds = new Set<string>();
-          for (const item of dto.caminoPoints!) {
+          for (const item of dto.caminoPoints) {
             if (item.caminoPointId) {
               if (seenIds.has(item.caminoPointId)) {
                 throw new BadRequestException(
@@ -340,9 +343,7 @@ export class CaminosService {
           }
 
           // 4c. Detect duplicate new-point definitions in the payload
-          const newPointDefs = dto.caminoPoints!.filter(
-            (p) => !p.caminoPointId,
-          );
+          const newPointDefs = dto.caminoPoints.filter((p) => !p.caminoPointId);
           const seen = new Set<string>();
           for (const point of newPointDefs) {
             const key = `${point.name!.toLowerCase()}|${point.country!.toLowerCase()}`;
@@ -355,8 +356,8 @@ export class CaminosService {
           }
 
           // 4d. Re-insert using the same create-or-link logic as create()
-          for (let i = 0; i < dto.caminoPoints!.length; i++) {
-            const item = dto.caminoPoints![i];
+          for (let i = 0; i < dto.caminoPoints.length; i++) {
+            const item = dto.caminoPoints[i];
             let pointId: string;
 
             if (item.caminoPointId) {
@@ -391,19 +392,19 @@ export class CaminosService {
               data: { caminoId: id, caminoPointId: pointId, position: i + 1 },
             });
           }
-        });
-      }
+        }
 
-      // 5. Update scalar fields on the camino row.
-      //    updatedAt is set explicitly — the schema does not use @updatedAt.
-      const updateData: Prisma.CaminoUpdateInput = { updatedAt: new Date() };
-      if (dto.name !== undefined) {
-        updateData.name = dto.name;
-      }
-      if (dto.description !== undefined) {
-        updateData.description = dto.description;
-      }
-      await this.prisma.camino.update({ where: { id }, data: updateData });
+        // 5. Update scalar fields on the camino row.
+        //    updatedAt is set explicitly — the schema does not use @updatedAt.
+        const updateData: Prisma.CaminoUpdateInput = { updatedAt: new Date() };
+        if (dto.name !== undefined) {
+          updateData.name = dto.name;
+        }
+        if (dto.description !== undefined) {
+          updateData.description = dto.description;
+        }
+        await tx.camino.update({ where: { id }, data: updateData });
+      });
 
       // 6. Return the fresh full representation
       return this.findById(id);

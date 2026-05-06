@@ -162,7 +162,7 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
           {t('error_loading')}
         </p>
         <Link href="/caminos" className="text-sm underline underline-offset-4 hover:text-foreground">
-          ← Back to caminos
+          {t('back_to_caminos')}
         </Link>
       </div>
     );

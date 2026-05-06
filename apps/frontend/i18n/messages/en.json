@@ -103,7 +103,8 @@
     "error_generic": "Failed to update camino. Please try again.",
     "error_conflict": "A camino with this name already exists. Please choose a different name.",
     "error_forbidden": "You are not authorized to edit this camino.",
-    "error_loading": "Failed to load camino data for editing."
+    "error_loading": "Failed to load camino data for editing.",
+    "back_to_caminos": "← Back to caminos"
   },
   "backoffice": {
     "title": "Backoffice | Pillyway",

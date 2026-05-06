@@ -113,22 +113,35 @@ function CaminoDetailContent({ camino, caminoId }: CaminoDetailContentProps) {
     const trimmed = draft.trim();
     const current = field === 'name' ? camino.name : (camino.description ?? '');
 
+    // Name cannot be cleared — keep editing with an error rather than sending null
+    if (field === 'name' && trimmed === '') {
+      setInlineError(t('inline_save_error'));
+      return;
+    }
+
     if (trimmed === current) {
       setEditingField(null);
       return;
     }
 
+    // description can be explicitly cleared to null; name is always a string
+    const value = field === 'description' ? (trimmed || null) : trimmed;
+
     // Optimistic update
     queryClient.setQueryData(['camino', caminoId], (old: CaminoDetailFull | undefined) =>
-      old ? { ...old, [field]: trimmed || null } : old,
+      old ? { ...old, [field]: value } : old,
     );
     setEditingField(null);
 
     mutation.mutate(
-      { id: caminoId, payload: { [field]: trimmed || null } },
+      { id: caminoId, payload: { [field]: value } },
       {
+        onSuccess: (updated) => {
+          // Update cache with authoritative server response (includes correct updatedAt etc.)
+          queryClient.setQueryData(['camino', caminoId], updated);
+        },
         onError: () => {
-          // Revert
+          // Revert to pre-edit value
           queryClient.setQueryData(['camino', caminoId], (old: CaminoDetailFull | undefined) =>
             old ? { ...old, [field]: prevValueRef.current || null } : old,
           );

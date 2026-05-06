@@ -36,10 +36,13 @@
       "Bash(yarn test:frontend *)",
       "WebFetch(domain:www.prisma.io)",
       "WebFetch(domain:pris.ly)",
-      "Bash(mkdir -p /Users/hendrike/Documents/projects/PillyWay/DEV/pillyway/apps/frontend/app/caminos/\\\\[camino_id\\\\]/components)",
-      "Bash(mkdir -p /Users/hendrike/Documents/projects/PillyWay/DEV/pillyway/apps/frontend/app/caminos/\\\\[camino_id\\\\]/update)",
       "Bash(yarn --cwd apps/backend test)",
-      "Bash(yarn --cwd apps/frontend tsc --noEmit)"
+      "Bash(yarn --cwd apps/frontend tsc --noEmit)",
+      "Bash(gh api *)",
+      "Bash(python3 -c ' *)",
+      "Bash(npx prettier *)",
+      "Bash(yarn --cwd apps/backend build)",
+      "Bash(git add *)"
     ]
   }
 }

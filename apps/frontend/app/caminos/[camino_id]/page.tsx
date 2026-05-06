@@ -2,7 +2,7 @@ import { getTranslations } from 'next-intl/server';
 import { CaminoDetail } from './components/CaminoDetail';
 
 interface Props {
-  params: Promise<{ camino_id: string }>;
+  params: { camino_id: string };
 }
 
 export async function generateMetadata() {
@@ -18,7 +18,7 @@ export async function generateMetadata() {
 }
 
 export default async function CaminoDetailPage({ params }: Props) {
-  const { camino_id } = await params;
+  const { camino_id } = params;
   return (
     <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-16 sm:px-6 lg:px-8">
       <CaminoDetail caminoId={camino_id} />

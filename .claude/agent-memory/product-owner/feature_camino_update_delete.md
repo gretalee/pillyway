@@ -13,8 +13,8 @@ Ticket PILLY-CAM-002 defines the view, update, and delete flows for caminos. See
 ## New API endpoints
 
 - `GET /api/caminos/:id` — public; returns `CaminoDetailFull` with ordered caminoPoints (position is 1-based); 404 on missing; 400 via ParseUUIDPipe on non-UUID.
-- `PATCH /api/caminos/:id` — protected (pilgrim); partial update; all fields optional but at least one required; if caminoPoints is present, replaces entire waypoint list atomically (delete-then-reinsert in one transaction); 409 on name conflict; 404 on missing.
-- `DELETE /api/caminos/:id` — protected (pilgrim); 204 No Content; DB cascade on `camino_point_order` handles join rows; `camino_points` global records are NOT deleted.
+- `PATCH /api/caminos/:id` — protected (pilgrim **or camino owner**); partial update; all fields optional but at least one required; if caminoPoints is present, replaces entire waypoint list atomically (name check + delete-then-reinsert + scalar update in one transaction); 409 on name conflict; 404 on missing; 403 if neither pilgrim nor owner.
+- `DELETE /api/caminos/:id` — protected (pilgrim **or camino owner**); 204 No Content; DB cascade on `camino_point_order` handles join rows; `camino_points` global records are NOT deleted; 403 if neither pilgrim nor owner.
 
 ## Delete semantics (resolved)
 
@@ -26,7 +26,7 @@ When `caminoPoints` is included in a PATCH payload, the backend deletes all exis
 
 ## Edit authorization model (resolved for V1)
 
-Any pilgrim can edit or delete any camino — there is no author-ownership check in V1. Restricting by `created_by` is explicitly out of scope.
+PATCH and DELETE are permitted for **pilgrims** (any camino) **or the camino's owner** (the authenticated user whose Kinde `sub` matches `camino.createdBy`). The check is done at the service layer — there is no `@Roles('pilgrim')` guard on these routes. A non-pilgrim who owns a camino can edit and delete only their own caminos.
 
 ## Inline edit UX (resolved)
 

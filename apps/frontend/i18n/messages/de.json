@@ -103,7 +103,8 @@
     "error_generic": "Camino konnte nicht aktualisiert werden. Bitte versuche es erneut.",
     "error_conflict": "Ein Camino mit diesem Namen existiert bereits. Bitte wähle einen anderen Namen.",
     "error_forbidden": "Du bist nicht berechtigt, diesen Camino zu bearbeiten.",
-    "error_loading": "Camino-Daten konnten nicht zum Bearbeiten geladen werden."
+    "error_loading": "Camino-Daten konnten nicht zum Bearbeiten geladen werden.",
+    "back_to_caminos": "← Zurück zu Caminos"
   },
   "backoffice": {
     "title": "Backoffice | Pillyway",
