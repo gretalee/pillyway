@@ -14,15 +14,19 @@ Pillyway is a pilgrimage route planning app. CLAUDE.md documents three roles (Gu
 3. Role assignment cannot be self-elevated by the user
 4. `@UseGuards()` order is always `JwtAuthGuard` first, `RolesGuard` second — reversed order silently bypasses auth
 
-## Write Permission Matrix (updated for PILLY-CAM-001)
-| Action | Guest | Reviewer | Route Editor | Pilgrim |
-|---|---|---|---|---|
-| Read routes / stages / accommodations | ✓ | ✓ | ✓ | ✓ |
-| Create / edit review | ✗ | ✓ | ✓ | ? |
-| Create / edit route, stage, accommodation | ✗ | ✗ | ✓ | ✗ |
-| Create camino | ✗ | ✗ | ✗ | ✓ |
+## Write Permission Matrix (updated for PILLY-CAM-002)
+| Action | Guest | Reviewer | Route Editor | Pilgrim | Authenticated Owner (non-pilgrim) |
+|---|---|---|---|---|---|
+| Read routes / stages / accommodations | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Create / edit review | ✗ | ✓ | ✓ | ? | ? |
+| Create / edit route, stage, accommodation | ✗ | ✗ | ✓ | ✗ | ✗ |
+| Create camino | ✗ | ✗ | ✗ | ✓ | ✗ |
+| Update/delete own camino | ✗ | ✗ | ✗ | ✓ (any) | ✓ (own only) |
+
+Note: PATCH/DELETE do not use RolesGuard. Authorization is enforced in-service via `isPilgrim || isOwner`.
 
 ## Known security posture observations (backend)
-- `app.enableCors()` called without origin allowlist in `main.ts` — pre-existing High severity finding; must be remediated before camino feature ships
+- `app.enableCors()` — RESOLVED in PILLY-CAM-002: now reads `FRONTEND_URL` from ConfigService, scopes origin to that value. Previous open-CORS finding is closed.
 - `ValidationPipe` with `whitelist: true, forbidNonWhitelisted: true` is active globally — mass-assignment protection is in place provided DTOs are correctly annotated
-- `SupabaseService` uses service-role key — all DB access bypasses RLS; authorization must be enforced in application code, not DB policies
+- Prisma is the ORM (not Supabase JS SDK); authorization must be enforced in application code since no RLS policies are relied upon
+- `UpdateCaminoDto.description` is typed `string | null` but decorated with `@IsString()` — sending `null` triggers a class-validator failure (400) instead of clearing the field. Active bug as of PILLY-CAM-002.
