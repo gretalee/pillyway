@@ -417,15 +417,28 @@ describe('CaminosService.findById()', () => {
 // ─── CaminosService.update() ─────────────────────────────────────────────────
 
 describe('CaminosService.update()', () => {
-  function makeUpdatePrismaMock(overrides: Record<string, unknown> = {}) {
-    return {
-      camino: {
-        findUnique: vi.fn().mockResolvedValue(caminoWithOrder),
-        findFirst: vi.fn().mockResolvedValue(null),
-        update: vi.fn().mockResolvedValue(baseCamino),
-        ...((overrides.camino as object | undefined) ?? {}),
+  function makeUpdatePrismaMock() {
+    const caminoMock = {
+      findUnique: vi.fn().mockResolvedValue(caminoWithOrder),
+      findFirst: vi.fn().mockResolvedValue(null),
+      update: vi.fn().mockResolvedValue(baseCamino),
+    };
+
+    const tx = {
+      camino: caminoMock,
+      caminoPointOrder: {
+        deleteMany: vi.fn().mockResolvedValue({ count: 0 }),
+        create: vi.fn().mockResolvedValue({}),
       },
-      $transaction: vi.fn().mockResolvedValue(undefined),
+      caminoPoint: {
+        findUnique: vi.fn().mockResolvedValue(null),
+        upsert: vi.fn().mockResolvedValue({}),
+      },
+    };
+
+    return {
+      camino: caminoMock,
+      $transaction: vi.fn().mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
     };
   }
 
