@@ -11,7 +11,7 @@
 
 "@types/node@^25.6.0":
   version "25.6.0"
-  resolved "https://registry.npmjs.org/@types/node/-/node-25.6.0.tgz"
+  resolved "https://registry.npmjs.org/@types/node/-/node-25.6.0.tgz#4e09bad9b469871f2d0f68140198cbd714f4edca"
   integrity sha512-+qIYRKdNYJwY3vRCZMdJbPLJAtGjQBudzZzdzwQYkEPQd+PJGixUL5QfvCLDaULoLv+RhT3LDkwEfKaAkgSmNQ==
   dependencies:
     undici-types "~7.19.0"

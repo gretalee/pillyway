@@ -12,23 +12,21 @@
  *
  * Auth strategy
  * -------------
- * Authenticated tests use storageState files written by auth.setup.ts.
- * When the auth files are absent (credentials not configured) the tests skip
- * themselves with a clear message using test.skip.
+ * Authenticated tests call loginAs() at the start of each test (via
+ * beforeEach or beforeAll). Tests skip themselves when the required
+ * environment variables are absent.
  *
- * Environment variables consumed indirectly (set when running auth.setup.ts):
- *   E2E_PILGRIM_EMAIL / E2E_PILGRIM_PASSWORD
- *   E2E_OWNER_EMAIL   / E2E_OWNER_PASSWORD
+ * Environment variables:
+ *   E2E_PILGRIM_EMAIL / E2E_PILGRIM_PASSWORD — test account with the pilgrim role
+ *   E2E_OWNER_EMAIL   / E2E_OWNER_PASSWORD   — test account without pilgrim role,
+ *                                              owning at least one seeded camino
  *
  * Non-auth environment variable:
- *   NEXT_PUBLIC_API_URL  — backend API base URL (default: http://localhost:3033/api)
+ *   NEXT_PUBLIC_API_URL — backend API base URL (default: http://localhost:3033/api)
  */
 
 import { expect, test } from '@playwright/test';
-import fs from 'fs';
-import path from 'path';
-
-import { PILGRIM_AUTH_FILE, OWNER_AUTH_FILE } from '../playwright.config';
+import { loginAs } from './helpers';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3033/api';
 
@@ -70,21 +68,6 @@ async function createCaminoViaForm(
   return segments[segments.length - 1];
 }
 
-// ─── Guard: resolve storageState without crashing when file is absent ────────
-// Playwright crashes at context-creation time if storageState points to a
-// missing file. When absent we fall back to an empty state object so the
-// describe block parses correctly; the beforeEach hook then skips the test.
-
-type StorageStateValue = string | { cookies: never[]; origins: never[] };
-
-function resolveStorageState(filePath: string): StorageStateValue {
-  return fs.existsSync(filePath) ? filePath : { cookies: [], origins: [] };
-}
-
-function authFileExists(filePath: string): boolean {
-  return fs.existsSync(filePath);
-}
-
 // ─────────────────────────────────────────────────────────────────────────────
 // 1. PUBLIC / UNAUTHENTICATED TESTS
 // These tests run without any auth state and verify guest-visible behaviour.
@@ -96,9 +79,7 @@ test.describe('Public — unauthenticated access', () => {
 
     // Wait for at least one camino card to appear
     const firstCard = page.locator('ul li').first();
-    const hasCaminos = await firstCard.isVisible({ timeout: 10_000 }).catch(() => false);
-    test.skip(!hasCaminos, 'No caminos found — backend must be running with at least one seeded camino');
-    if (!hasCaminos) return;
+    await expect(firstCard).toBeVisible({ timeout: 10_000 });
 
     // Click the first camino's name heading to navigate to detail
     const caminoHeading = firstCard.getByRole('heading').first();
@@ -120,22 +101,20 @@ test.describe('Public — unauthenticated access', () => {
     await page.goto('/caminos');
 
     // Wait for the list to load
-    const hasCaminos = await page.locator('ul li').first().isVisible({ timeout: 10_000 }).catch(() => false);
-    test.skip(!hasCaminos, 'No caminos found — backend must be running with at least one seeded camino');
-    if (!hasCaminos) return;
+    await expect(page.locator('ul li').first()).toBeVisible({ timeout: 10_000 });
 
     // No MoreHorizontal trigger button should be present
     const menuTriggers = page.locator('[aria-label*="Actions for"]');
     await expect(menuTriggers).toHaveCount(0);
   });
 
-  test('unauthenticated visitor is redirected away from the update page', async ({ page }) => {
+  test('unauthenticated visitor is redirected away from the update page', async ({
+    page,
+  }) => {
     await page.goto('/caminos');
 
     const firstCard = page.locator('ul li').first();
-    const hasCaminos = await firstCard.isVisible({ timeout: 10_000 }).catch(() => false);
-    test.skip(!hasCaminos, 'No caminos found — backend must be running with at least one seeded camino');
-    if (!hasCaminos) return;
+    await expect(firstCard).toBeVisible({ timeout: 10_000 });
 
     const heading = firstCard.getByRole('heading').first();
     await heading.click();
@@ -157,17 +136,24 @@ test.describe('Public — unauthenticated access', () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 test.describe('Pilgrim — authenticated write flows', () => {
-  test.beforeEach(async ({}, testInfo) => {
-    if (!authFileExists(PILGRIM_AUTH_FILE)) {
-      testInfo.skip(true, 'Pilgrim auth state not found — run auth.setup.ts first (set E2E_PILGRIM_EMAIL / E2E_PILGRIM_PASSWORD)');
+  test.beforeEach(async ({ page }, testInfo) => {
+    const email = process.env.E2E_PILGRIM_EMAIL;
+    const password = process.env.E2E_PILGRIM_PASSWORD;
+    if (!email || !password) {
+      testInfo.skip(
+        true,
+        'Pilgrim credentials not set — set E2E_PILGRIM_EMAIL / E2E_PILGRIM_PASSWORD',
+      );
+      return;
     }
+    await loginAs(page, email, password);
   });
-
-  test.use({ storageState: resolveStorageState(PILGRIM_AUTH_FILE) });
 
   // ── Navigate to update form from the list ─────────────────────────────────
 
-  test('three-dots menu "Change camino data" navigates to update form pre-populated with camino data', async ({ page }) => {
+  test('three-dots menu "Change camino data" navigates to update form pre-populated with camino data', async ({
+    page,
+  }) => {
     await page.goto('/caminos');
 
     // Wait for at least one camino card with an action menu
@@ -178,8 +164,9 @@ test.describe('Pilgrim — authenticated write flows', () => {
     const ariaLabel = await menuTrigger.getAttribute('aria-label');
     const caminoName = ariaLabel?.replace('Actions for ', '') ?? '';
 
-    // Get the camino card's link to extract the camino id
-    const card = page.locator('ul li').filter({ has: page.getByRole('heading', { name: caminoName }) });
+    const card = page
+      .locator('ul li')
+      .filter({ has: page.getByRole('heading', { name: caminoName }) });
     await card.locator('[aria-label*="Actions for"]').click();
 
     await page.getByRole('menuitem', { name: 'Change camino data' }).click();
@@ -201,19 +188,25 @@ test.describe('Pilgrim — authenticated write flows', () => {
     let originalName: string;
 
     test.beforeAll(async ({ browser }) => {
-      if (!authFileExists(PILGRIM_AUTH_FILE)) return;
-      const ctx = await browser.newContext({ storageState: PILGRIM_AUTH_FILE });
+      const email = process.env.E2E_PILGRIM_EMAIL;
+      const password = process.env.E2E_PILGRIM_PASSWORD;
+      if (!email || !password) return;
+      const ctx = await browser.newContext();
       const page = await ctx.newPage();
+      await loginAs(page, email, password);
       originalName = uniqueName('InlineEdit');
       caminoId = await createCaminoViaForm(page, originalName);
       await ctx.close();
     });
 
     test.afterAll(async ({ browser }) => {
-      // Best-effort cleanup: delete the test camino via the UI
       if (!caminoId) return;
-      const ctx = await browser.newContext({ storageState: PILGRIM_AUTH_FILE });
+      const email = process.env.E2E_PILGRIM_EMAIL;
+      const password = process.env.E2E_PILGRIM_PASSWORD;
+      if (!email || !password) return;
+      const ctx = await browser.newContext();
       const page = await ctx.newPage();
+      await loginAs(page, email, password);
       try {
         await page.goto('/caminos');
         const trigger = page.locator(`[aria-label="Actions for ${originalName}"]`);
@@ -227,9 +220,13 @@ test.describe('Pilgrim — authenticated write flows', () => {
       }
     });
 
-    test('inline edit name: pressing Enter saves and shows the new name', async ({ page }) => {
+    test('inline edit name: pressing Enter saves and shows the new name', async ({
+      page,
+    }) => {
       await page.goto(`/caminos/${caminoId}`);
-      await expect(page.getByRole('heading', { level: 1 })).toContainText(originalName, { timeout: 10_000 });
+      await expect(page.getByRole('heading', { level: 1 })).toContainText(originalName, {
+        timeout: 10_000,
+      });
 
       const editButton = page.getByRole('button', { name: 'Edit camino name' });
       await expect(editButton).toBeVisible();
@@ -243,15 +240,21 @@ test.describe('Pilgrim — authenticated write flows', () => {
       await nameInput.press('Enter');
 
       // Static h1 should show the new name
-      await expect(page.getByRole('heading', { level: 1 })).toContainText(updatedName, { timeout: 8_000 });
+      await expect(page.getByRole('heading', { level: 1 })).toContainText(updatedName, {
+        timeout: 8_000,
+      });
 
       // Update original name so cleanup works
       originalName = updatedName;
     });
 
-    test('inline edit name: pressing Escape cancels and restores original name', async ({ page }) => {
+    test('inline edit name: pressing Escape cancels and restores original name', async ({
+      page,
+    }) => {
       await page.goto(`/caminos/${caminoId}`);
-      await expect(page.getByRole('heading', { level: 1 })).toContainText(originalName, { timeout: 10_000 });
+      await expect(page.getByRole('heading', { level: 1 })).toContainText(originalName, {
+        timeout: 10_000,
+      });
 
       const editButton = page.getByRole('button', { name: 'Edit camino name' });
       await editButton.click();
@@ -273,9 +276,12 @@ test.describe('Pilgrim — authenticated write flows', () => {
     let originalName: string;
 
     test.beforeAll(async ({ browser }) => {
-      if (!authFileExists(PILGRIM_AUTH_FILE)) return;
-      const ctx = await browser.newContext({ storageState: PILGRIM_AUTH_FILE });
+      const email = process.env.E2E_PILGRIM_EMAIL;
+      const password = process.env.E2E_PILGRIM_PASSWORD;
+      if (!email || !password) return;
+      const ctx = await browser.newContext();
       const page = await ctx.newPage();
+      await loginAs(page, email, password);
       originalName = uniqueName('UpdateForm');
       caminoId = await createCaminoViaForm(page, originalName);
       await ctx.close();
@@ -283,8 +289,12 @@ test.describe('Pilgrim — authenticated write flows', () => {
 
     test.afterAll(async ({ browser }) => {
       if (!caminoId) return;
-      const ctx = await browser.newContext({ storageState: PILGRIM_AUTH_FILE });
+      const email = process.env.E2E_PILGRIM_EMAIL;
+      const password = process.env.E2E_PILGRIM_PASSWORD;
+      if (!email || !password) return;
+      const ctx = await browser.newContext();
       const page = await ctx.newPage();
+      await loginAs(page, email, password);
       try {
         await page.goto(`/caminos/${caminoId}/update`);
         const nameField = page.getByLabel('Camino Name');
@@ -302,11 +312,15 @@ test.describe('Pilgrim — authenticated write flows', () => {
       }
     });
 
-    test('submitting the update form changes the name and redirects to detail page', async ({ page }) => {
+    test('submitting the update form changes the name and redirects to detail page', async ({
+      page,
+    }) => {
       await page.goto(`/caminos/${caminoId}/update`);
 
       // Wait for the form to load and pre-populate
-      await expect(page.getByLabel('Camino Name')).toHaveValue(originalName, { timeout: 10_000 });
+      await expect(page.getByLabel('Camino Name')).toHaveValue(originalName, {
+        timeout: 10_000,
+      });
 
       const newName = `${originalName} Renamed`;
       await page.getByLabel('Camino Name').fill(newName);
@@ -317,7 +331,9 @@ test.describe('Pilgrim — authenticated write flows', () => {
       await page.waitForURL(`/caminos/${caminoId}`, { timeout: 15_000 });
 
       // Detail page should reflect the new name
-      await expect(page.getByRole('heading', { level: 1 })).toContainText(newName, { timeout: 8_000 });
+      await expect(page.getByRole('heading', { level: 1 })).toContainText(newName, {
+        timeout: 8_000,
+      });
 
       originalName = newName;
     });
@@ -330,9 +346,12 @@ test.describe('Pilgrim — authenticated write flows', () => {
     let caminoName: string;
 
     test.beforeAll(async ({ browser }) => {
-      if (!authFileExists(PILGRIM_AUTH_FILE)) return;
-      const ctx = await browser.newContext({ storageState: PILGRIM_AUTH_FILE });
+      const email = process.env.E2E_PILGRIM_EMAIL;
+      const password = process.env.E2E_PILGRIM_PASSWORD;
+      if (!email || !password) return;
+      const ctx = await browser.newContext();
       const page = await ctx.newPage();
+      await loginAs(page, email, password);
       caminoName = uniqueName('DeleteCancel');
       caminoId = await createCaminoViaForm(page, caminoName);
       await ctx.close();
@@ -340,8 +359,12 @@ test.describe('Pilgrim — authenticated write flows', () => {
 
     test.afterAll(async ({ browser }) => {
       if (!caminoId) return;
-      const ctx = await browser.newContext({ storageState: PILGRIM_AUTH_FILE });
+      const email = process.env.E2E_PILGRIM_EMAIL;
+      const password = process.env.E2E_PILGRIM_PASSWORD;
+      if (!email || !password) return;
+      const ctx = await browser.newContext();
       const page = await ctx.newPage();
+      await loginAs(page, email, password);
       try {
         await page.goto('/caminos');
         const trigger = page.locator(`[aria-label="Actions for ${caminoName}"]`);
@@ -355,7 +378,9 @@ test.describe('Pilgrim — authenticated write flows', () => {
       }
     });
 
-    test('opening delete dialog and clicking Cancel leaves the camino in the list', async ({ page }) => {
+    test('opening delete dialog and clicking Cancel leaves the camino in the list', async ({
+      page,
+    }) => {
       await page.goto('/caminos');
 
       const menuTrigger = page.locator(`[aria-label="Actions for ${caminoName}"]`);
@@ -385,9 +410,12 @@ test.describe('Pilgrim — authenticated write flows', () => {
     let caminoName: string;
 
     test.beforeAll(async ({ browser }) => {
-      if (!authFileExists(PILGRIM_AUTH_FILE)) return;
-      const ctx = await browser.newContext({ storageState: PILGRIM_AUTH_FILE });
+      const email = process.env.E2E_PILGRIM_EMAIL;
+      const password = process.env.E2E_PILGRIM_PASSWORD;
+      if (!email || !password) return;
+      const ctx = await browser.newContext();
       const page = await ctx.newPage();
+      await loginAs(page, email, password);
       caminoName = uniqueName('DeleteConfirm');
       await createCaminoViaForm(page, caminoName);
       await ctx.close();
@@ -426,15 +454,22 @@ test.describe('Pilgrim — authenticated write flows', () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 test.describe('Owner (non-pilgrim) — can edit and delete own caminos only', () => {
-  test.beforeEach(async ({}, testInfo) => {
-    if (!authFileExists(OWNER_AUTH_FILE)) {
-      testInfo.skip(true, 'Owner auth state not found — run auth.setup.ts first (set E2E_OWNER_EMAIL / E2E_OWNER_PASSWORD)');
+  test.beforeEach(async ({ page }, testInfo) => {
+    const email = process.env.E2E_OWNER_EMAIL;
+    const password = process.env.E2E_OWNER_PASSWORD;
+    if (!email || !password) {
+      testInfo.skip(
+        true,
+        'Owner credentials not set — set E2E_OWNER_EMAIL / E2E_OWNER_PASSWORD',
+      );
+      return;
     }
+    await loginAs(page, email, password);
   });
 
-  test.use({ storageState: resolveStorageState(OWNER_AUTH_FILE) });
-
-  test('owner sees three-dots menu and pen icons on their own camino', async ({ page }) => {
+  test('owner sees three-dots menu and pen icons on their own camino', async ({
+    page,
+  }) => {
     await page.goto('/caminos');
 
     // The owner's camino should have an action menu; others should not
@@ -452,7 +487,9 @@ test.describe('Owner (non-pilgrim) — can edit and delete own caminos only', ()
 
     // Pen icons for name and description should be visible
     await expect(page.getByRole('button', { name: 'Edit camino name' })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Edit camino description' })).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: 'Edit camino description' }),
+    ).toBeVisible();
 
     // "Edit waypoints" link should be visible
     await expect(page.getByRole('link', { name: 'Edit waypoints' })).toBeVisible();
@@ -469,7 +506,7 @@ test.describe('Owner (non-pilgrim) — can edit and delete own caminos only', ()
     let foundCardWithoutMenu = false;
     for (let i = 0; i < cardCount; i++) {
       const card = allCards.nth(i);
-      const hasMenu = await card.locator('[aria-label*="Actions for"]').count() > 0;
+      const hasMenu = (await card.locator('[aria-label*="Actions for"]').count()) > 0;
       if (!hasMenu) {
         foundCardWithoutMenu = true;
         break;
@@ -503,33 +540,27 @@ test.describe('Owner (non-pilgrim) — can edit and delete own caminos only', ()
     await nameInput.fill(newName);
     await nameInput.press('Enter');
 
-    await expect(page.getByRole('heading', { level: 1 })).toContainText(newName, { timeout: 8_000 });
+    await expect(page.getByRole('heading', { level: 1 })).toContainText(newName, {
+      timeout: 8_000,
+    });
 
     // Restore original name (best effort)
     await page.getByRole('button', { name: 'Edit camino name' }).click();
     const restoreInput = page.getByRole('textbox', { name: 'Edit camino name' });
     await restoreInput.fill(ownCaminoName);
     await restoreInput.press('Enter');
-    await expect(page.getByRole('heading', { level: 1 })).toContainText(ownCaminoName, { timeout: 8_000 });
+    await expect(page.getByRole('heading', { level: 1 })).toContainText(ownCaminoName, {
+      timeout: 8_000,
+    });
 
     void caminoId; // referenced to suppress lint warning
   });
 
   test('owner can delete their own camino via the dialog', async ({ page, browser }) => {
-    // Create a fresh camino owned by the owner user — the owner user must have
-    // the pilgrim role OR we need to pre-seed. Since this account is a
-    // non-pilgrim owner we cannot use the creation form UI. We therefore look
-    // for an existing seeded owner camino that has a name matching the pattern
-    // used in the test environment. Skip gracefully if none is found.
     await page.goto('/caminos');
 
     const ownerMenuTrigger = page.locator('[aria-label*="Actions for"]').first();
-    const hasMenu = await ownerMenuTrigger.isVisible({ timeout: 8_000 }).catch(() => false);
-
-    if (!hasMenu) {
-      test.skip(true, 'No camino with owner-editable menu found — ensure a camino is seeded for the owner account');
-      return;
-    }
+    await expect(ownerMenuTrigger).toBeVisible({ timeout: 8_000 });
 
     const ariaLabel = await ownerMenuTrigger.getAttribute('aria-label');
     const ownCaminoName = ariaLabel?.replace('Actions for ', '') ?? '';
@@ -556,23 +587,14 @@ test.describe('Owner (non-pilgrim) — can edit and delete own caminos only', ()
 // ─────────────────────────────────────────────────────────────────────────────
 
 test.describe('API authorization — direct PATCH without permission', () => {
-  test('PATCH /api/caminos/:id returns 403 for a non-pilgrim non-owner user', async ({ request }) => {
-    // Use a valid UUID that is unlikely to exist. The backend checks ownership
-    // first, but a missing record returns 404 not 403. We need to pick an ID
-    // that DOES exist but is owned by someone else. If the DB is seeded we
-    // pick the first camino. Otherwise the test is a best-effort API contract
-    // check.
+  test('PATCH /api/caminos/:id returns 403 for a non-pilgrim non-owner user', async ({
+    request,
+  }) => {
     const listRes = await request.get(`${API_URL}/caminos`);
-    if (!listRes.ok()) {
-      test.skip(true, `Backend not reachable at ${API_URL}/caminos`);
-      return;
-    }
+    expect(listRes.ok()).toBe(true);
 
     const caminos = (await listRes.json()) as Array<{ id: string }>;
-    if (caminos.length === 0) {
-      test.skip(true, 'No caminos in the database — cannot test 403');
-      return;
-    }
+    expect(caminos.length).toBeGreaterThan(0);
 
     const targetId = caminos[0].id;
 
@@ -589,18 +611,14 @@ test.describe('API authorization — direct PATCH without permission', () => {
     expect(patchRes.status()).toBeLessThan(500);
   });
 
-  test('DELETE /api/caminos/:id returns 4xx for an unauthenticated request', async ({ request }) => {
+  test('DELETE /api/caminos/:id returns 4xx for an unauthenticated request', async ({
+    request,
+  }) => {
     const listRes = await request.get(`${API_URL}/caminos`);
-    if (!listRes.ok()) {
-      test.skip(true, `Backend not reachable at ${API_URL}/caminos`);
-      return;
-    }
+    expect(listRes.ok()).toBe(true);
 
     const caminos = (await listRes.json()) as Array<{ id: string }>;
-    if (caminos.length === 0) {
-      test.skip(true, 'No caminos in the database — cannot test unauthenticated DELETE');
-      return;
-    }
+    expect(caminos.length).toBeGreaterThan(0);
 
     const targetId = caminos[0].id;
 
@@ -610,12 +628,18 @@ test.describe('API authorization — direct PATCH without permission', () => {
     expect(deleteRes.status()).toBeLessThan(500);
   });
 
-  test('GET /api/caminos/:id returns 404 for a non-existent camino ID', async ({ request }) => {
-    const res = await request.get(`${API_URL}/caminos/00000000-0000-0000-0000-000000000000`);
+  test('GET /api/caminos/:id returns 404 for a non-existent camino ID', async ({
+    request,
+  }) => {
+    const res = await request.get(
+      `${API_URL}/caminos/00000000-0000-0000-0000-000000000000`,
+    );
     expect(res.status()).toBe(404);
   });
 
-  test('GET /api/caminos/:id returns 400 for a non-UUID path parameter', async ({ request }) => {
+  test('GET /api/caminos/:id returns 400 for a non-UUID path parameter', async ({
+    request,
+  }) => {
     const res = await request.get(`${API_URL}/caminos/not-a-uuid`);
     expect(res.status()).toBe(400);
   });
