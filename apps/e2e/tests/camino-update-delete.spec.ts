@@ -136,17 +136,12 @@ test.describe('Public — unauthenticated access', () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 test.describe('Pilgrim — authenticated write flows', () => {
-  test.beforeEach(async ({ page }, testInfo) => {
+  test.beforeEach(async ({ page }) => {
     const email = process.env.E2E_PILGRIM_EMAIL;
     const password = process.env.E2E_PILGRIM_PASSWORD;
-    if (!email || !password) {
-      testInfo.skip(
-        true,
-        'Pilgrim credentials not set — set E2E_PILGRIM_EMAIL / E2E_PILGRIM_PASSWORD',
-      );
-      return;
-    }
-    await loginAs(page, email, password);
+    expect(email, 'E2E_PILGRIM_EMAIL must be set in .env').toBeTruthy();
+    expect(password, 'E2E_PILGRIM_PASSWORD must be set in .env').toBeTruthy();
+    await loginAs(page, email!, password!);
   });
 
   // ── Navigate to update form from the list ─────────────────────────────────
@@ -190,10 +185,11 @@ test.describe('Pilgrim — authenticated write flows', () => {
     test.beforeAll(async ({ browser }) => {
       const email = process.env.E2E_PILGRIM_EMAIL;
       const password = process.env.E2E_PILGRIM_PASSWORD;
-      if (!email || !password) return;
+      expect(email, 'E2E_PILGRIM_EMAIL must be set in .env').toBeTruthy();
+      expect(password, 'E2E_PILGRIM_PASSWORD must be set in .env').toBeTruthy();
       const ctx = await browser.newContext();
       const page = await ctx.newPage();
-      await loginAs(page, email, password);
+      await loginAs(page, email!, password!);
       originalName = uniqueName('InlineEdit');
       caminoId = await createCaminoViaForm(page, originalName);
       await ctx.close();
@@ -203,10 +199,11 @@ test.describe('Pilgrim — authenticated write flows', () => {
       if (!caminoId) return;
       const email = process.env.E2E_PILGRIM_EMAIL;
       const password = process.env.E2E_PILGRIM_PASSWORD;
-      if (!email || !password) return;
+      expect(email, 'E2E_PILGRIM_EMAIL must be set in .env').toBeTruthy();
+      expect(password, 'E2E_PILGRIM_PASSWORD must be set in .env').toBeTruthy();
       const ctx = await browser.newContext();
       const page = await ctx.newPage();
-      await loginAs(page, email, password);
+      await loginAs(page, email!, password!);
       try {
         await page.goto('/caminos');
         const trigger = page.locator(`[aria-label="Actions for ${originalName}"]`);
@@ -278,10 +275,11 @@ test.describe('Pilgrim — authenticated write flows', () => {
     test.beforeAll(async ({ browser }) => {
       const email = process.env.E2E_PILGRIM_EMAIL;
       const password = process.env.E2E_PILGRIM_PASSWORD;
-      if (!email || !password) return;
+      expect(email, 'E2E_PILGRIM_EMAIL must be set in .env').toBeTruthy();
+      expect(password, 'E2E_PILGRIM_PASSWORD must be set in .env').toBeTruthy();
       const ctx = await browser.newContext();
       const page = await ctx.newPage();
-      await loginAs(page, email, password);
+      await loginAs(page, email!, password!);
       originalName = uniqueName('UpdateForm');
       caminoId = await createCaminoViaForm(page, originalName);
       await ctx.close();
@@ -291,10 +289,11 @@ test.describe('Pilgrim — authenticated write flows', () => {
       if (!caminoId) return;
       const email = process.env.E2E_PILGRIM_EMAIL;
       const password = process.env.E2E_PILGRIM_PASSWORD;
-      if (!email || !password) return;
+      expect(email, 'E2E_PILGRIM_EMAIL must be set in .env').toBeTruthy();
+      expect(password, 'E2E_PILGRIM_PASSWORD must be set in .env').toBeTruthy();
       const ctx = await browser.newContext();
       const page = await ctx.newPage();
-      await loginAs(page, email, password);
+      await loginAs(page, email!, password!);
       try {
         await page.goto(`/caminos/${caminoId}/update`);
         const nameField = page.getByLabel('Camino Name');
@@ -348,10 +347,11 @@ test.describe('Pilgrim — authenticated write flows', () => {
     test.beforeAll(async ({ browser }) => {
       const email = process.env.E2E_PILGRIM_EMAIL;
       const password = process.env.E2E_PILGRIM_PASSWORD;
-      if (!email || !password) return;
+      expect(email, 'E2E_PILGRIM_EMAIL must be set in .env').toBeTruthy();
+      expect(password, 'E2E_PILGRIM_PASSWORD must be set in .env').toBeTruthy();
       const ctx = await browser.newContext();
       const page = await ctx.newPage();
-      await loginAs(page, email, password);
+      await loginAs(page, email!, password!);
       caminoName = uniqueName('DeleteCancel');
       caminoId = await createCaminoViaForm(page, caminoName);
       await ctx.close();
@@ -361,10 +361,11 @@ test.describe('Pilgrim — authenticated write flows', () => {
       if (!caminoId) return;
       const email = process.env.E2E_PILGRIM_EMAIL;
       const password = process.env.E2E_PILGRIM_PASSWORD;
-      if (!email || !password) return;
+      expect(email, 'E2E_PILGRIM_EMAIL must be set in .env').toBeTruthy();
+      expect(password, 'E2E_PILGRIM_PASSWORD must be set in .env').toBeTruthy();
       const ctx = await browser.newContext();
       const page = await ctx.newPage();
-      await loginAs(page, email, password);
+      await loginAs(page, email!, password!);
       try {
         await page.goto('/caminos');
         const trigger = page.locator(`[aria-label="Actions for ${caminoName}"]`);
@@ -412,10 +413,11 @@ test.describe('Pilgrim — authenticated write flows', () => {
     test.beforeAll(async ({ browser }) => {
       const email = process.env.E2E_PILGRIM_EMAIL;
       const password = process.env.E2E_PILGRIM_PASSWORD;
-      if (!email || !password) return;
+      expect(email, 'E2E_PILGRIM_EMAIL must be set in .env').toBeTruthy();
+      expect(password, 'E2E_PILGRIM_PASSWORD must be set in .env').toBeTruthy();
       const ctx = await browser.newContext();
       const page = await ctx.newPage();
-      await loginAs(page, email, password);
+      await loginAs(page, email!, password!);
       caminoName = uniqueName('DeleteConfirm');
       await createCaminoViaForm(page, caminoName);
       await ctx.close();
@@ -454,17 +456,12 @@ test.describe('Pilgrim — authenticated write flows', () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 test.describe('Owner (non-pilgrim) — can edit and delete own caminos only', () => {
-  test.beforeEach(async ({ page }, testInfo) => {
+  test.beforeEach(async ({ page }) => {
     const email = process.env.E2E_OWNER_EMAIL;
     const password = process.env.E2E_OWNER_PASSWORD;
-    if (!email || !password) {
-      testInfo.skip(
-        true,
-        'Owner credentials not set — set E2E_OWNER_EMAIL / E2E_OWNER_PASSWORD',
-      );
-      return;
-    }
-    await loginAs(page, email, password);
+    expect(email, 'E2E_OWNER_EMAIL must be set in .env').toBeTruthy();
+    expect(password, 'E2E_OWNER_PASSWORD must be set in .env').toBeTruthy();
+    await loginAs(page, email!, password!);
   });
 
   test('owner sees three-dots menu and pen icons on their own camino', async ({

@@ -5,6 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Non-Negotiable Rules
 
 - **Never open, read, or write any `.env` file.** The only exception is `.env.example` (no real credentials, safe to edit). If a task requires changing environment variables, print the exact lines the user must add or remove and ask them to apply the change themselves.
+- **Never skip a test because data or configuration is missing.** A missing prerequisite (no seeded records, env var not set, backend unreachable) must cause the test to **fail with a clear assertion error**, never to be skipped. `test.skip()` and `testInfo.skip()` are forbidden for this purpose. Use `expect(value, 'descriptive message').toBeTruthy()` or a direct `expect` assertion so the failure is immediately visible in CI and local runs.
 
 ## Project Description
 
