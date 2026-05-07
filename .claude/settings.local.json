@@ -42,7 +42,8 @@
       "Bash(python3 -c ' *)",
       "Bash(npx prettier *)",
       "Bash(yarn --cwd apps/backend build)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(node_modules/.bin/playwright test *)"
     ]
   }
 }

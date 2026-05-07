@@ -4,6 +4,11 @@ import path from 'path';
 const E2E_PORT = 3100;
 const BASE_URL = `http://localhost:${E2E_PORT}`;
 
+// Shared session state files written by auth.setup.ts.
+// Stored in .auth/ which is gitignored.
+export const PILGRIM_AUTH_FILE = path.join(__dirname, '.auth/pilgrim.json');
+export const OWNER_AUTH_FILE = path.join(__dirname, '.auth/owner.json');
+
 export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
@@ -15,9 +20,19 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
   projects: [
+    // Auth setup runs first and writes .auth/*.json session files.
+    // Tests that depend on it import PILGRIM_AUTH_FILE / OWNER_AUTH_FILE and
+    // skip themselves when those files are absent (credentials not provided).
+    {
+      name: 'setup',
+      testMatch: /auth\.setup\.ts/,
+    },
+
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      // Auth tests run first but are not listed as a hard dependency here
+      // so that non-auth tests still run when credentials are absent.
     },
   ],
   webServer: {
