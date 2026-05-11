@@ -89,7 +89,7 @@ export class CaminosController {
   @ApiOkResponse({ description: 'Camino updated successfully.' })
   @ApiUnauthorizedResponse({ description: 'Missing or invalid JWT.' })
   @ApiForbiddenResponse({
-    description: 'Not a pilgrim and not the camino owner.',
+    description: 'Requires pilgrim or owner role.',
   })
   @ApiNotFoundResponse({ description: 'Camino not found.' })
   @ApiConflictResponse({
@@ -100,12 +100,7 @@ export class CaminosController {
     @Body() dto: UpdateCaminoDto,
     @Req() req: Request & { user: KindeJwtPayload },
   ): Promise<CaminoDetailFull> {
-    return this.caminosService.update(
-      id,
-      dto,
-      req.user.sub,
-      req.user.roles ?? [],
-    );
+    return this.caminosService.update(id, dto, req.user.roles ?? []);
   }
 
   @Delete(':id')
@@ -116,13 +111,13 @@ export class CaminosController {
   @ApiNoContentResponse({ description: 'Camino deleted.' })
   @ApiUnauthorizedResponse({ description: 'Missing or invalid JWT.' })
   @ApiForbiddenResponse({
-    description: 'Not a pilgrim and not the camino owner.',
+    description: 'Requires pilgrim or owner role.',
   })
   @ApiNotFoundResponse({ description: 'Camino not found.' })
   async delete(
     @Param('id', ParseUUIDPipe) id: string,
     @Req() req: Request & { user: KindeJwtPayload },
   ): Promise<void> {
-    return this.caminosService.delete(id, req.user.sub, req.user.roles ?? []);
+    return this.caminosService.delete(id, req.user.roles ?? []);
   }
 }

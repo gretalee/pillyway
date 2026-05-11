@@ -254,7 +254,7 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
         </button>
       </div>
 
-      <div>
+      <div className="flex flex-wrap items-center gap-3">
         <Button
           type="submit"
           disabled={!isValid || mutation.isPending}
@@ -268,6 +268,16 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
           ) : (
             t('submit')
           )}
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => {
+            reset();
+            router.push(`/caminos/${caminoId}`);
+          }}
+          className="w-full sm:w-auto">
+          {t('cancel')}
         </Button>
       </div>
     </form>

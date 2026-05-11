@@ -26,7 +26,12 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { createCaminoViaForm, loginAs, uniqueName } from './helpers';
+import {
+  createCaminoViaForm,
+  loginAs,
+  setLanguageToEnglish,
+  uniqueName,
+} from './helpers';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3033/api';
 
@@ -36,6 +41,10 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3033/api';
 // ─────────────────────────────────────────────────────────────────────────────
 
 test.describe('Public — unauthenticated access', () => {
+  test.beforeEach(async ({ page }) => {
+    await setLanguageToEnglish(page);
+  });
+
   test('guest can view camino detail page with name and waypoints', async ({ page }) => {
     await page.goto('/caminos');
 
@@ -98,6 +107,11 @@ test.describe('Public — unauthenticated access', () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 test.describe('Pilgrim — authenticated write flows', () => {
+  // Serial mode prevents concurrent logins as the same user account across
+  // nested beforeAll hooks, which would cause Kinde to invalidate earlier
+  // sessions and make form submissions fail with 401.
+  test.describe.configure({ mode: 'serial' });
+
   test.beforeEach(async ({ page }) => {
     const email = process.env.E2E_PILGRIM_EMAIL;
     const password = process.env.E2E_PILGRIM_PASSWORD;
@@ -405,156 +419,7 @@ test.describe('Pilgrim — authenticated write flows', () => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 3. OWNER TESTS — require E2E_OWNER_EMAIL / E2E_OWNER_PASSWORD
-//
-// The owner test account does NOT have the "pilgrim" role.
-// It must have at least one camino seeded in the test database where
-// createdBy = owner.kindeId so that canEdit(camino) is true for that camino
-// and false for all others.
-// ─────────────────────────────────────────────────────────────────────────────
-
-test.describe('Owner (non-pilgrim) — can edit and delete caminos', () => {
-  test.beforeEach(async ({ page }) => {
-    const email = process.env.E2E_OWNER_EMAIL;
-    const password = process.env.E2E_OWNER_PASSWORD;
-    expect(email, 'E2E_OWNER_EMAIL must be set in .env').toBeTruthy();
-    expect(password, 'E2E_OWNER_PASSWORD must be set in .env').toBeTruthy();
-    await loginAs(page, email!, password!);
-  });
-
-  test('owner sees three-dots menu and pen icons on their own camino', async ({
-    page,
-  }) => {
-    await page.goto('/caminos');
-
-    // The owner's camino should have an action menu; others should not
-    const allMenus = page.locator('[aria-label*="Actions for"]');
-    await expect(allMenus.first()).toBeVisible({ timeout: 10_000 });
-
-    // Navigate to a camino (any card that has a menu trigger)
-    const ownerMenuTrigger = allMenus.first();
-    const ariaLabel = await ownerMenuTrigger.getAttribute('aria-label');
-    const ownCaminoName = ariaLabel?.replace('Actions for ', '') ?? '';
-
-    // Click the card heading to go to detail
-    await page.getByRole('heading', { name: ownCaminoName }).click();
-    await page.waitForURL(/\/caminos\/[^/]+$/, { timeout: 10_000 });
-
-    // Pen icons for name and description should be visible
-    await expect(page.getByRole('button', { name: 'Edit camino name' })).toBeVisible();
-    await expect(
-      page.getByRole('button', { name: 'Edit camino description' }),
-    ).toBeVisible();
-
-    // "Edit waypoints" link should be visible
-    await expect(page.getByRole('link', { name: 'Edit waypoints' })).toBeVisible();
-  });
-
-  test('owner can inline-edit name of a camino', async ({ page }) => {
-    await page.goto('/caminos');
-
-    // Navigate to the owner's own camino
-    const ownerMenuTrigger = page.locator('[aria-label*="Actions for"]').first();
-    await expect(ownerMenuTrigger).toBeVisible({ timeout: 10_000 });
-
-    const ariaLabel = await ownerMenuTrigger.getAttribute('aria-label');
-    const ownCaminoName = ariaLabel?.replace('Actions for ', '') ?? '';
-
-    await page.getByRole('heading', { name: ownCaminoName }).click();
-    await page.waitForURL(/\/caminos\/[^/]+$/, { timeout: 10_000 });
-    const caminoId = new URL(page.url()).pathname.split('/')[2];
-
-    // Click the pen icon next to the name
-    await page.getByRole('button', { name: 'Edit camino name' }).click();
-
-    const nameInput = page.getByRole('textbox', { name: 'Edit camino name' });
-    await expect(nameInput).toBeFocused();
-
-    const newName = `${ownCaminoName} (owner-edit)`;
-    await nameInput.fill(newName);
-    await nameInput.press('Enter');
-
-    await expect(page.getByRole('heading', { level: 1 })).toContainText(newName, {
-      timeout: 8_000,
-    });
-
-    // Restore original name (best effort)
-    await page.getByRole('button', { name: 'Edit camino name' }).click();
-    const restoreInput = page.getByRole('textbox', { name: 'Edit camino name' });
-    await restoreInput.fill(ownCaminoName);
-    await restoreInput.press('Enter');
-    await expect(page.getByRole('heading', { level: 1 })).toContainText(ownCaminoName, {
-      timeout: 8_000,
-    });
-
-    void caminoId; // referenced to suppress lint warning
-  });
-
-  // ── Delete camino ────────────────────────────────────────────────────
-
-  test.describe('Delete — uses a fresh test camino owned by the owner', () => {
-    let ownerCaminoId: string;
-    let ownerCaminoName: string;
-
-    test.beforeAll(async ({ browser }) => {
-      const email = process.env.E2E_OWNER_EMAIL;
-      const password = process.env.E2E_OWNER_PASSWORD;
-      expect(email, 'E2E_OWNER_EMAIL must be set in .env').toBeTruthy();
-      expect(password, 'E2E_OWNER_PASSWORD must be set in .env').toBeTruthy();
-      const ctx = await browser.newContext();
-      const page = await ctx.newPage();
-      await loginAs(page, email!, password!);
-      ownerCaminoName = uniqueName('OwnerDelete');
-      ownerCaminoId = await createCaminoViaForm(page, ownerCaminoName);
-      await ctx.close();
-    });
-
-    test.afterAll(async ({ browser }) => {
-      if (!ownerCaminoId) return;
-      const email = process.env.E2E_OWNER_EMAIL;
-      const password = process.env.E2E_OWNER_PASSWORD;
-      expect(email, 'E2E_OWNER_EMAIL must be set in .env').toBeTruthy();
-      expect(password, 'E2E_OWNER_PASSWORD must be set in .env').toBeTruthy();
-      const ctx = await browser.newContext();
-      const page = await ctx.newPage();
-      await loginAs(page, email!, password!);
-      try {
-        await page.goto('/caminos');
-        const trigger = page.locator(`[aria-label="Actions for ${ownerCaminoName}"]`);
-        if (await trigger.isVisible({ timeout: 5_000 }).catch(() => false)) {
-          await trigger.click();
-          await page.getByRole('menuitem', { name: 'Delete camino' }).click();
-          await page.getByRole('button', { name: 'Delete' }).click();
-        }
-      } finally {
-        await ctx.close();
-      }
-    });
-
-    test('owner can delete a camino via the dialog', async ({ page }) => {
-      await page.goto('/caminos');
-
-      const menuTrigger = page.locator(`[aria-label="Actions for ${ownerCaminoName}"]`);
-      await expect(menuTrigger).toBeVisible({ timeout: 10_000 });
-      await menuTrigger.click();
-
-      await page.getByRole('menuitem', { name: 'Delete camino' }).click();
-
-      await expect(page.getByRole('alertdialog')).toBeVisible();
-      await expect(page.getByText(`"${ownerCaminoName}"`)).toBeVisible();
-
-      await page.getByRole('button', { name: 'Delete' }).click();
-
-      await expect(page.getByRole('alertdialog')).not.toBeVisible({ timeout: 10_000 });
-      await expect(
-        page.getByRole('heading', { name: ownerCaminoName }),
-      ).not.toBeVisible();
-    });
-  });
-});
-
-// ─────────────────────────────────────────────────────────────────────────────
-// 4. API-LEVEL AUTHORIZATION TEST
+// 3. API-LEVEL AUTHORIZATION TEST
 // Validates that PATCH /api/caminos/:id returns 403 for a non-pilgrim
 // non-owner user. Uses a raw HTTP request so no browser is needed.
 // ─────────────────────────────────────────────────────────────────────────────

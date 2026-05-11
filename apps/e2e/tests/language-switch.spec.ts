@@ -53,7 +53,9 @@ test.describe('Language detection on first load', () => {
     }) => {
       await clearLocaleCookie(page);
       await page.goto('/');
-      await expect(page.getByRole('link', { name: 'Log in' })).toBeVisible();
+      await expect(page.getByRole('link', { name: 'Log in' })).toBeVisible({
+        timeout: 5000,
+      });
       await expect(page.locator('html')).toHaveAttribute('lang', 'en');
     });
   });

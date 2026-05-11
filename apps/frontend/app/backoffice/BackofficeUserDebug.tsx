@@ -1,10 +1,12 @@
 'use client';
 
-import { useUserStore } from '@/store/user-store';
+import type { AuthUser } from '@/lib/getAuthUser';
 
-export function BackofficeUserDebug() {
-  const user = useUserStore((s) => s.user);
+interface BackofficeUserDebugProps {
+  user: AuthUser | null;
+}
 
+export function BackofficeUserDebug({ user }: BackofficeUserDebugProps) {
   if (!user) return null;
 
   return (

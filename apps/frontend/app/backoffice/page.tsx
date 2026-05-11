@@ -1,4 +1,5 @@
 import { getTranslations } from 'next-intl/server';
+import { getAuthUser } from '@/lib/getAuthUser';
 import { BackofficeUserDebug } from './BackofficeUserDebug';
 
 export async function generateMetadata() {
@@ -11,13 +12,13 @@ export async function generateMetadata() {
 }
 
 export default async function BackofficePage() {
-  const t = await getTranslations('backoffice');
+  const [t, user] = await Promise.all([getTranslations('backoffice'), getAuthUser()]);
 
   return (
     <main className="flex flex-1 flex-col px-4 py-16 sm:px-6 lg:px-8">
       <h1 className="text-3xl font-bold tracking-tight">{t('heading')}</h1>
       <p className="mt-2 text-muted-foreground">{t('subtitle')}</p>
-      <BackofficeUserDebug />
+      <BackofficeUserDebug user={user} />
     </main>
   );
 }

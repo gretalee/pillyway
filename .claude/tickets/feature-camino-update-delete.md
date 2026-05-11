@@ -25,7 +25,7 @@ An unauthenticated visitor (or any authenticated user without the `pilgrim` role
 An authenticated user with the `pilgrim` Kinde role. They contributed one or more caminos via PILLY-CAM-001. They need to correct mistakes, update waypoints, or remove caminos that are no longer valid. A pilgrim can edit and delete **any** camino, not only their own. They are not necessarily technical; the UI must remain intuitive and safe (destructive actions are confirmed).
 
 **Owner**
-Any authenticated user whose Kinde user ID matches the `createdBy` field of a camino — i.e. the user who originally created that camino. Owners have the same edit and delete capabilities as pilgrims, but only for **their own caminos**. An owner who does not hold the `pilgrim` role can still edit and delete the caminos they created. The owner check is: `camino.createdBy === authenticatedUser.id`.
+Root application admin. Has all permissions as a pilgrim and can on top reach the backoffice.
 
 ---
 
@@ -69,7 +69,7 @@ The Prisma schema already defines the three relevant tables:
 1. The user (any role) clicks a camino card on `/caminos`.
 2. The browser navigates to `/caminos/[camino_id]`.
 3. The page fetches `GET /api/caminos/:id` and displays: camino name, description (if present), verified badge (if `verified === true`), and ordered waypoints as a numbered list (name, country, description).
-4. If the user has the `pilgrim` role **or is the camino's owner** (`camino.createdBy === user.id`), a pen icon is rendered next to the name and description fields, and the three-dots menu card actions are visible on `/caminos`.
+4. If the user has the `pilgrim` role, a pen icon is rendered next to the name and description fields, and the three-dots menu card actions are visible on `/caminos`.
 
 ### UC-2 — Inline edit name or description
 
@@ -149,13 +149,12 @@ The Prisma schema already defines the three relevant tables:
 
 **Auth:** `JwtAuthGuard` required. The request is permitted when **either** of the following is true:
 - The authenticated user has the `pilgrim` Kinde role.
-- The authenticated user's ID matches `camino.createdBy` (the owner).
 
 If neither condition is true, return `403`.
 
-**Implementation note:** Because the owner check requires reading `camino.createdBy` from the database, `RolesGuard` alone cannot cover this endpoint. Use `JwtAuthGuard` to ensure the user is authenticated, then perform the role/ownership check at the **service layer** inside `CaminosService.update`:
+Use `JwtAuthGuard` to ensure the user is authenticated, then perform the role check at the **service layer** inside `CaminosService.update`:
 1. Fetch the camino (throw `NotFoundException` if absent).
-2. If `!user.roles.includes('pilgrim') && camino.createdBy !== user.id` → throw `ForbiddenException`.
+2. If `!user.roles.includes('pilgrim') → throw `ForbiddenException`.
 3. Proceed with the update.
 
 **Path param:** `id` — UUID string.
@@ -200,11 +199,10 @@ If neither condition is true, return `403`.
 
 **Auth:** `JwtAuthGuard` required. The request is permitted when **either** of the following is true:
 - The authenticated user has the `pilgrim` Kinde role.
-- The authenticated user's ID matches `camino.createdBy` (the owner).
 
 If neither condition is true, return `403`.
 
-Same service-layer ownership check as `PATCH`: load the camino first, then assert `user.roles.includes('pilgrim') || camino.createdBy === user.id`. Do **not** use `@Roles('pilgrim')` on this route.
+Same service-layer ownership check as `PATCH`: load the camino first, then assert `user.roles.includes('pilgrim'). Do **not** use `@Roles('pilgrim')` on this route.
 
 **Path param:** `id` — UUID string.
 
@@ -234,9 +232,8 @@ Add a three-dots menu (use shadcn/ui `DropdownMenu`) to each camino card. The me
 ```typescript
 const isPilgrim = useUserStore((s) => s.hasRole('pilgrim'));
 const userId = useUserStore((s) => s.user?.id);
-const canEdit = isPilgrim || userId === camino.createdBy;
+const canEdit = isPilgrim ;
 ```
-`camino.createdBy` is returned by `GET /api/caminos` (already included in the list response). Guest and reviewer users who did not create the camino see the card with no action affordance.
 
 Menu items:
 - **"Change camino data"** — navigates to `/caminos/[camino.id]/update` via `router.push`.
@@ -273,7 +270,7 @@ The `canEdit` boolean is computed in `CaminoDetail`:
 ```typescript
 const isPilgrim = useUserStore((s) => s.hasRole('pilgrim'));
 const userId = useUserStore((s) => s.user?.id);
-const canEdit = isPilgrim || userId === camino.createdBy;
+const canEdit = isPilgrim ;
 ```
 
 **Inline edit UX — full specification:**
@@ -622,7 +619,7 @@ All E2E tests live in `apps/e2e/tests/`. Tests assume a seeded test database wit
 - [ ] Optimistic update applied on inline save; reverted on error with visible error message.
 - [ ] `/caminos/[camino_id]/update/page.tsx` created with auth gate (redirect if unauthenticated, `<AccessDenied />` if not pilgrim).
 - [ ] `UpdateCaminoForm` pre-populates `CreateCaminoForm` with existing camino data; submits via `useUpdateCamino`; redirects on success.
-- [ ] `CaminoList` updated with three-dots `DropdownMenu` (pilgrim or owner per card) containing "Change camino data" and "Delete camino" items. Visibility condition: `isPilgrim || userId === camino.createdBy`.
+- [ ] `CaminoList` updated with three-dots `DropdownMenu` (pilgrim or owner per card) containing "Change camino data" and "Delete camino" items. Visibility condition: `isPilgrim`.
 - [ ] `DeleteCaminoDialog` implemented using shadcn/ui `AlertDialog`; shows camino name; loading state on Delete; error state on failure.
 - [ ] All new user-facing strings use i18n keys; keys added to both `de.json` and `en.json`.
 - [ ] Unit tests written for all new hooks and components (Vitest + RTL).

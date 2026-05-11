@@ -14,23 +14,25 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Core Features
 - Browse pilgrimage routes, individual stages, and logistics (travel connections, food, accommodation)
 - Any visitor (unauthenticated) can view routes and accommodations
-- Authenticated users can write reviews for routes and accommodations
-- Authenticated users with the **Route Editor** role can create and manage routes via dedicated input forms
+- Authenticated users with the **pilgrim** role can create, edit, and delete any camino
+- Authenticated users with the **owner** role can edit and delete any camino (but not create)
 - Planned (later phase): authenticated users can compose a personal custom route from existing stages
 
 ### User Roles
-| Role | Default | Capabilities |
-|---|---|---|
-| Guest | — | View routes, stages, accommodations |
-| Reviewer | Yes (all new users) | + Write reviews for routes & accommodations |
-| Route Editor | Assigned | + Create and edit pilgrimage routes and stages via input forms |
+| Role key | Capabilities |
+|---|---|
+| (none) | View caminos |
+| `pilgrim` | + Create, edit, and delete any camino |
+| `owner` | + Edit and delete any camino (cannot create) |
+
+> **Permission rule**: edit and delete require `pilgrim` OR `owner` role. There is no per-camino ownership check — role alone determines access.
 
 ### Domain Entities (initial)
 - **Route** — a named pilgrimage route with metadata
 - **Stage** — an individual leg of a route (ordered, with distance / duration)
 - **Accommodation** — lodging option linked to a stage or location
 - **Review** — user-authored rating + text, attached to a Route or Accommodation
-- **User** — authenticated user with a role (Reviewer | Route Editor)
+- **User** — authenticated user with a role (`pilgrim` | `owner`)
 
 ---
 
