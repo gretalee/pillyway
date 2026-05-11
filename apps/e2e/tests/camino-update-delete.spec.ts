@@ -413,7 +413,7 @@ test.describe('Pilgrim — authenticated write flows', () => {
 // and false for all others.
 // ─────────────────────────────────────────────────────────────────────────────
 
-test.describe('Owner (non-pilgrim) — can edit and delete own caminos only', () => {
+test.describe('Owner (non-pilgrim) — can edit and delete caminos', () => {
   test.beforeEach(async ({ page }) => {
     const email = process.env.E2E_OWNER_EMAIL;
     const password = process.env.E2E_OWNER_PASSWORD;
@@ -431,7 +431,7 @@ test.describe('Owner (non-pilgrim) — can edit and delete own caminos only', ()
     const allMenus = page.locator('[aria-label*="Actions for"]');
     await expect(allMenus.first()).toBeVisible({ timeout: 10_000 });
 
-    // Navigate to the owner's own camino (any card that has a menu trigger)
+    // Navigate to a camino (any card that has a menu trigger)
     const ownerMenuTrigger = allMenus.first();
     const ariaLabel = await ownerMenuTrigger.getAttribute('aria-label');
     const ownCaminoName = ariaLabel?.replace('Actions for ', '') ?? '';
@@ -450,7 +450,7 @@ test.describe('Owner (non-pilgrim) — can edit and delete own caminos only', ()
     await expect(page.getByRole('link', { name: 'Edit waypoints' })).toBeVisible();
   });
 
-  test('owner can inline-edit name of their own camino', async ({ page }) => {
+  test('owner can inline-edit name of a camino', async ({ page }) => {
     await page.goto('/caminos');
 
     // Navigate to the owner's own camino
@@ -490,7 +490,7 @@ test.describe('Owner (non-pilgrim) — can edit and delete own caminos only', ()
     void caminoId; // referenced to suppress lint warning
   });
 
-  // ── Delete own camino ────────────────────────────────────────────────────
+  // ── Delete camino ────────────────────────────────────────────────────
 
   test.describe('Delete — uses a fresh test camino owned by the owner', () => {
     let ownerCaminoId: string;
@@ -531,7 +531,7 @@ test.describe('Owner (non-pilgrim) — can edit and delete own caminos only', ()
       }
     });
 
-    test('owner can delete their own camino via the dialog', async ({ page }) => {
+    test('owner can delete a camino via the dialog', async ({ page }) => {
       await page.goto('/caminos');
 
       const menuTrigger = page.locator(`[aria-label="Actions for ${ownerCaminoName}"]`);

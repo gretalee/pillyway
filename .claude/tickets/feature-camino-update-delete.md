@@ -629,7 +629,7 @@ All E2E tests live in `apps/e2e/tests/`. Tests assume a seeded test database wit
 - [ ] No `console.log` in production code paths; no `any` types; strict TypeScript throughout.
 
 ### E2E
-- [ ] Playwright tests cover: view detail, inline edit name (happy path + cancel), navigate to update form, full update submission, delete with confirmation (happy path + cancel), guest sees no menu, unauthenticated update redirect, owner can edit/delete own camino, owner sees no menu on others' caminos, non-owner non-pilgrim gets 403 from API.
+- [ ] Playwright tests cover: view detail, inline edit name (happy path + cancel), navigate to update form, full update submission, delete with confirmation (happy path + cancel), guest sees no menu, unauthenticated update redirect, owner can edit/delete camino, owner sees no menu on others' caminos, non-owner non-pilgrim gets 403 from API.
 - [ ] All E2E tests pass in CI.
 
 ### General

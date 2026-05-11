@@ -21,7 +21,7 @@ Pillyway is a pilgrimage route planning app. CLAUDE.md documents three roles (Gu
 | Create / edit review | ✗ | ✓ | ✓ | ? | ? |
 | Create / edit route, stage, accommodation | ✗ | ✗ | ✓ | ✗ | ✗ |
 | Create camino | ✗ | ✗ | ✗ | ✓ | ✗ |
-| Update/delete own camino | ✗ | ✗ | ✗ | ✓ (any) | ✓ (own only) |
+| Update/delete camino | ✗ | ✗ | ✗ | ✓ (any) | ✓ (own only) |
 
 Note: PATCH/DELETE do not use RolesGuard. Authorization is enforced in-service via `isPilgrim || isOwner`.
 
