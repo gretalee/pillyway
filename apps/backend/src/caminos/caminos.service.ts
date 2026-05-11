@@ -12,6 +12,7 @@ import { Prisma } from '@prisma/client';
 
 import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { PrismaService } from '../prisma/prisma.service';
+import { StagesService } from '../stages/stages.service';
 import { CreateCaminoDto } from './dto/create-camino.dto';
 import { UpdateCaminoDto } from './dto/update-camino.dto';
 
@@ -73,7 +74,10 @@ export interface CaminoDetailFull {
 export class CaminosService {
   private readonly logger = new Logger(CaminosService.name);
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly stagesService: StagesService,
+  ) {}
 
   // ── findAll ─────────────────────────────────────────────────────────────────
 
@@ -229,6 +233,11 @@ export class CaminosService {
           });
         }
 
+        // Eagerly create Stage rows for every consecutive point pair, within the
+        // same transaction so a partial failure rolls back both camino and stages.
+        const orderedPointIds = caminoPoints.map((p) => p.id);
+        await this.stagesService.upsertStagePairs(orderedPointIds, tx);
+
         this.logger.debug('Camino created successfully with ID: ' + camino.id);
 
         return {
@@ -356,6 +365,7 @@ export class CaminosService {
           }
 
           // 4d. Re-insert using the same create-or-link logic as create()
+          const newOrderedPointIds: string[] = [];
           for (let i = 0; i < dto.caminoPoints.length; i++) {
             const item = dto.caminoPoints[i];
             let pointId: string;
@@ -391,7 +401,12 @@ export class CaminosService {
             await tx.caminoPointOrder.create({
               data: { caminoId: id, caminoPointId: pointId, position: i + 1 },
             });
+            newOrderedPointIds.push(pointId);
           }
+
+          // Eagerly upsert Stage rows for the new ordering inside the same
+          // transaction — old pairs that left the sequence are NOT deleted.
+          await this.stagesService.upsertStagePairs(newOrderedPointIds, tx);
         }
 
         // 5. Update scalar fields on the camino row.

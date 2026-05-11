@@ -63,8 +63,8 @@ test.describe('Public — unauthenticated access', () => {
     // Detail page shows the camino name as h1
     await expect(page.getByRole('heading', { level: 1 })).toContainText(caminoName!);
 
-    // Waypoints section is visible
-    await expect(page.getByRole('heading', { name: 'Waypoints' })).toBeVisible();
+    // Stages section is visible
+    await expect(page.getByRole('heading', { name: 'Stages' })).toBeVisible();
     await expect(page.locator('ol li').first()).toBeVisible();
   });
 

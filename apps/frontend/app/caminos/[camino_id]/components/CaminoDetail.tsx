@@ -10,6 +10,7 @@ import { Textarea } from '@/app/components/ui/textarea';
 import type { CaminoDetailFull } from '@/app/api/caminos';
 import { useUpdateCamino } from '@/app/api/use-update-camino';
 import type { AuthUser } from '@/lib/getAuthUser';
+import { StageList } from './StageList';
 
 type EditingField = 'name' | 'description' | null;
 
@@ -224,31 +225,10 @@ export function CaminoDetail({
         )}
       </div>
 
-      {/* Waypoints */}
+      {/* Stages */}
       <section className="mt-8">
-        <h2 className="mb-4 text-xl font-semibold">{t('waypoints_heading')}</h2>
-        <ol className="space-y-3">
-          {camino.caminoPoints.map((point) => (
-            <li key={point.id} className="flex gap-3">
-              <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
-                {point.position}
-              </span>
-              <div>
-                <p className="font-medium">
-                  {point.name}
-                  <span className="ml-2 text-sm text-muted-foreground">
-                    ({point.country})
-                  </span>
-                </p>
-                {point.description && (
-                  <p className="mt-0.5 text-sm text-muted-foreground">
-                    {point.description}
-                  </p>
-                )}
-              </div>
-            </li>
-          ))}
-        </ol>
+        <h2 className="mb-4 text-xl font-semibold">{t('stages_heading')}</h2>
+        <StageList caminoId={caminoId} />
       </section>
 
       {/* Edit waypoints link */}

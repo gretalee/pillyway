@@ -8,6 +8,7 @@ import { CaminoPointsModule } from './camino-points/camino-points.module';
 import { CaminosModule } from './caminos/caminos.module';
 import { CountriesModule } from './countries/countries.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { StagesModule } from './stages/stages.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { PrismaModule } from './prisma/prisma.module';
     CaminosModule,
     CaminoPointsModule,
     CountriesModule,
+    StagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
