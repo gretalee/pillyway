@@ -120,7 +120,9 @@
     "edit": "Etappe bearbeiten",
     "previous_stage_aria": "Zur vorherigen Etappe: {start} bis {end}",
     "next_stage_aria": "Zur nächsten Etappe: {start} bis {end}",
-    "error_loading": "Etappe konnte nicht geladen werden. Bitte versuche es erneut."
+    "error_loading": "Etappe konnte nicht geladen werden. Bitte versuche es erneut.",
+    "first_stage_label": "Das ist der Startpunkt",
+    "last_stage_label": "Letzter Camino-Punkt"
   },
   "stage_edit": {
     "title": "Etappe {number} bearbeiten",

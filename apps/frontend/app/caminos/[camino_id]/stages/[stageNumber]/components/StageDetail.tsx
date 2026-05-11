@@ -151,7 +151,13 @@ export function StageDetail({ caminoId, stageNumber, user }: StageDetailProps) {
             </span>
           </Link>
         ) : (
-          <span />
+          <button
+            type="button"
+            disabled
+            className="inline-flex cursor-not-allowed items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted-foreground opacity-50">
+            <ChevronLeft className="size-4" aria-hidden="true" />
+            {t('first_stage_label')}
+          </button>
         )}
 
         {nextStage !== null ? (
@@ -172,7 +178,13 @@ export function StageDetail({ caminoId, stageNumber, user }: StageDetailProps) {
             <ChevronRight className="size-4" aria-hidden="true" />
           </Link>
         ) : (
-          <span />
+          <button
+            type="button"
+            disabled
+            className="inline-flex cursor-not-allowed items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted-foreground opacity-50">
+            {t('last_stage_label')}
+            <ChevronRight className="size-4" aria-hidden="true" />
+          </button>
         )}
       </nav>
     </article>

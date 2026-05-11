@@ -5,6 +5,16 @@ import type { CaminoSummary } from '@/app/api/caminos';
 import type { AuthUser } from '@/lib/getAuthUser';
 import { CaminoActionsMenu } from './CaminoActionsMenu';
 
+const DESCRIPTION_MAX = 665;
+
+function truncateAtSentence(text: string): string {
+  if (text.length <= DESCRIPTION_MAX) return text;
+  const sub = text.slice(0, DESCRIPTION_MAX);
+  const lastPeriod = sub.lastIndexOf('.');
+  if (lastPeriod > 0) return sub.slice(0, lastPeriod + 1) + '…';
+  return sub + '…';
+}
+
 interface CaminoListProps {
   caminos: CaminoSummary[];
   user: AuthUser | null;
@@ -38,7 +48,9 @@ export async function CaminoList({ caminos, user }: CaminoListProps) {
                 <Link href={`/caminos/${camino.id}`} className="flex-1">
                   <h2 className="text-lg font-semibold text-foreground">{camino.name}</h2>
                   {camino.description && (
-                    <p className="mt-1 whitespace-pre-wrap text-sm text-muted-foreground">{camino.description}</p>
+                    <p className="mt-1 whitespace-pre-wrap text-sm text-muted-foreground">
+                      {truncateAtSentence(camino.description)}
+                    </p>
                   )}
                 </Link>
 

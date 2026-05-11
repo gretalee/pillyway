@@ -120,7 +120,9 @@
     "edit": "Edit stage",
     "previous_stage_aria": "Go to previous stage: {start} to {end}",
     "next_stage_aria": "Go to next stage: {start} to {end}",
-    "error_loading": "Failed to load stage. Please try again."
+    "error_loading": "Failed to load stage. Please try again.",
+    "first_stage_label": "This is the starting point",
+    "last_stage_label": "Last camino point"
   },
   "stage_edit": {
     "title": "Edit Stage {number}",
