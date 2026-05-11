@@ -75,17 +75,6 @@
       "no": "Nein, neuen Ort erstellen"
     }
   },
-  "countries": {
-    "denmark": "Dänemark",
-    "france": "Frankreich",
-    "germany": "Deutschland",
-    "italy": "Italien",
-    "netherlands": "Niederlande",
-    "poland": "Polen",
-    "portugal": "Portugal",
-    "spain": "Spanien",
-    "sweden": "Schweden"
-  },
   "camino_detail": {
     "meta_title": "Camino-Detail | Pillyway",
     "meta_description": "Sieh dir alle Details dieser Pilgerroute an.",
@@ -105,6 +94,23 @@
     "error_forbidden": "Du bist nicht berechtigt, diesen Camino zu bearbeiten.",
     "error_loading": "Camino-Daten konnten nicht zum Bearbeiten geladen werden.",
     "back_to_caminos": "← Zurück zu Caminos"
+  },
+  "countries": {
+    "denmark": "Dänemark",
+    "france": "Frankreich",
+    "germany": "Deutschland",
+    "italy": "Italien",
+    "netherlands": "Niederlande",
+    "poland": "Polen",
+    "portugal": "Portugal",
+    "spain": "Spanien",
+    "sweden": "Schweden"
+  },
+  "auth_error": {
+    "meta_title": "Anmeldung fehlgeschlagen | Pillyway",
+    "heading": "Anmeldesitzung abgelaufen",
+    "message": "Deine Anmeldesitzung ist abgelaufen oder nicht mehr gültig. Bitte versuche dich erneut anzumelden.",
+    "retry": "Erneut anmelden"
   },
   "backoffice": {
     "title": "Backoffice | Pillyway",

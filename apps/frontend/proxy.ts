@@ -1,19 +1,24 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { resolveLocale } from './i18n/detectLocale';
+import { withAuth } from '@kinde-oss/kinde-auth-nextjs/middleware';
 
-export function proxy(request: NextRequest): NextResponse {
-  const cookieValue = request.cookies.get('pillyway-locale')?.value;
-  const acceptLanguage = request.headers.get('accept-language') ?? undefined;
+export default withAuth(
+  async function proxy(request: NextRequest): Promise<NextResponse> {
+    const cookieValue = request.cookies.get('pillyway-locale')?.value;
+    const acceptLanguage = request.headers.get('accept-language') ?? undefined;
+    // Cookie takes priority; fall back to the first tag in Accept-Language.
+    const rawLocale = cookieValue ?? acceptLanguage ?? undefined;
+    const locale = resolveLocale(rawLocale);
 
-  // Cookie takes priority; fall back to the first tag in Accept-Language.
-  const rawLocale = cookieValue ?? acceptLanguage ?? undefined;
-  const locale = resolveLocale(rawLocale);
-
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set('x-pillyway-locale', locale);
-
-  return NextResponse.next({ request: { headers: requestHeaders } });
-}
+    const requestHeaders = new Headers(request.headers);
+    requestHeaders.set('x-pillyway-locale', locale);
+    return NextResponse.next({ request: { headers: requestHeaders } });
+  },
+  {
+    // Proxy still runs on all routes, but doesn't protect these routes:
+    publicPaths: ['/', '/caminos', '/contact', '/imprint', '/auth-error'],
+  },
+);
 
 export const config = {
   matcher: [

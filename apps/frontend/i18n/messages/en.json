@@ -75,17 +75,6 @@
       "no": "No, create a new waypoint"
     }
   },
-  "countries": {
-    "denmark": "Denmark",
-    "france": "France",
-    "germany": "Germany",
-    "italy": "Italy",
-    "netherlands": "Netherlands",
-    "poland": "Poland",
-    "portugal": "Portugal",
-    "spain": "Spain",
-    "sweden": "Sweden"
-  },
   "camino_detail": {
     "meta_title": "Camino Detail | Pillyway",
     "meta_description": "View the full details of this pilgrimage route.",
@@ -105,6 +94,23 @@
     "error_forbidden": "You are not authorized to edit this camino.",
     "error_loading": "Failed to load camino data for editing.",
     "back_to_caminos": "← Back to caminos"
+  },
+  "countries": {
+    "denmark": "Denmark",
+    "france": "France",
+    "germany": "Germany",
+    "italy": "Italy",
+    "netherlands": "Netherlands",
+    "poland": "Poland",
+    "portugal": "Portugal",
+    "spain": "Spain",
+    "sweden": "Sweden"
+  },
+  "auth_error": {
+    "meta_title": "Login failed | Pillyway",
+    "heading": "Login session expired",
+    "message": "Your login session has expired or is no longer valid. Please try logging in again.",
+    "retry": "Log in again"
   },
   "backoffice": {
     "title": "Backoffice | Pillyway",
