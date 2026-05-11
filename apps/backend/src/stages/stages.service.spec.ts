@@ -362,7 +362,7 @@ describe('StagesService.update()', () => {
       },
       stage: {
         findUnique: vi.fn().mockResolvedValue(stageForFindUnique),
-        update: vi.fn().mockResolvedValue(stageForFindUnique),
+        upsert: vi.fn().mockResolvedValue(stageForFindUnique),
       },
     };
   }
@@ -377,7 +377,7 @@ describe('StagesService.update()', () => {
       },
       stage: {
         findUnique: vi.fn().mockResolvedValue(updatedRow),
-        update: vi.fn().mockResolvedValue(updatedRow),
+        upsert: vi.fn().mockResolvedValue(updatedRow),
       },
     };
     const module = await buildModule(prismaMock);
@@ -385,9 +385,32 @@ describe('StagesService.update()', () => {
 
     const result = await service.update(CAMINO_ID_A, 1, distanceDto, ['pilgrim']);
 
-    expect(prismaMock.stage.update).toHaveBeenCalledOnce();
+    expect(prismaMock.stage.upsert).toHaveBeenCalledOnce();
     expect(result.distance).toBe(30.5);
     expect(result.stageNumber).toBe(1);
+  });
+
+  it('creates the stage row when it does not exist yet (legacy camino, no prior GET)', async () => {
+    const createdRow = { ...stageRow1, distance: 30.5, updatedAt: LATER };
+    const prismaMock = {
+      caminoPointOrder: {
+        findMany: vi.fn().mockResolvedValue(makeOrderRows([PT_A, PT_B, PT_C])),
+      },
+      stage: {
+        // findOne (called by update → findOne internally) returns the row after upsert
+        findUnique: vi.fn().mockResolvedValue(createdRow),
+        upsert: vi.fn().mockResolvedValue(createdRow),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(StagesService);
+
+    const result = await service.update(CAMINO_ID_A, 1, distanceDto, ['pilgrim']);
+
+    expect(prismaMock.stage.upsert).toHaveBeenCalledOnce();
+    const call = prismaMock.stage.upsert.mock.calls[0][0];
+    expect(call.create).toMatchObject({ startPointId: PT_A.id, endPointId: PT_B.id, distance: 30.5 });
+    expect(result.distance).toBe(30.5);
   });
 
   it('clears distance to null and returns StageDetail', async () => {
@@ -398,7 +421,7 @@ describe('StagesService.update()', () => {
       },
       stage: {
         findUnique: vi.fn().mockResolvedValue(clearedRow),
-        update: vi.fn().mockResolvedValue(clearedRow),
+        upsert: vi.fn().mockResolvedValue(clearedRow),
       },
     };
     const module = await buildModule(prismaMock);
@@ -418,7 +441,7 @@ describe('StagesService.update()', () => {
       },
       stage: {
         findUnique: vi.fn().mockResolvedValue(clearedRow),
-        update: vi.fn().mockResolvedValue(clearedRow),
+        upsert: vi.fn().mockResolvedValue(clearedRow),
       },
     };
     const module = await buildModule(prismaMock);
@@ -454,7 +477,7 @@ describe('StagesService.update()', () => {
       },
       stage: {
         findUnique: vi.fn().mockResolvedValue(updatedRow),
-        update: vi.fn().mockResolvedValue(updatedRow),
+        upsert: vi.fn().mockResolvedValue(updatedRow),
       },
     };
     const module = await buildModule(prismaMock);
@@ -481,7 +504,7 @@ describe('StagesService.update()', () => {
     await expect(
       service.update(CAMINO_ID_A, 1, distanceDto, []),
     ).rejects.toBeInstanceOf(ForbiddenException);
-    expect(prismaMock.stage.update).not.toHaveBeenCalled();
+    expect(prismaMock.stage.upsert).not.toHaveBeenCalled();
   });
 
   it('throws ForbiddenException when user only has an unrelated role', async () => {
@@ -504,7 +527,7 @@ describe('StagesService.update()', () => {
       },
       stage: {
         findUnique: vi.fn(),
-        update: vi.fn(),
+        upsert: vi.fn(),
       },
     };
     const module = await buildModule(prismaMock);
@@ -513,7 +536,7 @@ describe('StagesService.update()', () => {
     await expect(
       service.update(CAMINO_ID_A, 1, distanceDto, ['pilgrim']),
     ).rejects.toBeInstanceOf(NotFoundException);
-    expect(prismaMock.stage.update).not.toHaveBeenCalled();
+    expect(prismaMock.stage.upsert).not.toHaveBeenCalled();
   });
 
   it('throws NotFoundException for out-of-range stageNumber', async () => {
@@ -523,7 +546,7 @@ describe('StagesService.update()', () => {
       },
       stage: {
         findUnique: vi.fn(),
-        update: vi.fn(),
+        upsert: vi.fn(),
       },
     };
     const module = await buildModule(prismaMock);
@@ -533,7 +556,7 @@ describe('StagesService.update()', () => {
     await expect(
       service.update(CAMINO_ID_A, 5, distanceDto, ['pilgrim']),
     ).rejects.toBeInstanceOf(NotFoundException);
-    expect(prismaMock.stage.update).not.toHaveBeenCalled();
+    expect(prismaMock.stage.upsert).not.toHaveBeenCalled();
   });
 });
 

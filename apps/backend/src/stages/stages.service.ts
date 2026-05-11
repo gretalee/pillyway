@@ -306,14 +306,22 @@ export class StagesService {
       updateData.description = dto.description;
     }
 
-    await this.prisma.stage.update({
+    // Upsert so legacy caminos (created before eager stage creation) get a row
+    // on first PATCH without requiring a prior GET to trigger the lazy backfill.
+    await this.prisma.stage.upsert({
       where: {
         startPointId_endPointId: {
           startPointId: startPoint.id,
           endPointId: endPoint.id,
         },
       },
-      data: updateData,
+      create: {
+        startPointId: startPoint.id,
+        endPointId: endPoint.id,
+        ...(dto.distance !== undefined && { distance: dto.distance }),
+        ...(dto.description !== undefined && { description: dto.description }),
+      },
+      update: updateData,
     });
 
     this.logger.debug(
