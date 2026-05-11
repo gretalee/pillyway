@@ -48,6 +48,7 @@ export function CreateCaminoForm() {
     control,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors, isValid },
   } = useForm<CaminoFormValues>({
     mode: 'onChange',
@@ -236,7 +237,7 @@ export function CreateCaminoForm() {
       </div>
 
       {/* Submit */}
-      <div>
+      <div className="flex flex-wrap items-center gap-3">
         <Button
           type="submit"
           disabled={!isValid || isPending}
@@ -250,6 +251,16 @@ export function CreateCaminoForm() {
           ) : (
             t('submit')
           )}
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => {
+            reset();
+            router.push('/caminos');
+          }}
+          className="w-full sm:w-auto">
+          {t('cancel')}
         </Button>
       </div>
     </form>

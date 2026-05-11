@@ -3,7 +3,7 @@
 import { useState, useRef, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { Pencil } from 'lucide-react';
+import { ChevronLeft, Pencil } from 'lucide-react';
 
 import { Input } from '@/app/components/ui/input';
 import { Textarea } from '@/app/components/ui/textarea';
@@ -142,6 +142,16 @@ export function CaminoDetail({
 
   return (
     <article>
+      {/* Back to list */}
+      <div className="mb-6">
+        <Link
+          href="/caminos"
+          className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+          <ChevronLeft className="size-4" aria-hidden="true" />
+          {t('back_to_list')}
+        </Link>
+      </div>
+
       {/* Name */}
       <div className="flex items-center gap-2">
         {editingField === 'name' ? (

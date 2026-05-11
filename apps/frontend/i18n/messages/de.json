@@ -62,6 +62,7 @@
     "unlink": "Verknüpfung aufheben",
     "submit": "Camino erstellen",
     "submitting": "Wird erstellt…",
+    "cancel": "Abbrechen",
     "access_denied": "Du hast keine Berechtigung, diese Seite aufzurufen. Die Pilgrim-Rolle ist erforderlich.",
     "error_generic": "Ein Fehler ist aufgetreten. Bitte versuche es erneut.",
     "error_conflict": "Ein Camino mit diesem Namen existiert bereits. Bitte wähle einen anderen Namen.",
@@ -80,6 +81,7 @@
     "meta_description": "Sieh dir alle Details dieser Pilgerroute an.",
     "waypoints_heading": "Wegpunkte",
     "edit_waypoints": "Wegpunkte bearbeiten",
+    "back_to_list": "Alle Caminos anzeigen",
     "error_loading": "Camino konnte nicht geladen werden. Bitte versuche es erneut.",
     "inline_save_error": "Änderungen konnten nicht gespeichert werden. Vorheriger Wert wurde wiederhergestellt."
   },
@@ -89,6 +91,7 @@
     "meta_description": "Diese Pilgerroute bearbeiten.",
     "submit": "Änderungen speichern",
     "submitting": "Wird gespeichert…",
+    "cancel": "Abbrechen",
     "error_generic": "Camino konnte nicht aktualisiert werden. Bitte versuche es erneut.",
     "error_conflict": "Ein Camino mit diesem Namen existiert bereits. Bitte wähle einen anderen Namen.",
     "error_forbidden": "Du bist nicht berechtigt, diesen Camino zu bearbeiten.",
