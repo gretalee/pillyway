@@ -14,6 +14,7 @@ interface StageDetailProps {
 
 export function StageDetail({ caminoId, stageNumber, user }: StageDetailProps) {
   const t = useTranslations('stage_detail');
+  const tCountries = useTranslations('countries');
   const { data: stage, isLoading, isError } = useStage(caminoId, stageNumber);
 
   const canEdit =
@@ -56,7 +57,11 @@ export function StageDetail({ caminoId, stageNumber, user }: StageDetailProps) {
 
       {/* Stage heading */}
       <h1 className="text-3xl font-bold tracking-tight">
-        {t('stage_number', { number: stageNumber })}
+        {t('stage_number', {
+          number: stageNumber,
+          start: stage.startPoint.name,
+          end: stage.endPoint.name,
+        })}
       </h1>
 
       {/* Start and end points */}
@@ -68,7 +73,7 @@ export function StageDetail({ caminoId, stageNumber, user }: StageDetailProps) {
           <dd className="mt-1 font-medium">
             {stage.startPoint.name}
             <span className="ml-2 text-sm text-muted-foreground">
-              ({stage.startPoint.country})
+              ({tCountries(stage.startPoint.country.toLowerCase())})
             </span>
           </dd>
         </div>
@@ -79,7 +84,7 @@ export function StageDetail({ caminoId, stageNumber, user }: StageDetailProps) {
           <dd className="mt-1 font-medium">
             {stage.endPoint.name}
             <span className="ml-2 text-sm text-muted-foreground">
-              ({stage.endPoint.country})
+              ({tCountries(stage.endPoint.country.toLowerCase())})
             </span>
           </dd>
         </div>
@@ -104,7 +109,7 @@ export function StageDetail({ caminoId, stageNumber, user }: StageDetailProps) {
         <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
           {t('description_label')}
         </p>
-        <p className="mt-1">
+        <p className="mt-1 whitespace-pre-wrap">
           {stage.description !== null ? (
             stage.description
           ) : (

@@ -209,7 +209,7 @@ export function CaminoDetail({
           </div>
         ) : (
           <>
-            <p className="flex-1 text-muted-foreground">
+            <p className="flex-1 whitespace-pre-wrap text-muted-foreground">
               {camino.description ?? tCaminos('no_description')}
             </p>
             {canEdit && (

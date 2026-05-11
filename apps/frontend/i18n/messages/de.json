@@ -108,7 +108,7 @@
   "stage_detail": {
     "meta_title": "Etappe {number} | Pillyway",
     "meta_description": "Sieh dir die Details von Etappe {number} dieser Pilgerroute an.",
-    "stage_number": "Etappe {number}",
+    "stage_number": "Etappe {number}: {start} – {end}",
     "back_to_camino": "Zurück zum Camino",
     "start_label": "Start",
     "end_label": "Ziel",

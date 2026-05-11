@@ -38,7 +38,7 @@ export async function CaminoList({ caminos, user }: CaminoListProps) {
                 <Link href={`/caminos/${camino.id}`} className="flex-1">
                   <h2 className="text-lg font-semibold text-foreground">{camino.name}</h2>
                   {camino.description && (
-                    <p className="mt-1 text-sm text-muted-foreground">{camino.description}</p>
+                    <p className="mt-1 whitespace-pre-wrap text-sm text-muted-foreground">{camino.description}</p>
                   )}
                 </Link>
 

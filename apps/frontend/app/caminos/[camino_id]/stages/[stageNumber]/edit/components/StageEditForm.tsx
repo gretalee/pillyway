@@ -25,6 +25,7 @@ interface StageFormValues {
 
 export function StageEditForm({ caminoId, stageNumber }: StageEditFormProps) {
   const t = useTranslations('stage_edit');
+  const tCountries = useTranslations('countries');
   const router = useRouter();
   const { data: stage, isLoading, isError } = useStage(caminoId, stageNumber);
   const mutation = useUpdateStage();
@@ -121,7 +122,7 @@ export function StageEditForm({ caminoId, stageNumber }: StageEditFormProps) {
           <p className="mt-1 font-medium">
             {stage.startPoint.name}
             <span className="ml-2 text-sm text-muted-foreground">
-              ({stage.startPoint.country})
+              ({tCountries(stage.startPoint.country.toLowerCase())})
             </span>
           </p>
         </div>
@@ -132,7 +133,7 @@ export function StageEditForm({ caminoId, stageNumber }: StageEditFormProps) {
           <p className="mt-1 font-medium">
             {stage.endPoint.name}
             <span className="ml-2 text-sm text-muted-foreground">
-              ({stage.endPoint.country})
+              ({tCountries(stage.endPoint.country.toLowerCase())})
             </span>
           </p>
         </div>
