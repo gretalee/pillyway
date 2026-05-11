@@ -35,7 +35,15 @@
       "WebFetch(domain:www.npmjs.com)",
       "Bash(yarn test:frontend *)",
       "WebFetch(domain:www.prisma.io)",
-      "WebFetch(domain:pris.ly)"
+      "WebFetch(domain:pris.ly)",
+      "Bash(yarn --cwd apps/backend test)",
+      "Bash(yarn --cwd apps/frontend tsc --noEmit)",
+      "Bash(gh api *)",
+      "Bash(python3 -c ' *)",
+      "Bash(npx prettier *)",
+      "Bash(yarn --cwd apps/backend build)",
+      "Bash(git add *)",
+      "Bash(node_modules/.bin/playwright test *)"
     ]
   }
 }

@@ -1,15 +1,19 @@
 import {
   BadRequestException,
   ConflictException,
+  ForbiddenException,
   InternalServerErrorException,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { PrismaService } from '../prisma/prisma.service';
 import { CaminosService } from './caminos.service';
 import { CreateCaminoDto } from './dto/create-camino.dto';
+import { UpdateCaminoDto } from './dto/update-camino.dto';
 
 // Suppress NestJS Logger output for error-path tests — the errors are expected.
 beforeEach(() => {
@@ -344,6 +348,223 @@ describe('CaminosService.create() — error mapping', () => {
     await expect(
       service.create(newPointDto, 'kinde-user-001'),
     ).rejects.toBeInstanceOf(InternalServerErrorException);
+  });
+});
+
+// ─── Shared helpers for findById / update / delete ───────────────────────────
+
+const CAMINO_ID = '3fa85f64-5717-4562-b3fc-2c963f66afa6';
+const OWNER_ID = 'kinde-owner-001';
+const OTHER_ID = 'kinde-other-001';
+
+const PILGRIM_ROLES: KindeRole[] = [{ id: 'r1', key: 'pilgrim', name: 'Pilgrim' }];
+const NO_ROLES: KindeRole[] = [];
+
+const baseCamino = {
+  id: CAMINO_ID,
+  name: 'Camino Francés',
+  description: 'A popular route.',
+  verified: false,
+  createdBy: OWNER_ID,
+  createdAt: new Date('2026-01-01'),
+  updatedAt: new Date('2026-01-01'),
+};
+
+const caminoWithOrder = {
+  ...baseCamino,
+  caminoPointOrder: [
+    {
+      position: 1,
+      caminoPoint: {
+        id: 'pt-1',
+        name: 'Saint-Jean',
+        country: 'France',
+        description: null,
+      },
+    },
+  ],
+};
+
+// ─── CaminosService.findById() ───────────────────────────────────────────────
+
+describe('CaminosService.findById()', () => {
+  it('returns CaminoDetailFull with ordered caminoPoints when camino exists', async () => {
+    const prismaMock = {
+      camino: { findUnique: vi.fn().mockResolvedValue(caminoWithOrder) },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
+
+    const result = await service.findById(CAMINO_ID);
+
+    expect(result.id).toBe(CAMINO_ID);
+    expect(result.createdBy).toBe(OWNER_ID);
+    expect(result.caminoPoints).toHaveLength(1);
+    expect(result.caminoPoints[0].position).toBe(1);
+  });
+
+  it('throws NotFoundException when camino does not exist', async () => {
+    const prismaMock = {
+      camino: { findUnique: vi.fn().mockResolvedValue(null) },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
+
+    await expect(service.findById(CAMINO_ID)).rejects.toBeInstanceOf(NotFoundException);
+  });
+});
+
+// ─── CaminosService.update() ─────────────────────────────────────────────────
+
+describe('CaminosService.update()', () => {
+  function makeUpdatePrismaMock() {
+    const caminoMock = {
+      findUnique: vi.fn().mockResolvedValue(caminoWithOrder),
+      findFirst: vi.fn().mockResolvedValue(null),
+      update: vi.fn().mockResolvedValue(baseCamino),
+    };
+
+    const tx = {
+      camino: caminoMock,
+      caminoPointOrder: {
+        deleteMany: vi.fn().mockResolvedValue({ count: 0 }),
+        create: vi.fn().mockResolvedValue({}),
+      },
+      caminoPoint: {
+        findUnique: vi.fn().mockResolvedValue(null),
+        upsert: vi.fn().mockResolvedValue({}),
+      },
+    };
+
+    return {
+      camino: caminoMock,
+      $transaction: vi.fn().mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
+    };
+  }
+
+  const nameDto: UpdateCaminoDto = { name: 'Camino Updated' } as UpdateCaminoDto;
+
+  it('allows a pilgrim to update any camino', async () => {
+    const prismaMock = makeUpdatePrismaMock();
+    // findById is called internally after update — stub second findUnique call
+    prismaMock.camino.findUnique = vi.fn()
+      .mockResolvedValueOnce(baseCamino)       // ownership check
+      .mockResolvedValueOnce(caminoWithOrder); // findById
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
+
+    const result = await service.update(CAMINO_ID, nameDto, OTHER_ID, PILGRIM_ROLES);
+    expect(result.id).toBe(CAMINO_ID);
+  });
+
+  it('allows the camino owner (non-pilgrim) to update their own camino', async () => {
+    const prismaMock = makeUpdatePrismaMock();
+    prismaMock.camino.findUnique = vi.fn()
+      .mockResolvedValueOnce(baseCamino)
+      .mockResolvedValueOnce(caminoWithOrder);
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
+
+    const result = await service.update(CAMINO_ID, nameDto, OWNER_ID, NO_ROLES);
+    expect(result.id).toBe(CAMINO_ID);
+  });
+
+  it('throws ForbiddenException when user is neither pilgrim nor owner', async () => {
+    const prismaMock = makeUpdatePrismaMock();
+    prismaMock.camino.findUnique = vi.fn().mockResolvedValue(baseCamino);
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
+
+    await expect(
+      service.update(CAMINO_ID, nameDto, OTHER_ID, NO_ROLES),
+    ).rejects.toBeInstanceOf(ForbiddenException);
+  });
+
+  it('throws NotFoundException when camino does not exist', async () => {
+    const prismaMock = makeUpdatePrismaMock();
+    prismaMock.camino.findUnique = vi.fn().mockResolvedValue(null);
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
+
+    await expect(
+      service.update(CAMINO_ID, nameDto, OWNER_ID, NO_ROLES),
+    ).rejects.toBeInstanceOf(NotFoundException);
+  });
+
+  it('throws ConflictException when new name conflicts with another camino', async () => {
+    const prismaMock = makeUpdatePrismaMock();
+    prismaMock.camino.findUnique = vi.fn().mockResolvedValue(baseCamino);
+    prismaMock.camino.findFirst = vi.fn().mockResolvedValue({ id: 'other-id', name: 'Camino Updated' });
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
+
+    await expect(
+      service.update(CAMINO_ID, nameDto, OWNER_ID, PILGRIM_ROLES),
+    ).rejects.toBeInstanceOf(ConflictException);
+  });
+});
+
+// ─── CaminosService.delete() ─────────────────────────────────────────────────
+
+describe('CaminosService.delete()', () => {
+  it('allows a pilgrim to delete any camino', async () => {
+    const prismaMock = {
+      camino: {
+        findUnique: vi.fn().mockResolvedValue(baseCamino),
+        delete: vi.fn().mockResolvedValue(baseCamino),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
+
+    await expect(service.delete(CAMINO_ID, OTHER_ID, PILGRIM_ROLES)).resolves.toBeUndefined();
+    expect(prismaMock.camino.delete).toHaveBeenCalledOnce();
+  });
+
+  it('allows the camino owner (non-pilgrim) to delete their own camino', async () => {
+    const prismaMock = {
+      camino: {
+        findUnique: vi.fn().mockResolvedValue(baseCamino),
+        delete: vi.fn().mockResolvedValue(baseCamino),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
+
+    await expect(service.delete(CAMINO_ID, OWNER_ID, NO_ROLES)).resolves.toBeUndefined();
+    expect(prismaMock.camino.delete).toHaveBeenCalledOnce();
+  });
+
+  it('throws ForbiddenException when user is neither pilgrim nor owner', async () => {
+    const prismaMock = {
+      camino: {
+        findUnique: vi.fn().mockResolvedValue(baseCamino),
+        delete: vi.fn(),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
+
+    await expect(
+      service.delete(CAMINO_ID, OTHER_ID, NO_ROLES),
+    ).rejects.toBeInstanceOf(ForbiddenException);
+    expect(prismaMock.camino.delete).not.toHaveBeenCalled();
+  });
+
+  it('throws NotFoundException when camino does not exist', async () => {
+    const prismaMock = {
+      camino: {
+        findUnique: vi.fn().mockResolvedValue(null),
+        delete: vi.fn(),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
+
+    await expect(
+      service.delete(CAMINO_ID, OWNER_ID, NO_ROLES),
+    ).rejects.toBeInstanceOf(NotFoundException);
+    expect(prismaMock.camino.delete).not.toHaveBeenCalled();
   });
 });
 
