@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { Loader2 } from 'lucide-react';
 
@@ -21,11 +20,11 @@ interface DeleteCaminoDialogProps {
   camino: { id: string; name: string } | null;
   open: boolean;
   onClose: () => void;
+  onSuccess?: () => void;
 }
 
-export function DeleteCaminoDialog({ camino, open, onClose }: DeleteCaminoDialogProps) {
+export function DeleteCaminoDialog({ camino, open, onClose, onSuccess }: DeleteCaminoDialogProps) {
   const t = useTranslations('caminos');
-  const queryClient = useQueryClient();
   const mutation = useDeleteCamino();
   const [deleteError, setDeleteError] = useState<string | null>(null);
 
@@ -42,8 +41,8 @@ export function DeleteCaminoDialog({ camino, open, onClose }: DeleteCaminoDialog
 
     mutation.mutate(camino.id, {
       onSuccess: () => {
-        void queryClient.invalidateQueries({ queryKey: ['caminos'] });
         onClose();
+        onSuccess?.();
       },
       onError: () => {
         setDeleteError(t('delete_dialog_error'));

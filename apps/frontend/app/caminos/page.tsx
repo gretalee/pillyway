@@ -1,4 +1,6 @@
 import { getTranslations } from 'next-intl/server';
+import { fetchCaminos } from '@/app/api/caminos';
+import { getAuthUser } from '@/lib/getAuthUser';
 import { CaminoList } from './components/CaminoList';
 
 export async function generateMetadata() {
@@ -15,12 +17,13 @@ export async function generateMetadata() {
 
 export default async function CaminosPage() {
   const t = await getTranslations('caminos');
+  const [caminos, user] = await Promise.all([fetchCaminos(), getAuthUser()]);
 
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-4 py-16 sm:px-6 lg:px-8">
       <h1 className="text-3xl font-bold tracking-tight">{t('title')}</h1>
       <p className="mt-2 text-muted-foreground">{t('browse')}</p>
-      <CaminoList />
+      <CaminoList caminos={caminos} user={user} />
     </main>
   );
 }

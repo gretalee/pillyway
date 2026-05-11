@@ -4,25 +4,14 @@ import { useState, useRef, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { Pencil } from 'lucide-react';
-import { useQueryClient } from '@tanstack/react-query';
 
 import { Input } from '@/app/components/ui/input';
 import { Textarea } from '@/app/components/ui/textarea';
-import { useCamino, CaminoDetailFull } from '@/app/api/use-camino';
+import type { CaminoDetailFull } from '@/app/api/caminos';
 import { useUpdateCamino } from '@/app/api/use-update-camino';
-import { useUserStore } from '@/store/user-store';
+import type { AuthUser } from '@/providers/AuthContext';
 
 type EditingField = 'name' | 'description' | null;
-
-function CaminoDetailSkeleton() {
-  return (
-    <div className="space-y-4 animate-pulse" aria-busy="true">
-      <div className="h-8 w-2/3 rounded bg-muted" />
-      <div className="h-4 w-full rounded bg-muted" />
-      <div className="h-4 w-1/2 rounded bg-muted" />
-    </div>
-  );
-}
 
 interface InlineFieldProps {
   value: string;
@@ -80,21 +69,21 @@ function InlineField({ value, onSave, onCancel, as: Tag, ariaLabel }: InlineFiel
   );
 }
 
-interface CaminoDetailContentProps {
+interface CaminoDetailProps {
   camino: CaminoDetailFull;
   caminoId: string;
+  user: AuthUser | null;
 }
 
-function CaminoDetailContent({ camino, caminoId }: CaminoDetailContentProps) {
+export function CaminoDetail({ camino: initialCamino, caminoId, user }: CaminoDetailProps) {
   const t = useTranslations('camino_detail');
   const tCaminos = useTranslations('caminos');
-  const queryClient = useQueryClient();
   const mutation = useUpdateCamino();
 
-  const isPilgrim = useUserStore((state) => state.hasRole('pilgrim'));
-  const userId = useUserStore((state) => state.user?.id);
-  const canEdit = isPilgrim || userId === camino.createdBy;
+  const isPilgrim = user?.roles.some((r) => r.key === 'pilgrim') ?? false;
+  const canEdit = isPilgrim || user?.id === initialCamino.createdBy;
 
+  const [camino, setCamino] = useState(initialCamino);
   const [editingField, setEditingField] = useState<EditingField>(null);
   const [inlineError, setInlineError] = useState<string | null>(null);
   const prevValueRef = useRef<string>('');
@@ -128,23 +117,17 @@ function CaminoDetailContent({ camino, caminoId }: CaminoDetailContentProps) {
     const value = field === 'description' ? (trimmed || null) : trimmed;
 
     // Optimistic update
-    queryClient.setQueryData(['camino', caminoId], (old: CaminoDetailFull | undefined) =>
-      old ? { ...old, [field]: value } : old,
-    );
+    setCamino((prev) => ({ ...prev, [field]: value }));
     setEditingField(null);
 
     mutation.mutate(
       { id: caminoId, payload: { [field]: value } },
       {
         onSuccess: (updated) => {
-          // Update cache with authoritative server response (includes correct updatedAt etc.)
-          queryClient.setQueryData(['camino', caminoId], updated);
+          setCamino(updated);
         },
         onError: () => {
-          // Revert to pre-edit value
-          queryClient.setQueryData(['camino', caminoId], (old: CaminoDetailFull | undefined) =>
-            old ? { ...old, [field]: prevValueRef.current || null } : old,
-          );
+          setCamino((prev) => ({ ...prev, [field]: prevValueRef.current || null }));
           setInlineError(t('inline_save_error'));
         },
       },
@@ -261,25 +244,4 @@ function CaminoDetailContent({ camino, caminoId }: CaminoDetailContentProps) {
       )}
     </article>
   );
-}
-
-interface CaminoDetailProps {
-  caminoId: string;
-}
-
-export function CaminoDetail({ caminoId }: CaminoDetailProps) {
-  const t = useTranslations('camino_detail');
-  const { data: camino, isLoading, isError } = useCamino(caminoId);
-
-  if (isLoading) return <CaminoDetailSkeleton />;
-
-  if (isError || !camino) {
-    return (
-      <p role="alert" className="text-destructive">
-        {t('error_loading')}
-      </p>
-    );
-  }
-
-  return <CaminoDetailContent camino={camino} caminoId={caminoId} />;
 }

@@ -1,60 +1,22 @@
-'use client';
-
-import { useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { MoreHorizontal } from 'lucide-react';
 import { buttonVariants } from '@/app/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from '@/app/components/ui/dropdown-menu';
-import { useUserStore } from '@/store/user-store';
-import { useCaminos, CaminoSummary } from '@/app/api/use-caminos';
-import { DeleteCaminoDialog } from './DeleteCaminoDialog';
+import type { CaminoSummary } from '@/app/api/caminos';
+import type { AuthUser } from '@/providers/AuthContext';
+import { CaminoActionsMenu } from './CaminoActionsMenu';
 
-export function CaminoList() {
-  const t = useTranslations('caminos');
-  const router = useRouter();
-  const isPilgrim = useUserStore((state) => state.hasRole('pilgrim'));
-  const userId = useUserStore((state) => state.user?.id);
+interface CaminoListProps {
+  caminos: CaminoSummary[];
+  user: AuthUser | null;
+}
 
-  const [deletingCamino, setDeletingCamino] = useState<{
-    id: string;
-    name: string;
-  } | null>(null);
+export async function CaminoList({ caminos, user }: CaminoListProps) {
+  const t = await getTranslations('caminos');
 
-  const { data: caminos, isLoading, isError } = useCaminos();
-
-  if (isLoading) {
-    return (
-      <div className="mt-8 space-y-3" aria-live="polite" aria-busy="true">
-        {[1, 2, 3].map((i) => (
-          <div
-            key={i}
-            className="h-20 animate-pulse rounded-lg bg-muted"
-            aria-hidden="true"
-          />
-        ))}
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <p role="alert" className="mt-8 text-destructive">
-        {t('error_loading')}
-      </p>
-    );
-  }
-
-  const list = caminos ?? [];
+  const isPilgrim = user?.roles.some((r) => r.key === 'pilgrim') ?? false;
 
   function canEdit(camino: CaminoSummary): boolean {
-    return isPilgrim || userId === camino.createdBy;
+    return isPilgrim || user?.id === camino.createdBy;
   }
 
   return (
@@ -67,26 +29,21 @@ export function CaminoList() {
         </div>
       )}
 
-      {list.length === 0 ? (
+      {caminos.length === 0 ? (
         <p className="text-muted-foreground">{t('empty')}</p>
       ) : (
         <ul className="space-y-4" aria-label={t('title')}>
-          {list.map((camino) => (
+          {caminos.map((camino) => (
             <li
               key={camino.id}
               className="rounded-xl border border-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md">
               <div className="flex items-start justify-between gap-2">
-                <button
-                  type="button"
-                  className="flex-1 text-left"
-                  onClick={() => router.push(`/caminos/${camino.id}`)}>
+                <Link href={`/caminos/${camino.id}`} className="flex-1">
                   <h2 className="text-lg font-semibold text-foreground">{camino.name}</h2>
                   {camino.description && (
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      {camino.description}
-                    </p>
+                    <p className="mt-1 text-sm text-muted-foreground">{camino.description}</p>
                   )}
-                </button>
+                </Link>
 
                 <div className="flex shrink-0 items-center gap-2">
                   {camino.verified && (
@@ -95,42 +52,13 @@ export function CaminoList() {
                     </span>
                   )}
 
-                  {canEdit(camino) && (
-                    <DropdownMenu>
-                      <DropdownMenuTrigger
-                        aria-label={t('actions_menu_aria', { name: camino.name })}
-                        className="rounded-md p-1 text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                        <MoreHorizontal className="size-4" aria-hidden="true" />
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" ignoreAnchorWidth>
-                        <DropdownMenuItem
-                          className="whitespace-nowrap"
-                          onClick={() => router.push(`/caminos/${camino.id}/update`)}>
-                          {t('menu_change_data')}
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          className="whitespace-nowrap"
-                          variant="destructive"
-                          onClick={() =>
-                            setDeletingCamino({ id: camino.id, name: camino.name })
-                          }>
-                          {t('menu_delete')}
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  )}
+                  {canEdit(camino) && <CaminoActionsMenu camino={camino} />}
                 </div>
               </div>
             </li>
           ))}
         </ul>
       )}
-
-      <DeleteCaminoDialog
-        camino={deletingCamino}
-        open={deletingCamino !== null}
-        onClose={() => setDeletingCamino(null)}
-      />
     </section>
   );
 }

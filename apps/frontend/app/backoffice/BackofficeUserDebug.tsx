@@ -1,9 +1,9 @@
 'use client';
 
-import { useUserStore } from '@/store/user-store';
+import { useAuthUser } from '@/providers/AuthContext';
 
 export function BackofficeUserDebug() {
-  const user = useUserStore((s) => s.user);
+  const user = useAuthUser();
 
   if (!user) return null;
 

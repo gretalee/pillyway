@@ -3,9 +3,9 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { type AbstractIntlMessages, NextIntlClientProvider } from 'next-intl';
 import { useState } from 'react';
-import { UserStoreInitializer } from './UserStoreInitializer';
+import { AuthProvider } from './AuthContext';
 import { LocaleStoreInitializer } from './LocaleStoreInitializer';
-import type { AuthUser } from '@/store/user-store';
+import type { AuthUser } from '@/providers/AuthContext';
 import type { Locale } from '@/i18n/detectLocale';
 
 interface ProvidersProps {
@@ -27,9 +27,10 @@ export function Providers({
   return (
     <NextIntlClientProvider locale={locale} messages={messages} timeZone={timeZone}>
       <QueryClientProvider client={queryClient}>
-        <UserStoreInitializer user={user} />
-        <LocaleStoreInitializer locale={locale} />
-        {children}
+        <AuthProvider user={user}>
+          <LocaleStoreInitializer locale={locale} />
+          {children}
+        </AuthProvider>
       </QueryClientProvider>
     </NextIntlClientProvider>
   );
