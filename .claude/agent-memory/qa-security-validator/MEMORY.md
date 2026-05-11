@@ -1,3 +1,4 @@
 - [Pillyway domain model](project_domain.md) — authorization model, role matrix, CORS finding, and write-permission matrix for security validation
 - [i18n / locale-switch feature patterns](project_i18n_patterns.md) — security risks, test stubs, and mocking conventions for the language-switch feature
 - [Camino creation feature (PILLY-CAM-001)](project_camino_creation.md) — critical security risks, test file locations, open questions for camino creation
+- [Stage entity feature (PILLY-STG-001)](project_stages_feature.md) — @IsNumber NaN bypass, cross-Camino test gap, E2E serial-mode requirement, broken Waypoints heading assertion

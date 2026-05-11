@@ -21,11 +21,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### User Roles
 | Role key | Capabilities |
 |---|---|
-| (none) | View caminos |
-| `pilgrim` | + Create, edit, and delete any camino |
-| `owner` | + Edit and delete any camino (cannot create) |
+| (none) | View caminos and stages |
+| `pilgrim` | + Create, edit, and delete any camino; edit any stage |
+| `owner` | Same as `pilgrim` — in Kinde, every user assigned the `owner` role is also assigned the `pilgrim` role |
 
-> **Permission rule**: edit and delete require `pilgrim` OR `owner` role. There is no per-camino ownership check — role alone determines access.
+> **Permission rule**: all write operations (camino create/edit/delete, stage edit) require `pilgrim` OR `owner` role. In practice, checking for `pilgrim` is sufficient because every `owner` user also holds `pilgrim` in Kinde. There is no per-entity ownership check — role alone determines access.
 
 ### Domain Entities (initial)
 - **Route** — a named pilgrimage route with metadata
