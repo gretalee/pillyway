@@ -163,14 +163,16 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
     // Reorder warning: check if any departing stage pairs have enriched data.
     // Graceful degradation: if stages data is unavailable, skip the check and submit immediately.
     if (stages && stages.length > 0) {
-      // Build a set key from startPointId + endPointId for efficient lookup
-      const newPointIds = values.caminoPoints
-        .map((p) => p.caminoPointId)
-        .filter((id): id is string => id !== null);
-
+      // Build pair keys by iterating in order; only add a pair when both
+      // consecutive items have non-null IDs. Filtering nulls first would compress
+      // the list and miss pairs separated by a newly-inserted waypoint (id=null).
       const newPairKeys = new Set<string>();
-      for (let i = 0; i < newPointIds.length - 1; i++) {
-        newPairKeys.add(`${newPointIds[i]}:${newPointIds[i + 1]}`);
+      for (let i = 0; i < values.caminoPoints.length - 1; i++) {
+        const startId = values.caminoPoints[i].caminoPointId;
+        const endId = values.caminoPoints[i + 1].caminoPointId;
+        if (startId !== null && endId !== null) {
+          newPairKeys.add(`${startId}:${endId}`);
+        }
       }
 
       const departingWithData = stages.filter((s) => {
