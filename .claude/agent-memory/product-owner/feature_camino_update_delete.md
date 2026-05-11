@@ -26,7 +26,7 @@ When `caminoPoints` is included in a PATCH payload, the backend deletes all exis
 
 ## Edit authorization model (resolved for V1)
 
-PATCH and DELETE are permitted for **pilgrims** (any camino) **or the camino's owner** (the authenticated user whose Kinde `sub` matches `camino.createdBy`). The check is done at the service layer — there is no `@Roles('pilgrim')` guard on these routes. A non-pilgrim who owns a camino can edit and delete only their own caminos.
+PATCH and DELETE are permitted for **pilgrims** (any camino). The check is done at the service layer — there is no `@Roles('pilgrim')` guard on these routes.
 
 ## Inline edit UX (resolved)
 

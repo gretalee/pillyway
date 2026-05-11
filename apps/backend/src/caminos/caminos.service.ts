@@ -295,7 +295,9 @@ export class CaminosService {
     }
 
     // 2. Authorisation: pilgrim or owner role can modify any camino
-    const canModify = userRoles.some((r) => r.key === 'pilgrim' || r.key === 'owner');
+    const canModify = userRoles.some(
+      (r) => r.key === 'pilgrim' || r.key === 'owner',
+    );
     if (!canModify) {
       throw new ForbiddenException(
         'You do not have permission to update this camino.',
@@ -444,10 +446,7 @@ export class CaminosService {
 
   // ── delete ──────────────────────────────────────────────────────────────────
 
-  async delete(
-    id: string,
-    userRoles: KindeRole[],
-  ): Promise<void> {
+  async delete(id: string, userRoles: KindeRole[]): Promise<void> {
     this.logger.debug(`Deleting camino ${id}`);
 
     // 1. Verify the camino exists
@@ -457,7 +456,9 @@ export class CaminosService {
     }
 
     // 2. Authorisation: pilgrim or owner role can modify any camino
-    const canModify = userRoles.some((r) => r.key === 'pilgrim' || r.key === 'owner');
+    const canModify = userRoles.some(
+      (r) => r.key === 'pilgrim' || r.key === 'owner',
+    );
     if (!canModify) {
       throw new ForbiddenException(
         'You do not have permission to delete this camino.',

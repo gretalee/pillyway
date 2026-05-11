@@ -105,7 +105,9 @@ describe('CaminosService.create()', () => {
   it('CAM-BE-01: creates camino with one new caminoPoint via Prisma transaction', async () => {
     const tx = makeTx();
     const prismaMock = {
-      $transaction: vi.fn().mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
+      $transaction: vi
+        .fn()
+        .mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
@@ -138,7 +140,9 @@ describe('CaminosService.create()', () => {
       description: null,
     });
     const prismaMock = {
-      $transaction: vi.fn().mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
+      $transaction: vi
+        .fn()
+        .mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
@@ -175,7 +179,9 @@ describe('CaminosService.create()', () => {
       description: null,
     });
     const prismaMock = {
-      $transaction: vi.fn().mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
+      $transaction: vi
+        .fn()
+        .mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
@@ -200,14 +206,23 @@ describe('CaminosService.create()', () => {
     let upsertCallCount = 0;
     const upsertResults = [
       { id: 'id-1', name: 'Irún', country: 'Spain', description: null },
-      { id: 'id-2', name: 'San Sebastián', country: 'Spain', description: null },
+      {
+        id: 'id-2',
+        name: 'San Sebastián',
+        country: 'Spain',
+        description: null,
+      },
       { id: 'id-3', name: 'Zarautz', country: 'Spain', description: null },
     ];
-    tx.caminoPoint.upsert = vi.fn().mockImplementation(() =>
-      Promise.resolve(upsertResults[upsertCallCount++]),
-    );
+    tx.caminoPoint.upsert = vi
+      .fn()
+      .mockImplementation(() =>
+        Promise.resolve(upsertResults[upsertCallCount++]),
+      );
     const prismaMock = {
-      $transaction: vi.fn().mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
+      $transaction: vi
+        .fn()
+        .mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
@@ -227,7 +242,9 @@ describe('CaminosService.create() — error mapping', () => {
     const tx = makeTx();
     tx.caminoPoint.findUnique = vi.fn().mockResolvedValue(null);
     const prismaMock = {
-      $transaction: vi.fn().mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
+      $transaction: vi
+        .fn()
+        .mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
@@ -243,7 +260,9 @@ describe('CaminosService.create() — error mapping', () => {
     const tx = makeTx();
     tx.caminoPoint.findUnique = vi.fn().mockResolvedValue(null);
     const prismaMock = {
-      $transaction: vi.fn().mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
+      $transaction: vi
+        .fn()
+        .mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
@@ -261,7 +280,9 @@ describe('CaminosService.create() — error mapping', () => {
       name: 'Camino Francés',
     });
     const prismaMock = {
-      $transaction: vi.fn().mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
+      $transaction: vi
+        .fn()
+        .mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
@@ -275,7 +296,9 @@ describe('CaminosService.create() — error mapping', () => {
   it('maps duplicate new-point definitions in request to BadRequestException (400)', async () => {
     const tx = makeTx();
     const prismaMock = {
-      $transaction: vi.fn().mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
+      $transaction: vi
+        .fn()
+        .mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
@@ -323,7 +346,10 @@ describe('CaminosService.create() — error mapping', () => {
       {
         code: 'P2002',
         clientVersion: '7.0.0',
-        meta: { target: ['camino_id', 'position'], modelName: 'CaminoPointOrder' },
+        meta: {
+          target: ['camino_id', 'position'],
+          modelName: 'CaminoPointOrder',
+        },
       },
     );
     const prismaMock = {
@@ -357,7 +383,9 @@ const CAMINO_ID = '3fa85f64-5717-4562-b3fc-2c963f66afa6';
 const OWNER_ID = 'kinde-owner-001';
 const OTHER_ID = 'kinde-other-001';
 
-const PILGRIM_ROLES: KindeRole[] = [{ id: 'r1', key: 'pilgrim', name: 'Pilgrim' }];
+const PILGRIM_ROLES: KindeRole[] = [
+  { id: 'r1', key: 'pilgrim', name: 'Pilgrim' },
+];
 const OWNER_ROLES: KindeRole[] = [{ id: 'r2', key: 'owner', name: 'Owner' }];
 const NO_ROLES: KindeRole[] = [];
 
@@ -399,7 +427,6 @@ describe('CaminosService.findById()', () => {
     const result = await service.findById(CAMINO_ID);
 
     expect(result.id).toBe(CAMINO_ID);
-    expect(result.createdBy).toBe(OWNER_ID);
     expect(result.caminoPoints).toHaveLength(1);
     expect(result.caminoPoints[0].position).toBe(1);
   });
@@ -411,7 +438,9 @@ describe('CaminosService.findById()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
-    await expect(service.findById(CAMINO_ID)).rejects.toBeInstanceOf(NotFoundException);
+    await expect(service.findById(CAMINO_ID)).rejects.toBeInstanceOf(
+      NotFoundException,
+    );
   });
 });
 
@@ -439,17 +468,22 @@ describe('CaminosService.update()', () => {
 
     return {
       camino: caminoMock,
-      $transaction: vi.fn().mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
+      $transaction: vi
+        .fn()
+        .mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
     };
   }
 
-  const nameDto: UpdateCaminoDto = { name: 'Camino Updated' } as UpdateCaminoDto;
+  const nameDto: UpdateCaminoDto = {
+    name: 'Camino Updated',
+  } as UpdateCaminoDto;
 
   it('allows a pilgrim to update any camino', async () => {
     const prismaMock = makeUpdatePrismaMock();
     // findById is called internally after update — stub second findUnique call
-    prismaMock.camino.findUnique = vi.fn()
-      .mockResolvedValueOnce(baseCamino)       // existence check
+    prismaMock.camino.findUnique = vi
+      .fn()
+      .mockResolvedValueOnce(baseCamino) // existence check
       .mockResolvedValueOnce(caminoWithOrder); // findById
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
@@ -460,7 +494,8 @@ describe('CaminosService.update()', () => {
 
   it('allows a user with owner role to update any camino', async () => {
     const prismaMock = makeUpdatePrismaMock();
-    prismaMock.camino.findUnique = vi.fn()
+    prismaMock.camino.findUnique = vi
+      .fn()
       .mockResolvedValueOnce(baseCamino)
       .mockResolvedValueOnce(caminoWithOrder);
     const module = await buildModule(prismaMock);
@@ -495,7 +530,9 @@ describe('CaminosService.update()', () => {
   it('throws ConflictException when new name conflicts with another camino', async () => {
     const prismaMock = makeUpdatePrismaMock();
     prismaMock.camino.findUnique = vi.fn().mockResolvedValue(baseCamino);
-    prismaMock.camino.findFirst = vi.fn().mockResolvedValue({ id: 'other-id', name: 'Camino Updated' });
+    prismaMock.camino.findFirst = vi
+      .fn()
+      .mockResolvedValue({ id: 'other-id', name: 'Camino Updated' });
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
@@ -518,7 +555,9 @@ describe('CaminosService.delete()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
-    await expect(service.delete(CAMINO_ID, PILGRIM_ROLES)).resolves.toBeUndefined();
+    await expect(
+      service.delete(CAMINO_ID, PILGRIM_ROLES),
+    ).resolves.toBeUndefined();
     expect(prismaMock.camino.delete).toHaveBeenCalledOnce();
   });
 
@@ -532,7 +571,9 @@ describe('CaminosService.delete()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
-    await expect(service.delete(CAMINO_ID, OWNER_ROLES)).resolves.toBeUndefined();
+    await expect(
+      service.delete(CAMINO_ID, OWNER_ROLES),
+    ).resolves.toBeUndefined();
     expect(prismaMock.camino.delete).toHaveBeenCalledOnce();
   });
 
@@ -546,9 +587,9 @@ describe('CaminosService.delete()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
-    await expect(
-      service.delete(CAMINO_ID, NO_ROLES),
-    ).rejects.toBeInstanceOf(ForbiddenException);
+    await expect(service.delete(CAMINO_ID, NO_ROLES)).rejects.toBeInstanceOf(
+      ForbiddenException,
+    );
     expect(prismaMock.camino.delete).not.toHaveBeenCalled();
   });
 
@@ -562,9 +603,9 @@ describe('CaminosService.delete()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
-    await expect(
-      service.delete(CAMINO_ID, NO_ROLES),
-    ).rejects.toBeInstanceOf(NotFoundException);
+    await expect(service.delete(CAMINO_ID, NO_ROLES)).rejects.toBeInstanceOf(
+      NotFoundException,
+    );
     expect(prismaMock.camino.delete).not.toHaveBeenCalled();
   });
 });
