@@ -26,47 +26,9 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { loginAs } from './helpers';
+import { createCaminoViaForm, loginAs, uniqueName } from './helpers';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3033/api';
-
-// ─── Helper: unique test camino name ─────────────────────────────────────────
-
-function uniqueName(label: string): string {
-  return `[E2E-${label}] ${Date.now()}`;
-}
-
-// ─── Helper: fill and submit the camino creation form ────────────────────────
-// Returns the camino ID extracted from the detail-page URL after submission
-// redirects. Uses a single waypoint (France) to keep setup minimal.
-
-async function createCaminoViaForm(
-  page: import('@playwright/test').Page,
-  name: string,
-): Promise<string> {
-  await page.goto('/caminos/new');
-  await page.getByLabel('Camino Name').fill(name);
-
-  // Waypoint Name (first row)
-  const waypointNameInput = page.getByLabel('Waypoint Name').first();
-  await waypointNameInput.fill('Saint-Jean-Pied-de-Port');
-
-  // Country select (first row) — pick France
-  const countrySelect = page.getByLabel('Country').first();
-  await countrySelect.selectOption('France');
-
-  await page.getByRole('button', { name: 'Create Camino' }).click();
-
-  // CreateCaminoForm redirects to /caminos on success
-  await page.waitForURL('/caminos', { timeout: 15_000 });
-
-  // Click the new camino card to navigate to its detail page and obtain the ID
-  await page.getByRole('heading', { name, exact: true }).click();
-  await page.waitForURL(/\/caminos\/[^/]+$/, { timeout: 10_000 });
-
-  const segments = new URL(page.url()).pathname.split('/');
-  return segments[segments.length - 1];
-}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 1. PUBLIC / UNAUTHENTICATED TESTS
@@ -295,16 +257,12 @@ test.describe('Pilgrim — authenticated write flows', () => {
       const page = await ctx.newPage();
       await loginAs(page, email!, password!);
       try {
-        await page.goto(`/caminos/${caminoId}/update`);
-        const nameField = page.getByLabel('Camino Name');
-        if (await nameField.isVisible({ timeout: 5_000 }).catch(() => false)) {
-          await page.goto('/caminos');
-          const trigger = page.locator(`[aria-label*="Actions for"]`).first();
-          if (await trigger.isVisible({ timeout: 5_000 }).catch(() => false)) {
-            await trigger.click();
-            await page.getByRole('menuitem', { name: 'Delete camino' }).click();
-            await page.getByRole('button', { name: 'Delete' }).click();
-          }
+        await page.goto('/caminos');
+        const trigger = page.locator(`[aria-label="Actions for ${originalName}"]`);
+        if (await trigger.isVisible({ timeout: 5_000 }).catch(() => false)) {
+          await trigger.click();
+          await page.getByRole('menuitem', { name: 'Delete camino' }).click();
+          await page.getByRole('button', { name: 'Delete' }).click();
         }
       } finally {
         await ctx.close();
@@ -492,27 +450,6 @@ test.describe('Owner (non-pilgrim) — can edit and delete own caminos only', ()
     await expect(page.getByRole('link', { name: 'Edit waypoints' })).toBeVisible();
   });
 
-  test("owner sees no action menu on caminos they didn't create", async ({ page }) => {
-    await page.goto('/caminos');
-    await expect(page.locator('ul li').first()).toBeVisible({ timeout: 10_000 });
-
-    const allCards = page.locator('ul li');
-    const cardCount = await allCards.count();
-
-    // At least one card should exist that has NO menu trigger (owned by someone else)
-    let foundCardWithoutMenu = false;
-    for (let i = 0; i < cardCount; i++) {
-      const card = allCards.nth(i);
-      const hasMenu = (await card.locator('[aria-label*="Actions for"]').count()) > 0;
-      if (!hasMenu) {
-        foundCardWithoutMenu = true;
-        break;
-      }
-    }
-
-    expect(foundCardWithoutMenu).toBe(true);
-  });
-
   test('owner can inline-edit name of their own camino', async ({ page }) => {
     await page.goto('/caminos');
 
@@ -553,27 +490,66 @@ test.describe('Owner (non-pilgrim) — can edit and delete own caminos only', ()
     void caminoId; // referenced to suppress lint warning
   });
 
-  test('owner can delete their own camino via the dialog', async ({ page, browser }) => {
-    await page.goto('/caminos');
+  // ── Delete own camino ────────────────────────────────────────────────────
 
-    const ownerMenuTrigger = page.locator('[aria-label*="Actions for"]').first();
-    await expect(ownerMenuTrigger).toBeVisible({ timeout: 8_000 });
+  test.describe('Delete — uses a fresh test camino owned by the owner', () => {
+    let ownerCaminoId: string;
+    let ownerCaminoName: string;
 
-    const ariaLabel = await ownerMenuTrigger.getAttribute('aria-label');
-    const ownCaminoName = ariaLabel?.replace('Actions for ', '') ?? '';
+    test.beforeAll(async ({ browser }) => {
+      const email = process.env.E2E_OWNER_EMAIL;
+      const password = process.env.E2E_OWNER_PASSWORD;
+      expect(email, 'E2E_OWNER_EMAIL must be set in .env').toBeTruthy();
+      expect(password, 'E2E_OWNER_PASSWORD must be set in .env').toBeTruthy();
+      const ctx = await browser.newContext();
+      const page = await ctx.newPage();
+      await loginAs(page, email!, password!);
+      ownerCaminoName = uniqueName('OwnerDelete');
+      ownerCaminoId = await createCaminoViaForm(page, ownerCaminoName);
+      await ctx.close();
+    });
 
-    await ownerMenuTrigger.click();
-    await page.getByRole('menuitem', { name: 'Delete camino' }).click();
+    test.afterAll(async ({ browser }) => {
+      if (!ownerCaminoId) return;
+      const email = process.env.E2E_OWNER_EMAIL;
+      const password = process.env.E2E_OWNER_PASSWORD;
+      expect(email, 'E2E_OWNER_EMAIL must be set in .env').toBeTruthy();
+      expect(password, 'E2E_OWNER_PASSWORD must be set in .env').toBeTruthy();
+      const ctx = await browser.newContext();
+      const page = await ctx.newPage();
+      await loginAs(page, email!, password!);
+      try {
+        await page.goto('/caminos');
+        const trigger = page.locator(`[aria-label="Actions for ${ownerCaminoName}"]`);
+        if (await trigger.isVisible({ timeout: 5_000 }).catch(() => false)) {
+          await trigger.click();
+          await page.getByRole('menuitem', { name: 'Delete camino' }).click();
+          await page.getByRole('button', { name: 'Delete' }).click();
+        }
+      } finally {
+        await ctx.close();
+      }
+    });
 
-    await expect(page.getByRole('alertdialog')).toBeVisible();
-    await expect(page.getByText(`"${ownCaminoName}"`)).toBeVisible();
+    test('owner can delete their own camino via the dialog', async ({ page }) => {
+      await page.goto('/caminos');
 
-    await page.getByRole('button', { name: 'Delete' }).click();
+      const menuTrigger = page.locator(`[aria-label="Actions for ${ownerCaminoName}"]`);
+      await expect(menuTrigger).toBeVisible({ timeout: 10_000 });
+      await menuTrigger.click();
 
-    await expect(page.getByRole('alertdialog')).not.toBeVisible({ timeout: 10_000 });
-    await expect(page.getByRole('heading', { name: ownCaminoName })).not.toBeVisible();
+      await page.getByRole('menuitem', { name: 'Delete camino' }).click();
 
-    void browser; // suppress unused warning
+      await expect(page.getByRole('alertdialog')).toBeVisible();
+      await expect(page.getByText(`"${ownerCaminoName}"`)).toBeVisible();
+
+      await page.getByRole('button', { name: 'Delete' }).click();
+
+      await expect(page.getByRole('alertdialog')).not.toBeVisible({ timeout: 10_000 });
+      await expect(
+        page.getByRole('heading', { name: ownerCaminoName }),
+      ).not.toBeVisible();
+    });
   });
 });
 

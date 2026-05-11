@@ -22,13 +22,12 @@ export function CaminoList() {
   const isPilgrim = useUserStore((state) => state.hasRole('pilgrim'));
   const userId = useUserStore((state) => state.user?.id);
 
-  const [deletingCamino, setDeletingCamino] = useState<{ id: string; name: string } | null>(null);
+  const [deletingCamino, setDeletingCamino] = useState<{
+    id: string;
+    name: string;
+  } | null>(null);
 
-  const {
-    data: caminos,
-    isLoading,
-    isError,
-  } = useCaminos();
+  const { data: caminos, isLoading, isError } = useCaminos();
 
   if (isLoading) {
     return (
@@ -103,14 +102,18 @@ export function CaminoList() {
                         className="rounded-md p-1 text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
                         <MoreHorizontal className="size-4" aria-hidden="true" />
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
+                      <DropdownMenuContent align="end" ignoreAnchorWidth>
                         <DropdownMenuItem
+                          className="whitespace-nowrap"
                           onClick={() => router.push(`/caminos/${camino.id}/update`)}>
                           {t('menu_change_data')}
                         </DropdownMenuItem>
                         <DropdownMenuItem
+                          className="whitespace-nowrap"
                           variant="destructive"
-                          onClick={() => setDeletingCamino({ id: camino.id, name: camino.name })}>
+                          onClick={() =>
+                            setDeletingCamino({ id: camino.id, name: camino.name })
+                          }>
                           {t('menu_delete')}
                         </DropdownMenuItem>
                       </DropdownMenuContent>

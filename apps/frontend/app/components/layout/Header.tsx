@@ -25,6 +25,7 @@ export async function Header({ user }: HeaderProps) {
         </Link>
 
         <div className="flex items-center gap-4">
+          <div>Roles: {user?.roles.map((r) => r.key).join(', ')}</div>
           {isOwner && (
             <Link
               href="/backoffice"
