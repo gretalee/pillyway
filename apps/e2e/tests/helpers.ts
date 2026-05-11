@@ -1,5 +1,17 @@
 import type { Page } from '@playwright/test';
 
+const BASE_URL = process.env.E2E_BASE_URL ?? 'http://localhost:3000';
+
+/**
+ * Sets the locale cookie to English before any navigation so that all
+ * subsequent page loads render in English, regardless of browser defaults.
+ */
+export async function setLanguageToEnglish(page: Page): Promise<void> {
+  await page
+    .context()
+    .addCookies([{ name: 'pillyway-locale', value: 'en', url: BASE_URL }]);
+}
+
 /**
  * Logs in via Kinde from any test that needs an authenticated session.
  * Handles both the single-screen (email + password visible at once) and the
@@ -10,6 +22,7 @@ export async function loginAs(
   email: string,
   password: string,
 ): Promise<void> {
+  await setLanguageToEnglish(page);
   await page.goto('/api/auth/login');
   await page.waitForURL(/kinde\.com/, { timeout: 15_000 });
 
@@ -70,6 +83,13 @@ export async function createCaminoViaForm(
   // Country select (first row) — pick France
   const countrySelect = page.getByLabel('Country').first();
   await countrySelect.selectOption('France');
+
+  const useExistingButton = page.getByRole('button', {
+    name: 'Yes, use this existing waypoint',
+  });
+  if (await useExistingButton.isVisible()) {
+    await useExistingButton.click();
+  }
 
   await page.getByRole('button', { name: 'Create Camino' }).click();
 
