@@ -31,7 +31,19 @@
     "meta_description": "Entdecke und erkunde Pilgerrouten aus aller Welt.",
     "og_image_alt": "Pillyway Caminos",
     "error_loading": "Die Caminos konnten nicht geladen werden. Bitte versuche es erneut.",
-    "verified": "Verifiziert"
+    "verified": "Verifiziert",
+    "actions_menu_aria": "Aktionen für {name}",
+    "menu_change_data": "Camino-Daten ändern",
+    "menu_delete": "Camino löschen",
+    "delete_dialog_title": "Camino löschen",
+    "delete_dialog_body": "Möchtest du \"{name}\" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "delete_dialog_cancel": "Abbrechen",
+    "delete_dialog_confirm": "Löschen",
+    "delete_dialog_deleting": "Wird gelöscht…",
+    "delete_dialog_error": "Der Camino konnte nicht gelöscht werden. Bitte versuche es erneut.",
+    "edit_name_aria": "Caminonamen bearbeiten",
+    "edit_description_aria": "Caminobeschreibung bearbeiten",
+    "no_description": "Keine Beschreibung vorhanden."
   },
   "caminos_new": {
     "title": "Neuen Camino erstellen",
@@ -62,6 +74,26 @@
       "yes": "Ja, diesen Ort verwenden",
       "no": "Nein, neuen Ort erstellen"
     }
+  },
+  "camino_detail": {
+    "meta_title": "Camino-Detail | Pillyway",
+    "meta_description": "Sieh dir alle Details dieser Pilgerroute an.",
+    "waypoints_heading": "Wegpunkte",
+    "edit_waypoints": "Wegpunkte bearbeiten",
+    "error_loading": "Camino konnte nicht geladen werden. Bitte versuche es erneut.",
+    "inline_save_error": "Änderungen konnten nicht gespeichert werden. Vorheriger Wert wurde wiederhergestellt."
+  },
+  "caminos_update": {
+    "title": "Camino bearbeiten",
+    "meta_title": "Camino bearbeiten | Pillyway",
+    "meta_description": "Diese Pilgerroute bearbeiten.",
+    "submit": "Änderungen speichern",
+    "submitting": "Wird gespeichert…",
+    "error_generic": "Camino konnte nicht aktualisiert werden. Bitte versuche es erneut.",
+    "error_conflict": "Ein Camino mit diesem Namen existiert bereits. Bitte wähle einen anderen Namen.",
+    "error_forbidden": "Du bist nicht berechtigt, diesen Camino zu bearbeiten.",
+    "error_loading": "Camino-Daten konnten nicht zum Bearbeiten geladen werden.",
+    "back_to_caminos": "← Zurück zu Caminos"
   },
   "countries": {
     "denmark": "Dänemark",

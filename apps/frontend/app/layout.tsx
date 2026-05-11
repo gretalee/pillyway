@@ -19,22 +19,23 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { isAuthenticated, getUser, getRoles } = getKindeServerSession();
-  const authenticated = await isAuthenticated();
+  const { getUser, getRoles } = getKindeServerSession();
+  // Use getUser() rather than isAuthenticated() here — the latter internally
+  // calls redirectOnExpiredToken() which throws a Next.js redirect for users
+  // with stale cookies, breaking public pages. getUser() returns null safely.
+  const kindeUser = await getUser();
 
   let authUser: AuthUser | null = null;
-  if (authenticated) {
-    const [kindeUser, roles] = await Promise.all([getUser(), getRoles()]);
-    if (kindeUser) {
-      authUser = {
-        id: kindeUser.id,
-        email: kindeUser.email ?? null,
-        firstName: kindeUser.given_name ?? null,
-        lastName: kindeUser.family_name ?? null,
-        picture: kindeUser.picture ?? null,
-        roles: roles ?? [],
-      };
-    }
+  if (kindeUser) {
+    const roles = await getRoles();
+    authUser = {
+      id: kindeUser.id,
+      email: kindeUser.email ?? null,
+      firstName: kindeUser.given_name ?? null,
+      lastName: kindeUser.family_name ?? null,
+      picture: kindeUser.picture ?? null,
+      roles: roles ?? [],
+    };
   }
 
   const locale = (await getLocale()) as Locale;
