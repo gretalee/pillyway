@@ -2,7 +2,7 @@ import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import { buttonVariants } from '@/app/components/ui/button';
 import type { CaminoSummary } from '@/app/api/caminos';
-import type { AuthUser } from '@/providers/AuthContext';
+import type { AuthUser } from '@/lib/getAuthUser';
 import { CaminoActionsMenu } from './CaminoActionsMenu';
 
 interface CaminoListProps {
@@ -13,11 +13,8 @@ interface CaminoListProps {
 export async function CaminoList({ caminos, user }: CaminoListProps) {
   const t = await getTranslations('caminos');
 
+  const canModify = user?.roles.some((r) => r.key === 'pilgrim' || r.key === 'owner') ?? false;
   const isPilgrim = user?.roles.some((r) => r.key === 'pilgrim') ?? false;
-
-  function canEdit(camino: CaminoSummary): boolean {
-    return isPilgrim || user?.id === camino.createdBy;
-  }
 
   return (
     <section className="mt-8">
@@ -52,7 +49,7 @@ export async function CaminoList({ caminos, user }: CaminoListProps) {
                     </span>
                   )}
 
-                  {canEdit(camino) && <CaminoActionsMenu camino={camino} />}
+                  {canModify && <CaminoActionsMenu camino={camino} />}
                 </div>
               </div>
             </li>

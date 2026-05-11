@@ -407,13 +407,13 @@ test.describe('Pilgrim — authenticated write flows', () => {
 // ─────────────────────────────────────────────────────────────────────────────
 // 3. OWNER TESTS — require E2E_OWNER_EMAIL / E2E_OWNER_PASSWORD
 //
-// The owner test account does NOT have the "pilgrim" role.
-// It must have at least one camino seeded in the test database where
-// createdBy = owner.kindeId so that canEdit(camino) is true for that camino
-// and false for all others.
+// The owner test account must have the "owner" role (and also "pilgrim" so
+// that createCaminoViaForm works, since POST /api/caminos requires pilgrim).
+// Users with the owner role can edit and delete ANY camino, regardless of who
+// created it.
 // ─────────────────────────────────────────────────────────────────────────────
 
-test.describe('Owner (non-pilgrim) — can edit and delete caminos', () => {
+test.describe('Owner (with owner role) — can edit and delete any camino', () => {
   test.beforeEach(async ({ page }) => {
     const email = process.env.E2E_OWNER_EMAIL;
     const password = process.env.E2E_OWNER_PASSWORD;
@@ -422,12 +422,12 @@ test.describe('Owner (non-pilgrim) — can edit and delete caminos', () => {
     await loginAs(page, email!, password!);
   });
 
-  test('owner sees three-dots menu and pen icons on their own camino', async ({
+  test('owner sees three-dots menu and pen icons on caminos', async ({
     page,
   }) => {
     await page.goto('/caminos');
 
-    // The owner's camino should have an action menu; others should not
+    // All caminos should have an action menu for the owner
     const allMenus = page.locator('[aria-label*="Actions for"]');
     await expect(allMenus.first()).toBeVisible({ timeout: 10_000 });
 
@@ -453,7 +453,7 @@ test.describe('Owner (non-pilgrim) — can edit and delete caminos', () => {
   test('owner can inline-edit name of a camino', async ({ page }) => {
     await page.goto('/caminos');
 
-    // Navigate to the owner's own camino
+    // Navigate to any camino (owner can edit all)
     const ownerMenuTrigger = page.locator('[aria-label*="Actions for"]').first();
     await expect(ownerMenuTrigger).toBeVisible({ timeout: 10_000 });
 

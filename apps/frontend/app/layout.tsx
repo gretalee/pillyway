@@ -28,7 +28,6 @@ export default async function RootLayout({
     <html lang={locale} className="h-full antialiased">
       <body className="min-h-full flex flex-col">
         <Providers
-          user={authUser}
           locale={locale}
           messages={messages}
           timeZone={timeZone}>

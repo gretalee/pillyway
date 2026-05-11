@@ -1,10 +1,12 @@
 'use client';
 
-import { useAuthUser } from '@/providers/AuthContext';
+import type { AuthUser } from '@/lib/getAuthUser';
 
-export function BackofficeUserDebug() {
-  const user = useAuthUser();
+interface BackofficeUserDebugProps {
+  user: AuthUser | null;
+}
 
+export function BackofficeUserDebug({ user }: BackofficeUserDebugProps) {
   if (!user) return null;
 
   return (

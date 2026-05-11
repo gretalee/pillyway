@@ -1,7 +1,22 @@
+import { cache } from 'react';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
-import type { AuthUser } from '@/providers/AuthContext';
 
-export async function getAuthUser(): Promise<AuthUser | null> {
+export interface UserRole {
+  id: string;
+  key: string;
+  name: string;
+}
+
+export interface AuthUser {
+  id: string;
+  email: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  picture: string | null;
+  roles: UserRole[];
+}
+
+export const getAuthUser = cache(async (): Promise<AuthUser | null> => {
   const { getUser, getRoles } = getKindeServerSession();
   const kindeUser = await getUser();
   if (!kindeUser) return null;
@@ -14,4 +29,4 @@ export async function getAuthUser(): Promise<AuthUser | null> {
     picture: kindeUser.picture ?? null,
     roles: roles ?? [],
   };
-}
+});

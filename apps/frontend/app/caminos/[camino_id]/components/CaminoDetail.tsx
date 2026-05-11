@@ -9,7 +9,7 @@ import { Input } from '@/app/components/ui/input';
 import { Textarea } from '@/app/components/ui/textarea';
 import type { CaminoDetailFull } from '@/app/api/caminos';
 import { useUpdateCamino } from '@/app/api/use-update-camino';
-import type { AuthUser } from '@/providers/AuthContext';
+import type { AuthUser } from '@/lib/getAuthUser';
 
 type EditingField = 'name' | 'description' | null;
 
@@ -25,16 +25,19 @@ function InlineField({ value, onSave, onCancel, as: Tag, ariaLabel }: InlineFiel
   const [draft, setDraft] = useState(value);
   const cancelledRef = useRef(false);
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      cancelledRef.current = true;
-      onCancel();
-    }
-    if (e.key === 'Enter' && Tag === 'input') {
-      e.preventDefault();
-      onSave(draft);
-    }
-  }, [Tag, draft, onCancel, onSave]);
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        cancelledRef.current = true;
+        onCancel();
+      }
+      if (e.key === 'Enter' && Tag === 'input') {
+        e.preventDefault();
+        onSave(draft);
+      }
+    },
+    [Tag, draft, onCancel, onSave],
+  );
 
   function handleBlur() {
     if (cancelledRef.current) return;
@@ -75,13 +78,16 @@ interface CaminoDetailProps {
   user: AuthUser | null;
 }
 
-export function CaminoDetail({ camino: initialCamino, caminoId, user }: CaminoDetailProps) {
+export function CaminoDetail({
+  camino: initialCamino,
+  caminoId,
+  user,
+}: CaminoDetailProps) {
   const t = useTranslations('camino_detail');
   const tCaminos = useTranslations('caminos');
   const mutation = useUpdateCamino();
 
-  const isPilgrim = user?.roles.some((r) => r.key === 'pilgrim') ?? false;
-  const canEdit = isPilgrim || user?.id === initialCamino.createdBy;
+  const canEdit = user?.roles.some((r) => r.key === 'pilgrim' || r.key === 'owner') ?? false;
 
   const [camino, setCamino] = useState(initialCamino);
   const [editingField, setEditingField] = useState<EditingField>(null);
@@ -114,7 +120,7 @@ export function CaminoDetail({ camino: initialCamino, caminoId, user }: CaminoDe
     }
 
     // description can be explicitly cleared to null; name is always a string
-    const value = field === 'description' ? (trimmed || null) : trimmed;
+    const value = field === 'description' ? trimmed || null : trimmed;
 
     // Optimistic update
     setCamino((prev) => ({ ...prev, [field]: value }));
@@ -220,10 +226,14 @@ export function CaminoDetail({ camino: initialCamino, caminoId, user }: CaminoDe
               <div>
                 <p className="font-medium">
                   {point.name}
-                  <span className="ml-2 text-sm text-muted-foreground">({point.country})</span>
+                  <span className="ml-2 text-sm text-muted-foreground">
+                    ({point.country})
+                  </span>
                 </p>
                 {point.description && (
-                  <p className="mt-0.5 text-sm text-muted-foreground">{point.description}</p>
+                  <p className="mt-0.5 text-sm text-muted-foreground">
+                    {point.description}
+                  </p>
                 )}
               </div>
             </li>

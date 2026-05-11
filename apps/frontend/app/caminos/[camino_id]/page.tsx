@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { fetchCamino } from '@/app/api/caminos';
 import { getAuthUser } from '@/lib/getAuthUser';
@@ -21,7 +22,24 @@ export async function generateMetadata() {
 
 export default async function CaminoDetailPage({ params }: Props) {
   const { camino_id } = await params;
-  const [camino, user] = await Promise.all([fetchCamino(camino_id), getAuthUser()]);
+  const t = await getTranslations('camino_detail');
+  const user = await getAuthUser();
+
+  let camino: Awaited<ReturnType<typeof fetchCamino>>;
+  try {
+    camino = await fetchCamino(camino_id);
+  } catch (err) {
+    if (err && typeof err === 'object' && 'status' in err && err.status === 404) {
+      notFound();
+    }
+    return (
+      <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-16 sm:px-6 lg:px-8">
+        <p role="alert" className="text-destructive">
+          {t('error_loading')}
+        </p>
+      </main>
+    );
+  }
 
   return (
     <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-16 sm:px-6 lg:px-8">

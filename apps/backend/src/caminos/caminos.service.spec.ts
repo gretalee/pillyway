@@ -358,6 +358,7 @@ const OWNER_ID = 'kinde-owner-001';
 const OTHER_ID = 'kinde-other-001';
 
 const PILGRIM_ROLES: KindeRole[] = [{ id: 'r1', key: 'pilgrim', name: 'Pilgrim' }];
+const OWNER_ROLES: KindeRole[] = [{ id: 'r2', key: 'owner', name: 'Owner' }];
 const NO_ROLES: KindeRole[] = [];
 
 const baseCamino = {
@@ -448,16 +449,16 @@ describe('CaminosService.update()', () => {
     const prismaMock = makeUpdatePrismaMock();
     // findById is called internally after update — stub second findUnique call
     prismaMock.camino.findUnique = vi.fn()
-      .mockResolvedValueOnce(baseCamino)       // ownership check
+      .mockResolvedValueOnce(baseCamino)       // existence check
       .mockResolvedValueOnce(caminoWithOrder); // findById
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
-    const result = await service.update(CAMINO_ID, nameDto, OTHER_ID, PILGRIM_ROLES);
+    const result = await service.update(CAMINO_ID, nameDto, PILGRIM_ROLES);
     expect(result.id).toBe(CAMINO_ID);
   });
 
-  it('allows the camino owner (non-pilgrim) to update their own camino', async () => {
+  it('allows a user with owner role to update any camino', async () => {
     const prismaMock = makeUpdatePrismaMock();
     prismaMock.camino.findUnique = vi.fn()
       .mockResolvedValueOnce(baseCamino)
@@ -465,18 +466,18 @@ describe('CaminosService.update()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
-    const result = await service.update(CAMINO_ID, nameDto, OWNER_ID, NO_ROLES);
+    const result = await service.update(CAMINO_ID, nameDto, OWNER_ROLES);
     expect(result.id).toBe(CAMINO_ID);
   });
 
-  it('throws ForbiddenException when user is neither pilgrim nor owner', async () => {
+  it('throws ForbiddenException when user has neither pilgrim nor owner role', async () => {
     const prismaMock = makeUpdatePrismaMock();
     prismaMock.camino.findUnique = vi.fn().mockResolvedValue(baseCamino);
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
     await expect(
-      service.update(CAMINO_ID, nameDto, OTHER_ID, NO_ROLES),
+      service.update(CAMINO_ID, nameDto, NO_ROLES),
     ).rejects.toBeInstanceOf(ForbiddenException);
   });
 
@@ -487,7 +488,7 @@ describe('CaminosService.update()', () => {
     const service = module.get(CaminosService);
 
     await expect(
-      service.update(CAMINO_ID, nameDto, OWNER_ID, NO_ROLES),
+      service.update(CAMINO_ID, nameDto, NO_ROLES),
     ).rejects.toBeInstanceOf(NotFoundException);
   });
 
@@ -499,7 +500,7 @@ describe('CaminosService.update()', () => {
     const service = module.get(CaminosService);
 
     await expect(
-      service.update(CAMINO_ID, nameDto, OWNER_ID, PILGRIM_ROLES),
+      service.update(CAMINO_ID, nameDto, PILGRIM_ROLES),
     ).rejects.toBeInstanceOf(ConflictException);
   });
 });
@@ -517,11 +518,11 @@ describe('CaminosService.delete()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
-    await expect(service.delete(CAMINO_ID, OTHER_ID, PILGRIM_ROLES)).resolves.toBeUndefined();
+    await expect(service.delete(CAMINO_ID, PILGRIM_ROLES)).resolves.toBeUndefined();
     expect(prismaMock.camino.delete).toHaveBeenCalledOnce();
   });
 
-  it('allows the camino owner (non-pilgrim) to delete their own camino', async () => {
+  it('allows a user with owner role to delete any camino', async () => {
     const prismaMock = {
       camino: {
         findUnique: vi.fn().mockResolvedValue(baseCamino),
@@ -531,11 +532,11 @@ describe('CaminosService.delete()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
-    await expect(service.delete(CAMINO_ID, OWNER_ID, NO_ROLES)).resolves.toBeUndefined();
+    await expect(service.delete(CAMINO_ID, OWNER_ROLES)).resolves.toBeUndefined();
     expect(prismaMock.camino.delete).toHaveBeenCalledOnce();
   });
 
-  it('throws ForbiddenException when user is neither pilgrim nor owner', async () => {
+  it('throws ForbiddenException when user has neither pilgrim nor owner role', async () => {
     const prismaMock = {
       camino: {
         findUnique: vi.fn().mockResolvedValue(baseCamino),
@@ -546,7 +547,7 @@ describe('CaminosService.delete()', () => {
     const service = module.get(CaminosService);
 
     await expect(
-      service.delete(CAMINO_ID, OTHER_ID, NO_ROLES),
+      service.delete(CAMINO_ID, NO_ROLES),
     ).rejects.toBeInstanceOf(ForbiddenException);
     expect(prismaMock.camino.delete).not.toHaveBeenCalled();
   });
@@ -562,7 +563,7 @@ describe('CaminosService.delete()', () => {
     const service = module.get(CaminosService);
 
     await expect(
-      service.delete(CAMINO_ID, OWNER_ID, NO_ROLES),
+      service.delete(CAMINO_ID, NO_ROLES),
     ).rejects.toBeInstanceOf(NotFoundException);
     expect(prismaMock.camino.delete).not.toHaveBeenCalled();
   });

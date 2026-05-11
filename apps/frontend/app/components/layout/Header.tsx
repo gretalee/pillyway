@@ -4,7 +4,7 @@ import { buttonVariants } from '../ui/button';
 import { cn } from '@/lib/utils';
 import { UserMenu } from './UserMenu';
 import { LanguageSwitcher } from './LanguageSwitcher';
-import type { AuthUser } from '@/providers/AuthContext';
+import type { AuthUser } from '@/lib/getAuthUser';
 
 interface HeaderProps {
   user: AuthUser | null;
