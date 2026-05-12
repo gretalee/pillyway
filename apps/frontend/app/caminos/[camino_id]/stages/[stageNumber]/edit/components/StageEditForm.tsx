@@ -5,13 +5,13 @@ import { useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
-import { useStage } from '@/app/api/use-stage';
-import { useUpdateStage } from '@/app/api/use-update-stage';
-import type { UpdateStagePayload } from '@/app/api/stage-types';
+import { useStage } from '@/app/api/stages/use-stage';
+import type { UpdateStagePayload } from '@/app/api/stages/stage-types';
 import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
 import { Textarea } from '@/app/components/ui/textarea';
 import { Label } from '@/app/components/ui/label';
+import { useUpdateStage } from '@/app/api/stages/use-update-stage';
 
 interface StageEditFormProps {
   caminoId: string;
@@ -159,11 +159,7 @@ export function StageEditForm({ caminoId, stageNumber }: StageEditFormProps) {
       <div>
         <Label htmlFor={descriptionId}>{t('field_description')}</Label>
         <div className="mt-1">
-          <Textarea
-            id={descriptionId}
-            rows={4}
-            {...register('description')}
-          />
+          <Textarea id={descriptionId} rows={4} {...register('description')} />
         </div>
       </div>
 

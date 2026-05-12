@@ -25,12 +25,15 @@ import {
 import { cn } from '@/lib/utils';
 
 import { useCountries } from '@/app/api/use-countries';
-import { CaminoPointPayload, NewPointPayload } from '@/app/api/use-create-camino';
-import { CaminoPointSearchResult } from '@/app/api/use-camino-points-search';
-import { useCamino } from '@/app/api/use-camino';
-import { useUpdateCamino, UpdateCaminoPayload } from '@/app/api/use-update-camino';
-import { useStages } from '@/app/api/use-stages';
+import { CaminoPointPayload, NewPointPayload } from '@/app/api/caminos/use-create-camino';
+import { CaminoPointSearchResult } from '@/app/api/caminos/use-camino-points-search';
+import {
+  useUpdateCamino,
+  UpdateCaminoPayload,
+} from '@/app/api/caminos/use-update-camino';
+import { useStages } from '@/app/api/stages/use-stages';
 import { CaminoPointRow } from '../../components/CaminoPointRow';
+import { useCamino } from '@/app/api/caminos/use-camino';
 
 interface CaminoPointFormItem {
   caminoPointId: string | null;
@@ -80,7 +83,10 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
     },
   });
 
-  const { fields, append, remove, move } = useFieldArray({ control, name: 'caminoPoints' });
+  const { fields, append, remove, move } = useFieldArray({
+    control,
+    name: 'caminoPoints',
+  });
   const watchedPoints = useWatch({ control, name: 'caminoPoints' });
 
   // Pre-populate form once camino data is loaded
@@ -102,7 +108,9 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
 
   const onLinkCaminoPoints = useCallback(
     (index: number, suggestion: CaminoPointSearchResult) => {
-      setValue(`caminoPoints.${index}.caminoPointId`, suggestion.id, { shouldValidate: true });
+      setValue(`caminoPoints.${index}.caminoPointId`, suggestion.id, {
+        shouldValidate: true,
+      });
       setValue(`caminoPoints.${index}.name`, suggestion.name, { shouldValidate: true });
       setValue(`caminoPoints.${index}.description`, suggestion.description ?? '', {
         shouldValidate: true,
@@ -221,7 +229,9 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
         <p role="alert" className="text-destructive">
           {t('error_loading')}
         </p>
-        <Link href="/caminos" className="text-sm underline underline-offset-4 hover:text-foreground">
+        <Link
+          href="/caminos"
+          className="text-sm underline underline-offset-4 hover:text-foreground">
           {t('back_to_caminos')}
         </Link>
       </div>
@@ -241,7 +251,11 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
 
   return (
     <>
-      <AlertDialog open={pendingPayload !== null} onOpenChange={(isOpen) => { if (!isOpen) handleCancelReorder(); }}>
+      <AlertDialog
+        open={pendingPayload !== null}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) handleCancelReorder();
+        }}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>{t('reorder_warning_title')}</AlertDialogTitle>
@@ -277,7 +291,9 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
         <div>
           <div className="flex items-center gap-0.5">
             <Label htmlFor={nameId}>{tNew('field_name')}</Label>
-            <span aria-hidden="true" className="text-destructive">*</span>
+            <span aria-hidden="true" className="text-destructive">
+              *
+            </span>
           </div>
           <div className="mt-1">
             <Input
@@ -288,7 +304,10 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
             />
           </div>
           {errors.name && (
-            <p id={`${nameId}-error`} role="alert" className="mt-1 text-xs text-destructive">
+            <p
+              id={`${nameId}-error`}
+              role="alert"
+              className="mt-1 text-xs text-destructive">
               {errors.name.message}
             </p>
           )}
@@ -302,7 +321,9 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
         </div>
 
         <div>
-          <h2 className="mb-3 text-sm font-semibold text-foreground">{tNew('title_points')}</h2>
+          <h2 className="mb-3 text-sm font-semibold text-foreground">
+            {tNew('title_points')}
+          </h2>
           <div className="space-y-3">
             {fields.map((field, index) => (
               <CaminoPointRow
@@ -312,9 +333,15 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
                 countries={countries}
                 register={register}
                 errors={errors}
-                onRemove={(i) => { if (fields.length > 1) remove(i); }}
-                onMoveUp={(i) => { if (i > 0) move(i, i - 1); }}
-                onMoveDown={(i) => { if (i < fields.length - 1) move(i, i + 1); }}
+                onRemove={(i) => {
+                  if (fields.length > 1) remove(i);
+                }}
+                onMoveUp={(i) => {
+                  if (i > 0) move(i, i - 1);
+                }}
+                onMoveDown={(i) => {
+                  if (i < fields.length - 1) move(i, i + 1);
+                }}
                 onLink={onLinkCaminoPoints}
                 onUnlink={onUnlinkCaminoPoints}
                 watchedPoints={watchedPoints ?? []}
@@ -324,7 +351,9 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
 
           <button
             type="button"
-            onClick={() => append({ caminoPointId: null, name: '', country: '', description: '' })}
+            onClick={() =>
+              append({ caminoPointId: null, name: '', country: '', description: '' })
+            }
             className={cn(
               'mt-3 inline-flex items-center gap-1.5 rounded-lg border border-dashed border-border px-4 py-2',
               'text-sm font-medium text-muted-foreground transition-colors',

@@ -4,7 +4,7 @@ import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import { useMutation } from '@tanstack/react-query';
 
 import { CaminoPointPayload } from './use-create-camino';
-import { CaminoDetailFull } from './use-camino';
+import { CaminoDetailFull } from './caminos';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? '';
 

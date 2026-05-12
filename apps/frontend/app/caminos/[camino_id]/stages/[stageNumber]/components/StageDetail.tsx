@@ -1,10 +1,10 @@
-'use client';
-
 import Link from 'next/link';
-import { useTranslations } from 'next-intl';
+import { notFound } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useStage } from '@/app/api/use-stage';
+import type { StageDetail as StageDetailData } from '@/app/api/stages/stage-types';
 import type { AuthUser } from '@/lib/getAuthUser';
+import { fetchStage } from '@/app/api/stages/fetch-stage';
 
 interface StageDetailProps {
   caminoId: string;
@@ -12,34 +12,20 @@ interface StageDetailProps {
   user: AuthUser | null;
 }
 
-export function StageDetail({ caminoId, stageNumber, user }: StageDetailProps) {
-  const t = useTranslations('stage_detail');
-  const tCountries = useTranslations('countries');
-  const { data: stage, isLoading, isError } = useStage(caminoId, stageNumber);
+export async function StageDetail({ caminoId, stageNumber, user }: StageDetailProps) {
+  const t = await getTranslations('stage_detail');
+  const tCountries = await getTranslations('countries');
+
+  let stage: StageDetailData;
+  try {
+    stage = await fetchStage(caminoId, stageNumber);
+  } catch (e: Error | unknown) {
+    console.error('[StageDetail] Error fetching stage:', e);
+    return notFound();
+  }
 
   const canEdit =
     user?.roles.some((r) => r.key === 'pilgrim' || r.key === 'owner') ?? false;
-
-  if (isLoading) {
-    return (
-      <div className="space-y-4 animate-pulse" aria-busy="true">
-        <div className="h-6 w-32 rounded bg-muted" />
-        <div className="h-10 w-64 rounded bg-muted" />
-        <div className="h-5 w-48 rounded bg-muted" />
-        <div className="h-5 w-48 rounded bg-muted" />
-        <div className="h-5 w-24 rounded bg-muted" />
-        <div className="h-16 w-full rounded bg-muted" />
-      </div>
-    );
-  }
-
-  if (isError || !stage) {
-    return (
-      <p role="alert" className="text-sm text-destructive">
-        {t('error_loading')}
-      </p>
-    );
-  }
 
   const { previousStage, nextStage } = stage;
 
@@ -154,6 +140,7 @@ export function StageDetail({ caminoId, stageNumber, user }: StageDetailProps) {
           <button
             type="button"
             disabled
+            aria-label={t('first_stage_label')}
             className="inline-flex cursor-not-allowed items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted-foreground opacity-50">
             <ChevronLeft className="size-4" aria-hidden="true" />
             {t('first_stage_label')}
@@ -181,6 +168,7 @@ export function StageDetail({ caminoId, stageNumber, user }: StageDetailProps) {
           <button
             type="button"
             disabled
+            aria-label={t('last_stage_label')}
             className="inline-flex cursor-not-allowed items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted-foreground opacity-50">
             {t('last_stage_label')}
             <ChevronRight className="size-4" aria-hidden="true" />

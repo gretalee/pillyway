@@ -1,28 +1,20 @@
-'use client';
-
 import Link from 'next/link';
-import { useTranslations } from 'next-intl';
-import { useStages } from '@/app/api/use-stages';
+import { getTranslations } from 'next-intl/server';
+import type { StageListItem } from '@/app/api/stages/stage-types';
+import { fetchStages } from '@/app/api/stages/fetch-stages';
 
 interface StageListProps {
   caminoId: string;
 }
 
-export function StageList({ caminoId }: StageListProps) {
-  const t = useTranslations('camino_detail');
-  const { data: stages, isLoading, isError } = useStages(caminoId);
+export async function StageList({ caminoId }: StageListProps) {
+  const t = await getTranslations('camino_detail');
 
-  if (isLoading) {
-    return (
-      <div className="space-y-3 animate-pulse" aria-busy="true">
-        <div className="h-10 w-full rounded bg-muted" />
-        <div className="h-10 w-full rounded bg-muted" />
-        <div className="h-10 w-full rounded bg-muted" />
-      </div>
-    );
-  }
-
-  if (isError) {
+  let stages: StageListItem[];
+  try {
+    stages = await fetchStages(caminoId);
+  } catch (e: Error | unknown) {
+    console.error('[StageList] Error fetching stages:', e);
     return (
       <p role="alert" className="text-sm text-destructive">
         {t('error_loading_stages')}
@@ -30,10 +22,8 @@ export function StageList({ caminoId }: StageListProps) {
     );
   }
 
-  if (!stages || stages.length === 0) {
-    return (
-      <p className="text-sm text-muted-foreground">{t('no_stages')}</p>
-    );
+  if (stages.length === 0) {
+    return <p className="text-sm text-muted-foreground">{t('no_stages')}</p>;
   }
 
   return (

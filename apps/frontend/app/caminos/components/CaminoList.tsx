@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import { buttonVariants } from '@/app/components/ui/button';
-import type { CaminoSummary } from '@/app/api/caminos';
+import type { CaminoSummary } from '@/app/api/caminos/caminos';
 import type { AuthUser } from '@/lib/getAuthUser';
 import { CaminoActionsMenu } from './CaminoActionsMenu';
 
@@ -23,7 +23,8 @@ interface CaminoListProps {
 export async function CaminoList({ caminos, user }: CaminoListProps) {
   const t = await getTranslations('caminos');
 
-  const canModify = user?.roles.some((r) => r.key === 'pilgrim' || r.key === 'owner') ?? false;
+  const canModify =
+    user?.roles.some((r) => r.key === 'pilgrim' || r.key === 'owner') ?? false;
   const isPilgrim = user?.roles.some((r) => r.key === 'pilgrim') ?? false;
 
   return (

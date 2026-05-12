@@ -32,11 +32,7 @@ export default async function StageDetailPage({ params }: Props) {
 
   return (
     <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-16 sm:px-6 lg:px-8">
-      <StageDetail
-        caminoId={camino_id}
-        stageNumber={n}
-        user={user}
-      />
+      {camino_id && n && <StageDetail caminoId={camino_id} stageNumber={n} user={user} />}
     </main>
   );
 }

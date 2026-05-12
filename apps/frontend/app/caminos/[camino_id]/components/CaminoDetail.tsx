@@ -7,10 +7,9 @@ import { ChevronLeft, Pencil } from 'lucide-react';
 
 import { Input } from '@/app/components/ui/input';
 import { Textarea } from '@/app/components/ui/textarea';
-import type { CaminoDetailFull } from '@/app/api/caminos';
-import { useUpdateCamino } from '@/app/api/use-update-camino';
+import type { CaminoDetailFull } from '@/app/api/caminos/caminos';
+import { useUpdateCamino } from '@/app/api/caminos/use-update-camino';
 import type { AuthUser } from '@/lib/getAuthUser';
-import { StageList } from './StageList';
 
 type EditingField = 'name' | 'description' | null;
 
@@ -77,18 +76,21 @@ interface CaminoDetailProps {
   camino: CaminoDetailFull;
   caminoId: string;
   user: AuthUser | null;
+  children?: React.ReactNode;
 }
 
 export function CaminoDetail({
   camino: initialCamino,
   caminoId,
   user,
+  children,
 }: CaminoDetailProps) {
   const t = useTranslations('camino_detail');
   const tCaminos = useTranslations('caminos');
   const mutation = useUpdateCamino();
 
-  const canEdit = user?.roles.some((r) => r.key === 'pilgrim' || r.key === 'owner') ?? false;
+  const canEdit =
+    user?.roles.some((r) => r.key === 'pilgrim' || r.key === 'owner') ?? false;
 
   const [camino, setCamino] = useState(initialCamino);
   const [editingField, setEditingField] = useState<EditingField>(null);
@@ -228,7 +230,7 @@ export function CaminoDetail({
       {/* Stages */}
       <section className="mt-8">
         <h2 className="mb-4 text-xl font-semibold">{t('stages_heading')}</h2>
-        <StageList caminoId={caminoId} />
+        {children}
       </section>
 
       {/* Edit waypoints link */}

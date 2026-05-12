@@ -2,7 +2,7 @@
 
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import type { StageDetail, UpdateStagePayload } from './stage-types';
+import { StageDetail, UpdateStagePayload } from './stage-types';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? '';
 

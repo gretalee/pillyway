@@ -1,8 +1,9 @@
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
-import { fetchCamino } from '@/app/api/caminos';
+import { fetchCamino } from '@/app/api/caminos/caminos';
 import { getAuthUser } from '@/lib/getAuthUser';
 import { CaminoDetail } from './components/CaminoDetail';
+import { StageList } from './components/StageList';
 
 interface Props {
   params: Promise<{ camino_id: string }>;
@@ -43,7 +44,9 @@ export default async function CaminoDetailPage({ params }: Props) {
 
   return (
     <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-16 sm:px-6 lg:px-8">
-      <CaminoDetail camino={camino} caminoId={camino_id} user={user} />
+      <CaminoDetail camino={camino} caminoId={camino_id} user={user}>
+        {camino_id && <StageList caminoId={camino_id} />}
+      </CaminoDetail>
     </main>
   );
 }
