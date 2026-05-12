@@ -30,6 +30,7 @@ export interface CaminoPointInResponse {
   id: string;
   name: string;
   country: string;
+  slug: string;
   /** Present on CaminoDetail (create response) but not on CaminoDetailFull — keep for backwards compat. */
   position: number;
 }
@@ -63,6 +64,7 @@ export interface CaminoDetailFull {
     id: string;
     name: string;
     country: string;
+    slug: string;
     description: string | null;
     position: number;
   }>;
@@ -78,6 +80,44 @@ export class CaminosService {
     private readonly prisma: PrismaService,
     private readonly stagesService: StagesService,
   ) {}
+
+  // ── generateSlug ────────────────────────────────────────────────────────────
+
+  /**
+   * Generates a unique, human-readable slug for a CaminoPoint.
+   * Falls back to appending the country and then a numeric suffix on collision.
+   * Slug is immutable once set — never call this on an existing point.
+   *
+   * @param name    - The point's display name.
+   * @param country - The point's country (used only for collision resolution).
+   * @param tx      - Caller's transaction client so the uniqueness check is
+   *                  consistent within the outer transaction.
+   */
+  private async generateSlug(
+    name: string,
+    country: string,
+    tx: Prisma.TransactionClient,
+  ): Promise<string> {
+    const base = name
+      .toLowerCase()
+      .trim()
+      .replace(/[\s_]+/g, '-')
+      .replace(/[^a-z0-9-]/g, '')
+      .replace(/^-+|-+$/g, '');
+
+    const exists = async (slug: string): Promise<boolean> =>
+      !!(await tx.caminoPoint.findUnique({ where: { slug } }));
+
+    let candidate = base;
+    if (await exists(candidate)) {
+      candidate = `${base}-${country.toLowerCase()}`;
+      let n = 2;
+      while (await exists(candidate)) {
+        candidate = `${base}-${country.toLowerCase()}-${n++}`;
+      }
+    }
+    return candidate;
+  }
 
   // ── findAll ─────────────────────────────────────────────────────────────────
 
@@ -128,6 +168,7 @@ export class CaminosService {
         id: order.caminoPoint.id,
         name: order.caminoPoint.name,
         country: order.caminoPoint.country,
+        slug: order.caminoPoint.slug,
         description: order.caminoPoint.description,
         position: order.position,
       })),
@@ -182,6 +223,8 @@ export class CaminosService {
           let pointName: string;
           let pointCountry: string;
 
+          let pointSlug: string;
+
           if (item.caminoPointId) {
             // Existing point — verify it exists
             const found = await tx.caminoPoint.findUnique({
@@ -195,8 +238,14 @@ export class CaminosService {
             pointId = found.id;
             pointName = found.name;
             pointCountry = found.country;
+            pointSlug = found.slug;
           } else {
             // New point — upsert by name+country composite unique key
+            const slug = await this.generateSlug(
+              item.name!,
+              item.country!,
+              tx,
+            );
             const upserted = await tx.caminoPoint.upsert({
               where: {
                 name_country: {
@@ -208,12 +257,14 @@ export class CaminosService {
                 name: item.name!,
                 country: item.country!,
                 description: item.description ?? null,
+                slug,
               },
-              update: {},
+              update: {}, // slug is immutable — never update it
             });
             pointId = upserted.id;
             pointName = upserted.name;
             pointCountry = upserted.country;
+            pointSlug = upserted.slug;
           }
 
           const position = i + 1;
@@ -229,6 +280,7 @@ export class CaminosService {
             id: pointId,
             name: pointName,
             country: pointCountry,
+            slug: pointSlug,
             position,
           });
         }
@@ -381,6 +433,11 @@ export class CaminosService {
               }
               pointId = found.id;
             } else {
+              const slug = await this.generateSlug(
+                item.name!,
+                item.country!,
+                tx,
+              );
               const upserted = await tx.caminoPoint.upsert({
                 where: {
                   name_country: {
@@ -392,8 +449,9 @@ export class CaminosService {
                   name: item.name!,
                   country: item.country!,
                   description: item.description ?? null,
+                  slug,
                 },
-                update: {},
+                update: {}, // slug is immutable — never update it
               });
               pointId = upserted.id;
             }

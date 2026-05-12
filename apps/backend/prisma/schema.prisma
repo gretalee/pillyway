@@ -26,11 +26,14 @@ model CaminoPoint {
   name        String
   country     String
   description String?
+  slug        String   @unique
   createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
   caminoPointOrder CaminoPointOrder[]
   stagesAsStart    Stage[]            @relation("StageStart")
   stagesAsEnd      Stage[]            @relation("StageEnd")
+  accommodations   Accommodation[]
+  sights           Sight[]
 
   @@unique([name, country])
   @@map("camino_points")
@@ -63,4 +66,36 @@ model CaminoPointOrder {
   @@id([caminoId, caminoPointId])
   @@unique([caminoId, position])
   @@map("camino_point_order")
+}
+
+model Accommodation {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  caminoPointId String   @map("camino_point_id") @db.Uuid
+  name          String
+  description   String?
+  imageUrls     String[] @map("image_urls")
+  verified      Boolean  @default(false)
+  createdBy     String   @map("created_by")
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  caminoPoint CaminoPoint @relation(fields: [caminoPointId], references: [id], onDelete: Cascade)
+
+  @@map("accommodations")
+}
+
+model Sight {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  caminoPointId String   @map("camino_point_id") @db.Uuid
+  name          String
+  description   String?
+  imageUrls     String[] @map("image_urls")
+  verified      Boolean  @default(false)
+  createdBy     String   @map("created_by")
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  caminoPoint CaminoPoint @relation(fields: [caminoPointId], references: [id], onDelete: Cascade)
+
+  @@map("sights")
 }
