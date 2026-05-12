@@ -1,3 +1,4 @@
+import { expect } from '@playwright/test';
 import type { Page } from '@playwright/test';
 
 const BASE_URL = process.env.E2E_BASE_URL ?? 'http://localhost:3000';
@@ -61,6 +62,11 @@ export async function loginAs(
   await page.waitForURL('/', { timeout: 20_000 });
 }
 
+export async function logout(page: Page): Promise<void> {
+  await page.goto('/api/auth/logout');
+  await page.waitForURL('/', { timeout: 10_000 });
+}
+
 // ─── Helper: unique test camino name ─────────────────────────────────────────
 export function uniqueName(label: string): string {
   return `[E2E-${label}] ${Date.now()}`;
@@ -84,9 +90,11 @@ export async function createCaminoViaForm(
   const countrySelect = page.getByLabel('Country').first();
   await countrySelect.selectOption('France');
 
-  const useExistingButton = page.getByRole('button', {
-    name: 'Yes, use this existing waypoint',
-  });
+  const useExistingButton = page
+    .getByRole('button', {
+      name: 'Yes, use this existing waypoint',
+    })
+    .first();
   if (await useExistingButton.isVisible()) {
     await useExistingButton.click();
   }
@@ -100,6 +108,83 @@ export async function createCaminoViaForm(
   await page.getByRole('heading', { name, exact: true }).click();
   await page.waitForURL(/\/caminos\/[^/]+$/, { timeout: 10_000 });
 
+  const segments = new URL(page.url()).pathname.split('/');
+  return segments[segments.length - 1];
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Helper: create a camino with 4 waypoints so that exactly 3 stages exist.
+// Stage 2 is then a middle stage with both previous and next navigation links.
+// Existing waypoints are reused via the suggestion card to keep the DB lean.
+// Returns the camino ID.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const WAYPOINTS: Array<{ name: string; country: string }> = [
+  { name: 'Saint-Jean-Pied-de-Port', country: 'France' },
+  { name: 'Roncesvalles', country: 'Spain' },
+  { name: 'Pamplona', country: 'Spain' },
+  { name: 'Logroño', country: 'Spain' },
+];
+
+export async function createCaminoWith4Points(
+  page: import('@playwright/test').Page,
+  name: string,
+): Promise<string> {
+  await page.goto('/caminos/new');
+  await page.getByLabel('Camino Name').fill(name);
+
+  for (let i = 0; i < WAYPOINTS.length; i++) {
+    if (i > 0) {
+      await page.getByRole('button', { name: 'Add Waypoint' }).click();
+    }
+
+    const { name: wpName, country } = WAYPOINTS[i];
+    await page.getByLabel('Waypoint Name').nth(i).fill(wpName);
+    await page.getByLabel('Country').nth(i).selectOption(country);
+
+    // Accept an existing waypoint if the suggestion card appears
+    const useExisting = page
+      .getByRole('button', {
+        name: 'Yes, use this existing waypoint',
+      })
+      .first();
+    if (await useExisting.isVisible({ timeout: 5_000 }).catch(() => false)) {
+      await useExisting.click();
+      // Wait for the suggestion card to dismiss so the form fully settles
+      await useExisting.waitFor({ state: 'hidden', timeout: 5_000 }).catch(() => {});
+    }
+  }
+
+  // Wait for the form to be in a submittable state (background waypoint lookups finish)
+  const createButton = page.getByRole('button', { name: 'Create Camino' });
+  await expect(createButton).toBeEnabled({ timeout: 15_000 });
+  await createButton.click();
+  await page.waitForURL('/caminos', { timeout: 15_000 });
+
+  await page.getByRole('heading', { name, exact: true }).click();
+  await page.waitForURL(/\/caminos\/[^/]+$/, { timeout: 10_000 });
+
+  const segments = new URL(page.url()).pathname.split('/');
+  return segments[segments.length - 1];
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Helper: navigate to first camino that has at least one stage row
+// ─────────────────────────────────────────────────────────────────────────────
+
+export async function navigateToCaminoWithName(
+  caminoName: string,
+  page: import('@playwright/test').Page,
+): Promise<string> {
+  await page.goto('/caminos');
+
+  const caminoCard = page.getByRole('heading', { name: caminoName, exact: true });
+  await expect(caminoCard, `Camino with name "${caminoName}" must exist`).toBeVisible({
+    timeout: 10_000,
+  });
+  await caminoCard.click();
+
+  await page.waitForURL(/\/caminos\/[^/]+$/, { timeout: 10_000 });
   const segments = new URL(page.url()).pathname.split('/');
   return segments[segments.length - 1];
 }

@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
-import { CaminoPointSearchResult } from '@/app/api/use-camino-points-search';
+import { CaminoPointSearchResult } from '@/app/api/caminos/use-camino-points-search';
 
 interface SuggestionCardProps {
   suggestion: CaminoPointSearchResult;

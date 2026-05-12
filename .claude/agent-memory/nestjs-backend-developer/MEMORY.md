@@ -1,3 +1,3 @@
-- [Pillyway domain model](project_domain.md) — core entities (Camino/CaminoPoint/Accommodation/Review/User), role matrix (`pilgrim` key), and phased scope
+- [Pillyway domain model](project_domain.md) — core entities (Camino/CaminoPoint/Stage/Accommodation/Review), role matrix (`pilgrim` key), eager Stage creation pattern, module structure
 - [Auth Strategy — Kinde JWT (AUTH-001)](project_auth_strategy.md) — Kinde RS256 via jwks-rsa + passport-jwt; never use @kinde-oss/kinde-auth-node
 - [Database layer (Prisma)](project_supabase_patterns.md) — migrated from Supabase to Prisma 7; PrismaModule global; error mapping; Vitest mock patterns

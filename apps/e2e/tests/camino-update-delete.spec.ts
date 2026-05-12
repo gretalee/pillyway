@@ -28,7 +28,9 @@
 import { expect, test } from '@playwright/test';
 import {
   createCaminoViaForm,
+  createCaminoWith4Points,
   loginAs,
+  logout,
   setLanguageToEnglish,
   uniqueName,
 } from './helpers';
@@ -41,8 +43,52 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3033/api';
 // ─────────────────────────────────────────────────────────────────────────────
 
 test.describe('Public — unauthenticated access', () => {
-  test.beforeEach(async ({ page }) => {
+  let caminoName: string;
+  let caminoId: string;
+  test.beforeAll(async ({ browser }, testInfo) => {
+    testInfo.setTimeout(90_000);
+    const email = process.env.E2E_PILGRIM_EMAIL;
+    const password = process.env.E2E_PILGRIM_PASSWORD;
+    expect(email, 'E2E_PILGRIM_EMAIL must be set').toBeTruthy();
+    expect(password, 'E2E_PILGRIM_PASSWORD must be set').toBeTruthy();
+
+    const ctx = await browser.newContext();
+    const page = await ctx.newPage();
     await setLanguageToEnglish(page);
+    await loginAs(page, email!, password!);
+    caminoName = uniqueName('StageEdit');
+    caminoId = await createCaminoWith4Points(page, caminoName);
+    await logout(page);
+    await ctx.close();
+  });
+
+  test.afterAll(async ({ browser }, testInfo) => {
+    testInfo.setTimeout(90_000);
+    if (!caminoId) return;
+    const email = process.env.E2E_PILGRIM_EMAIL;
+    const password = process.env.E2E_PILGRIM_PASSWORD;
+    expect(email, 'E2E_PILGRIM_EMAIL must be set').toBeTruthy();
+    expect(password, 'E2E_PILGRIM_PASSWORD must be set').toBeTruthy();
+
+    const ctx = await browser.newContext();
+    const page = await ctx.newPage();
+    await setLanguageToEnglish(page);
+    await loginAs(page, email!, password!);
+    try {
+      await page.goto('/caminos');
+      const trigger = page.locator(`[aria-label="Actions for ${caminoName}"]`);
+      if (await trigger.isVisible({ timeout: 5_000 }).catch(() => false)) {
+        await trigger.click();
+        const deleteMenuItem = page.getByRole('menuitem', { name: 'Delete camino' });
+        if (await deleteMenuItem.isVisible({ timeout: 5_000 }).catch(() => false)) {
+          await deleteMenuItem.click();
+          await page.getByRole('button', { name: 'Delete' }).click();
+        }
+      }
+    } finally {
+      await logout(page);
+      await ctx.close();
+    }
   });
 
   test('guest can view camino detail page with name and waypoints', async ({ page }) => {
@@ -63,8 +109,8 @@ test.describe('Public — unauthenticated access', () => {
     // Detail page shows the camino name as h1
     await expect(page.getByRole('heading', { level: 1 })).toContainText(caminoName!);
 
-    // Waypoints section is visible
-    await expect(page.getByRole('heading', { name: 'Waypoints' })).toBeVisible();
+    // Stages section is visible
+    await expect(page.getByRole('heading', { name: 'Stages' })).toBeVisible();
     await expect(page.locator('ol li').first()).toBeVisible();
   });
 
@@ -111,6 +157,8 @@ test.describe('Pilgrim — authenticated write flows', () => {
   // nested beforeAll hooks, which would cause Kinde to invalidate earlier
   // sessions and make form submissions fail with 401.
   test.describe.configure({ mode: 'serial' });
+  // Kinde login consumes ~15-20s; give each test 60s so the body has budget.
+  test.setTimeout(60_000);
 
   test.beforeEach(async ({ page }) => {
     const email = process.env.E2E_PILGRIM_EMAIL;
@@ -140,7 +188,9 @@ test.describe('Pilgrim — authenticated write flows', () => {
       .filter({ has: page.getByRole('heading', { name: caminoName }) });
     await card.locator('[aria-label*="Actions for"]').click();
 
-    await page.getByRole('menuitem', { name: 'Change camino data' }).click();
+    const changeCaminoItem = page.getByRole('menuitem', { name: 'Change camino data' });
+    await expect(changeCaminoItem).toBeVisible({ timeout: 5_000 });
+    await changeCaminoItem.click();
 
     // Should navigate to /caminos/:id/update
     await page.waitForURL(/\/caminos\/[^/]+\/update$/, { timeout: 10_000 });
@@ -158,7 +208,8 @@ test.describe('Pilgrim — authenticated write flows', () => {
     let caminoId: string;
     let originalName: string;
 
-    test.beforeAll(async ({ browser }) => {
+    test.beforeAll(async ({ browser }, testInfo) => {
+      testInfo.setTimeout(90_000);
       const email = process.env.E2E_PILGRIM_EMAIL;
       const password = process.env.E2E_PILGRIM_PASSWORD;
       expect(email, 'E2E_PILGRIM_EMAIL must be set in .env').toBeTruthy();
@@ -171,7 +222,8 @@ test.describe('Pilgrim — authenticated write flows', () => {
       await ctx.close();
     });
 
-    test.afterAll(async ({ browser }) => {
+    test.afterAll(async ({ browser }, testInfo) => {
+      testInfo.setTimeout(90_000);
       if (!caminoId) return;
       const email = process.env.E2E_PILGRIM_EMAIL;
       const password = process.env.E2E_PILGRIM_PASSWORD;
@@ -182,11 +234,15 @@ test.describe('Pilgrim — authenticated write flows', () => {
       await loginAs(page, email!, password!);
       try {
         await page.goto('/caminos');
+
         const trigger = page.locator(`[aria-label="Actions for ${originalName}"]`);
         if (await trigger.isVisible({ timeout: 5_000 }).catch(() => false)) {
           await trigger.click();
-          await page.getByRole('menuitem', { name: 'Delete camino' }).click();
-          await page.getByRole('button', { name: 'Delete' }).click();
+          const deleteMenuItem = page.getByRole('menuitem', { name: 'Delete camino' });
+          if (await deleteMenuItem.isVisible({ timeout: 5_000 }).catch(() => false)) {
+            await deleteMenuItem.click();
+            await page.getByRole('button', { name: 'Delete' }).click();
+          }
         }
       } finally {
         await ctx.close();
@@ -248,7 +304,8 @@ test.describe('Pilgrim — authenticated write flows', () => {
     let caminoId: string;
     let originalName: string;
 
-    test.beforeAll(async ({ browser }) => {
+    test.beforeAll(async ({ browser }, testInfo) => {
+      testInfo.setTimeout(90_000);
       const email = process.env.E2E_PILGRIM_EMAIL;
       const password = process.env.E2E_PILGRIM_PASSWORD;
       expect(email, 'E2E_PILGRIM_EMAIL must be set in .env').toBeTruthy();
@@ -261,7 +318,8 @@ test.describe('Pilgrim — authenticated write flows', () => {
       await ctx.close();
     });
 
-    test.afterAll(async ({ browser }) => {
+    test.afterAll(async ({ browser }, testInfo) => {
+      testInfo.setTimeout(90_000);
       if (!caminoId) return;
       const email = process.env.E2E_PILGRIM_EMAIL;
       const password = process.env.E2E_PILGRIM_PASSWORD;
@@ -275,8 +333,11 @@ test.describe('Pilgrim — authenticated write flows', () => {
         const trigger = page.locator(`[aria-label="Actions for ${originalName}"]`);
         if (await trigger.isVisible({ timeout: 5_000 }).catch(() => false)) {
           await trigger.click();
-          await page.getByRole('menuitem', { name: 'Delete camino' }).click();
-          await page.getByRole('button', { name: 'Delete' }).click();
+          const deleteMenuItem = page.getByRole('menuitem', { name: 'Delete camino' });
+          if (await deleteMenuItem.isVisible({ timeout: 5_000 }).catch(() => false)) {
+            await deleteMenuItem.click();
+            await page.getByRole('button', { name: 'Delete' }).click();
+          }
         }
       } finally {
         await ctx.close();
@@ -316,7 +377,8 @@ test.describe('Pilgrim — authenticated write flows', () => {
     let caminoId: string;
     let caminoName: string;
 
-    test.beforeAll(async ({ browser }) => {
+    test.beforeAll(async ({ browser }, testInfo) => {
+      testInfo.setTimeout(90_000);
       const email = process.env.E2E_PILGRIM_EMAIL;
       const password = process.env.E2E_PILGRIM_PASSWORD;
       expect(email, 'E2E_PILGRIM_EMAIL must be set in .env').toBeTruthy();
@@ -329,7 +391,8 @@ test.describe('Pilgrim — authenticated write flows', () => {
       await ctx.close();
     });
 
-    test.afterAll(async ({ browser }) => {
+    test.afterAll(async ({ browser }, testInfo) => {
+      testInfo.setTimeout(90_000);
       if (!caminoId) return;
       const email = process.env.E2E_PILGRIM_EMAIL;
       const password = process.env.E2E_PILGRIM_PASSWORD;
@@ -343,8 +406,11 @@ test.describe('Pilgrim — authenticated write flows', () => {
         const trigger = page.locator(`[aria-label="Actions for ${caminoName}"]`);
         if (await trigger.isVisible({ timeout: 5_000 }).catch(() => false)) {
           await trigger.click();
-          await page.getByRole('menuitem', { name: 'Delete camino' }).click();
-          await page.getByRole('button', { name: 'Delete' }).click();
+          const deleteMenuItem = page.getByRole('menuitem', { name: 'Delete camino' });
+          if (await deleteMenuItem.isVisible({ timeout: 5_000 }).catch(() => false)) {
+            await deleteMenuItem.click();
+            await page.getByRole('button', { name: 'Delete' }).click();
+          }
         }
       } finally {
         await ctx.close();
@@ -360,7 +426,9 @@ test.describe('Pilgrim — authenticated write flows', () => {
       await expect(menuTrigger).toBeVisible({ timeout: 10_000 });
       await menuTrigger.click();
 
-      await page.getByRole('menuitem', { name: 'Delete camino' }).click();
+      const deleteMenuItem = page.getByRole('menuitem', { name: 'Delete camino' });
+      await expect(deleteMenuItem).toBeVisible({ timeout: 5_000 });
+      await deleteMenuItem.click();
 
       // Dialog opens
       await expect(page.getByRole('alertdialog')).toBeVisible();
@@ -382,7 +450,8 @@ test.describe('Pilgrim — authenticated write flows', () => {
   test.describe('Delete — confirm flow uses a fresh test camino', () => {
     let caminoName: string;
 
-    test.beforeAll(async ({ browser }) => {
+    test.beforeAll(async ({ browser }, testInfo) => {
+      testInfo.setTimeout(90_000);
       const email = process.env.E2E_PILGRIM_EMAIL;
       const password = process.env.E2E_PILGRIM_PASSWORD;
       expect(email, 'E2E_PILGRIM_EMAIL must be set in .env').toBeTruthy();
@@ -402,7 +471,9 @@ test.describe('Pilgrim — authenticated write flows', () => {
       await expect(menuTrigger).toBeVisible({ timeout: 10_000 });
       await menuTrigger.click();
 
-      await page.getByRole('menuitem', { name: 'Delete camino' }).click();
+      const deleteMenuItem = page.getByRole('menuitem', { name: 'Delete camino' });
+      await expect(deleteMenuItem).toBeVisible({ timeout: 5_000 });
+      await deleteMenuItem.click();
 
       // Dialog shows camino name in the body text
       await expect(page.getByRole('alertdialog')).toBeVisible();

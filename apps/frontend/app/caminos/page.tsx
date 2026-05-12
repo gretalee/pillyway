@@ -1,5 +1,5 @@
 import { getTranslations } from 'next-intl/server';
-import { fetchCaminos } from '@/app/api/caminos';
+import { fetchCaminos } from '@/app/api/caminos/caminos';
 import { getAuthUser } from '@/lib/getAuthUser';
 import { CaminoList } from './components/CaminoList';
 

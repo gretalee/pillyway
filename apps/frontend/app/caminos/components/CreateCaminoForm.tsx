@@ -18,8 +18,8 @@ import {
   CaminoPointPayload,
   NewPointPayload,
   useCreateCamino,
-} from '@/app/api/use-create-camino';
-import { CaminoPointSearchResult } from '@/app/api/use-camino-points-search';
+} from '@/app/api/caminos/use-create-camino';
+import { CaminoPointSearchResult } from '@/app/api/caminos/use-camino-points-search';
 import { CaminoPointRow } from './CaminoPointRow';
 
 interface CaminoPointFormItem {

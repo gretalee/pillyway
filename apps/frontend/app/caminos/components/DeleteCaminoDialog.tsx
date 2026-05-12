@@ -14,7 +14,7 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from '@/app/components/ui/alert-dialog';
-import { useDeleteCamino } from '@/app/api/use-delete-camino';
+import { useDeleteCamino } from '@/app/api/caminos/use-delete-camino';
 
 interface DeleteCaminoDialogProps {
   camino: { id: string; name: string } | null;
@@ -23,7 +23,12 @@ interface DeleteCaminoDialogProps {
   onSuccess?: () => void;
 }
 
-export function DeleteCaminoDialog({ camino, open, onClose, onSuccess }: DeleteCaminoDialogProps) {
+export function DeleteCaminoDialog({
+  camino,
+  open,
+  onClose,
+  onSuccess,
+}: DeleteCaminoDialogProps) {
   const t = useTranslations('caminos');
   const mutation = useDeleteCamino();
   const [deleteError, setDeleteError] = useState<string | null>(null);

@@ -83,7 +83,10 @@
     "edit_waypoints": "Wegpunkte bearbeiten",
     "back_to_list": "Alle Caminos anzeigen",
     "error_loading": "Camino konnte nicht geladen werden. Bitte versuche es erneut.",
-    "inline_save_error": "Änderungen konnten nicht gespeichert werden. Vorheriger Wert wurde wiederhergestellt."
+    "inline_save_error": "Änderungen konnten nicht gespeichert werden. Vorheriger Wert wurde wiederhergestellt.",
+    "stages_heading": "Etappen",
+    "no_stages": "Dieser Camino hat noch keine Etappen. Füge mindestens zwei Wegpunkte hinzu, um Etappen zu erzeugen.",
+    "error_loading_stages": "Etappen konnten nicht geladen werden. Bitte versuche es erneut."
   },
   "caminos_update": {
     "title": "Camino bearbeiten",
@@ -96,7 +99,47 @@
     "error_conflict": "Ein Camino mit diesem Namen existiert bereits. Bitte wähle einen anderen Namen.",
     "error_forbidden": "Du bist nicht berechtigt, diesen Camino zu bearbeiten.",
     "error_loading": "Camino-Daten konnten nicht zum Bearbeiten geladen werden.",
-    "back_to_caminos": "← Zurück zu Caminos"
+    "back_to_caminos": "← Zurück zu Caminos",
+    "reorder_warning_title": "Reihenfolge der Wegpunkte geändert",
+    "reorder_warning_body": "{count, plural, one {1 Etappe hat} other {# Etappen haben}} Entfernungs- oder Beschreibungsdaten, die nach dem Speichern in diesem Camino nicht mehr sichtbar sind. Die Daten werden nicht gelöscht — sie erscheinen wieder, wenn du die ursprüngliche Reihenfolge wiederherstellst.",
+    "reorder_warning_confirm": "Trotzdem speichern",
+    "reorder_warning_cancel": "Zurück"
+  },
+  "stage_detail": {
+    "meta_title": "Etappe {number} | Pillyway",
+    "meta_description": "Sieh dir die Details von Etappe {number} dieser Pilgerroute an.",
+    "stage_number": "Etappe {number}: {start} – {end}",
+    "back_to_camino": "Zurück zum Camino",
+    "start_label": "Start",
+    "end_label": "Ziel",
+    "distance_label": "Entfernung",
+    "description_label": "Beschreibung",
+    "nav_aria": "Etappennavigation",
+    "distance_unknown": "Entfernung nicht angegeben",
+    "no_description": "Keine Beschreibung vorhanden.",
+    "edit": "Etappe bearbeiten",
+    "previous_stage_aria": "Zur vorherigen Etappe: {start} bis {end}",
+    "next_stage_aria": "Zur nächsten Etappe: {start} bis {end}",
+    "error_loading": "Etappe konnte nicht geladen werden. Bitte versuche es erneut.",
+    "first_stage_label": "Das ist der Startpunkt",
+    "last_stage_label": "Letzter Camino-Punkt"
+  },
+  "stage_edit": {
+    "title": "Etappe {number} bearbeiten",
+    "meta_title": "Etappe {number} bearbeiten | Pillyway",
+    "meta_description": "Entfernung und Beschreibung dieser Etappe bearbeiten.",
+    "start_point_label": "Startpunkt",
+    "end_point_label": "Endpunkt",
+    "field_distance": "Entfernung (km)",
+    "field_distance_hint": "Optional. Entfernung in Kilometern eingeben.",
+    "field_description": "Beschreibung (optional)",
+    "submit": "Änderungen speichern",
+    "submitting": "Wird gespeichert…",
+    "cancel": "Abbrechen",
+    "access_denied": "Du hast keine Berechtigung, Etappen zu bearbeiten. Die Pilgrim- oder Owner-Rolle ist erforderlich.",
+    "error_generic": "Änderungen konnten nicht gespeichert werden. Bitte versuche es erneut.",
+    "error_forbidden": "Du bist nicht berechtigt, diese Etappe zu bearbeiten.",
+    "error_loading": "Etappendaten konnten nicht zum Bearbeiten geladen werden."
   },
   "countries": {
     "denmark": "Dänemark",

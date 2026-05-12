@@ -3,3 +3,4 @@
 - [Language switch feature decisions](feature_language_switch.md) — next-intl, cookie-based locale (no URL routing), DE default, store shape, middleware risk
 - [Camino creation feature decisions](feature_camino_creation.md) — PILLY-CAM-001: pilgrim role, DB schema, API contract, camino/caminoPoint naming, open questions
 - [Camino update and delete feature decisions](feature_camino_update_delete.md) — PILLY-CAM-002: detail page, inline edit, update form, delete flow, new API endpoints, test scope
+- [Stages feature decisions](feature_stages.md) — PILLY-STG-001: Stage entity, lazy creation, shared-stage reuse, stageNumber URL, pilgrim-only edit, new endpoints, open questions

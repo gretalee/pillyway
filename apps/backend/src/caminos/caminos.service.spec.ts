@@ -11,18 +11,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { PrismaService } from '../prisma/prisma.service';
+import { StagesService } from '../stages/stages.service';
 import { CaminosService } from './caminos.service';
 import { CreateCaminoDto } from './dto/create-camino.dto';
 import { UpdateCaminoDto } from './dto/update-camino.dto';
-
-// Suppress NestJS Logger output for error-path tests — the errors are expected.
-beforeEach(() => {
-  vi.spyOn(Logger.prototype, 'error').mockImplementation(() => {});
-});
-
-afterEach(() => {
-  vi.restoreAllMocks();
-});
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -57,11 +49,29 @@ function makeTx() {
   };
 }
 
+// StagesService mock used by all CaminosService tests.
+// upsertStagePairs must be a no-op so it does not interfere with the transaction
+// mock callback (it receives the tx object but does nothing with it).
+const stagesServiceMock = {
+  upsertStagePairs: vi.fn().mockResolvedValue(undefined),
+};
+
+// Suppress NestJS Logger output for error-path tests — the errors are expected.
+beforeEach(() => {
+  vi.spyOn(Logger.prototype, 'error').mockImplementation(() => {});
+  stagesServiceMock.upsertStagePairs.mockClear();
+});
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
+
 function buildModule(prismaMock: object): Promise<TestingModule> {
   return Test.createTestingModule({
     providers: [
       CaminosService,
       { provide: PrismaService, useValue: prismaMock },
+      { provide: StagesService, useValue: stagesServiceMock },
     ],
   })
     .setLogger(false)

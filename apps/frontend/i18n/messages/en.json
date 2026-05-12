@@ -83,7 +83,10 @@
     "edit_waypoints": "Edit waypoints",
     "back_to_list": "Show all caminos",
     "error_loading": "Failed to load camino. Please try again.",
-    "inline_save_error": "Failed to save changes. Reverted to previous value."
+    "inline_save_error": "Failed to save changes. Reverted to previous value.",
+    "stages_heading": "Stages",
+    "no_stages": "This camino has no stages yet. Add at least two waypoints to generate stages.",
+    "error_loading_stages": "Failed to load stages. Please try again."
   },
   "caminos_update": {
     "title": "Update Camino",
@@ -96,7 +99,47 @@
     "error_conflict": "A camino with this name already exists. Please choose a different name.",
     "error_forbidden": "You are not authorized to edit this camino.",
     "error_loading": "Failed to load camino data for editing.",
-    "back_to_caminos": "← Back to caminos"
+    "back_to_caminos": "← Back to caminos",
+    "reorder_warning_title": "Waypoint order changed",
+    "reorder_warning_body": "{count, plural, one {1 stage has} other {# stages have}} distance or description data that will no longer appear in this Camino after saving. The data is not deleted — it will return if you restore the original order.",
+    "reorder_warning_confirm": "Save anyway",
+    "reorder_warning_cancel": "Go back"
+  },
+  "stage_detail": {
+    "meta_title": "Stage {number} | Pillyway",
+    "meta_description": "View the details of stage {number} of this pilgrimage route.",
+    "stage_number": "Stage {number}: {start} – {end}",
+    "back_to_camino": "Back to camino",
+    "start_label": "Start",
+    "end_label": "End",
+    "distance_label": "Distance",
+    "description_label": "Description",
+    "nav_aria": "Stage navigation",
+    "distance_unknown": "Distance not set",
+    "no_description": "No description provided.",
+    "edit": "Edit stage",
+    "previous_stage_aria": "Go to previous stage: {start} to {end}",
+    "next_stage_aria": "Go to next stage: {start} to {end}",
+    "error_loading": "Failed to load stage. Please try again.",
+    "first_stage_label": "This is the starting point",
+    "last_stage_label": "Last camino point"
+  },
+  "stage_edit": {
+    "title": "Edit Stage {number}",
+    "meta_title": "Edit Stage {number} | Pillyway",
+    "meta_description": "Edit the distance and description of this stage.",
+    "start_point_label": "Start point",
+    "end_point_label": "End point",
+    "field_distance": "Distance (km)",
+    "field_distance_hint": "Optional. Enter the distance in kilometres.",
+    "field_description": "Description (optional)",
+    "submit": "Save changes",
+    "submitting": "Saving…",
+    "cancel": "Cancel",
+    "access_denied": "You do not have permission to edit stages. The pilgrim or owner role is required.",
+    "error_generic": "Failed to save changes. Please try again.",
+    "error_forbidden": "You are not authorized to edit this stage.",
+    "error_loading": "Failed to load stage data for editing."
   },
   "countries": {
     "denmark": "Denmark",

@@ -29,9 +29,27 @@ model CaminoPoint {
   createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
   caminoPointOrder CaminoPointOrder[]
+  stagesAsStart    Stage[]            @relation("StageStart")
+  stagesAsEnd      Stage[]            @relation("StageEnd")
 
   @@unique([name, country])
   @@map("camino_points")
+}
+
+model Stage {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  startPointId String   @map("start_point_id") @db.Uuid
+  endPointId   String   @map("end_point_id") @db.Uuid
+  distance     Float?
+  description  String?
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  startPoint CaminoPoint @relation("StageStart", fields: [startPointId], references: [id])
+  endPoint   CaminoPoint @relation("StageEnd", fields: [endPointId], references: [id])
+
+  @@unique([startPointId, endPointId])
+  @@map("stages")
 }
 
 model CaminoPointOrder {

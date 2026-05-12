@@ -7,8 +7,8 @@ import { ChevronLeft, Pencil } from 'lucide-react';
 
 import { Input } from '@/app/components/ui/input';
 import { Textarea } from '@/app/components/ui/textarea';
-import type { CaminoDetailFull } from '@/app/api/caminos';
-import { useUpdateCamino } from '@/app/api/use-update-camino';
+import type { CaminoDetailFull } from '@/app/api/caminos/caminos';
+import { useUpdateCamino } from '@/app/api/caminos/use-update-camino';
 import type { AuthUser } from '@/lib/getAuthUser';
 
 type EditingField = 'name' | 'description' | null;
@@ -76,18 +76,21 @@ interface CaminoDetailProps {
   camino: CaminoDetailFull;
   caminoId: string;
   user: AuthUser | null;
+  children?: React.ReactNode;
 }
 
 export function CaminoDetail({
   camino: initialCamino,
   caminoId,
   user,
+  children,
 }: CaminoDetailProps) {
   const t = useTranslations('camino_detail');
   const tCaminos = useTranslations('caminos');
   const mutation = useUpdateCamino();
 
-  const canEdit = user?.roles.some((r) => r.key === 'pilgrim' || r.key === 'owner') ?? false;
+  const canEdit =
+    user?.roles.some((r) => r.key === 'pilgrim' || r.key === 'owner') ?? false;
 
   const [camino, setCamino] = useState(initialCamino);
   const [editingField, setEditingField] = useState<EditingField>(null);
@@ -208,7 +211,7 @@ export function CaminoDetail({
           </div>
         ) : (
           <>
-            <p className="flex-1 text-muted-foreground">
+            <p className="flex-1 whitespace-pre-wrap text-muted-foreground">
               {camino.description ?? tCaminos('no_description')}
             </p>
             {canEdit && (
@@ -224,31 +227,10 @@ export function CaminoDetail({
         )}
       </div>
 
-      {/* Waypoints */}
+      {/* Stages */}
       <section className="mt-8">
-        <h2 className="mb-4 text-xl font-semibold">{t('waypoints_heading')}</h2>
-        <ol className="space-y-3">
-          {camino.caminoPoints.map((point) => (
-            <li key={point.id} className="flex gap-3">
-              <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
-                {point.position}
-              </span>
-              <div>
-                <p className="font-medium">
-                  {point.name}
-                  <span className="ml-2 text-sm text-muted-foreground">
-                    ({point.country})
-                  </span>
-                </p>
-                {point.description && (
-                  <p className="mt-0.5 text-sm text-muted-foreground">
-                    {point.description}
-                  </p>
-                )}
-              </div>
-            </li>
-          ))}
-        </ol>
+        <h2 className="mb-4 text-xl font-semibold">{t('stages_heading')}</h2>
+        {children}
       </section>
 
       {/* Edit waypoints link */}

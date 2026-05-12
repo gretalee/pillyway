@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils';
 import {
   CaminoPointSearchResult,
   useCaminoPointsSearch,
-} from '@/app/api/use-camino-points-search';
+} from '@/app/api/caminos/use-camino-points-search';
 import { useDebounce } from '@/lib/use-debounce';
 import { SuggestionCard } from './SuggestionCard';
 

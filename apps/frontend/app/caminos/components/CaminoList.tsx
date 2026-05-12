@@ -1,9 +1,19 @@
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import { buttonVariants } from '@/app/components/ui/button';
-import type { CaminoSummary } from '@/app/api/caminos';
+import type { CaminoSummary } from '@/app/api/caminos/caminos';
 import type { AuthUser } from '@/lib/getAuthUser';
 import { CaminoActionsMenu } from './CaminoActionsMenu';
+
+const DESCRIPTION_MAX = 665;
+
+function truncateAtSentence(text: string): string {
+  if (text.length <= DESCRIPTION_MAX) return text;
+  const sub = text.slice(0, DESCRIPTION_MAX);
+  const lastPeriod = sub.lastIndexOf('.');
+  if (lastPeriod > 0) return sub.slice(0, lastPeriod + 1) + '…';
+  return sub + '…';
+}
 
 interface CaminoListProps {
   caminos: CaminoSummary[];
@@ -13,7 +23,8 @@ interface CaminoListProps {
 export async function CaminoList({ caminos, user }: CaminoListProps) {
   const t = await getTranslations('caminos');
 
-  const canModify = user?.roles.some((r) => r.key === 'pilgrim' || r.key === 'owner') ?? false;
+  const canModify =
+    user?.roles.some((r) => r.key === 'pilgrim' || r.key === 'owner') ?? false;
   const isPilgrim = user?.roles.some((r) => r.key === 'pilgrim') ?? false;
 
   return (
@@ -38,7 +49,9 @@ export async function CaminoList({ caminos, user }: CaminoListProps) {
                 <Link href={`/caminos/${camino.id}`} className="flex-1">
                   <h2 className="text-lg font-semibold text-foreground">{camino.name}</h2>
                   {camino.description && (
-                    <p className="mt-1 text-sm text-muted-foreground">{camino.description}</p>
+                    <p className="mt-1 whitespace-pre-wrap text-sm text-muted-foreground">
+                      {truncateAtSentence(camino.description)}
+                    </p>
                   )}
                 </Link>
 
