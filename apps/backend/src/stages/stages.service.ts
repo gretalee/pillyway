@@ -80,7 +80,7 @@ export class StagesService {
     }
 
     // Single batched query — no N+1
-    let stageRows = await this.prisma.stage.findMany({
+    const stageRows = await this.prisma.stage.findMany({
       where: {
         OR: pairs.map((p) => ({
           startPointId: p.startId,
@@ -93,30 +93,6 @@ export class StagesService {
     const stageByPair = new Map<string, (typeof stageRows)[0]>();
     for (const row of stageRows) {
       stageByPair.set(`${row.startPointId}|${row.endPointId}`, row);
-    }
-
-    // Lazy backfill: caminos created before the stages feature have no stage rows.
-    // Upsert any missing pairs so they exist for subsequent reads.
-    const missingPairs = pairs.filter((p) => !stageByPair.has(`${p.startId}|${p.endId}`));
-    if (missingPairs.length > 0) {
-      await Promise.all(
-        missingPairs.map((p) =>
-          this.prisma.stage.upsert({
-            where: {
-              startPointId_endPointId: { startPointId: p.startId, endPointId: p.endId },
-            },
-            create: { startPointId: p.startId, endPointId: p.endId },
-            update: {},
-          }),
-        ),
-      );
-      const backfilledRows = await this.prisma.stage.findMany({
-        where: { OR: missingPairs.map((p) => ({ startPointId: p.startId, endPointId: p.endId })) },
-      });
-      stageRows = [...stageRows, ...backfilledRows];
-      for (const row of backfilledRows) {
-        stageByPair.set(`${row.startPointId}|${row.endPointId}`, row);
-      }
     }
 
     const result: StageListItem[] = [];
@@ -183,7 +159,7 @@ export class StagesService {
     const startPoint = orderedPoints[stageNumber - 1].caminoPoint;
     const endPoint = orderedPoints[stageNumber].caminoPoint;
 
-    let row = await this.prisma.stage.findUnique({
+    const row = await this.prisma.stage.findUnique({
       where: {
         startPointId_endPointId: {
           startPointId: startPoint.id,
@@ -192,18 +168,9 @@ export class StagesService {
       },
     });
 
-    // Lazy backfill for caminos created before the stages feature was added
     if (!row) {
-      row = await this.prisma.stage.upsert({
-        where: {
-          startPointId_endPointId: {
-            startPointId: startPoint.id,
-            endPointId: endPoint.id,
-          },
-        },
-        create: { startPointId: startPoint.id, endPointId: endPoint.id },
-        update: {},
-      });
+      // Should not happen after the backfill migration, but guard defensively
+      throw new NotFoundException('Stage not found.');
     }
 
     // Build adjacent stage summaries
