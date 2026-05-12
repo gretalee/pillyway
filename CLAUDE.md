@@ -219,3 +219,22 @@ Follow this checklist whenever a component needs to call the backend:
 ### Accessibility & SEO
 - Web output must meet WCAG accessibility standards: semantic HTML, ARIA labels on interactive elements, sufficient color contrast, keyboard navigability
 - Every page must include SEO-relevant meta tags: `<title>`, `<meta name="description">`, Open Graph tags (`og:title`, `og:description`, `og:image`)
+
+## E2E Testing Conventions (Playwright)
+
+The Playwright config uses `fullyParallel: true`. All spec files that touch the database must be written to avoid concurrent session conflicts with the shared Kinde pilgrim account.
+
+### Structure rules
+- **One `test.describe` per spec file.** Multiple describe blocks in one file run concurrently and cause Kinde session collisions.
+- **Serial mode for any test that mutates data.** Add `test.describe.configure({ mode: 'serial' })` at the top of the describe block whenever tests create, update, or delete caminos or stages.
+- **One shared test camino per describe.** Create it in `beforeAll`, reuse it across all tests in the describe, delete it in `afterAll`. Never rely on seeded data that may change between runs.
+- **Full-flow tests over micro-tests.** Combine related assertions into one test that walks a complete user journey. One test per tiny scenario multiplies Kinde logins and slows the suite.
+
+### Hook timeout rules
+- `test.setTimeout(60_000)` — set on the describe block when `beforeEach` performs a Kinde login (~15–20 s), so the test body still has budget.
+- `testInfo.setTimeout(90_000)` — set as the **first line** of every `beforeAll` and `afterAll` that performs a login + UI operation, because `test.setTimeout` does not extend hook timeouts.
+- `testInfo.setTimeout(120_000)` — use for `beforeAll` hooks that additionally navigate and fill forms after creating the camino (e.g. enriching a stage).
+
+### Cleanup rules
+- Cleanup in `afterAll` is best-effort — use `isVisible({ timeout: 5_000 }).catch(() => false)` (soft check) for every menu item click. A failed cleanup must never fail a test.
+- Hard `expect(...).toBeVisible()` assertions belong only in test bodies, never in `beforeAll`/`afterAll` cleanup blocks.
