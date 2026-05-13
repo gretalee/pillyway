@@ -117,7 +117,7 @@ describe('CaminosService.create()', () => {
     const prismaMock = {
       $transaction: vi
         .fn()
-        .mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) => cb(tx)),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
@@ -152,7 +152,7 @@ describe('CaminosService.create()', () => {
     const prismaMock = {
       $transaction: vi
         .fn()
-        .mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) => cb(tx)),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
@@ -176,22 +176,31 @@ describe('CaminosService.create()', () => {
       verified: false,
       createdBy: 'kinde-user-001',
     });
-    tx.caminoPoint.findUnique = vi.fn().mockResolvedValue({
-      id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
-      name: 'Irún',
-      country: 'Spain',
-      description: null,
+    tx.caminoPoint.findUnique = vi.fn().mockImplementation(({ where }) => {
+      // ID lookup (existing point resolution) — return the fixture point
+      if (where.id) {
+        return Promise.resolve({
+          id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+          name: 'Irún',
+          country: 'Spain',
+          slug: 'irun',
+          description: null,
+        });
+      }
+      // Slug uniqueness check inside generateSlug — slug is free, return null
+      return Promise.resolve(null);
     });
     tx.caminoPoint.upsert = vi.fn().mockResolvedValue({
       id: 'c3d4e5f6-a7b8-9012-cdef-123456789012',
       name: 'Roncesvalles',
       country: 'Spain',
+      slug: 'roncesvalles',
       description: null,
     });
     const prismaMock = {
       $transaction: vi
         .fn()
-        .mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) => cb(tx)),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
@@ -232,7 +241,7 @@ describe('CaminosService.create()', () => {
     const prismaMock = {
       $transaction: vi
         .fn()
-        .mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) => cb(tx)),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
@@ -254,7 +263,7 @@ describe('CaminosService.create() — error mapping', () => {
     const prismaMock = {
       $transaction: vi
         .fn()
-        .mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) => cb(tx)),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
@@ -272,7 +281,7 @@ describe('CaminosService.create() — error mapping', () => {
     const prismaMock = {
       $transaction: vi
         .fn()
-        .mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) => cb(tx)),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
@@ -292,7 +301,7 @@ describe('CaminosService.create() — error mapping', () => {
     const prismaMock = {
       $transaction: vi
         .fn()
-        .mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) => cb(tx)),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
@@ -308,7 +317,7 @@ describe('CaminosService.create() — error mapping', () => {
     const prismaMock = {
       $transaction: vi
         .fn()
-        .mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) => cb(tx)),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
@@ -480,7 +489,7 @@ describe('CaminosService.update()', () => {
       camino: caminoMock,
       $transaction: vi
         .fn()
-        .mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) => cb(tx)),
     };
   }
 
@@ -671,7 +680,7 @@ describe('CaminosService — generateSlug() slug generation', () => {
     const prismaMock = {
       $transaction: vi
         .fn()
-        .mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) => cb(tx)),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
@@ -690,7 +699,7 @@ describe('CaminosService — generateSlug() slug generation', () => {
     const prismaMock = {
       $transaction: vi
         .fn()
-        .mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) => cb(tx)),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
@@ -710,7 +719,7 @@ describe('CaminosService — generateSlug() slug generation', () => {
     const prismaMock = {
       $transaction: vi
         .fn()
-        .mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) => cb(tx)),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
@@ -732,7 +741,7 @@ describe('CaminosService — generateSlug() slug generation', () => {
     const prismaMock = {
       $transaction: vi
         .fn()
-        .mockImplementation((cb: (tx: typeof tx) => unknown) => cb(tx)),
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) => cb(tx)),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
