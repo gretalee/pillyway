@@ -37,7 +37,9 @@ export class UploadsController {
     description:
       'Accepts multipart/form-data with a `files` field. Maximum 10 files, 10 MB each. Only image/* MIME types are accepted.',
   })
-  @ApiOkResponse({ description: 'Upload successful. Returns an array of public URLs.' })
+  @ApiOkResponse({
+    description: 'Upload successful. Returns an array of public URLs.',
+  })
   @ApiUnauthorizedResponse({ description: 'Missing or invalid JWT.' })
   @ApiForbiddenResponse({ description: 'Requires pilgrim role.' })
   @UseInterceptors(

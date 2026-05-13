@@ -37,7 +37,7 @@ export class UploadsService {
           'Content-Type': file.mimetype,
           'x-upsert': 'true',
         },
-        body: file.buffer,
+        body: new Blob([new Uint8Array(file.buffer)], { type: file.mimetype }),
       });
 
       if (!res.ok) {
