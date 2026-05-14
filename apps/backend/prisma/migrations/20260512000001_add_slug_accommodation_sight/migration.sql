@@ -68,7 +68,7 @@ BEGIN
         suffix := suffix + 1;
       END LOOP;
     END IF;
-    UPDATE camino_points SET slug = candidate WHERE id = rec.id;
+    UPDATE camino_points SET slug = candidate WHERE id = rec.id AND slug IS NULL;
   END LOOP;
 END;
 $$;
