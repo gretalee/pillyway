@@ -17,6 +17,6 @@ The Waypoints POI feature (branch `feature/waypoints-poi`) adds:
 **Why:** Waypoints need stable, human-readable URLs for the frontend to link to POI detail pages.
 **How to apply:** When adding new features that touch CaminoPoint, ensure `slug` is included in any response DTO that returns CaminoPoint data. The `generateSlug` private method in CaminosService handles collision resolution (country suffix, then numeric suffix).
 
-New env vars required (see `.env.example`): `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_STORAGE_BUCKET`.
+New env vars required (see `.env.example`): `SUPABASE_S3_URL`, `SUPABASE_S3_REGION`, `SUPABASE_S3_BUCKET`, `SUPABASE_S3_ACCESS_KEY`, `SUPABASE_S3_SECRET_KEY`.
 
 After checkout: run `yarn install` (for multer) then `yarn workspace @pillyway/backend prisma generate` (for updated Prisma client types).
