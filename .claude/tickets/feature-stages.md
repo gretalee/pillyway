@@ -626,7 +626,7 @@ All keys must be added to both `apps/frontend/i18n/messages/en.json` and
 | `stage_edit.submit` | `"Save changes"` | `"Änderungen speichern"` |
 | `stage_edit.submitting` | `"Saving…"` | `"Wird gespeichert…"` |
 | `stage_edit.cancel` | `"Cancel"` | `"Abbrechen"` |
-| `stage_edit.access_denied` | `"You do not have permission to edit stages. The pilgrim or owner role is required."` | `"Du hast keine Berechtigung, Etappen zu bearbeiten. Die Pilgrim- oder Owner-Rolle ist erforderlich."` |
+| `stage_edit.access_denied` | `"You do not have permission to edit stages. The pilgrim role is required."` | `"Du hast keine Berechtigung, Etappen zu bearbeiten. Die Pilgrim-Rolle ist erforderlich."` |
 | `stage_edit.error_generic` | `"Failed to save changes. Please try again."` | `"Änderungen konnten nicht gespeichert werden. Bitte versuche es erneut."` |
 | `stage_edit.error_forbidden` | `"You are not authorized to edit this stage."` | `"Du bist nicht berechtigt, diese Etappe zu bearbeiten."` |
 | `stage_edit.error_loading` | `"Failed to load stage data for editing."` | `"Etappendaten konnten nicht zum Bearbeiten geladen werden."` |
@@ -715,7 +715,7 @@ All keys must be added to both `apps/frontend/i18n/messages/en.json` and
 ### Stage detail page
 
 - [ ] Given: a guest visits `/caminos/[id]/stages/1`. Then: the page renders without an Edit button.
-- [ ] Given: a pilgrim (or owner, who also holds the pilgrim role) visits the same page. Then: an "Edit stage" button is visible and links to `/caminos/[id]/stages/1/edit`.
+- [ ] Given: a pilgrim visits the same page. Then: an "Edit stage" button is visible and links to `/caminos/[id]/stages/1/edit`.
 - [ ] Given: stage 1 of a Camino with 3 stages is displayed. Then: there is no previous stage button and there is a next stage button showing "Stage 2" start/end names.
 - [ ] Given: stage 2 of a Camino with 3 stages is displayed. Then: both previous and next stage buttons are visible with the correct start/end names.
 - [ ] Given: stage 3 of a Camino with 3 stages is displayed. Then: there is no next stage button.
@@ -737,7 +737,7 @@ All keys must be added to both `apps/frontend/i18n/messages/en.json` and
 ### Backend authorization
 
 - [ ] Given: a PATCH request is sent with a valid `pilgrim` JWT. Then: the response is 200 with the updated StageDetail.
-- [ ] Given: a PATCH request is sent with a JWT that has neither `pilgrim` nor `owner` role. Then: the response is 403.
+- [ ] Given: a PATCH request is sent with a JWT that does not have the `pilgrim` role. Then: the response is 403.
 - [ ] Given: a PATCH request is sent with no JWT. Then: the response is 401.
 - [ ] Given: a GET request is sent with no JWT. Then: the response is 200 (public).
 
@@ -845,7 +845,7 @@ All tests live in `apps/backend/src/stages/` alongside the service and controlle
   pair, PATCHing the stage via Camino A's context and then calling `findOne` or `findByCamino`
   with Camino B's context returns the updated `distance` / `description`. This is the key
   correctness guarantee of the shared-stage model.
-- Throws `ForbiddenException` when the user has no role (neither `pilgrim` nor `owner`).
+- Throws `ForbiddenException` when the user does not have the `pilgrim` role.
 - Throws `NotFoundException` when the Camino does not exist or `stageNumber` is out of range.
 - Throws `BadRequestException` (via DTO validation) when `distance: 0` is supplied.
 - Throws `BadRequestException` (via DTO validation) when `distance: NaN` is supplied.
@@ -863,7 +863,7 @@ All tests live in `apps/backend/src/stages/` alongside the service and controlle
 - `GET /caminos/:caminoId/stages` — delegates to `findByCamino`, returns 200 with array.
 - `GET /caminos/:caminoId/stages/:n` — delegates to `findOne`, returns 200 with `StageDetail`.
 - `PATCH /caminos/:caminoId/stages/:n` — returns 200 for pilgrim; returns 403 when service throws
-  `ForbiddenException` (user has no pilgrim/owner role); returns 404 when service throws
+  `ForbiddenException` (user lacks `pilgrim` role); returns 404 when service throws
   `NotFoundException`.
 - DTO validation: `UpdateStageDto` with empty body returns 400; `distance: 0` returns 400;
   `distance: 10000` returns 400.
@@ -893,7 +893,7 @@ All tests live in `apps/backend/src/stages/` alongside the service and controlle
 - Shows `stage_detail.distance_unknown` placeholder when `distance` is null.
 - Shows `stage_detail.no_description` placeholder when `description` is null.
 - Renders Edit button for users with `pilgrim` role (owners always hold pilgrim, so they also see it).
-- Does NOT render Edit button for guests or users without `pilgrim`/`owner` role.
+- Does NOT render Edit button for guests or users without `pilgrim` role.
 - Renders previous stage button only when `previousStage !== null`.
 - Renders next stage button only when `nextStage !== null`.
 - Previous and next buttons display correct start/end names and link to the correct URL.
@@ -971,7 +971,7 @@ Missing environment variables must cause test failure with `expect(value, 'E2E_P
   out-of-range stageNumber or missing Camino. No lazy creation (rows always exist from eager creation).
 - [ ] `PATCH /api/caminos/:caminoId/stages/:stageNumber` implemented with `JwtAuthGuard` only (no
   `@Roles` decorator on the route). Service-layer check enforces `pilgrim` role; throws
-  `ForbiddenException` for users without `pilgrim` or `owner` role.
+  `ForbiddenException` for users without `pilgrim` role.
 - [ ] `UpdateStageDto` written with `@IsOptional()` on both fields, `@Min(0.1)`, `@Max(9999.9)`
   on `distance`, class-level "at least one field" guard.
 - [ ] Shared stage reuse enforced: no duplicate Stage row created for the same `(startPointId, endPointId)` pair (upsert/findFirst pattern guards this).
@@ -1052,7 +1052,7 @@ All questions below have been confirmed by the product owner on 2026-05-11.
    "owner without pilgrim" is needed because that state cannot occur.
 
 6. **Empty state for 0/1-point Caminos.** ✅ Confirmed: show `camino_detail.no_stages` message.
-   Logged-in users (pilgrim or owner) additionally see the camino edit button below.
+   Logged-in users with `pilgrim` role additionally see the camino edit button below.
 
 7. **`StageListItem.id` nullability.** ✅ Resolved by eager creation: `id` is always a UUID
    string in the list response because Stage rows are created at Camino-save time. The nullable

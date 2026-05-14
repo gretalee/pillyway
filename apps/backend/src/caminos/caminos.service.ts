@@ -355,10 +355,8 @@ export class CaminosService {
       throw new NotFoundException('Camino not found.');
     }
 
-    // 2. Authorisation: pilgrim or owner role can modify any camino
-    const canModify = userRoles.some(
-      (r) => r.key === 'pilgrim' || r.key === 'owner',
-    );
+    // 2. Authorisation: pilgrim role can modify any camino
+    const canModify = userRoles.some((r) => r.key === 'pilgrim');
     if (!canModify) {
       throw new ForbiddenException(
         'You do not have permission to update this camino.',
@@ -528,10 +526,8 @@ export class CaminosService {
       throw new NotFoundException('Camino not found.');
     }
 
-    // 2. Authorisation: pilgrim or owner role can modify any camino
-    const canModify = userRoles.some(
-      (r) => r.key === 'pilgrim' || r.key === 'owner',
-    );
+    // 2. Authorisation: pilgrim role can modify any camino
+    const canModify = userRoles.some((r) => r.key === 'pilgrim');
     if (!canModify) {
       throw new ForbiddenException(
         'You do not have permission to delete this camino.',

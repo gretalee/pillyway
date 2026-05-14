@@ -25,7 +25,7 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
   }
 
   const canEdit =
-    user?.roles.some((r) => r.key === 'pilgrim' || r.key === 'owner') ?? false;
+    user?.roles.some((r) => r.key === 'pilgrim') ?? false;
 
   const { previousStage, nextStage } = stage;
 

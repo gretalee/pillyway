@@ -14,18 +14,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Core Features
 - Browse pilgrimage routes, individual stages, and logistics (travel connections, food, accommodation)
 - Any visitor (unauthenticated) can view routes and accommodations
-- Authenticated users with the **pilgrim** role can create, edit, and delete any camino
-- Authenticated users with the **owner** role can edit and delete any camino (but not create)
+- Authenticated users with the **pilgrim** role can create, edit, and delete any camino, stage, accommodation, and sight
+- Authenticated users with the **owner** role can access the backoffice
 - Planned (later phase): authenticated users can compose a personal custom route from existing stages
 
 ### User Roles
 | Role key | Capabilities |
 |---|---|
-| (none) | View caminos and stages |
-| `pilgrim` | + Create, edit, and delete any camino; edit any stage |
-| `owner` | Same as `pilgrim` — in Kinde, every user assigned the `owner` role is also assigned the `pilgrim` role |
+| (none) | View all public content (caminos, stages, accommodations, sights) |
+| `pilgrim` | + Create, edit, and delete any camino; edit any stage, accommodation, sight |
+| `owner` | Backoffice access only — in Kinde, every `owner` user is also assigned the `pilgrim` role |
 
-> **Permission rule**: all write operations (camino create/edit/delete, stage edit) require `pilgrim` OR `owner` role. In practice, checking for `pilgrim` is sufficient because every `owner` user also holds `pilgrim` in Kinde. There is no per-entity ownership check — role alone determines access.
+> **Permission rule**: all content write operations (camino create/edit/delete, stage edit, accommodation edit, sight edit) require the `pilgrim` role. Check **only** `pilgrim` — never check for `owner` on content routes. The `owner` role is reserved exclusively for backoffice features. There is no per-entity ownership check — role alone determines access.
 
 ### Domain Entities (initial)
 - **Route** — a named pilgrimage route with metadata

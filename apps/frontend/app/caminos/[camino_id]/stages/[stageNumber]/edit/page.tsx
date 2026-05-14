@@ -38,7 +38,7 @@ export default async function StageEditPage({ params }: Props) {
   }
 
   const roles = await getRoles();
-  const canEdit = roles?.some((r) => r.key === 'pilgrim' || r.key === 'owner') ?? false;
+  const canEdit = roles?.some((r) => r.key === 'pilgrim') ?? false;
 
   const t = await getTranslations('stage_edit');
 

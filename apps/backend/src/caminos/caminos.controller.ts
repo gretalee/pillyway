@@ -85,11 +85,11 @@ export class CaminosController {
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Update a camino (pilgrim or owner)' })
+  @ApiOperation({ summary: 'Update a camino (requires pilgrim role)' })
   @ApiOkResponse({ description: 'Camino updated successfully.' })
   @ApiUnauthorizedResponse({ description: 'Missing or invalid JWT.' })
   @ApiForbiddenResponse({
-    description: 'Requires pilgrim or owner role.',
+    description: 'JWT present but missing pilgrim role.',
   })
   @ApiNotFoundResponse({ description: 'Camino not found.' })
   @ApiConflictResponse({
@@ -107,11 +107,11 @@ export class CaminosController {
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Delete a camino (pilgrim or owner)' })
+  @ApiOperation({ summary: 'Delete a camino (requires pilgrim role)' })
   @ApiNoContentResponse({ description: 'Camino deleted.' })
   @ApiUnauthorizedResponse({ description: 'Missing or invalid JWT.' })
   @ApiForbiddenResponse({
-    description: 'Requires pilgrim or owner role.',
+    description: 'JWT present but missing pilgrim role.',
   })
   @ApiNotFoundResponse({ description: 'Camino not found.' })
   async delete(
