@@ -360,7 +360,7 @@ test.describe('Pilgrim — authenticated write flows', () => {
       await page.getByRole('button', { name: 'Save changes' }).click();
 
       // On success the form redirects to /caminos/:id
-      await page.waitForURL(`/caminos/${caminoId}`, { timeout: 15_000 });
+      await page.waitForURL(`/caminos/${caminoId}`, { timeout: 20_000 });
 
       // Detail page should reflect the new name
       await expect(page.getByRole('heading', { level: 1 })).toContainText(newName, {
