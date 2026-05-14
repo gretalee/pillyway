@@ -73,7 +73,7 @@ model Accommodation {
   caminoPointId String   @map("camino_point_id") @db.Uuid
   name          String
   description   String?
-  imageUrls     String[] @map("image_urls")
+  imageUrls     String[] @default([]) @map("image_urls")
   verified      Boolean  @default(false)
   createdBy     String   @map("created_by")
   createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
