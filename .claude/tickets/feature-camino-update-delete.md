@@ -191,7 +191,7 @@ Use `JwtAuthGuard` to ensure the user is authenticated, then perform the role ch
 - Service method: `CaminosService.update(id: string, dto: UpdateCaminoDto, userId: string, userRoles: string[]): Promise<CaminoDetailFull>`.
 - Waypoint replacement logic runs inside a `prisma.$transaction`: delete all `camino_point_order` rows where `caminoId === id`, then re-insert using the same loop from `CaminosService.create`. This avoids position conflicts on the unique constraint `(camino_id, position)`.
 - Updating `name` must set `updatedAt` (Prisma `update` does this automatically if `updatedAt` is a `@updatedAt` field — verify the schema; if not, pass `updatedAt: new Date()` explicitly).
-- The controller passes `req.user.roles` to the service method. `@Roles('pilgrim')` may be used on this route — all owners also hold the pilgrim role in Kinde.
+- The controller passes `req.user.roles` to the service method. Keep this route protected by `JwtAuthGuard` only; do not add `@Roles('pilgrim')` here, because authorization and any resulting `403` behavior for this endpoint are enforced in the service layer.
 
 ---
 
