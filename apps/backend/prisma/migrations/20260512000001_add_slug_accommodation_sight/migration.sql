@@ -36,7 +36,7 @@ CREATE TABLE "sights" (
     CONSTRAINT "sights_pkey" PRIMARY KEY ("id")
 );
 
--- CreateIndex: unique slug on camino_points (partial — only enforces on non-null rows)
+-- CreateIndex: unique slug on camino_points (regular unique index; PostgreSQL allows multiple NULLs)
 CREATE UNIQUE INDEX "camino_points_slug_key" ON "camino_points"("slug");
 
 -- AddForeignKey: accommodations → camino_points
