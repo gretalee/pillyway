@@ -9,6 +9,8 @@ import { CaminosModule } from './caminos/caminos.module';
 import { CountriesModule } from './countries/countries.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { StagesModule } from './stages/stages.module';
+import { UploadsModule } from './uploads/uploads.module';
+import { WaypointsModule } from './waypoints/waypoints.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { StagesModule } from './stages/stages.module';
     CaminoPointsModule,
     CountriesModule,
     StagesModule,
+    WaypointsModule,
+    UploadsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

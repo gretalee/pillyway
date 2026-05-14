@@ -19,8 +19,8 @@ const CAMINO_ID = '3fa85f64-5717-4562-b3fc-2c963f66afa6';
 const STAGE_ID = 'a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1';
 const NOW = new Date('2026-05-11T10:00:00.000Z');
 
-const startPoint = { id: 'pt-a', name: 'Start Town', country: 'France' };
-const endPoint = { id: 'pt-b', name: 'End Town', country: 'Spain' };
+const startPoint = { id: 'pt-a', name: 'Start Town', country: 'France', slug: 'start-town' };
+const endPoint = { id: 'pt-b', name: 'End Town', country: 'Spain', slug: 'end-town' };
 
 const mockListItem: StageListItem = {
   id: STAGE_ID,

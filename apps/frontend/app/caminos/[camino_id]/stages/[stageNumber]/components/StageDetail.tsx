@@ -57,7 +57,11 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
             {t('start_label')}
           </dt>
           <dd className="mt-1 font-medium">
-            {stage.startPoint.name}
+            <Link
+              href={`/waypoints/${stage.startPoint.slug}`}
+              className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+              {stage.startPoint.name}
+            </Link>
             <span className="ml-2 text-sm text-muted-foreground">
               ({tCountries(stage.startPoint.country.toLowerCase())})
             </span>
@@ -68,7 +72,11 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
             {t('end_label')}
           </dt>
           <dd className="mt-1 font-medium">
-            {stage.endPoint.name}
+            <Link
+              href={`/waypoints/${stage.endPoint.slug}`}
+              className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+              {stage.endPoint.name}
+            </Link>
             <span className="ml-2 text-sm text-muted-foreground">
               ({tCountries(stage.endPoint.country.toLowerCase())})
             </span>

@@ -24,6 +24,8 @@ interface StagePair {
   endName: string;
   startCountry: string;
   endCountry: string;
+  startSlug: string;
+  endSlug: string;
 }
 
 // ─── Service ─────────────────────────────────────────────────────────────────
@@ -76,6 +78,8 @@ export class StagesService {
         endName: end.name,
         startCountry: start.country,
         endCountry: end.country,
+        startSlug: start.slug,
+        endSlug: end.slug,
       });
     }
 
@@ -107,11 +111,13 @@ export class StagesService {
           id: pair.startId,
           name: pair.startName,
           country: pair.startCountry,
+          slug: pair.startSlug,
         },
         endPoint: {
           id: pair.endId,
           name: pair.endName,
           country: pair.endCountry,
+          slug: pair.endSlug,
         },
         distance: row!.distance,
         description: row!.description,
@@ -203,11 +209,13 @@ export class StagesService {
         id: startPoint.id,
         name: startPoint.name,
         country: startPoint.country,
+        slug: startPoint.slug,
       },
       endPoint: {
         id: endPoint.id,
         name: endPoint.name,
         country: endPoint.country,
+        slug: endPoint.slug,
       },
       distance: row.distance,
       description: row.description,

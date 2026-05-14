@@ -2,6 +2,7 @@ export interface StagePointSummary {
   id: string;
   name: string;
   country: string;
+  slug: string;
 }
 
 export interface AdjacentStageSummary {
