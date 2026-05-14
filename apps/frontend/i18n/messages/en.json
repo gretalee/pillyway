@@ -136,7 +136,7 @@
     "submit": "Save changes",
     "submitting": "Saving…",
     "cancel": "Cancel",
-    "access_denied": "You do not have permission to edit stages. The pilgrim or owner role is required.",
+    "access_denied": "You do not have permission to edit stages. The pilgrim role is required.",
     "error_generic": "Failed to save changes. Please try again.",
     "error_forbidden": "You are not authorized to edit this stage.",
     "error_loading": "Failed to load stage data for editing."

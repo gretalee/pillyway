@@ -103,7 +103,7 @@ export async function WaypointDetailView({ waypoint, user }: Props) {
   const t = await getTranslations('waypoint_detail');
   const tCountries = await getTranslations('countries');
 
-  const canContribute = user?.roles.some((r) => r.key === 'pilgrim' || r.key === 'owner') ?? false;
+  const canContribute = user?.roles.some((r) => r.key === 'pilgrim') ?? false;
 
   const cardTranslations: CardTranslations = {
     verified_badge: t('verified_badge'),

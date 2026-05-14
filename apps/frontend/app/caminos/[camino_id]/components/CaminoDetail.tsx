@@ -90,7 +90,7 @@ export function CaminoDetail({
   const mutation = useUpdateCamino();
 
   const canEdit =
-    user?.roles.some((r) => r.key === 'pilgrim' || r.key === 'owner') ?? false;
+    user?.roles.some((r) => r.key === 'pilgrim') ?? false;
 
   const [camino, setCamino] = useState(initialCamino);
   const [editingField, setEditingField] = useState<EditingField>(null);

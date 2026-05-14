@@ -136,7 +136,7 @@
     "submit": "Änderungen speichern",
     "submitting": "Wird gespeichert…",
     "cancel": "Abbrechen",
-    "access_denied": "Du hast keine Berechtigung, Etappen zu bearbeiten. Die Pilgrim- oder Owner-Rolle ist erforderlich.",
+    "access_denied": "Du hast keine Berechtigung, Etappen zu bearbeiten. Die Pilgrim-Rolle ist erforderlich.",
     "error_generic": "Änderungen konnten nicht gespeichert werden. Bitte versuche es erneut.",
     "error_forbidden": "Du bist nicht berechtigt, diese Etappe zu bearbeiten.",
     "error_loading": "Etappendaten konnten nicht zum Bearbeiten geladen werden."

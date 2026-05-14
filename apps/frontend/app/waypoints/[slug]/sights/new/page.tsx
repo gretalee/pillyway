@@ -23,7 +23,7 @@ export default async function AddSightPage({ params }: Props) {
   const { slug } = await params;
   const user = await getAuthUser();
   const t = await getTranslations('sight_new');
-  const canContribute = user?.roles.some((r) => r.key === 'pilgrim' || r.key === 'owner') ?? false;
+  const canContribute = user?.roles.some((r) => r.key === 'pilgrim') ?? false;
 
   if (!canContribute) {
     redirect(`/waypoints/${slug}`);
