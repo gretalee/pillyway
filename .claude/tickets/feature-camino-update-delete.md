@@ -1,18 +1,18 @@
 ---
 id: PILLY-CAM-002
-title: "Allow pilgrims and owners to view, update, and delete a camino"
+title: "Allow pilgrims to view, update, and delete a camino"
 type: Feature
 priority: High
-status: Finalized (v2) — ready for implementation
-last_updated: 2026-05-04
+status: Finalized (v3) — pilgrim-only auth; implemented
+last_updated: 2026-05-13
 depends_on: PILLY-CAM-001
 ---
 
-# PILLY-CAM-002 — Allow pilgrims and owners to view, update, and delete a camino
+# PILLY-CAM-002 — Allow pilgrims to view, update, and delete a camino
 
 **Type:** Feature
 **Priority:** High — directly follows PILLY-CAM-001; caminos are permanently stuck without edit or delete capability. Blocks content quality and correctness for all users.
-**Status:** Finalized (v2) — owner permissions added; ready for implementation
+**Status:** Finalized (v3) — pilgrim-only auth; implemented
 
 ---
 
@@ -35,13 +35,13 @@ Root application admin. Has all permissions as a pilgrim and can on top reach th
 As any visitor, I want to click on a camino in the list and see its full detail page (name, description, verified status, ordered waypoints), so that I can evaluate a route before planning a pilgrimage.
 
 ### US-2 — Inline edit name and description
-As a pilgrim **or the camino's owner**, I want to click a pen icon next to the camino name or description and edit it inline, without navigating to a separate page, so that I can make small corrections quickly.
+As a pilgrim, I want to click a pen icon next to the camino name or description and edit it inline, without navigating to a separate page, so that I can make small corrections quickly.
 
 ### US-3 — Update camino via form (waypoints and full data)
-As a pilgrim **or the camino's owner**, I want to navigate to an update form that reuses the existing creation form, so that I can change the ordered list of waypoints (add, remove, reorder, link/unlink) or make broader edits.
+As a pilgrim, I want to navigate to an update form that reuses the existing creation form, so that I can change the ordered list of waypoints (add, remove, reorder, link/unlink) or make broader edits.
 
 ### US-4 — Delete a camino
-As a pilgrim **or the camino's owner**, I want to delete a camino via a confirmation dialog triggered from the camino list, so that I can remove routes that are incorrect or no longer relevant, with a safeguard against accidental deletion.
+As a pilgrim, I want to delete a camino via a confirmation dialog triggered from the camino list, so that I can remove routes that are incorrect or no longer relevant, with a safeguard against accidental deletion.
 
 ---
 
@@ -181,7 +181,7 @@ Use `JwtAuthGuard` to ensure the user is authenticated, then perform the role ch
 
 **Response `400`:** Validation failure (empty body, field constraints violated, invalid caminoPoint item shape).
 **Response `401`:** Missing or invalid JWT.
-**Response `403`:** Authenticated but neither has `pilgrim` role nor is the camino's owner.
+**Response `403`:** Authenticated but does not have the `pilgrim` role.
 **Response `404`:** Camino not found.
 **Response `409`:** `name` conflicts with an existing camino (case-insensitive). Also `409` if a new-point item in `caminoPoints` conflicts with an existing `camino_points` row by `(name, country)` race condition (same logic as `POST`).
 
@@ -191,7 +191,7 @@ Use `JwtAuthGuard` to ensure the user is authenticated, then perform the role ch
 - Service method: `CaminosService.update(id: string, dto: UpdateCaminoDto, userId: string, userRoles: string[]): Promise<CaminoDetailFull>`.
 - Waypoint replacement logic runs inside a `prisma.$transaction`: delete all `camino_point_order` rows where `caminoId === id`, then re-insert using the same loop from `CaminosService.create`. This avoids position conflicts on the unique constraint `(camino_id, position)`.
 - Updating `name` must set `updatedAt` (Prisma `update` does this automatically if `updatedAt` is a `@updatedAt` field — verify the schema; if not, pass `updatedAt: new Date()` explicitly).
-- The controller passes `req.user.id` and `req.user.roles` to the service method. Do **not** use `@Roles('pilgrim')` on this route — the guard would reject owners without the pilgrim role.
+- The controller passes `req.user.roles` to the service method. `@Roles('pilgrim')` may be used on this route — all owners also hold the pilgrim role in Kinde.
 
 ---
 
@@ -202,7 +202,7 @@ Use `JwtAuthGuard` to ensure the user is authenticated, then perform the role ch
 
 If neither condition is true, return `403`.
 
-Same service-layer ownership check as `PATCH`: load the camino first, then assert `user.roles.includes('pilgrim'). Do **not** use `@Roles('pilgrim')` on this route.
+Service checks `pilgrim` role only. `@Roles('pilgrim')` may be used on this route.
 
 **Path param:** `id` — UUID string.
 
@@ -211,7 +211,7 @@ Same service-layer ownership check as `PATCH`: load the camino first, then asser
 **Response `204`:** No content. Camino and its `camino_point_order` rows deleted. `camino_points` rows are untouched.
 
 **Response `401`:** Missing or invalid JWT.
-**Response `403`:** Authenticated but neither has `pilgrim` role nor is the camino's owner.
+**Response `403`:** Authenticated but does not have the `pilgrim` role.
 **Response `404`:** Camino not found.
 
 **NestJS implementation notes:**
@@ -228,7 +228,7 @@ Same service-layer ownership check as `PATCH`: load the camino first, then asser
 
 **File to modify:** `apps/frontend/app/caminos/components/CaminoList.tsx`
 
-Add a three-dots menu (use shadcn/ui `DropdownMenu`) to each camino card. The menu is rendered when the user is a pilgrim **or** is the owner of that specific camino. The visibility condition per card is:
+Add a three-dots menu (use shadcn/ui `DropdownMenu`) to each camino card. The menu is rendered when the user has the `pilgrim` role. The visibility condition per card is:
 ```typescript
 const isPilgrim = useUserStore((s) => s.hasRole('pilgrim'));
 const userId = useUserStore((s) => s.user?.id);
@@ -260,7 +260,7 @@ The `DropdownMenu` trigger must sit in the top-right of the card. It must not ov
 **`CaminoDetail` (client component):**
 - Calls `useCamino(caminoId)` (new hook, see below). Shows skeleton loader while loading, error state on failure.
 - Renders:
-  - Camino name — static text. If `canEdit` (pilgrim or owner), renders a pen icon button (`aria-label`: `caminos.edit_name_aria`) next to it. Clicking activates inline edit mode for the name field.
+  - Camino name — static text. If `canEdit` (pilgrim), renders a pen icon button (`aria-label`: `caminos.edit_name_aria`) next to it. Clicking activates inline edit mode for the name field.
   - Camino description — static text or a "No description" placeholder. If `canEdit`, renders a pen icon button next to it. Clicking activates inline edit mode.
   - Verified badge: same visual as the list page badge (`caminos.verified` i18n key), shown only when `camino.verified === true`.
   - Waypoints section: a numbered list (`<ol>`) of caminoPoints, each showing name, country, and description (if present).
@@ -310,7 +310,7 @@ The pen icon must be keyboard-accessible: `<button type="button">` with `aria-la
 - `apps/frontend/app/caminos/[camino_id]/update/page.tsx` — server component
 
 **`page.tsx` (server component):**
-- Auth gate: redirect to `/api/auth/login` if unauthenticated (`getKindeServerSession()`). If authenticated, allow access — the ownership check cannot be done at the page level without a DB fetch; the service enforces 403 if the user is neither a pilgrim nor the owner. Do **not** render `<AccessDenied />` based on role alone, since owners without the `pilgrim` role must be able to access this page.
+- Auth gate: redirect to `/api/auth/login` if unauthenticated (`getKindeServerSession()`). If authenticated, render the form — the service enforces 403 if the user lacks `pilgrim`.
 - Renders `<UpdateCaminoForm caminoId={camino_id} />` for all authenticated users (the form itself will receive a 403 from the API if the user is not authorised, and can show an error state).
 - Generates metadata: `title: t('caminos_update.meta_title')`.
 
@@ -506,23 +506,21 @@ All tests live in `apps/backend/src/caminos/` alongside the service.
 - Returns updated `CaminoDetailFull` when name-only update succeeds (as pilgrim).
 - Returns updated `CaminoDetailFull` when description-only update succeeds (as pilgrim).
 - Returns updated `CaminoDetailFull` when full caminoPoints replacement succeeds (delete + reinsert) (as pilgrim).
-- Returns updated `CaminoDetailFull` when owner (non-pilgrim) updates their own camino.
 - Throws `NotFoundException` when camino does not exist.
-- Throws `ForbiddenException` when authenticated user is neither pilgrim nor the camino's owner.
+- Throws `ForbiddenException` when authenticated user does not have the `pilgrim` role.
 - Throws `ConflictException` when new name conflicts with another camino (case-insensitive).
 - Throws `BadRequestException` when a caminoPoint item is referenced by ID but the ID does not exist in the DB.
 - Propagates `InternalServerErrorException` on unexpected Prisma errors.
 
 **`CaminosService.delete`:**
-- Calls `prisma.camino.delete` and returns `void` when user is a pilgrim.
-- Calls `prisma.camino.delete` and returns `void` when user is the camino's owner (non-pilgrim).
-- Throws `ForbiddenException` when authenticated user is neither pilgrim nor the camino's owner.
+- Calls `prisma.camino.delete` and returns `void` when user has `pilgrim` role.
+- Throws `ForbiddenException` when authenticated user does not have the `pilgrim` role.
 - Throws `NotFoundException` when camino does not exist.
 
 **Controller tests (`CaminosController`):**
 - `GET /caminos/:id` — delegates to `findById`, returns 200 with correct shape.
-- `PATCH /caminos/:id` — delegates to `update`, returns 200 for pilgrim; returns 200 for owner; returns 403 when service throws `ForbiddenException`.
-- `DELETE /caminos/:id` — delegates to `delete`, returns 204 for pilgrim; returns 204 for owner; returns 403 when service throws `ForbiddenException`.
+- `PATCH /caminos/:id` — delegates to `update`, returns 200 for pilgrim; returns 403 when service throws `ForbiddenException`.
+- `DELETE /caminos/:id` — delegates to `delete`, returns 204 for pilgrim; returns 403 when service throws `ForbiddenException`.
 - DTO validation: `UpdateCaminoDto` with empty body rejects with 400; with only `name` passes; with invalid `caminoPointId` rejects.
 
 ### Frontend — unit tests (Vitest + React Testing Library)
@@ -542,8 +540,7 @@ All tests live in `apps/backend/src/caminos/` alongside the service.
 **`CaminoDetail` component (`CaminoDetail.test.tsx`):**
 - Renders name, description, verified badge, and waypoints list.
 - Shows pen icon when user has `pilgrim` role.
-- Shows pen icon when user is the camino's owner (non-pilgrim).
-- Does not show pen icon for guest or non-owner reviewer.
+- Does not show pen icon for guest or users without `pilgrim` role.
 - Clicking pen icon replaces static text with an input.
 - Pressing Escape cancels and restores original value.
 - Pressing Enter (name) or blur fires update mutation.

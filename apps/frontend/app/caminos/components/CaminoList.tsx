@@ -23,8 +23,6 @@ interface CaminoListProps {
 export async function CaminoList({ caminos, user }: CaminoListProps) {
   const t = await getTranslations('caminos');
 
-  const canModify =
-    user?.roles.some((r) => r.key === 'pilgrim' || r.key === 'owner') ?? false;
   const isPilgrim = user?.roles.some((r) => r.key === 'pilgrim') ?? false;
 
   return (
@@ -62,7 +60,7 @@ export async function CaminoList({ caminos, user }: CaminoListProps) {
                     </span>
                   )}
 
-                  {canModify && <CaminoActionsMenu camino={camino} />}
+                  {isPilgrim && <CaminoActionsMenu camino={camino} />}
                 </div>
               </div>
             </li>
