@@ -169,6 +169,34 @@ export async function createCaminoWith4Points(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Helper: delete a test camino via the UI, identified by ID (not name).
+// Looks for the list card whose link href matches /caminos/${caminoId}.
+// Using the ID makes cleanup robust even when the camino name was changed
+// during the test run or when a test failed mid-rename.
+// All interactions are soft (never throws) — a failed cleanup must not fail tests.
+// ─────────────────────────────────────────────────────────────────────────────
+export async function deleteCaminoViaUI(page: Page, caminoId: string): Promise<void> {
+  await page.goto('/caminos');
+
+  const card = page.locator(`li:has(a[href="/caminos/${caminoId}"])`);
+  if (!(await card.isVisible({ timeout: 5_000 }).catch(() => false))) return;
+
+  const trigger = card.locator('[aria-label*="Actions for"]');
+  if (!(await trigger.isVisible({ timeout: 3_000 }).catch(() => false))) return;
+  await trigger.click();
+
+  const deleteMenuItem = page.getByRole('menuitem', { name: 'Delete camino' });
+  if (!(await deleteMenuItem.isVisible({ timeout: 3_000 }).catch(() => false))) return;
+  await deleteMenuItem.click();
+
+  const confirmBtn = page.getByRole('button', { name: 'Delete' });
+  if (!(await confirmBtn.isVisible({ timeout: 3_000 }).catch(() => false))) return;
+  await confirmBtn.click();
+
+  await confirmBtn.waitFor({ state: 'hidden', timeout: 5_000 }).catch(() => {});
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Helper: navigate to first camino that has at least one stage row
 // ─────────────────────────────────────────────────────────────────────────────
 

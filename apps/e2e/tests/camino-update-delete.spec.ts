@@ -29,6 +29,7 @@ import { expect, test } from '@playwright/test';
 import {
   createCaminoViaForm,
   createCaminoWith4Points,
+  deleteCaminoViaUI,
   loginAs,
   logout,
   setLanguageToEnglish,
@@ -67,26 +68,15 @@ test.describe('Public — unauthenticated access', () => {
     if (!caminoId) return;
     const email = process.env.E2E_PILGRIM_EMAIL;
     const password = process.env.E2E_PILGRIM_PASSWORD;
-    expect(email, 'E2E_PILGRIM_EMAIL must be set').toBeTruthy();
-    expect(password, 'E2E_PILGRIM_PASSWORD must be set').toBeTruthy();
+    if (!email || !password) return;
 
     const ctx = await browser.newContext();
     const page = await ctx.newPage();
     await setLanguageToEnglish(page);
-    await loginAs(page, email!, password!);
+    await loginAs(page, email, password);
     try {
-      await page.goto('/caminos');
-      const trigger = page.locator(`[aria-label="Actions for ${caminoName}"]`);
-      if (await trigger.isVisible({ timeout: 5_000 }).catch(() => false)) {
-        await trigger.click();
-        const deleteMenuItem = page.getByRole('menuitem', { name: 'Delete camino' });
-        if (await deleteMenuItem.isVisible({ timeout: 5_000 }).catch(() => false)) {
-          await deleteMenuItem.click();
-          await page.getByRole('button', { name: 'Delete' }).click();
-        }
-      }
+      await deleteCaminoViaUI(page, caminoId);
     } finally {
-      await logout(page);
       await ctx.close();
     }
   });
@@ -157,8 +147,24 @@ test.describe('Pilgrim — authenticated write flows', () => {
   // nested beforeAll hooks, which would cause Kinde to invalidate earlier
   // sessions and make form submissions fail with 401.
   test.describe.configure({ mode: 'serial' });
-  // Kinde login consumes ~15-20s; give each test 60s so the body has budget.
   test.setTimeout(60_000);
+
+  let caminoId: string;
+  let caminoName: string;
+
+  test.beforeAll(async ({ browser }, testInfo) => {
+    testInfo.setTimeout(120_000);
+    const email = process.env.E2E_PILGRIM_EMAIL;
+    const password = process.env.E2E_PILGRIM_PASSWORD;
+    expect(email, 'E2E_PILGRIM_EMAIL must be set in .env').toBeTruthy();
+    expect(password, 'E2E_PILGRIM_PASSWORD must be set in .env').toBeTruthy();
+    const ctx = await browser.newContext();
+    const page = await ctx.newPage();
+    await loginAs(page, email!, password!);
+    caminoName = uniqueName('Pilgrim');
+    caminoId = await createCaminoViaForm(page, caminoName);
+    await ctx.close();
+  });
 
   test.beforeEach(async ({ page }) => {
     const email = process.env.E2E_PILGRIM_EMAIL;
@@ -168,324 +174,153 @@ test.describe('Pilgrim — authenticated write flows', () => {
     await loginAs(page, email!, password!);
   });
 
-  // ── Navigate to update form from the list ─────────────────────────────────
+  test.afterEach(async ({ page }) => {
+    await logout(page);
+  });
+
+  test.afterAll(async ({ browser }, testInfo) => {
+    testInfo.setTimeout(90_000);
+    if (!caminoId) return;
+    const email = process.env.E2E_PILGRIM_EMAIL;
+    const password = process.env.E2E_PILGRIM_PASSWORD;
+    if (!email || !password) return;
+    const ctx = await browser.newContext();
+    const page = await ctx.newPage();
+    await setLanguageToEnglish(page);
+    await loginAs(page, email, password);
+    try {
+      await deleteCaminoViaUI(page, caminoId);
+    } finally {
+      await ctx.close();
+    }
+  });
 
   test('three-dots menu "Change camino data" navigates to update form pre-populated with camino data', async ({
     page,
   }) => {
     await page.goto('/caminos');
 
-    // Wait for at least one camino card with an action menu
-    const menuTrigger = page.locator('[aria-label*="Actions for"]').first();
-    await expect(menuTrigger).toBeVisible({ timeout: 10_000 });
-
-    // Extract the camino name from the aria-label attribute ("Actions for <name>")
-    const ariaLabel = await menuTrigger.getAttribute('aria-label');
-    const caminoName = ariaLabel?.replace('Actions for ', '') ?? '';
-
-    const card = page
-      .locator('ul li')
-      .filter({ has: page.getByRole('heading', { name: caminoName }) });
+    const card = page.locator(`li:has(a[href="/caminos/${caminoId}"])`);
+    await expect(card).toBeVisible({ timeout: 10_000 });
     await card.locator('[aria-label*="Actions for"]').click();
 
     const changeCaminoItem = page.getByRole('menuitem', { name: 'Change camino data' });
     await expect(changeCaminoItem).toBeVisible({ timeout: 5_000 });
     await changeCaminoItem.click();
 
-    // Should navigate to /caminos/:id/update
     await page.waitForURL(/\/caminos\/[^/]+\/update$/, { timeout: 10_000 });
     await expect(page).toHaveURL(/\/caminos\/[^/]+\/update$/);
 
-    // Update form should be visible and pre-populated with the camino name
     const updateForm = page.getByRole('form', { name: 'Update Camino' });
     await expect(updateForm).toBeVisible();
     await expect(page.getByLabel('Camino Name')).toHaveValue(caminoName);
   });
 
-  // ── Inline edit name — happy path ─────────────────────────────────────────
-
-  test.describe('Inline edit — uses a fresh test camino', () => {
-    let caminoId: string;
-    let originalName: string;
-
-    test.beforeAll(async ({ browser }, testInfo) => {
-      testInfo.setTimeout(90_000);
-      const email = process.env.E2E_PILGRIM_EMAIL;
-      const password = process.env.E2E_PILGRIM_PASSWORD;
-      expect(email, 'E2E_PILGRIM_EMAIL must be set in .env').toBeTruthy();
-      expect(password, 'E2E_PILGRIM_PASSWORD must be set in .env').toBeTruthy();
-      const ctx = await browser.newContext();
-      const page = await ctx.newPage();
-      await loginAs(page, email!, password!);
-      originalName = uniqueName('InlineEdit');
-      caminoId = await createCaminoViaForm(page, originalName);
-      await ctx.close();
+  test('inline edit name: pressing Enter saves and shows the new name', async ({
+    page,
+  }) => {
+    await page.goto(`/caminos/${caminoId}`);
+    await expect(page.getByRole('heading', { level: 1 })).toContainText(caminoName, {
+      timeout: 10_000,
     });
 
-    test.afterAll(async ({ browser }, testInfo) => {
-      testInfo.setTimeout(90_000);
-      if (!caminoId) return;
-      const email = process.env.E2E_PILGRIM_EMAIL;
-      const password = process.env.E2E_PILGRIM_PASSWORD;
-      expect(email, 'E2E_PILGRIM_EMAIL must be set in .env').toBeTruthy();
-      expect(password, 'E2E_PILGRIM_PASSWORD must be set in .env').toBeTruthy();
-      const ctx = await browser.newContext();
-      const page = await ctx.newPage();
-      await loginAs(page, email!, password!);
-      try {
-        await page.goto('/caminos');
+    const editButton = page.getByRole('button', { name: 'Edit camino name' });
+    await expect(editButton).toBeVisible();
+    await editButton.click();
 
-        const trigger = page.locator(`[aria-label="Actions for ${originalName}"]`);
-        if (await trigger.isVisible({ timeout: 5_000 }).catch(() => false)) {
-          await trigger.click();
-          const deleteMenuItem = page.getByRole('menuitem', { name: 'Delete camino' });
-          if (await deleteMenuItem.isVisible({ timeout: 5_000 }).catch(() => false)) {
-            await deleteMenuItem.click();
-            await page.getByRole('button', { name: 'Delete' }).click();
-          }
-        }
-      } finally {
-        await ctx.close();
-      }
+    const nameInput = page.getByRole('textbox', { name: 'Edit camino name' });
+    await expect(nameInput).toBeFocused();
+
+    const updatedName = `${caminoName} (updated)`;
+    await nameInput.fill(updatedName);
+    await nameInput.press('Enter');
+
+    await expect(page.getByRole('heading', { level: 1 })).toContainText(updatedName, {
+      timeout: 8_000,
     });
 
-    test('inline edit name: pressing Enter saves and shows the new name', async ({
-      page,
-    }) => {
-      await page.goto(`/caminos/${caminoId}`);
-      await expect(page.getByRole('heading', { level: 1 })).toContainText(originalName, {
-        timeout: 10_000,
-      });
-
-      const editButton = page.getByRole('button', { name: 'Edit camino name' });
-      await expect(editButton).toBeVisible();
-      await editButton.click();
-
-      const nameInput = page.getByRole('textbox', { name: 'Edit camino name' });
-      await expect(nameInput).toBeFocused();
-
-      const updatedName = `${originalName} (updated)`;
-      await nameInput.fill(updatedName);
-      await nameInput.press('Enter');
-
-      // Static h1 should show the new name
-      await expect(page.getByRole('heading', { level: 1 })).toContainText(updatedName, {
-        timeout: 8_000,
-      });
-
-      // Update original name so cleanup works
-      originalName = updatedName;
-    });
-
-    test('inline edit name: pressing Escape cancels and restores original name', async ({
-      page,
-    }) => {
-      await page.goto(`/caminos/${caminoId}`);
-      await expect(page.getByRole('heading', { level: 1 })).toContainText(originalName, {
-        timeout: 10_000,
-      });
-
-      const editButton = page.getByRole('button', { name: 'Edit camino name' });
-      await editButton.click();
-
-      const nameInput = page.getByRole('textbox', { name: 'Edit camino name' });
-      await nameInput.fill('This should not be saved');
-      await nameInput.press('Escape');
-
-      // Input is gone, original name restored
-      await expect(nameInput).not.toBeVisible();
-      await expect(page.getByRole('heading', { level: 1 })).toContainText(originalName);
-    });
+    caminoName = updatedName;
   });
 
-  // ── Update camino via the full update form ────────────────────────────────
-
-  test.describe('Update form submission — uses a fresh test camino', () => {
-    let caminoId: string;
-    let originalName: string;
-
-    test.beforeAll(async ({ browser }, testInfo) => {
-      testInfo.setTimeout(90_000);
-      const email = process.env.E2E_PILGRIM_EMAIL;
-      const password = process.env.E2E_PILGRIM_PASSWORD;
-      expect(email, 'E2E_PILGRIM_EMAIL must be set in .env').toBeTruthy();
-      expect(password, 'E2E_PILGRIM_PASSWORD must be set in .env').toBeTruthy();
-      const ctx = await browser.newContext();
-      const page = await ctx.newPage();
-      await loginAs(page, email!, password!);
-      originalName = uniqueName('UpdateForm');
-      caminoId = await createCaminoViaForm(page, originalName);
-      await ctx.close();
+  test('inline edit name: pressing Escape cancels and restores original name', async ({
+    page,
+  }) => {
+    await page.goto(`/caminos/${caminoId}`);
+    await expect(page.getByRole('heading', { level: 1 })).toContainText(caminoName, {
+      timeout: 10_000,
     });
 
-    test.afterAll(async ({ browser }, testInfo) => {
-      testInfo.setTimeout(90_000);
-      if (!caminoId) return;
-      const email = process.env.E2E_PILGRIM_EMAIL;
-      const password = process.env.E2E_PILGRIM_PASSWORD;
-      expect(email, 'E2E_PILGRIM_EMAIL must be set in .env').toBeTruthy();
-      expect(password, 'E2E_PILGRIM_PASSWORD must be set in .env').toBeTruthy();
-      const ctx = await browser.newContext();
-      const page = await ctx.newPage();
-      await loginAs(page, email!, password!);
-      try {
-        await page.goto('/caminos');
-        const trigger = page.locator(`[aria-label="Actions for ${originalName}"]`);
-        if (await trigger.isVisible({ timeout: 5_000 }).catch(() => false)) {
-          await trigger.click();
-          const deleteMenuItem = page.getByRole('menuitem', { name: 'Delete camino' });
-          if (await deleteMenuItem.isVisible({ timeout: 5_000 }).catch(() => false)) {
-            await deleteMenuItem.click();
-            await page.getByRole('button', { name: 'Delete' }).click();
-          }
-        }
-      } finally {
-        await ctx.close();
-      }
-    });
+    const editButton = page.getByRole('button', { name: 'Edit camino name' });
+    await editButton.click();
 
-    test('submitting the update form changes the name and redirects to detail page', async ({
-      page,
-    }) => {
-      await page.goto(`/caminos/${caminoId}/update`);
+    const nameInput = page.getByRole('textbox', { name: 'Edit camino name' });
+    await nameInput.fill('This should not be saved');
+    await nameInput.press('Escape');
 
-      // Wait for the form to load and pre-populate
-      await expect(page.getByLabel('Camino Name')).toHaveValue(originalName, {
-        timeout: 10_000,
-      });
-
-      const newName = `${originalName} Renamed`;
-      await page.getByLabel('Camino Name').fill(newName);
-
-      await page.getByRole('button', { name: 'Save changes' }).click();
-
-      // On success the form redirects to /caminos/:id
-      await page.waitForURL(`/caminos/${caminoId}`, { timeout: 20_000 });
-
-      // Detail page should reflect the new name
-      await expect(page.getByRole('heading', { level: 1 })).toContainText(newName, {
-        timeout: 8_000,
-      });
-
-      originalName = newName;
-    });
+    await expect(nameInput).not.toBeVisible();
+    await expect(page.getByRole('heading', { level: 1 })).toContainText(caminoName);
   });
 
-  // ── Delete camino — cancel keeps it in the list ───────────────────────────
-
-  test.describe('Delete — cancel flow uses a fresh test camino', () => {
-    let caminoId: string;
-    let caminoName: string;
-
-    test.beforeAll(async ({ browser }, testInfo) => {
-      testInfo.setTimeout(90_000);
-      const email = process.env.E2E_PILGRIM_EMAIL;
-      const password = process.env.E2E_PILGRIM_PASSWORD;
-      expect(email, 'E2E_PILGRIM_EMAIL must be set in .env').toBeTruthy();
-      expect(password, 'E2E_PILGRIM_PASSWORD must be set in .env').toBeTruthy();
-      const ctx = await browser.newContext();
-      const page = await ctx.newPage();
-      await loginAs(page, email!, password!);
-      caminoName = uniqueName('DeleteCancel');
-      caminoId = await createCaminoViaForm(page, caminoName);
-      await ctx.close();
+  test('submitting the update form changes the name and redirects to detail page', async ({
+    page,
+  }) => {
+    await page.goto(`/caminos/${caminoId}/update`);
+    await expect(page.getByLabel('Camino Name')).toHaveValue(caminoName, {
+      timeout: 10_000,
     });
 
-    test.afterAll(async ({ browser }, testInfo) => {
-      testInfo.setTimeout(90_000);
-      if (!caminoId) return;
-      const email = process.env.E2E_PILGRIM_EMAIL;
-      const password = process.env.E2E_PILGRIM_PASSWORD;
-      expect(email, 'E2E_PILGRIM_EMAIL must be set in .env').toBeTruthy();
-      expect(password, 'E2E_PILGRIM_PASSWORD must be set in .env').toBeTruthy();
-      const ctx = await browser.newContext();
-      const page = await ctx.newPage();
-      await loginAs(page, email!, password!);
-      try {
-        await page.goto('/caminos');
-        const trigger = page.locator(`[aria-label="Actions for ${caminoName}"]`);
-        if (await trigger.isVisible({ timeout: 5_000 }).catch(() => false)) {
-          await trigger.click();
-          const deleteMenuItem = page.getByRole('menuitem', { name: 'Delete camino' });
-          if (await deleteMenuItem.isVisible({ timeout: 5_000 }).catch(() => false)) {
-            await deleteMenuItem.click();
-            await page.getByRole('button', { name: 'Delete' }).click();
-          }
-        }
-      } finally {
-        await ctx.close();
-      }
+    const newName = `${caminoName} Renamed`;
+    await page.getByLabel('Camino Name').fill(newName);
+    await page.getByRole('button', { name: 'Save changes' }).click();
+
+    await page.waitForURL(`/caminos/${caminoId}`, { timeout: 20_000 });
+    await expect(page.getByRole('heading', { level: 1 })).toContainText(newName, {
+      timeout: 8_000,
     });
 
-    test('opening delete dialog and clicking Cancel leaves the camino in the list', async ({
-      page,
-    }) => {
-      await page.goto('/caminos');
-
-      const menuTrigger = page.locator(`[aria-label="Actions for ${caminoName}"]`);
-      await expect(menuTrigger).toBeVisible({ timeout: 10_000 });
-      await menuTrigger.click();
-
-      const deleteMenuItem = page.getByRole('menuitem', { name: 'Delete camino' });
-      await expect(deleteMenuItem).toBeVisible({ timeout: 5_000 });
-      await deleteMenuItem.click();
-
-      // Dialog opens
-      await expect(page.getByRole('alertdialog')).toBeVisible();
-      await expect(page.getByText(`"${caminoName}"`)).toBeVisible();
-
-      // Click Cancel
-      await page.getByRole('button', { name: 'Cancel' }).click();
-
-      // Dialog should close
-      await expect(page.getByRole('alertdialog')).not.toBeVisible();
-
-      // Camino is still in the list
-      await expect(page.getByRole('heading', { name: caminoName })).toBeVisible();
-    });
+    caminoName = newName;
   });
 
-  // ── Delete camino — confirm removes it from the list ─────────────────────
+  test('opening delete dialog and clicking Cancel leaves the camino in the list', async ({
+    page,
+  }) => {
+    await page.goto('/caminos');
 
-  test.describe('Delete — confirm flow uses a fresh test camino', () => {
-    let caminoName: string;
+    const menuTrigger = page.locator(`[aria-label="Actions for ${caminoName}"]`);
+    await expect(menuTrigger).toBeVisible({ timeout: 10_000 });
+    await menuTrigger.click();
 
-    test.beforeAll(async ({ browser }, testInfo) => {
-      testInfo.setTimeout(90_000);
-      const email = process.env.E2E_PILGRIM_EMAIL;
-      const password = process.env.E2E_PILGRIM_PASSWORD;
-      expect(email, 'E2E_PILGRIM_EMAIL must be set in .env').toBeTruthy();
-      expect(password, 'E2E_PILGRIM_PASSWORD must be set in .env').toBeTruthy();
-      const ctx = await browser.newContext();
-      const page = await ctx.newPage();
-      await loginAs(page, email!, password!);
-      caminoName = uniqueName('DeleteConfirm');
-      await createCaminoViaForm(page, caminoName);
-      await ctx.close();
-    });
+    const deleteMenuItem = page.getByRole('menuitem', { name: 'Delete camino' });
+    await expect(deleteMenuItem).toBeVisible({ timeout: 5_000 });
+    await deleteMenuItem.click();
 
-    test('confirming delete removes the camino from the list', async ({ page }) => {
-      await page.goto('/caminos');
+    await expect(page.getByRole('alertdialog')).toBeVisible();
+    await expect(page.getByText(`"${caminoName}"`)).toBeVisible();
 
-      const menuTrigger = page.locator(`[aria-label="Actions for ${caminoName}"]`);
-      await expect(menuTrigger).toBeVisible({ timeout: 10_000 });
-      await menuTrigger.click();
+    await page.getByRole('button', { name: 'Cancel' }).click();
 
-      const deleteMenuItem = page.getByRole('menuitem', { name: 'Delete camino' });
-      await expect(deleteMenuItem).toBeVisible({ timeout: 5_000 });
-      await deleteMenuItem.click();
+    await expect(page.getByRole('alertdialog')).not.toBeVisible();
+    await expect(page.getByRole('heading', { name: caminoName })).toBeVisible();
+  });
 
-      // Dialog shows camino name in the body text
-      await expect(page.getByRole('alertdialog')).toBeVisible();
-      await expect(page.getByText(`"${caminoName}"`)).toBeVisible();
+  test('confirming delete removes the camino from the list', async ({ page }) => {
+    await page.goto('/caminos');
 
-      // Confirm the delete
-      await page.getByRole('button', { name: 'Delete' }).click();
+    const menuTrigger = page.locator(`[aria-label="Actions for ${caminoName}"]`);
+    await expect(menuTrigger).toBeVisible({ timeout: 10_000 });
+    await menuTrigger.click();
 
-      // Dialog closes and camino disappears from the list
-      await expect(page.getByRole('alertdialog')).not.toBeVisible({ timeout: 10_000 });
-      await expect(page.getByRole('heading', { name: caminoName })).not.toBeVisible();
-    });
+    const deleteMenuItem = page.getByRole('menuitem', { name: 'Delete camino' });
+    await expect(deleteMenuItem).toBeVisible({ timeout: 5_000 });
+    await deleteMenuItem.click();
+
+    await expect(page.getByRole('alertdialog')).toBeVisible();
+    await expect(page.getByText(`"${caminoName}"`)).toBeVisible();
+
+    await page.getByRole('button', { name: 'Delete' }).click();
+
+    await expect(page.getByRole('alertdialog')).not.toBeVisible({ timeout: 10_000 });
+    await expect(page.getByRole('heading', { name: caminoName })).not.toBeVisible();
   });
 });
 
