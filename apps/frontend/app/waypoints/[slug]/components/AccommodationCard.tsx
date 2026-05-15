@@ -37,7 +37,13 @@ export async function AccommodationCard({ accommodation, slug, canContribute }: 
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className="font-semibold">{accommodation.name}</h3>
+            <h3 className="font-semibold">
+              <Link
+                href={`/accommodations/${accommodation.id}`}
+                className="hover:underline underline-offset-4">
+                {accommodation.name}
+              </Link>
+            </h3>
             <span className="inline-block rounded-full border border-border px-2 py-0.5 text-xs font-medium text-muted-foreground">
               {t(`accommodation_type.${accommodation.type}` as Parameters<typeof t>[0])}
             </span>
