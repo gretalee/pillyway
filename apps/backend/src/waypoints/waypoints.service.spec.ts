@@ -1,4 +1,4 @@
-import { NotFoundException } from '@nestjs/common';
+import { LoggerService, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AccommodationType } from '@prisma/client';
 import { afterEach, describe, expect, it, vi } from 'vitest';
@@ -66,7 +66,7 @@ function buildModule(prismaMock: object): Promise<TestingModule> {
       { provide: PrismaService, useValue: prismaMock },
     ],
   })
-    .setLogger(false)
+    .setLogger(false as unknown as LoggerService)
     .compile();
 }
 

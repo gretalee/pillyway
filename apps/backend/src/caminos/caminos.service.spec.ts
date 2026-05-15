@@ -4,6 +4,7 @@ import {
   ForbiddenException,
   InternalServerErrorException,
   Logger,
+  LoggerService,
   NotFoundException,
 } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -74,7 +75,7 @@ function buildModule(prismaMock: object): Promise<TestingModule> {
       { provide: StagesService, useValue: stagesServiceMock },
     ],
   })
-    .setLogger(false)
+    .setLogger(false as unknown as LoggerService)
     .compile();
 }
 
@@ -489,7 +490,7 @@ describe('CaminosService.update()', () => {
       camino: caminoMock,
       $transaction: vi
         .fn()
-        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) => cb(tx)),
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) => cb(tx as unknown as ReturnType<typeof makeTx>)),
     };
   }
 

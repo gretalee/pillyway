@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   ForbiddenException,
+  LoggerService,
   NotFoundException,
   ValidationPipe,
 } from '@nestjs/common';
@@ -58,7 +59,7 @@ function buildModule(
     controllers: [AccommodationsController],
     providers: [{ provide: AccommodationsService, useValue: serviceMock }],
   })
-    .setLogger(false)
+    .setLogger(false as unknown as LoggerService)
     .compile();
 }
 

@@ -15,11 +15,11 @@ function getSupabaseStoragePattern() {
     const parsedSupabaseUrl = new URL(supabaseUrl);
 
     return {
-      protocol: parsedSupabaseUrl.protocol.replace(':', ''),
+      protocol: parsedSupabaseUrl.protocol.replace(':', '') as 'http' | 'https',
       hostname: parsedSupabaseUrl.hostname,
       ...(parsedSupabaseUrl.port ? { port: parsedSupabaseUrl.port } : {}),
       pathname: '/storage/v1/object/public/**',
-    } as const;
+    };
   } catch {
     return null;
   }

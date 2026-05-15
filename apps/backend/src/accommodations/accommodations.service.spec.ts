@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   ForbiddenException,
+  LoggerService,
   NotFoundException,
 } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -52,7 +53,7 @@ function buildModule(prismaMock: object): Promise<TestingModule> {
       { provide: PrismaService, useValue: prismaMock },
     ],
   })
-    .setLogger(false)
+    .setLogger(false as unknown as LoggerService)
     .compile();
 }
 
