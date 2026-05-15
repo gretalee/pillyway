@@ -9,11 +9,8 @@ export function BackButton() {
   const t = useTranslations('waypoint_detail');
 
   function handleClick() {
-    if (typeof window !== 'undefined' && window.history.length > 1) {
-      router.back();
-    } else {
-      router.push('/caminos');
-    }
+    const previousPath = sessionStorage.getItem('navPreviousPath');
+    router.push(previousPath ?? '/caminos');
   }
 
   return (

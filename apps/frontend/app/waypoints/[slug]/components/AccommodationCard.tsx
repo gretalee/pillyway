@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { Pencil } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
@@ -100,12 +101,15 @@ export async function AccommodationCard({ accommodation, slug, canContribute }: 
           </div>
 
           {firstImage && (
-            <img
-              src={firstImage}
-              alt={accommodation.name}
-              loading="lazy"
-              className="mt-3 max-h-48 w-full rounded-md object-cover"
-            />
+            <div className="relative mt-3 h-48 w-full overflow-hidden rounded-md">
+              <Image
+                src={firstImage}
+                alt={accommodation.name}
+                fill
+                unoptimized
+                className="object-cover"
+              />
+            </div>
           )}
         </div>
 

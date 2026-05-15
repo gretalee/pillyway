@@ -1,10 +1,14 @@
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import { ChevronLeft, Pencil } from 'lucide-react';
 import { getAuthUser } from '@/lib/getAuthUser';
 import { fetchAccommodation } from '@/app/api/accommodations/fetch-accommodation';
-import type { AccommodationType, PriceRange } from '@/app/api/accommodations/accommodation-types';
+import type {
+  AccommodationType,
+  PriceRange,
+} from '@/app/api/accommodations/accommodation-types';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -85,7 +89,9 @@ export default async function AccommodationDetailPage({ params }: Props) {
           <div className="flex flex-wrap items-center gap-2">
             <h1 className="text-3xl font-bold tracking-tight">{accommodation.name}</h1>
             <span className="inline-block rounded-full border border-border px-2 py-0.5 text-xs font-medium text-muted-foreground">
-              {tType(`accommodation_type.${accommodation.type}` as Parameters<typeof tType>[0])}
+              {tType(
+                `accommodation_type.${accommodation.type}` as Parameters<typeof tType>[0],
+              )}
             </span>
             {accommodation.priceRange && (
               <span className="inline-block rounded-full bg-muted px-2 py-0.5 text-xs font-medium">
@@ -113,7 +119,9 @@ export default async function AccommodationDetailPage({ params }: Props) {
 
       {/* Description */}
       {accommodation.description && (
-        <p className="mt-6 whitespace-pre-wrap text-muted-foreground">{accommodation.description}</p>
+        <p className="mt-6 whitespace-pre-wrap text-muted-foreground">
+          {accommodation.description}
+        </p>
       )}
 
       {/* Contact */}
@@ -149,7 +157,9 @@ export default async function AccommodationDetailPage({ params }: Props) {
           )}
           {(accommodation.addressZip || accommodation.addressCity) && (
             <span>
-              {[accommodation.addressZip, accommodation.addressCity].filter(Boolean).join(' ')}
+              {[accommodation.addressZip, accommodation.addressCity]
+                .filter(Boolean)
+                .join(' ')}
               <br />
             </span>
           )}
@@ -161,12 +171,13 @@ export default async function AccommodationDetailPage({ params }: Props) {
       {accommodation.imageUrls.length > 0 && (
         <ul className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
           {accommodation.imageUrls.map((url) => (
-            <li key={url}>
-              <img
+            <li key={url} className="relative aspect-square overflow-hidden rounded-md">
+              <Image
                 src={url}
                 alt={accommodation.name}
-                loading="lazy"
-                className="aspect-square w-full rounded-md object-cover"
+                fill
+                className="object-cover"
+                unoptimized
               />
             </li>
           ))}

@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
@@ -258,11 +259,13 @@ export function EditSightForm({ slug, sight }: EditSightFormProps) {
           <ul className="mt-2 flex flex-wrap gap-3">
             {visibleExistingImages.map((url) => (
               <li key={url} className="relative">
-                <img
+                <Image
                   src={url}
                   alt=""
+                  width={96}
+                  height={96}
                   className="size-24 rounded-md object-cover"
-                  loading="lazy"
+                  unoptimized
                 />
                 <button
                   type="button"
@@ -275,11 +278,13 @@ export function EditSightForm({ slug, sight }: EditSightFormProps) {
             ))}
             {uploadedUrls.map((url) => (
               <li key={url} className="relative">
-                <img
+                <Image
                   src={url}
                   alt=""
+                  width={96}
+                  height={96}
                   className="size-24 rounded-md object-cover"
-                  loading="lazy"
+                  unoptimized
                 />
                 <button
                   type="button"

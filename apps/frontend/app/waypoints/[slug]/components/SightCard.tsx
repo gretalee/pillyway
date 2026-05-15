@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { Pencil } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
@@ -45,12 +46,15 @@ export async function SightCard({ sight, slug, canContribute }: Props) {
           )}
 
           {firstImage && (
-            <img
-              src={firstImage}
-              alt={sight.name}
-              loading="lazy"
-              className="mt-3 max-h-48 w-full rounded-md object-cover"
-            />
+            <div className="relative mt-3 h-48 w-full overflow-hidden rounded-md">
+              <Image
+                src={firstImage}
+                alt={sight.name}
+                fill
+                className="object-cover"
+                unoptimized
+              />
+            </div>
           )}
         </div>
 

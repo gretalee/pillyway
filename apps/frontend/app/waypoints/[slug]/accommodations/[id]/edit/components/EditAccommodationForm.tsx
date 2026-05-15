@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useRef, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
@@ -51,7 +52,10 @@ const ACCOMMODATION_TYPES: AccommodationType[] = [
 
 const PRICE_RANGES: PriceRange[] = ['budget', 'moderate', 'comfortable', 'luxury'];
 
-export function EditAccommodationForm({ slug, accommodation }: EditAccommodationFormProps) {
+export function EditAccommodationForm({
+  slug,
+  accommodation,
+}: EditAccommodationFormProps) {
   const tEdit = useTranslations('accommodation_edit');
   const tNew = useTranslations('accommodation_new');
   const tWaypoint = useTranslations('waypoint_detail');
@@ -86,7 +90,10 @@ export function EditAccommodationForm({ slug, accommodation }: EditAccommodation
     },
   });
 
-  const updateMutation = useUpdateAccommodation(accommodation.id, accommodation.caminoPointId);
+  const updateMutation = useUpdateAccommodation(
+    accommodation.id,
+    accommodation.caminoPointId,
+  );
   const uploadMutation = useUploadImages();
 
   const nameId = 'edit-accommodation-name';
@@ -102,7 +109,9 @@ export function EditAccommodationForm({ slug, accommodation }: EditAccommodation
   const imagesId = 'edit-accommodation-images';
 
   // Existing images still visible (not marked for removal)
-  const visibleExistingImages = accommodation.imageUrls.filter((url) => !removedUrls.has(url));
+  const visibleExistingImages = accommodation.imageUrls.filter(
+    (url) => !removedUrls.has(url),
+  );
 
   function handleRemoveExistingImage(url: string) {
     setRemovedUrls((prev) => new Set([...prev, url]));
@@ -138,9 +147,7 @@ export function EditAccommodationForm({ slug, accommodation }: EditAccommodation
 
     // Compute the final image list: kept existing + newly uploaded
     const finalImages = [...visibleExistingImages, ...uploadedUrls];
-    const imagesChanged =
-      removedUrls.size > 0 ||
-      uploadedUrls.length > 0;
+    const imagesChanged = removedUrls.size > 0 || uploadedUrls.length > 0;
 
     const payload = {
       name: values.name.trim(),
@@ -195,7 +202,10 @@ export function EditAccommodationForm({ slug, accommodation }: EditAccommodation
           />
         </div>
         {errors.name && (
-          <p id={`${nameId}-error`} role="alert" className="mt-1 text-sm text-destructive">
+          <p
+            id={`${nameId}-error`}
+            role="alert"
+            className="mt-1 text-sm text-destructive">
             {errors.name.message}
           </p>
         )}
@@ -222,7 +232,9 @@ export function EditAccommodationForm({ slug, accommodation }: EditAccommodation
                 <option value="">—</option>
                 {ACCOMMODATION_TYPES.map((type) => (
                   <option key={type} value={type}>
-                    {tWaypoint(`accommodation_type.${type}` as Parameters<typeof tWaypoint>[0])}
+                    {tWaypoint(
+                      `accommodation_type.${type}` as Parameters<typeof tWaypoint>[0],
+                    )}
                   </option>
                 ))}
               </Select>
@@ -230,7 +242,10 @@ export function EditAccommodationForm({ slug, accommodation }: EditAccommodation
           />
         </div>
         {errors.type && (
-          <p id={`${typeId}-error`} role="alert" className="mt-1 text-sm text-destructive">
+          <p
+            id={`${typeId}-error`}
+            role="alert"
+            className="mt-1 text-sm text-destructive">
             {errors.type.message}
           </p>
         )}
@@ -288,7 +303,9 @@ export function EditAccommodationForm({ slug, accommodation }: EditAccommodation
 
       {/* Address */}
       <fieldset className="space-y-3">
-        <legend className="text-sm font-medium text-foreground">{tNew('field_address_street')}</legend>
+        <legend className="text-sm font-medium text-foreground">
+          {tNew('field_address_street')}
+        </legend>
         <div>
           <Label htmlFor={addressStreetId}>{tNew('field_address_street')}</Label>
           <div className="mt-1">
@@ -323,12 +340,21 @@ export function EditAccommodationForm({ slug, accommodation }: EditAccommodation
 
         {/* Existing images */}
         {visibleExistingImages.length === 0 && uploadedUrls.length === 0 ? (
-          <p className="mt-2 text-sm text-muted-foreground">{tEdit('images_empty_state')}</p>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {tEdit('images_empty_state')}
+          </p>
         ) : (
           <ul className="mt-2 flex flex-wrap gap-3">
             {visibleExistingImages.map((url) => (
               <li key={url} className="relative">
-                <img src={url} alt="" className="size-24 rounded-md object-cover" loading="lazy" />
+                <Image
+                  src={url}
+                  alt=""
+                  width={96}
+                  height={96}
+                  className="size-24 rounded-md object-cover"
+                  unoptimized
+                />
                 <button
                   type="button"
                   onClick={() => handleRemoveExistingImage(url)}
@@ -340,7 +366,14 @@ export function EditAccommodationForm({ slug, accommodation }: EditAccommodation
             ))}
             {uploadedUrls.map((url) => (
               <li key={url} className="relative">
-                <img src={url} alt="" className="size-24 rounded-md object-cover" loading="lazy" />
+                <Image
+                  src={url}
+                  alt=""
+                  width={96}
+                  height={96}
+                  className="size-24 rounded-md object-cover"
+                  unoptimized
+                />
                 <button
                   type="button"
                   onClick={() => handleRemoveUploadedImage(url)}
@@ -371,7 +404,9 @@ export function EditAccommodationForm({ slug, accommodation }: EditAccommodation
           <p className="mt-1 text-xs text-muted-foreground">{tNew('upload_hint')}</p>
 
           {isUploading && (
-            <p className="mt-2 flex items-center gap-1.5 text-sm text-muted-foreground" aria-live="polite">
+            <p
+              className="mt-2 flex items-center gap-1.5 text-sm text-muted-foreground"
+              aria-live="polite">
               <Loader2 className="size-3.5 animate-spin" aria-hidden="true" />
               {tNew('uploading')}
             </p>
@@ -380,13 +415,17 @@ export function EditAccommodationForm({ slug, accommodation }: EditAccommodation
           {!isUploading && selectedFileNames.length > 0 && !uploadError && (
             <ul className="mt-2 space-y-0.5" aria-live="polite">
               {selectedFileNames.map((name) => (
-                <li key={name} className="text-xs text-muted-foreground">{name}</li>
+                <li key={name} className="text-xs text-muted-foreground">
+                  {name}
+                </li>
               ))}
             </ul>
           )}
 
           {uploadError && (
-            <p role="alert" className="mt-2 text-sm text-destructive">{uploadError}</p>
+            <p role="alert" className="mt-2 text-sm text-destructive">
+              {uploadError}
+            </p>
           )}
         </div>
       </div>

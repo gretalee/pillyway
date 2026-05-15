@@ -98,10 +98,6 @@ export default async function WaypointDetailPage({ params }: Props) {
           )}
         </div>
 
-        <h3 className="mt-4 text-sm font-medium text-muted-foreground">
-          {t('verification_links_heading')}
-        </h3>
-
         {accommodations === null ? (
           <p role="alert" className="mt-4 text-sm text-destructive">
             {t('error_loading_accommodations')}
