@@ -36,6 +36,7 @@ const baseAccommodation = {
   createdBy: USER_ID,
   createdAt: new Date('2026-02-01'),
   updatedAt: new Date('2026-02-01'),
+  caminoPoint: { slug: 'burgos' },
 };
 
 const PILGRIM_ROLES: KindeRole[] = [{ id: 'r1', key: 'pilgrim', name: 'Pilgrim' }];
@@ -86,6 +87,45 @@ describe('AccommodationsService.findById()', () => {
     const service = module.get(AccommodationsService);
 
     await expect(service.findById('unknown-id')).rejects.toBeInstanceOf(NotFoundException);
+  });
+});
+
+// ─── AccommodationsService.findByCaminoPointId() ─────────────────────────────
+
+describe('AccommodationsService.findByCaminoPointId()', () => {
+  afterEach(() => vi.restoreAllMocks());
+
+  it('returns an array of AccommodationDetailDto for the given waypoint', async () => {
+    const prismaMock = {
+      accommodation: {
+        findMany: vi.fn().mockResolvedValue([baseAccommodation]),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(AccommodationsService);
+
+    const result = await service.findByCaminoPointId(CAMINO_POINT_ID);
+
+    expect(prismaMock.accommodation.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { caminoPointId: CAMINO_POINT_ID } }),
+    );
+    expect(result).toHaveLength(1);
+    expect(result[0].id).toBe(ACCOMMODATION_ID);
+    expect(result[0].waypointSlug).toBe('burgos');
+  });
+
+  it('returns an empty array when the waypoint has no accommodations', async () => {
+    const prismaMock = {
+      accommodation: {
+        findMany: vi.fn().mockResolvedValue([]),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(AccommodationsService);
+
+    const result = await service.findByCaminoPointId(CAMINO_POINT_ID);
+
+    expect(result).toEqual([]);
   });
 });
 

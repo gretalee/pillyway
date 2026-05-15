@@ -78,6 +78,45 @@ describe('SightsService.findById()', () => {
   });
 });
 
+// ─── SightsService.findByCaminoPointId() ─────────────────────────────────────
+
+describe('SightsService.findByCaminoPointId()', () => {
+  afterEach(() => vi.restoreAllMocks());
+
+  it('returns an array of SightDetailDto for the given waypoint', async () => {
+    const prismaMock = {
+      sight: {
+        findMany: vi.fn().mockResolvedValue([baseSight]),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(SightsService);
+
+    const result = await service.findByCaminoPointId(CAMINO_POINT_ID);
+
+    expect(prismaMock.sight.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { caminoPointId: CAMINO_POINT_ID } }),
+    );
+    expect(result).toHaveLength(1);
+    expect(result[0].id).toBe(SIGHT_ID);
+    expect(result[0].caminoPointId).toBe(CAMINO_POINT_ID);
+  });
+
+  it('returns an empty array when the waypoint has no sights', async () => {
+    const prismaMock = {
+      sight: {
+        findMany: vi.fn().mockResolvedValue([]),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(SightsService);
+
+    const result = await service.findByCaminoPointId(CAMINO_POINT_ID);
+
+    expect(result).toEqual([]);
+  });
+});
+
 // ─── SightsService.update() ───────────────────────────────────────────────────
 
 describe('SightsService.update()', () => {
