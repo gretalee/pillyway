@@ -151,7 +151,10 @@ export function AddSightForm({ slug }: AddSightFormProps) {
             aria-required="true"
             aria-describedby={errors.name ? `${nameId}-error` : undefined}
             aria-invalid={errors.name ? 'true' : undefined}
-            {...register('name', { required: t('error_name_required') })}
+            {...register('name', {
+              required: t('error_name_required'),
+              validate: (value) => value.trim().length > 0 || t('error_name_required'),
+            })}
           />
         </div>
         {errors.name && (

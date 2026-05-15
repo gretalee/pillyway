@@ -1,6 +1,6 @@
 import type { AccommodationDetail } from './accommodation-types';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3033/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? '';
 
 export async function fetchAccommodation(id: string): Promise<AccommodationDetail> {
   const res = await fetch(`${API_URL}/accommodations/${id}`);

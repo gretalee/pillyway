@@ -2,7 +2,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3033/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? '';
 
 export function useDeleteAccommodation(id: string, caminoPointId: string) {
   const queryClient = useQueryClient();

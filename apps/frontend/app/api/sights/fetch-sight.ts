@@ -1,6 +1,6 @@
 import type { SightDetail } from './sight-types';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3033/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? '';
 
 export async function fetchSight(id: string): Promise<SightDetail> {
   const res = await fetch(`${API_URL}/sights/${id}`);
