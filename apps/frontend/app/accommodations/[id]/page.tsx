@@ -5,10 +5,12 @@ import { getTranslations } from 'next-intl/server';
 import { ChevronLeft, Pencil } from 'lucide-react';
 import { getAuthUser } from '@/lib/getAuthUser';
 import { fetchAccommodation } from '@/app/api/accommodations/fetch-accommodation';
+import { buttonVariants } from '@/app/components/ui/button';
 import type {
   AccommodationType,
   PriceRange,
 } from '@/app/api/accommodations/accommodation-types';
+import { cn } from '@/lib/utils';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -110,7 +112,7 @@ export default async function AccommodationDetailPage({ params }: Props) {
           <Link
             href={`/waypoints/${accommodation.waypointSlug}/accommodations/${accommodation.id}/edit`}
             aria-label={t('edit_label')}
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+            className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'shrink-0')}>
             <Pencil className="size-4" aria-hidden="true" />
             {t('edit_label')}
           </Link>

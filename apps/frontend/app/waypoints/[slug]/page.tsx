@@ -4,7 +4,9 @@ import { getTranslations } from 'next-intl/server';
 import { fetchWaypoint } from '@/app/api/waypoints/fetch-waypoint';
 import { fetchAccommodationsByWaypoint } from '@/app/api/accommodations/fetch-accommodation';
 import { fetchSightsByWaypoint } from '@/app/api/sights/fetch-sight';
+import { buttonVariants } from '@/app/components/ui/button';
 import { getAuthUser } from '@/lib/getAuthUser';
+import { cn } from '@/lib/utils';
 import { BackButton } from './components/BackButton';
 import { AccommodationCard } from './components/AccommodationCard';
 import { SightCard } from './components/SightCard';
@@ -92,7 +94,7 @@ export default async function WaypointDetailPage({ params }: Props) {
           {canContribute && (
             <Link
               href={`/waypoints/${slug}/accommodations/new`}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+              className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>
               {t('add_accommodation')}
             </Link>
           )}
@@ -127,7 +129,7 @@ export default async function WaypointDetailPage({ params }: Props) {
           {canContribute && (
             <Link
               href={`/waypoints/${slug}/sights/new`}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+              className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>
               {t('add_sight')}
             </Link>
           )}
