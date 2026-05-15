@@ -179,6 +179,7 @@ export default async function AccommodationDetailPage({ params }: Props) {
                 alt={accommodation.name}
                 fill
                 className="object-cover"
+                loading="eager"
                 unoptimized
               />
             </li>
