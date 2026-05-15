@@ -1,23 +1,20 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { Loader2 } from 'lucide-react';
-import { useCreateSight } from '@/app/api/waypoints/use-create-sight';
-import { useUploadImages } from '@/app/api/waypoints/use-upload-images';
+import { Loader2, X } from 'lucide-react';
+import { useUpdateSight } from '@/app/api/sights/use-update-sight';
+import type { SightDetail } from '@/app/api/sights/sight-types';
 import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
 import { Textarea } from '@/app/components/ui/textarea';
 import { Label } from '@/app/components/ui/label';
 
-interface AddSightFormProps {
+interface EditSightFormProps {
   slug: string;
-}
-
-interface UploadError extends Error {
-  isTooBig?: boolean;
+  sight: SightDetail;
 }
 
 interface FormValues {
@@ -28,15 +25,13 @@ interface FormValues {
   longitude: string;
 }
 
-export function AddSightForm({ slug }: AddSightFormProps) {
-  const t = useTranslations('sight_new');
+export function EditSightForm({ slug, sight }: EditSightFormProps) {
+  const tEdit = useTranslations('sight_edit');
+  const tNew = useTranslations('sight_new');
   const router = useRouter();
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [selectedFileNames, setSelectedFileNames] = useState<string[]>([]);
-  const [collectedImageUrls, setCollectedImageUrls] = useState<string[]>([]);
+  const [removeImageUrls, setRemoveImageUrls] = useState<string[]>([]);
   const [formError, setFormError] = useState<string | null>(null);
-  const [uploadError, setUploadError] = useState<string | null>(null);
 
   const {
     register,
@@ -45,48 +40,27 @@ export function AddSightForm({ slug }: AddSightFormProps) {
     setError,
   } = useForm<FormValues>({
     defaultValues: {
-      name: '',
-      description: '',
-      address: '',
-      latitude: '',
-      longitude: '',
+      name: sight.name,
+      description: sight.description ?? '',
+      address: sight.address ?? '',
+      latitude: sight.latitude !== null ? String(sight.latitude) : '',
+      longitude: sight.longitude !== null ? String(sight.longitude) : '',
     },
   });
 
-  const createMutation = useCreateSight(slug);
-  const uploadMutation = useUploadImages();
+  const updateMutation = useUpdateSight(sight.id, sight.caminoPointId);
 
-  const nameId = 'sight-name';
-  const descriptionId = 'sight-description';
-  const addressId = 'sight-address';
-  const latitudeId = 'sight-latitude';
-  const longitudeId = 'sight-longitude';
-  const imagesId = 'sight-images';
+  const nameId = 'edit-sight-name';
+  const descriptionId = 'edit-sight-description';
+  const addressId = 'edit-sight-address';
+  const latitudeId = 'edit-sight-latitude';
+  const longitudeId = 'edit-sight-longitude';
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files ?? []);
-    if (files.length === 0) return;
+  const visibleExistingImages = sight.imageUrls.filter((url) => !removeImageUrls.includes(url));
 
-    setUploadError(null);
-    setSelectedFileNames(files.map((f) => f.name));
-
-    uploadMutation.mutate(files, {
-      onSuccess: (data) => {
-        setCollectedImageUrls((prev) => [...prev, ...data.urls]);
-      },
-      onError: (err: UploadError) => {
-        if (err.isTooBig) {
-          setUploadError(t('error_upload_size'));
-        } else {
-          setUploadError(t('error_upload'));
-        }
-        setSelectedFileNames([]);
-        if (fileInputRef.current) {
-          fileInputRef.current.value = '';
-        }
-      },
-    });
-  };
+  function handleRemoveExistingImage(url: string) {
+    setRemoveImageUrls((prev) => [...prev, url]);
+  }
 
   const onSubmit = (values: FormValues) => {
     setFormError(null);
@@ -95,7 +69,7 @@ export function AddSightForm({ slug }: AddSightFormProps) {
     const lonFilled = values.longitude.trim() !== '';
 
     if (latFilled !== lonFilled) {
-      const errorMsg = t('error_lat_lon_incomplete');
+      const errorMsg = tNew('error_lat_lon_incomplete');
       if (!latFilled) {
         setError('latitude', { message: errorMsg });
       }
@@ -110,25 +84,29 @@ export function AddSightForm({ slug }: AddSightFormProps) {
 
     const payload = {
       name: values.name.trim(),
-      ...(values.description.trim() ? { description: values.description.trim() } : {}),
-      ...(collectedImageUrls.length > 0 ? { imageUrls: collectedImageUrls } : {}),
-      ...(values.address.trim() ? { address: values.address.trim() } : {}),
-      ...(latitude !== undefined ? { latitude } : {}),
-      ...(longitude !== undefined ? { longitude } : {}),
+      description: values.description.trim() || null,
+      address: values.address.trim() || null,
+      ...(latitude !== undefined ? { latitude } : { latitude: null }),
+      ...(longitude !== undefined ? { longitude } : { longitude: null }),
+      ...(removeImageUrls.length > 0 ? { removeImageUrls } : {}),
     };
 
-    createMutation.mutate(payload, {
+    updateMutation.mutate(payload, {
       onSuccess: () => {
         router.push(`/waypoints/${slug}`);
       },
-      onError: () => {
-        setFormError(t('error_generic'));
+      onError: (err) => {
+        const status = (err as Error & { status?: number }).status;
+        if (status === 403) {
+          setFormError(tEdit('error_forbidden'));
+        } else {
+          setFormError(tEdit('error_generic'));
+        }
       },
     });
   };
 
-  const isPending = createMutation.isPending;
-  const isUploading = uploadMutation.isPending;
+  const isPending = updateMutation.isPending;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
@@ -143,7 +121,7 @@ export function AddSightForm({ slug }: AddSightFormProps) {
 
       {/* Name */}
       <div>
-        <Label htmlFor={nameId}>{t('field_name')}</Label>
+        <Label htmlFor={nameId}>{tNew('field_name')}</Label>
         <div className="mt-1">
           <Input
             id={nameId}
@@ -151,7 +129,7 @@ export function AddSightForm({ slug }: AddSightFormProps) {
             aria-required="true"
             aria-describedby={errors.name ? `${nameId}-error` : undefined}
             aria-invalid={errors.name ? 'true' : undefined}
-            {...register('name', { required: t('error_name_required') })}
+            {...register('name', { required: tNew('error_name_required') })}
           />
         </div>
         {errors.name && (
@@ -163,7 +141,7 @@ export function AddSightForm({ slug }: AddSightFormProps) {
 
       {/* Description */}
       <div>
-        <Label htmlFor={descriptionId}>{t('field_description')}</Label>
+        <Label htmlFor={descriptionId}>{tNew('field_description')}</Label>
         <div className="mt-1">
           <Textarea id={descriptionId} rows={4} {...register('description')} />
         </div>
@@ -171,7 +149,7 @@ export function AddSightForm({ slug }: AddSightFormProps) {
 
       {/* Address */}
       <div>
-        <Label htmlFor={addressId}>{t('field_address')}</Label>
+        <Label htmlFor={addressId}>{tNew('field_address')}</Label>
         <div className="mt-1">
           <Input id={addressId} type="text" {...register('address')} />
         </div>
@@ -180,7 +158,7 @@ export function AddSightForm({ slug }: AddSightFormProps) {
       {/* Coordinates */}
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <Label htmlFor={latitudeId}>{t('field_latitude')}</Label>
+          <Label htmlFor={latitudeId}>{tNew('field_latitude')}</Label>
           <div className="mt-1">
             <Input
               id={latitudeId}
@@ -192,7 +170,7 @@ export function AddSightForm({ slug }: AddSightFormProps) {
                 validate: (val) => {
                   if (val.trim() === '') return true;
                   const num = parseFloat(val);
-                  if (isNaN(num)) return t('error_lat_lon_incomplete');
+                  if (isNaN(num)) return tNew('error_lat_lon_incomplete');
                   return true;
                 },
               })}
@@ -205,7 +183,7 @@ export function AddSightForm({ slug }: AddSightFormProps) {
           )}
         </div>
         <div>
-          <Label htmlFor={longitudeId}>{t('field_longitude')}</Label>
+          <Label htmlFor={longitudeId}>{tNew('field_longitude')}</Label>
           <div className="mt-1">
             <Input
               id={longitudeId}
@@ -217,7 +195,7 @@ export function AddSightForm({ slug }: AddSightFormProps) {
                 validate: (val) => {
                   if (val.trim() === '') return true;
                   const num = parseFloat(val);
-                  if (isNaN(num)) return t('error_lat_lon_incomplete');
+                  if (isNaN(num)) return tNew('error_lat_lon_incomplete');
                   return true;
                 },
               })}
@@ -231,46 +209,31 @@ export function AddSightForm({ slug }: AddSightFormProps) {
         </div>
       </div>
 
-      {/* Images */}
+      {/* Existing images with remove button */}
       <div>
-        <Label htmlFor={imagesId}>{t('field_images')}</Label>
-        <div className="mt-1">
-          <input
-            ref={fileInputRef}
-            id={imagesId}
-            type="file"
-            multiple
-            accept="image/*"
-            onChange={handleFileChange}
-            disabled={isUploading}
-            className="block w-full text-sm text-muted-foreground file:mr-3 file:rounded-md file:border file:border-border file:bg-background file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-foreground hover:file:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50"
-          />
-        </div>
-        <p className="mt-1 text-xs text-muted-foreground">{t('upload_hint')}</p>
-
-        {isUploading && (
-          <p
-            className="mt-2 flex items-center gap-1.5 text-sm text-muted-foreground"
-            aria-live="polite">
-            <Loader2 className="size-3.5 animate-spin" aria-hidden="true" />
-            {t('uploading')}
-          </p>
-        )}
-
-        {!isUploading && selectedFileNames.length > 0 && !uploadError && (
-          <ul className="mt-2 space-y-0.5" aria-live="polite">
-            {selectedFileNames.map((fileName) => (
-              <li key={fileName} className="text-xs text-muted-foreground">
-                {fileName}
+        <p className="text-sm font-medium text-foreground">{tNew('field_images')}</p>
+        {visibleExistingImages.length === 0 ? (
+          <p className="mt-2 text-sm text-muted-foreground">{tEdit('images_empty_state')}</p>
+        ) : (
+          <ul className="mt-2 flex flex-wrap gap-3" aria-label={tEdit('remove_image_label')}>
+            {visibleExistingImages.map((url) => (
+              <li key={url} className="relative">
+                <img
+                  src={url}
+                  alt=""
+                  className="size-24 rounded-md object-cover"
+                  loading="lazy"
+                />
+                <button
+                  type="button"
+                  onClick={() => handleRemoveExistingImage(url)}
+                  aria-label={tEdit('remove_image_label')}
+                  className="absolute -right-1.5 -top-1.5 inline-flex size-5 items-center justify-center rounded-full bg-destructive text-destructive-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                  <X className="size-3" aria-hidden="true" />
+                </button>
               </li>
             ))}
           </ul>
-        )}
-
-        {uploadError && (
-          <p role="alert" className="mt-2 text-sm text-destructive">
-            {uploadError}
-          </p>
         )}
       </div>
 
@@ -278,16 +241,16 @@ export function AddSightForm({ slug }: AddSightFormProps) {
       <div className="flex flex-wrap items-center gap-3">
         <Button
           type="submit"
-          disabled={isPending || isUploading}
-          aria-disabled={isPending || isUploading}
+          disabled={isPending}
+          aria-disabled={isPending}
           className="w-full sm:w-auto">
           {isPending ? (
             <>
               <Loader2 className="mr-2 size-4 animate-spin" aria-hidden="true" />
-              {t('submitting')}
+              {tEdit('submitting')}
             </>
           ) : (
-            t('submit')
+            tEdit('submit_label')
           )}
         </Button>
         <Button
@@ -295,7 +258,7 @@ export function AddSightForm({ slug }: AddSightFormProps) {
           variant="outline"
           onClick={() => router.push(`/waypoints/${slug}`)}
           className="w-full sm:w-auto">
-          {t('cancel')}
+          {tEdit('cancel')}
         </Button>
       </div>
     </form>

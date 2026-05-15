@@ -68,16 +68,40 @@ model CaminoPointOrder {
   @@map("camino_point_order")
 }
 
+enum AccommodationType {
+  hostel
+  monastery
+  b_and_b
+  hotel
+  apartment
+  private_room
+}
+
+enum PriceRange {
+  budget
+  moderate
+  comfortable
+  luxury
+}
+
 model Accommodation {
-  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  caminoPointId String   @map("camino_point_id") @db.Uuid
-  name          String
-  description   String?
-  imageUrls     String[] @default([]) @map("image_urls")
-  verified      Boolean  @default(false)
-  createdBy     String   @map("created_by")
-  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt     DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+  id             String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  caminoPointId  String            @map("camino_point_id") @db.Uuid
+  name           String
+  description    String?
+  imageUrls      String[]          @default([]) @map("image_urls")
+  verified       Boolean           @default(false)
+  type           AccommodationType @default(hostel)
+  email          String?
+  website        String?
+  addressStreet  String?           @map("address_street")
+  addressZip     String?           @map("address_zip")
+  addressCity    String?           @map("address_city")
+  addressCountry String?           @map("address_country")
+  priceRange     PriceRange?       @map("price_range")
+  createdBy      String            @map("created_by")
+  createdAt      DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime          @default(now()) @map("updated_at") @db.Timestamptz(6)
 
   caminoPoint CaminoPoint @relation(fields: [caminoPointId], references: [id], onDelete: Cascade)
 
@@ -91,6 +115,9 @@ model Sight {
   description   String?
   imageUrls     String[] @map("image_urls")
   verified      Boolean  @default(false)
+  address       String?
+  latitude      Float?
+  longitude     Float?
   createdBy     String   @map("created_by")
   createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt     DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)

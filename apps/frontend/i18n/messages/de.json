@@ -177,7 +177,30 @@
     "verified_badge": "Verifiziert",
     "vote_up_aria": "Positiv bewerten (demnächst verfügbar)",
     "vote_down_aria": "Negativ bewerten (demnächst verfügbar)",
-    "error_loading": "Wegpunkt konnte nicht geladen werden. Bitte versuche es erneut."
+    "error_loading": "Wegpunkt konnte nicht geladen werden. Bitte versuche es erneut.",
+    "accommodation_type": {
+      "hostel": "Hostel",
+      "monastery": "Kloster",
+      "b_and_b": "Bed & Breakfast",
+      "hotel": "Hotel",
+      "apartment": "Apartment",
+      "private_room": "Privatzimmer"
+    },
+    "price_range": {
+      "budget": "€",
+      "moderate": "€€",
+      "comfortable": "€€€",
+      "luxury": "€€€€"
+    },
+    "edit_accommodation_label": "Unterkunft bearbeiten",
+    "delete_accommodation_label": "Unterkunft löschen",
+    "edit_sight_label": "Sehenswürdigkeit bearbeiten",
+    "delete_sight_label": "Sehenswürdigkeit löschen",
+    "delete_confirmation_title": "Löschen",
+    "delete_confirmation_description": "Möchtest du \"{name}\" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "delete_confirm_action": "Löschen",
+    "delete_cancel_action": "Abbrechen",
+    "verification_links_heading": "Verifizierungslinks"
   },
   "accommodation_new": {
     "title": "Unterkunft hinzufügen",
@@ -186,6 +209,14 @@
     "field_name": "Name",
     "field_description": "Beschreibung (optional)",
     "field_images": "Fotos (optional)",
+    "field_type": "Typ",
+    "field_email": "E-Mail",
+    "field_website": "Website",
+    "field_address_street": "Straße",
+    "field_address_zip": "PLZ / Postleitzahl",
+    "field_address_city": "Stadt",
+    "field_address_country": "Land",
+    "field_price_range": "Preisklasse",
     "upload_hint": "Max. 10 MB pro Foto. Bis zu 10 Fotos.",
     "upload_button": "Bilder auswählen",
     "uploading": "Wird hochgeladen…",
@@ -193,6 +224,7 @@
     "submitting": "Wird gespeichert…",
     "cancel": "Abbrechen",
     "error_name_required": "Der Name ist erforderlich.",
+    "error_type_required": "Bitte wähle einen Unterkunftstyp aus.",
     "error_generic": "Unterkunft konnte nicht hinzugefügt werden. Bitte versuche es erneut.",
     "error_upload": "Bild-Upload fehlgeschlagen. Bitte versuche es erneut.",
     "error_upload_size": "Eine oder mehrere Dateien überschreiten das Limit von 10 MB."
@@ -204,6 +236,9 @@
     "field_name": "Name",
     "field_description": "Beschreibung (optional)",
     "field_images": "Fotos (optional)",
+    "field_address": "Adresse",
+    "field_latitude": "Breitengrad",
+    "field_longitude": "Längengrad",
     "upload_hint": "Max. 10 MB pro Foto. Bis zu 10 Fotos.",
     "upload_button": "Bilder auswählen",
     "uploading": "Wird hochgeladen…",
@@ -211,8 +246,31 @@
     "submitting": "Wird gespeichert…",
     "cancel": "Abbrechen",
     "error_name_required": "Der Name ist erforderlich.",
+    "error_lat_lon_incomplete": "Bitte gib sowohl Breiten- als auch Längengrad ein oder lass beide leer.",
     "error_generic": "Sehenswürdigkeit konnte nicht hinzugefügt werden. Bitte versuche es erneut.",
     "error_upload": "Bild-Upload fehlgeschlagen. Bitte versuche es erneut.",
     "error_upload_size": "Eine oder mehrere Dateien überschreiten das Limit von 10 MB."
+  },
+  "accommodation_edit": {
+    "title": "Unterkunft bearbeiten",
+    "meta_title": "Unterkunft bearbeiten | Pillyway",
+    "submit_label": "Änderungen speichern",
+    "submitting": "Wird gespeichert…",
+    "cancel": "Abbrechen",
+    "remove_image_label": "Bild entfernen",
+    "images_empty_state": "Keine Bilder",
+    "error_generic": "Änderungen konnten nicht gespeichert werden. Bitte versuche es erneut.",
+    "error_forbidden": "Du bist nicht berechtigt, diese Unterkunft zu bearbeiten."
+  },
+  "sight_edit": {
+    "title": "Sehenswürdigkeit bearbeiten",
+    "meta_title": "Sehenswürdigkeit bearbeiten | Pillyway",
+    "submit_label": "Änderungen speichern",
+    "submitting": "Wird gespeichert…",
+    "cancel": "Abbrechen",
+    "remove_image_label": "Bild entfernen",
+    "images_empty_state": "Keine Bilder",
+    "error_generic": "Änderungen konnten nicht gespeichert werden. Bitte versuche es erneut.",
+    "error_forbidden": "Du bist nicht berechtigt, diese Sehenswürdigkeit zu bearbeiten."
   }
 }

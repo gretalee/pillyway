@@ -16,7 +16,7 @@ Accommodation and Sight entities currently hold only name, description, and imag
 
 ## User Personas
 
-**Pilgrim (role: `pilgrim` or `owner`)**
+**Pilgrim (role: `pilgrim`)**
 A registered user who actively contributes route data. They have first-hand knowledge of accommodations and sights on a pilgrimage route. They need to create accurate, richly attributed entries, correct mistakes after the fact, and remove outdated images — all without asking an admin for a database fix.
 
 **Route Viewer (unauthenticated or any authenticated user)**
@@ -382,7 +382,7 @@ All new files follow the `fetch-[domain].ts` / `use-[domain].ts` split. Files li
 | Edit sight (including image removal) | `pilgrim` | No per-entity ownership check |
 | Delete sight | `pilgrim` | No per-entity ownership check |
 
-Frontend enforcement: edit/delete buttons on `AccommodationCard` and `SightCard` are rendered only when `canContribute === true` (`user?.roles.some(r => r.key === 'pilgrim' || r.key === 'owner')`). The backend is the authoritative access gate.
+Frontend enforcement: edit/delete buttons on `AccommodationCard` and `SightCard` are rendered only when `canContribute === true` (`user?.roles.some(r => r.key === 'pilgrim')`). The backend is the authoritative access gate.
 
 ---
 
