@@ -5,6 +5,7 @@ import {
   IsArray,
   IsEmail,
   IsEnum,
+  IsNotEmpty,
   IsOptional,
   IsString,
   IsUrl,
@@ -16,6 +17,7 @@ import { AccommodationType, PriceRange } from '@prisma/client';
 export class UpdateAccommodationDto {
   @IsOptional()
   @IsString()
+  @IsNotEmpty()
   @MaxLength(200)
   @ApiPropertyOptional()
   name?: string;

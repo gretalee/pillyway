@@ -3,6 +3,7 @@ import { ApiPropertyOptional } from '@nestjs/swagger';
 import {
   ArrayMaxSize,
   IsArray,
+  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
@@ -13,6 +14,7 @@ import {
 export class UpdateSightDto {
   @IsOptional()
   @IsString()
+  @IsNotEmpty()
   @MaxLength(200)
   @ApiPropertyOptional()
   name?: string;

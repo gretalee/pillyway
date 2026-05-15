@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -44,18 +43,7 @@ export class SightsService {
       throw new ForbiddenException('Requires pilgrim role.');
     }
 
-    const fields = Object.keys(dto).filter((k) => (dto as unknown as Record<string, unknown>)[k] !== undefined);
-    if (fields.length === 0) {
-      throw new BadRequestException('Request body must not be empty');
-    }
-    if (dto.imageUrls !== undefined && dto.removeImageUrls !== undefined) {
-      throw new BadRequestException('imageUrls and removeImageUrls are mutually exclusive');
-    }
-    const latSet = dto.latitude !== undefined && dto.latitude !== null;
-    const lonSet = dto.longitude !== undefined && dto.longitude !== null;
-    if (latSet !== lonSet) {
-      throw new BadRequestException('Both latitude and longitude must be provided together or both omitted');
-    }
+    dto.assertValid();
 
     const existing = await this.prisma.sight.findUnique({ where: { id } });
     if (!existing) {

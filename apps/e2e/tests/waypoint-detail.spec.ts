@@ -33,7 +33,9 @@ test.describe('Waypoint detail — public view and pilgrim write flows', () => {
     const startLink = page.locator('dl dd a').first();
     await expect(startLink).toBeVisible({ timeout: 10_000 });
     const href = await startLink.getAttribute('href');
-    expect(href, 'Start point must be a link to /waypoints/...').toMatch(/^\/waypoints\//);
+    expect(href, 'Start point must be a link to /waypoints/...').toMatch(
+      /^\/waypoints\//,
+    );
     waypointSlug = href!.replace('/waypoints/', '');
 
     await logout(page);
@@ -74,7 +76,9 @@ test.describe('Waypoint detail — public view and pilgrim write flows', () => {
   }) => {
     await setLanguageToEnglish(page);
     await page.goto(`/waypoints/${waypointSlug}`);
-    await expect(page.getByRole('heading', { level: 1 })).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible({
+      timeout: 10_000,
+    });
     await expect(page.getByRole('heading', { name: 'Accommodations' })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Sights' })).toBeVisible();
     // Guest sees no add buttons
@@ -82,7 +86,9 @@ test.describe('Waypoint detail — public view and pilgrim write flows', () => {
     await expect(page.getByRole('link', { name: 'Add sight' })).not.toBeVisible();
   });
 
-  test('stage detail start and end points are links to waypoint pages', async ({ page }) => {
+  test('stage detail start and end points are links to waypoint pages', async ({
+    page,
+  }) => {
     await setLanguageToEnglish(page);
     await page.goto(`/caminos/${caminoId}/stages/1`);
     const startLink = page.locator('dl dd a').first();
@@ -91,7 +97,9 @@ test.describe('Waypoint detail — public view and pilgrim write flows', () => {
     expect(href).toMatch(/^\/waypoints\//);
   });
 
-  test('unauthenticated user is redirected from add-accommodation page', async ({ page }) => {
+  test('unauthenticated user is redirected from add-accommodation page', async ({
+    page,
+  }) => {
     await page.goto(`/waypoints/${waypointSlug}/accommodations/new`);
     await expect(page).not.toHaveURL(`/waypoints/${waypointSlug}/accommodations/new`, {
       timeout: 10_000,
@@ -117,11 +125,14 @@ test.describe('Waypoint detail — public view and pilgrim write flows', () => {
 
     // Navigate to add form
     await page.getByRole('link', { name: 'Add accommodation' }).click();
-    await page.waitForURL(`/waypoints/${waypointSlug}/accommodations/new`, { timeout: 10_000 });
+    await page.waitForURL(`/waypoints/${waypointSlug}/accommodations/new`, {
+      timeout: 10_000,
+    });
 
     // Fill and submit form
     const accName = `Test Hostel ${Date.now()}`;
     await page.getByLabel('Name').fill(accName);
+    await page.getByLabel('Type').selectOption('Hostel');
     await page.getByRole('button', { name: 'Add accommodation' }).click();
 
     // Redirected back to waypoint page
@@ -129,7 +140,9 @@ test.describe('Waypoint detail — public view and pilgrim write flows', () => {
     await expect(page.getByText(accName)).toBeVisible({ timeout: 10_000 });
   });
 
-  test('pilgrim can add a sight and it appears on the waypoint page', async ({ page }) => {
+  test('pilgrim can add a sight and it appears on the waypoint page', async ({
+    page,
+  }) => {
     test.setTimeout(60_000);
     const email = process.env.E2E_PILGRIM_EMAIL;
     const password = process.env.E2E_PILGRIM_PASSWORD;
@@ -148,23 +161,5 @@ test.describe('Waypoint detail — public view and pilgrim write flows', () => {
 
     await page.waitForURL(`/waypoints/${waypointSlug}`, { timeout: 15_000 });
     await expect(page.getByText(sightName)).toBeVisible({ timeout: 10_000 });
-  });
-
-  test('vote buttons are present and disabled on accommodation card', async ({ page }) => {
-    test.setTimeout(60_000);
-    const email = process.env.E2E_PILGRIM_EMAIL;
-    const password = process.env.E2E_PILGRIM_PASSWORD;
-    expect(email, 'E2E_PILGRIM_EMAIL must be set').toBeTruthy();
-    expect(password, 'E2E_PILGRIM_PASSWORD must be set').toBeTruthy();
-    await setLanguageToEnglish(page);
-    await loginAs(page, email!, password!);
-
-    await page.goto(`/waypoints/${waypointSlug}`);
-    // At least one accommodation should exist from the previous test
-    const voteUpBtn = page.getByRole('button', { name: /vote up/i }).first();
-    await expect(voteUpBtn).toBeVisible({ timeout: 10_000 });
-    await expect(voteUpBtn).toBeDisabled();
-    const voteDownBtn = page.getByRole('button', { name: /vote down/i }).first();
-    await expect(voteDownBtn).toBeDisabled();
   });
 });

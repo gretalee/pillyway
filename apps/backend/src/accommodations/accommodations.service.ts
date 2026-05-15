@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -52,13 +51,7 @@ export class AccommodationsService {
       throw new ForbiddenException('Requires pilgrim role.');
     }
 
-    const fields = Object.keys(dto).filter((k) => (dto as unknown as Record<string, unknown>)[k] !== undefined);
-    if (fields.length === 0) {
-      throw new BadRequestException('Request body must not be empty');
-    }
-    if (dto.imageUrls !== undefined && dto.removeImageUrls !== undefined) {
-      throw new BadRequestException('imageUrls and removeImageUrls are mutually exclusive');
-    }
+    dto.assertValid();
 
     const existing = await this.prisma.accommodation.findUnique({
       where: { id },
