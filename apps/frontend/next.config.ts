@@ -4,16 +4,35 @@ import type { NextConfig } from 'next';
 
 const withNextIntl = createNextIntlPlugin('./i18n/geti18nConfig.ts');
 
+function getSupabaseStoragePattern() {
+  const supabaseUrl = process.env.SUPABASE_URL;
+
+  if (!supabaseUrl) {
+    return null;
+  }
+
+  try {
+    const parsedSupabaseUrl = new URL(supabaseUrl);
+
+    return {
+      protocol: parsedSupabaseUrl.protocol.replace(':', ''),
+      hostname: parsedSupabaseUrl.hostname,
+      ...(parsedSupabaseUrl.port ? { port: parsedSupabaseUrl.port } : {}),
+      pathname: '/storage/v1/object/public/**',
+    } as const;
+  } catch {
+    return null;
+  }
+}
+
+const supabaseStoragePattern = getSupabaseStoragePattern();
+
 const nextConfig: NextConfig = {
   output: 'standalone',
   outputFileTracingRoot: path.resolve(import.meta.dirname),
   images: {
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**.supabase.co',
-        pathname: '/storage/v1/object/public/**',
-      },
+      ...(supabaseStoragePattern ? [supabaseStoragePattern] : []),
       {
         protocol: 'http',
         hostname: '127.0.0.1',
