@@ -11,6 +11,7 @@ export type PriceRange = 'budget' | 'moderate' | 'comfortable' | 'luxury';
 export interface AccommodationDetail {
   id: string;
   caminoPointId: string;
+  waypointSlug: string;
   name: string;
   description: string | null;
   imageUrls: string[];

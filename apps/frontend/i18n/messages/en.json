@@ -199,8 +199,14 @@
     "delete_confirmation_title": "Delete",
     "delete_confirmation_description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
     "delete_confirm_action": "Delete",
-    "delete_cancel_action": "Cancel",
-    "verification_links_heading": "Verification links"
+    "delete_cancel_action": "Cancel"
+  },
+  "accommodation_detail": {
+    "meta_title": "{name} | Pillyway",
+    "meta_description": "View accommodation details.",
+    "back_label": "Back",
+    "edit_label": "Edit accommodation",
+    "error_loading": "Failed to load accommodation. Please try again."
   },
   "accommodation_new": {
     "title": "Add Accommodation",

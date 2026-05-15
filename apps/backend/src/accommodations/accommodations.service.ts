@@ -20,6 +20,7 @@ export class AccommodationsService {
   async findById(id: string): Promise<AccommodationDetailDto> {
     const accommodation = await this.prisma.accommodation.findUnique({
       where: { id },
+      include: { caminoPoint: { select: { slug: true } } },
     });
 
     if (!accommodation) {
@@ -34,6 +35,7 @@ export class AccommodationsService {
   async findByCaminoPointId(caminoPointId: string): Promise<AccommodationDetailDto[]> {
     const accommodations = await this.prisma.accommodation.findMany({
       where: { caminoPointId },
+      include: { caminoPoint: { select: { slug: true } } },
     });
 
     return accommodations.map((a) => this.toDto(a));
@@ -58,7 +60,10 @@ export class AccommodationsService {
       throw new BadRequestException('imageUrls and removeImageUrls are mutually exclusive');
     }
 
-    const existing = await this.prisma.accommodation.findUnique({ where: { id } });
+    const existing = await this.prisma.accommodation.findUnique({
+      where: { id },
+      include: { caminoPoint: { select: { slug: true } } },
+    });
     if (!existing) {
       throw new NotFoundException('Accommodation not found.');
     }
@@ -90,7 +95,7 @@ export class AccommodationsService {
       },
     });
 
-    return this.toDto(updated);
+    return this.toDto({ ...updated, caminoPoint: existing.caminoPoint });
   }
 
   // ── delete ────────────────────────────────────────────────────────────────────
@@ -128,10 +133,12 @@ export class AccommodationsService {
     createdBy: string;
     createdAt: Date;
     updatedAt: Date;
+    caminoPoint: { slug: string };
   }): AccommodationDetailDto {
     const dto = new AccommodationDetailDto();
     dto.id = accommodation.id;
     dto.caminoPointId = accommodation.caminoPointId;
+    dto.waypointSlug = accommodation.caminoPoint.slug;
     dto.name = accommodation.name;
     dto.description = accommodation.description;
     dto.imageUrls = accommodation.imageUrls;

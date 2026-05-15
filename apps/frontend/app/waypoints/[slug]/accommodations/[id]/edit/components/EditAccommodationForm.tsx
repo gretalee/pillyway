@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { Loader2, X } from 'lucide-react';
 import { useUpdateAccommodation } from '@/app/api/accommodations/use-update-accommodation';
+import { useUploadImages } from '@/app/api/waypoints/use-upload-images';
 import type {
   AccommodationDetail,
   AccommodationType,
@@ -20,6 +21,10 @@ import { Select } from '@/app/components/ui/select';
 interface EditAccommodationFormProps {
   slug: string;
   accommodation: AccommodationDetail;
+}
+
+interface UploadError extends Error {
+  isTooBig?: boolean;
 }
 
 interface FormValues {
@@ -51,8 +56,14 @@ export function EditAccommodationForm({ slug, accommodation }: EditAccommodation
   const tNew = useTranslations('accommodation_new');
   const tWaypoint = useTranslations('waypoint_detail');
   const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [removeImageUrls, setRemoveImageUrls] = useState<string[]>([]);
+  // Track which existing images to keep/remove
+  const [removedUrls, setRemovedUrls] = useState<Set<string>>(new Set());
+  // URLs uploaded in this session
+  const [uploadedUrls, setUploadedUrls] = useState<string[]>([]);
+  const [selectedFileNames, setSelectedFileNames] = useState<string[]>([]);
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
 
   const {
@@ -76,6 +87,7 @@ export function EditAccommodationForm({ slug, accommodation }: EditAccommodation
   });
 
   const updateMutation = useUpdateAccommodation(accommodation.id, accommodation.caminoPointId);
+  const uploadMutation = useUploadImages();
 
   const nameId = 'edit-accommodation-name';
   const descriptionId = 'edit-accommodation-description';
@@ -87,17 +99,48 @@ export function EditAccommodationForm({ slug, accommodation }: EditAccommodation
   const addressCityId = 'edit-accommodation-address-city';
   const addressCountryId = 'edit-accommodation-address-country';
   const priceRangeId = 'edit-accommodation-price-range';
+  const imagesId = 'edit-accommodation-images';
 
-  const visibleExistingImages = accommodation.imageUrls.filter(
-    (url) => !removeImageUrls.includes(url),
-  );
+  // Existing images still visible (not marked for removal)
+  const visibleExistingImages = accommodation.imageUrls.filter((url) => !removedUrls.has(url));
 
   function handleRemoveExistingImage(url: string) {
-    setRemoveImageUrls((prev) => [...prev, url]);
+    setRemovedUrls((prev) => new Set([...prev, url]));
   }
+
+  function handleRemoveUploadedImage(url: string) {
+    setUploadedUrls((prev) => prev.filter((u) => u !== url));
+  }
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files ?? []);
+    if (files.length === 0) return;
+
+    setUploadError(null);
+    setSelectedFileNames(files.map((f) => f.name));
+
+    uploadMutation.mutate(files, {
+      onSuccess: (data) => {
+        setUploadedUrls((prev) => [...prev, ...data.urls]);
+        setSelectedFileNames([]);
+        if (fileInputRef.current) fileInputRef.current.value = '';
+      },
+      onError: (err: UploadError) => {
+        setUploadError(err.isTooBig ? tNew('error_upload_size') : tNew('error_upload'));
+        setSelectedFileNames([]);
+        if (fileInputRef.current) fileInputRef.current.value = '';
+      },
+    });
+  };
 
   const onSubmit = (values: FormValues) => {
     setFormError(null);
+
+    // Compute the final image list: kept existing + newly uploaded
+    const finalImages = [...visibleExistingImages, ...uploadedUrls];
+    const imagesChanged =
+      removedUrls.size > 0 ||
+      uploadedUrls.length > 0;
 
     const payload = {
       name: values.name.trim(),
@@ -110,7 +153,7 @@ export function EditAccommodationForm({ slug, accommodation }: EditAccommodation
       addressCity: values.addressCity.trim() || null,
       addressCountry: values.addressCountry.trim() || null,
       priceRange: (values.priceRange as PriceRange) || null,
-      ...(removeImageUrls.length > 0 ? { removeImageUrls } : {}),
+      ...(imagesChanged ? { imageUrls: finalImages } : {}),
     };
 
     updateMutation.mutate(payload, {
@@ -119,16 +162,13 @@ export function EditAccommodationForm({ slug, accommodation }: EditAccommodation
       },
       onError: (err) => {
         const status = (err as Error & { status?: number }).status;
-        if (status === 403) {
-          setFormError(tEdit('error_forbidden'));
-        } else {
-          setFormError(tEdit('error_generic'));
-        }
+        setFormError(status === 403 ? tEdit('error_forbidden') : tEdit('error_generic'));
       },
     });
   };
 
   const isPending = updateMutation.isPending;
+  const isUploading = uploadMutation.isPending;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
@@ -248,9 +288,7 @@ export function EditAccommodationForm({ slug, accommodation }: EditAccommodation
 
       {/* Address */}
       <fieldset className="space-y-3">
-        <legend className="text-sm font-medium text-foreground">
-          {tNew('field_address_street')}
-        </legend>
+        <legend className="text-sm font-medium text-foreground">{tNew('field_address_street')}</legend>
         <div>
           <Label htmlFor={addressStreetId}>{tNew('field_address_street')}</Label>
           <div className="mt-1">
@@ -279,21 +317,18 @@ export function EditAccommodationForm({ slug, accommodation }: EditAccommodation
         </div>
       </fieldset>
 
-      {/* Existing images with remove button */}
+      {/* Images */}
       <div>
         <p className="text-sm font-medium text-foreground">{tNew('field_images')}</p>
-        {visibleExistingImages.length === 0 ? (
+
+        {/* Existing images */}
+        {visibleExistingImages.length === 0 && uploadedUrls.length === 0 ? (
           <p className="mt-2 text-sm text-muted-foreground">{tEdit('images_empty_state')}</p>
         ) : (
-          <ul className="mt-2 flex flex-wrap gap-3" aria-label={tEdit('remove_image_label')}>
+          <ul className="mt-2 flex flex-wrap gap-3">
             {visibleExistingImages.map((url) => (
               <li key={url} className="relative">
-                <img
-                  src={url}
-                  alt=""
-                  className="size-24 rounded-md object-cover"
-                  loading="lazy"
-                />
+                <img src={url} alt="" className="size-24 rounded-md object-cover" loading="lazy" />
                 <button
                   type="button"
                   onClick={() => handleRemoveExistingImage(url)}
@@ -303,16 +338,65 @@ export function EditAccommodationForm({ slug, accommodation }: EditAccommodation
                 </button>
               </li>
             ))}
+            {uploadedUrls.map((url) => (
+              <li key={url} className="relative">
+                <img src={url} alt="" className="size-24 rounded-md object-cover" loading="lazy" />
+                <button
+                  type="button"
+                  onClick={() => handleRemoveUploadedImage(url)}
+                  aria-label={tEdit('remove_image_label')}
+                  className="absolute -right-1.5 -top-1.5 inline-flex size-5 items-center justify-center rounded-full bg-destructive text-destructive-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                  <X className="size-3" aria-hidden="true" />
+                </button>
+              </li>
+            ))}
           </ul>
         )}
+
+        {/* Upload new images */}
+        <div className="mt-3">
+          <Label htmlFor={imagesId}>{tNew('upload_button')}</Label>
+          <div className="mt-1">
+            <input
+              ref={fileInputRef}
+              id={imagesId}
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={handleFileChange}
+              disabled={isUploading}
+              className="block w-full text-sm text-muted-foreground file:mr-3 file:rounded-md file:border file:border-border file:bg-background file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-foreground hover:file:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50"
+            />
+          </div>
+          <p className="mt-1 text-xs text-muted-foreground">{tNew('upload_hint')}</p>
+
+          {isUploading && (
+            <p className="mt-2 flex items-center gap-1.5 text-sm text-muted-foreground" aria-live="polite">
+              <Loader2 className="size-3.5 animate-spin" aria-hidden="true" />
+              {tNew('uploading')}
+            </p>
+          )}
+
+          {!isUploading && selectedFileNames.length > 0 && !uploadError && (
+            <ul className="mt-2 space-y-0.5" aria-live="polite">
+              {selectedFileNames.map((name) => (
+                <li key={name} className="text-xs text-muted-foreground">{name}</li>
+              ))}
+            </ul>
+          )}
+
+          {uploadError && (
+            <p role="alert" className="mt-2 text-sm text-destructive">{uploadError}</p>
+          )}
+        </div>
       </div>
 
       {/* Actions */}
       <div className="flex flex-wrap items-center gap-3">
         <Button
           type="submit"
-          disabled={isPending}
-          aria-disabled={isPending}
+          disabled={isPending || isUploading}
+          aria-disabled={isPending || isUploading}
           className="w-full sm:w-auto">
           {isPending ? (
             <>

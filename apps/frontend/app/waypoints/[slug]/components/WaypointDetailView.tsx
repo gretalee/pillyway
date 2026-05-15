@@ -25,7 +25,6 @@ export async function WaypointDetailView({ waypoint, user }: Props) {
     delete_accommodation_label: t('delete_accommodation_label'),
     edit_sight_label: t('edit_sight_label'),
     delete_sight_label: t('delete_sight_label'),
-    verification_links_heading: t('verification_links_heading'),
     country: tCountries(waypoint.country.toLowerCase()),
     accommodation_type: {
       hostel: t('accommodation_type.hostel'),

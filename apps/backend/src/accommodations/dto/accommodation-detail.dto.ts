@@ -62,6 +62,10 @@ export class AccommodationDetailDto {
 
   @Expose()
   @ApiProperty()
+  waypointSlug: string;
+
+  @Expose()
+  @ApiProperty()
   createdBy: string;
 
   @Expose()

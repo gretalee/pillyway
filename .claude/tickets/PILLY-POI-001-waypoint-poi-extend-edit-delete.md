@@ -401,12 +401,6 @@ Frontend enforcement: edit/delete buttons on `AccommodationCard` and `SightCard`
 
 ---
 
-## Verification Links Section
-
-**Decision (confirmed — Open Question #2 resolved):** Out of scope for this ticket. Render a placeholder section heading (`<h2>` or equivalent) with the i18n key `verification_links_heading` above the accommodation list. No links, no functionality, no additional markup. This heading reserves the visual slot for a future ticket.
-
----
-
 ## i18n
 
 New keys required in the following namespaces:
@@ -417,7 +411,6 @@ New keys required in the following namespaces:
 - `edit_accommodation_label`, `delete_accommodation_label`
 - `edit_sight_label`, `delete_sight_label`
 - `delete_confirmation_title`, `delete_confirmation_description`, `delete_confirm_action`, `delete_cancel_action`
-- `verification_links_heading`
 - `back_label`
 
 **`accommodation_new` namespace** (existing — add):
@@ -506,10 +499,6 @@ New keys required in the following namespaces:
 - [ ] Given: user opens `/waypoints/<waypointSlug>` directly (no prior history), the back link calls `router.push('/caminos')` as fallback.
 - [ ] No `from` query parameter is used anywhere in the backlink flow.
 
-### Verification links
-
-- [ ] A section with the i18n heading `verification_links_heading` is rendered above the accommodation list on the waypoint detail page.
-- [ ] The section contains no links, no interactive elements, and no functional content.
 
 ### Waypoint detail — separate data loading
 

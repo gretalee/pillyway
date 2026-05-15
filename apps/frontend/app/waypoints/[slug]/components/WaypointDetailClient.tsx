@@ -5,7 +5,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ChevronLeft, Pencil, Trash2 } from 'lucide-react';
 import type { WaypointDetail } from '@/app/api/waypoints/waypoint-types';
-import type { AccommodationDetail, AccommodationType, PriceRange } from '@/app/api/accommodations/accommodation-types';
+import type {
+  AccommodationDetail,
+  AccommodationType,
+  PriceRange,
+} from '@/app/api/accommodations/accommodation-types';
 import type { SightDetail } from '@/app/api/sights/sight-types';
 import { useAccommodationsByWaypoint } from '@/app/api/accommodations/use-accommodations-by-waypoint';
 import { useSightsByWaypoint } from '@/app/api/sights/use-sights-by-waypoint';
@@ -32,7 +36,6 @@ interface Translations {
   delete_accommodation_label: string;
   edit_sight_label: string;
   delete_sight_label: string;
-  verification_links_heading: string;
   country: string;
   accommodation_type: Record<AccommodationType, string>;
   price_range: Record<PriceRange, string>;
@@ -59,7 +62,8 @@ function AccommodationCard({
   translations,
   onDeleteClick,
 }: AccommodationCardProps) {
-  const firstImage = accommodation.imageUrls.length > 0 ? accommodation.imageUrls[0] : null;
+  const firstImage =
+    accommodation.imageUrls.length > 0 ? accommodation.imageUrls[0] : null;
   const hasAddress =
     accommodation.addressStreet ||
     accommodation.addressZip ||
@@ -103,11 +107,15 @@ function AccommodationCard({
               )}
               {(accommodation.addressZip || accommodation.addressCity) && (
                 <span>
-                  {[accommodation.addressZip, accommodation.addressCity].filter(Boolean).join(' ')}
+                  {[accommodation.addressZip, accommodation.addressCity]
+                    .filter(Boolean)
+                    .join(' ')}
                   <br />
                 </span>
               )}
-              {accommodation.addressCountry && <span>{accommodation.addressCountry}</span>}
+              {accommodation.addressCountry && (
+                <span>{accommodation.addressCountry}</span>
+              )}
             </address>
           )}
 
@@ -170,7 +178,13 @@ interface SightCardProps {
   onDeleteClick: (sight: SightDetail) => void;
 }
 
-function SightCard({ sight, slug, canContribute, translations, onDeleteClick }: SightCardProps) {
+function SightCard({
+  sight,
+  slug,
+  canContribute,
+  translations,
+  onDeleteClick,
+}: SightCardProps) {
   const firstImage = sight.imageUrls.length > 0 ? sight.imageUrls[0] : null;
 
   return (
@@ -194,6 +208,12 @@ function SightCard({ sight, slug, canContribute, translations, onDeleteClick }: 
 
           {sight.address && (
             <p className="mt-2 text-sm text-muted-foreground">{sight.address}</p>
+          )}
+
+          {sight.latitude !== null && sight.longitude !== null && (
+            <p className="mt-2 text-sm text-muted-foreground">
+              {sight.latitude.toFixed(6)}, {sight.longitude.toFixed(6)}
+            </p>
           )}
 
           {firstImage && (
@@ -234,7 +254,8 @@ export function WaypointDetailClient({ waypoint, canContribute, translations }: 
   const accommodationsQuery = useAccommodationsByWaypoint(waypoint.id);
   const sightsQuery = useSightsByWaypoint(waypoint.id);
 
-  const [deleteAccommodation, setDeleteAccommodation] = useState<AccommodationDetail | null>(null);
+  const [deleteAccommodation, setDeleteAccommodation] =
+    useState<AccommodationDetail | null>(null);
   const [deleteSight, setDeleteSight] = useState<SightDetail | null>(null);
 
   function handleBack() {
@@ -265,7 +286,9 @@ export function WaypointDetailClient({ waypoint, canContribute, translations }: 
       <h1 className="text-3xl font-bold tracking-tight">{waypoint.name}</h1>
       <p className="mt-1 text-sm text-muted-foreground">{translations.country}</p>
       {waypoint.description && (
-        <p className="mt-4 whitespace-pre-wrap text-muted-foreground">{waypoint.description}</p>
+        <p className="mt-4 whitespace-pre-wrap text-muted-foreground">
+          {waypoint.description}
+        </p>
       )}
 
       {/* Accommodations */}
@@ -283,12 +306,10 @@ export function WaypointDetailClient({ waypoint, canContribute, translations }: 
           )}
         </div>
 
-        <h3 className="mt-4 text-sm font-medium text-muted-foreground">
-          {translations.verification_links_heading}
-        </h3>
-
         {accommodations.length === 0 ? (
-          <p className="mt-4 text-sm text-muted-foreground">{translations.no_accommodations}</p>
+          <p className="mt-4 text-sm text-muted-foreground">
+            {translations.no_accommodations}
+          </p>
         ) : (
           <ul className="mt-4 space-y-4">
             {accommodations.map((acc) => (

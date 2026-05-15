@@ -199,8 +199,14 @@
     "delete_confirmation_title": "Löschen",
     "delete_confirmation_description": "Möchtest du \"{name}\" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
     "delete_confirm_action": "Löschen",
-    "delete_cancel_action": "Abbrechen",
-    "verification_links_heading": "Verifizierungslinks"
+    "delete_cancel_action": "Abbrechen"
+  },
+  "accommodation_detail": {
+    "meta_title": "{name} | Pillyway",
+    "meta_description": "Unterkunft im Detail ansehen.",
+    "back_label": "Zurück",
+    "edit_label": "Unterkunft bearbeiten",
+    "error_loading": "Unterkunft konnte nicht geladen werden. Bitte versuche es erneut."
   },
   "accommodation_new": {
     "title": "Unterkunft hinzufügen",
