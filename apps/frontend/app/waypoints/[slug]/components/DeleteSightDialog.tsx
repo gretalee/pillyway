@@ -2,7 +2,6 @@
 
 import { Loader2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useDeleteSight } from '@/app/api/sights/use-delete-sight';
 import {
   AlertDialog,
   AlertDialogContent,
@@ -15,24 +14,21 @@ import {
 } from '@/app/components/ui/alert-dialog';
 
 interface Props {
-  id: string;
-  caminoPointId: string;
   name: string;
   open: boolean;
+  isPending: boolean;
   onOpenChange: (open: boolean) => void;
+  onConfirm: () => void;
 }
 
-export function DeleteSightDialog({ id, caminoPointId, name, open, onOpenChange }: Props) {
+export function DeleteSightDialog({
+  name,
+  open,
+  isPending,
+  onOpenChange,
+  onConfirm,
+}: Props) {
   const t = useTranslations('waypoint_detail');
-  const mutation = useDeleteSight(id, caminoPointId);
-
-  function handleConfirm() {
-    mutation.mutate(undefined, {
-      onSuccess: () => {
-        onOpenChange(false);
-      },
-    });
-  }
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
@@ -44,14 +40,14 @@ export function DeleteSightDialog({ id, caminoPointId, name, open, onOpenChange 
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={mutation.isPending}>
+          <AlertDialogCancel disabled={isPending}>
             {t('delete_cancel_action')}
           </AlertDialogCancel>
           <AlertDialogAction
             variant="destructive"
-            disabled={mutation.isPending}
-            onClick={handleConfirm}>
-            {mutation.isPending ? (
+            disabled={isPending}
+            onClick={onConfirm}>
+            {isPending ? (
               <>
                 <Loader2 className="mr-2 size-4 animate-spin" aria-hidden="true" />
                 {t('delete_confirm_action')}

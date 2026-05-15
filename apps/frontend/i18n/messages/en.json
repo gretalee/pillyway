@@ -178,6 +178,8 @@
     "vote_up_aria": "Vote up (coming soon)",
     "vote_down_aria": "Vote down (coming soon)",
     "error_loading": "Failed to load waypoint. Please try again.",
+    "error_loading_accommodations": "Failed to load accommodations. Please try again.",
+    "error_loading_sights": "Failed to load sights. Please try again.",
     "accommodation_type": {
       "hostel": "Hostel",
       "monastery": "Monastery",

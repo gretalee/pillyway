@@ -155,7 +155,10 @@ export function AddSightForm({ slug }: AddSightFormProps) {
           />
         </div>
         {errors.name && (
-          <p id={`${nameId}-error`} role="alert" className="mt-1 text-sm text-destructive">
+          <p
+            id={`${nameId}-error`}
+            role="alert"
+            className="mt-1 text-sm text-destructive">
             {errors.name.message}
           </p>
         )}
@@ -199,7 +202,10 @@ export function AddSightForm({ slug }: AddSightFormProps) {
             />
           </div>
           {errors.latitude && (
-            <p id={`${latitudeId}-error`} role="alert" className="mt-1 text-sm text-destructive">
+            <p
+              id={`${latitudeId}-error`}
+              role="alert"
+              className="mt-1 text-sm text-destructive">
               {errors.latitude.message}
             </p>
           )}
@@ -224,7 +230,10 @@ export function AddSightForm({ slug }: AddSightFormProps) {
             />
           </div>
           {errors.longitude && (
-            <p id={`${longitudeId}-error`} role="alert" className="mt-1 text-sm text-destructive">
+            <p
+              id={`${longitudeId}-error`}
+              role="alert"
+              className="mt-1 text-sm text-destructive">
               {errors.longitude.message}
             </p>
           )}

@@ -178,6 +178,8 @@
     "vote_up_aria": "Positiv bewerten (demnächst verfügbar)",
     "vote_down_aria": "Negativ bewerten (demnächst verfügbar)",
     "error_loading": "Wegpunkt konnte nicht geladen werden. Bitte versuche es erneut.",
+    "error_loading_accommodations": "Unterkünfte konnten nicht geladen werden. Bitte versuche es erneut.",
+    "error_loading_sights": "Sehenswürdigkeiten konnten nicht geladen werden. Bitte versuche es erneut.",
     "accommodation_type": {
       "hostel": "Hostel",
       "monastery": "Kloster",

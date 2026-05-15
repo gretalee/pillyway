@@ -7,7 +7,10 @@ import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 import { useCreateAccommodation } from '@/app/api/waypoints/use-create-accommodation';
 import { useUploadImages } from '@/app/api/waypoints/use-upload-images';
-import type { AccommodationType, PriceRange } from '@/app/api/accommodations/accommodation-types';
+import type {
+  AccommodationType,
+  PriceRange,
+} from '@/app/api/accommodations/accommodation-types';
 import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
 import { Textarea } from '@/app/components/ui/textarea';
@@ -127,10 +130,14 @@ export function AddAccommodationForm({ slug }: AddAccommodationFormProps) {
       type: values.type as AccommodationType,
       ...(values.email.trim() ? { email: values.email.trim() } : {}),
       ...(values.website.trim() ? { website: values.website.trim() } : {}),
-      ...(values.addressStreet.trim() ? { addressStreet: values.addressStreet.trim() } : {}),
+      ...(values.addressStreet.trim()
+        ? { addressStreet: values.addressStreet.trim() }
+        : {}),
       ...(values.addressZip.trim() ? { addressZip: values.addressZip.trim() } : {}),
       ...(values.addressCity.trim() ? { addressCity: values.addressCity.trim() } : {}),
-      ...(values.addressCountry.trim() ? { addressCountry: values.addressCountry.trim() } : {}),
+      ...(values.addressCountry.trim()
+        ? { addressCountry: values.addressCountry.trim() }
+        : {}),
       ...(values.priceRange ? { priceRange: values.priceRange as PriceRange } : {}),
     };
 
@@ -172,7 +179,10 @@ export function AddAccommodationForm({ slug }: AddAccommodationFormProps) {
           />
         </div>
         {errors.name && (
-          <p id={`${nameId}-error`} role="alert" className="mt-1 text-sm text-destructive">
+          <p
+            id={`${nameId}-error`}
+            role="alert"
+            className="mt-1 text-sm text-destructive">
             {errors.name.message}
           </p>
         )}
@@ -199,7 +209,9 @@ export function AddAccommodationForm({ slug }: AddAccommodationFormProps) {
                 <option value="">{t('field_type')}</option>
                 {ACCOMMODATION_TYPES.map((type) => (
                   <option key={type} value={type}>
-                    {tWaypoint(`accommodation_type.${type}` as Parameters<typeof tWaypoint>[0])}
+                    {tWaypoint(
+                      `accommodation_type.${type}` as Parameters<typeof tWaypoint>[0],
+                    )}
                   </option>
                 ))}
               </Select>
@@ -207,7 +219,10 @@ export function AddAccommodationForm({ slug }: AddAccommodationFormProps) {
           />
         </div>
         {errors.type && (
-          <p id={`${typeId}-error`} role="alert" className="mt-1 text-sm text-destructive">
+          <p
+            id={`${typeId}-error`}
+            role="alert"
+            className="mt-1 text-sm text-destructive">
             {errors.type.message}
           </p>
         )}

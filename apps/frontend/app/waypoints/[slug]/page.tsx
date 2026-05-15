@@ -1,8 +1,13 @@
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import { fetchWaypoint } from '@/app/api/waypoints/fetch-waypoint';
+import { fetchAccommodationsByWaypoint } from '@/app/api/accommodations/fetch-accommodation';
+import { fetchSightsByWaypoint } from '@/app/api/sights/fetch-sight';
 import { getAuthUser } from '@/lib/getAuthUser';
-import { WaypointDetailView } from './components/WaypointDetailView';
+import { BackButton } from './components/BackButton';
+import { AccommodationCard } from './components/AccommodationCard';
+import { SightCard } from './components/SightCard';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -14,7 +19,10 @@ export async function generateMetadata({ params }: Props) {
     const waypoint = await fetchWaypoint(slug);
     const t = await getTranslations('waypoint_detail');
     const title = t('meta_title', { name: waypoint.name });
-    const description = t('meta_description', { name: waypoint.name, country: waypoint.country });
+    const description = t('meta_description', {
+      name: waypoint.name,
+      country: waypoint.country,
+    });
     return { title, description, openGraph: { title, description } };
   } catch {
     return {};
@@ -23,8 +31,12 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function WaypointDetailPage({ params }: Props) {
   const { slug } = await params;
-  const t = await getTranslations('waypoint_detail');
-  const user = await getAuthUser();
+
+  const [user, t, tCountries] = await Promise.all([
+    getAuthUser(),
+    getTranslations('waypoint_detail'),
+    getTranslations('countries'),
+  ]);
 
   let waypoint: Awaited<ReturnType<typeof fetchWaypoint>>;
   try {
@@ -42,9 +54,108 @@ export default async function WaypointDetailPage({ params }: Props) {
     );
   }
 
+  const [accommodationsResult, sightsResult] = await Promise.allSettled([
+    fetchAccommodationsByWaypoint(waypoint.id),
+    fetchSightsByWaypoint(waypoint.id),
+  ]);
+
+  const accommodations =
+    accommodationsResult.status === 'fulfilled' ? accommodationsResult.value : null;
+  const sights = sightsResult.status === 'fulfilled' ? sightsResult.value : null;
+
+  const canContribute = user?.roles.some((r) => r.key === 'pilgrim') ?? false;
+
+  const countryLabel = tCountries(
+    waypoint.country.toLowerCase() as Parameters<typeof tCountries>[0],
+  );
+
   return (
     <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-16 sm:px-6 lg:px-8">
-      <WaypointDetailView waypoint={waypoint} user={user} />
+      <div className="mb-6">
+        <BackButton />
+      </div>
+
+      <h1 className="text-3xl font-bold tracking-tight">{waypoint.name}</h1>
+      <p className="mt-1 text-sm text-muted-foreground">{countryLabel}</p>
+      {waypoint.description && (
+        <p className="mt-4 whitespace-pre-wrap text-muted-foreground">
+          {waypoint.description}
+        </p>
+      )}
+
+      {/* Accommodations */}
+      <section className="mt-10" aria-labelledby="accommodations-heading">
+        <div className="flex items-center justify-between">
+          <h2 id="accommodations-heading" className="text-xl font-semibold">
+            {t('accommodations_heading')}
+          </h2>
+          {canContribute && (
+            <Link
+              href={`/waypoints/${slug}/accommodations/new`}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+              {t('add_accommodation')}
+            </Link>
+          )}
+        </div>
+
+        <h3 className="mt-4 text-sm font-medium text-muted-foreground">
+          {t('verification_links_heading')}
+        </h3>
+
+        {accommodations === null ? (
+          <p role="alert" className="mt-4 text-sm text-destructive">
+            {t('error_loading_accommodations')}
+          </p>
+        ) : accommodations.length === 0 ? (
+          <p className="mt-4 text-sm text-muted-foreground">{t('no_accommodations')}</p>
+        ) : (
+          <ul className="mt-4 space-y-4">
+            {accommodations.map((acc) => (
+              <AccommodationCard
+                key={acc.id}
+                accommodation={acc}
+                slug={slug}
+                canContribute={canContribute}
+              />
+            ))}
+          </ul>
+        )}
+      </section>
+
+      {/* Sights */}
+      <section className="mt-10" aria-labelledby="sights-heading">
+        <div className="flex items-center justify-between">
+          <h2 id="sights-heading" className="text-xl font-semibold">
+            {t('sights_heading')}
+          </h2>
+          {canContribute && (
+            <Link
+              href={`/waypoints/${slug}/sights/new`}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+              {t('add_sight')}
+            </Link>
+          )}
+        </div>
+
+        {sights === null ? (
+          <p role="alert" className="mt-4 text-sm text-destructive">
+            {t('error_loading_sights')}
+          </p>
+        ) : sights.length === 0 ? (
+          <p className="mt-4 text-sm text-muted-foreground">{t('no_sights')}</p>
+        ) : (
+          <ul className="mt-4 space-y-4">
+            {sights.map((sight) => (
+              <SightCard
+                key={sight.id}
+                sight={sight}
+                slug={slug}
+                canContribute={canContribute}
+              />
+            ))}
+          </ul>
+        )}
+      </section>
     </main>
   );
 }

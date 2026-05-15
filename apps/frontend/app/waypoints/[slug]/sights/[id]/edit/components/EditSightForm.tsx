@@ -165,7 +165,10 @@ export function EditSightForm({ slug, sight }: EditSightFormProps) {
           />
         </div>
         {errors.name && (
-          <p id={`${nameId}-error`} role="alert" className="mt-1 text-sm text-destructive">
+          <p
+            id={`${nameId}-error`}
+            role="alert"
+            className="mt-1 text-sm text-destructive">
             {errors.name.message}
           </p>
         )}
@@ -207,7 +210,10 @@ export function EditSightForm({ slug, sight }: EditSightFormProps) {
             />
           </div>
           {errors.latitude && (
-            <p id={`${latitudeId}-error`} role="alert" className="mt-1 text-sm text-destructive">
+            <p
+              id={`${latitudeId}-error`}
+              role="alert"
+              className="mt-1 text-sm text-destructive">
               {errors.latitude.message}
             </p>
           )}
@@ -230,7 +236,10 @@ export function EditSightForm({ slug, sight }: EditSightFormProps) {
             />
           </div>
           {errors.longitude && (
-            <p id={`${longitudeId}-error`} role="alert" className="mt-1 text-sm text-destructive">
+            <p
+              id={`${longitudeId}-error`}
+              role="alert"
+              className="mt-1 text-sm text-destructive">
               {errors.longitude.message}
             </p>
           )}
@@ -242,12 +251,19 @@ export function EditSightForm({ slug, sight }: EditSightFormProps) {
         <p className="text-sm font-medium text-foreground">{tNew('field_images')}</p>
 
         {visibleExistingImages.length === 0 && uploadedUrls.length === 0 ? (
-          <p className="mt-2 text-sm text-muted-foreground">{tEdit('images_empty_state')}</p>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {tEdit('images_empty_state')}
+          </p>
         ) : (
           <ul className="mt-2 flex flex-wrap gap-3">
             {visibleExistingImages.map((url) => (
               <li key={url} className="relative">
-                <img src={url} alt="" className="size-24 rounded-md object-cover" loading="lazy" />
+                <img
+                  src={url}
+                  alt=""
+                  className="size-24 rounded-md object-cover"
+                  loading="lazy"
+                />
                 <button
                   type="button"
                   onClick={() => handleRemoveExistingImage(url)}
@@ -259,7 +275,12 @@ export function EditSightForm({ slug, sight }: EditSightFormProps) {
             ))}
             {uploadedUrls.map((url) => (
               <li key={url} className="relative">
-                <img src={url} alt="" className="size-24 rounded-md object-cover" loading="lazy" />
+                <img
+                  src={url}
+                  alt=""
+                  className="size-24 rounded-md object-cover"
+                  loading="lazy"
+                />
                 <button
                   type="button"
                   onClick={() => handleRemoveUploadedImage(url)}
@@ -289,7 +310,9 @@ export function EditSightForm({ slug, sight }: EditSightFormProps) {
           <p className="mt-1 text-xs text-muted-foreground">{tNew('upload_hint')}</p>
 
           {isUploading && (
-            <p className="mt-2 flex items-center gap-1.5 text-sm text-muted-foreground" aria-live="polite">
+            <p
+              className="mt-2 flex items-center gap-1.5 text-sm text-muted-foreground"
+              aria-live="polite">
               <Loader2 className="size-3.5 animate-spin" aria-hidden="true" />
               {tNew('uploading')}
             </p>
@@ -298,13 +321,17 @@ export function EditSightForm({ slug, sight }: EditSightFormProps) {
           {!isUploading && selectedFileNames.length > 0 && !uploadError && (
             <ul className="mt-2 space-y-0.5" aria-live="polite">
               {selectedFileNames.map((name) => (
-                <li key={name} className="text-xs text-muted-foreground">{name}</li>
+                <li key={name} className="text-xs text-muted-foreground">
+                  {name}
+                </li>
               ))}
             </ul>
           )}
 
           {uploadError && (
-            <p role="alert" className="mt-2 text-sm text-destructive">{uploadError}</p>
+            <p role="alert" className="mt-2 text-sm text-destructive">
+              {uploadError}
+            </p>
           )}
         </div>
       </div>
