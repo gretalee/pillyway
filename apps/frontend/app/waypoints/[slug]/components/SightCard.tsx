@@ -53,6 +53,7 @@ export async function SightCard({ sight, slug, canContribute }: Props) {
                 fill
                 className="object-cover"
                 unoptimized
+                loading="eager"
               />
             </div>
           )}

@@ -356,6 +356,7 @@ export function EditAccommodationForm({
                   width={96}
                   height={96}
                   className="size-24 rounded-md object-cover"
+                  loading="eager"
                   unoptimized
                 />
                 <button
@@ -375,6 +376,7 @@ export function EditAccommodationForm({
                   width={96}
                   height={96}
                   className="size-24 rounded-md object-cover"
+                  loading="eager"
                   unoptimized
                 />
                 <button
