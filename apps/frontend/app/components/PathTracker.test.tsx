@@ -16,34 +16,51 @@ afterEach(() => vi.restoreAllMocks());
 
 describe('PathTracker — initial mount', () => {
   it('sets navCurrentPath on first mount with no prior session', () => {
-    vi.mocked(usePathname).mockReturnValue('/caminos');
+    const pathToTrack = '/caminos/abc-123/stages/1';
+    vi.mocked(usePathname).mockReturnValue(pathToTrack);
     render(<PathTracker />);
-    expect(sessionStorage.getItem('navCurrentPath')).toBe('/caminos');
+    expect(sessionStorage.getItem('navCurrentPath')).toBe(pathToTrack);
     expect(sessionStorage.getItem('navPreviousPath')).toBeNull();
   });
 });
 
 describe('PathTracker — navigation tracking', () => {
   it('updates navPreviousPath when navigating from a prior non-form page', () => {
-    vi.mocked(usePathname).mockReturnValue('/caminos');
+    const pathToTrack = '/caminos/abc-123/stages/1';
+    const newPath = '/caminos/abc-123/stages/2';
+    vi.mocked(usePathname).mockReturnValue(pathToTrack);
     const { rerender } = render(<PathTracker />);
 
-    vi.mocked(usePathname).mockReturnValue('/caminos/abc-123');
+    vi.mocked(usePathname).mockReturnValue(newPath);
     rerender(<PathTracker />);
 
-    expect(sessionStorage.getItem('navPreviousPath')).toBe('/caminos');
-    expect(sessionStorage.getItem('navCurrentPath')).toBe('/caminos/abc-123');
+    expect(sessionStorage.getItem('navPreviousPath')).toBe(pathToTrack);
+    expect(sessionStorage.getItem('navCurrentPath')).toBe(newPath);
   });
 
-  it('does not update navPreviousPath when pathname has not changed', () => {
-    vi.mocked(usePathname).mockReturnValue('/caminos');
+  it('updates navPreviousPath NOT when next path is no stage url', () => {
+    const pathToTrack = '/caminos/abc-123/stages/1';
+    const newPath = '/caminos';
+    vi.mocked(usePathname).mockReturnValue(pathToTrack);
     const { rerender } = render(<PathTracker />);
 
-    vi.mocked(usePathname).mockReturnValue('/caminos');
+    vi.mocked(usePathname).mockReturnValue(newPath);
     rerender(<PathTracker />);
 
     expect(sessionStorage.getItem('navPreviousPath')).toBeNull();
-    expect(sessionStorage.getItem('navCurrentPath')).toBe('/caminos');
+    expect(sessionStorage.getItem('navCurrentPath')).toBe(pathToTrack);
+  });
+
+  it('does not update navPreviousPath when pathname has not changed', () => {
+    const pathToTrack = '/caminos/abc-123/stages/1';
+    vi.mocked(usePathname).mockReturnValue(pathToTrack);
+    const { rerender } = render(<PathTracker />);
+
+    vi.mocked(usePathname).mockReturnValue(pathToTrack);
+    rerender(<PathTracker />);
+
+    expect(sessionStorage.getItem('navPreviousPath')).toBeNull();
+    expect(sessionStorage.getItem('navCurrentPath')).toBe(pathToTrack);
   });
 });
 
