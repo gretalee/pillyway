@@ -63,8 +63,8 @@ export class SightsService {
 
     if (dto.removeImageUrls !== undefined) {
       const toRemove = new Set(dto.removeImageUrls);
+      urlsToDelete = existing.imageUrls.filter((url) => toRemove.has(url));
       resolvedImageUrls = existing.imageUrls.filter((url) => !toRemove.has(url));
-      urlsToDelete = dto.removeImageUrls;
     } else if (dto.imageUrls !== undefined) {
       resolvedImageUrls = dto.imageUrls;
       const kept = new Set(dto.imageUrls);
