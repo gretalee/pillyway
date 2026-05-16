@@ -22,10 +22,7 @@ vi.mock('next/navigation', () => ({
 // and items as plain elements while preserving all click handlers.
 vi.mock('@/app/components/ui/dropdown-menu', () => ({
   DropdownMenu: ({ children }: React.PropsWithChildren) => <>{children}</>,
-  DropdownMenuTrigger: ({
-    children,
-    ...props
-  }: React.ComponentProps<'button'>) => (
+  DropdownMenuTrigger: ({ children, ...props }: React.ComponentProps<'button'>) => (
     <button type="button" data-testid="actions-trigger" {...props}>
       {children}
     </button>
@@ -33,11 +30,7 @@ vi.mock('@/app/components/ui/dropdown-menu', () => ({
   DropdownMenuContent: ({ children }: React.PropsWithChildren) => (
     <div data-testid="actions-menu">{children}</div>
   ),
-  DropdownMenuItem: ({
-    children,
-    onClick,
-    ...props
-  }: React.ComponentProps<'button'>) => (
+  DropdownMenuItem: ({ children, onClick, ...props }: React.ComponentProps<'button'>) => (
     <button type="button" onClick={onClick} {...props}>
       {children}
     </button>
@@ -67,11 +60,12 @@ type DialogProps = {
 };
 
 function defaultDialogImpl({ open, onClose, camino }: DialogProps) {
-  return open ? (
+  if (!open) return <></>;
+  return (
     <div role="dialog" data-testid="delete-dialog" data-camino-id={camino?.id}>
       <button onClick={onClose}>close-dialog</button>
     </div>
-  ) : null;
+  );
 }
 
 beforeEach(() => {
@@ -137,7 +131,7 @@ describe('CaminoActionsMenu — delete action', () => {
     // DeleteCaminoDialog with open=false, which would consume a mockImplementationOnce.
     vi.mocked(DeleteCaminoDialog).mockImplementation(
       ({ open, onSuccess }: DialogProps) =>
-        open ? <button onClick={onSuccess}>trigger-success</button> : null,
+        open ? <button onClick={onSuccess}>trigger-success</button> : <></>,
     );
     const user = userEvent.setup();
     renderMenu();

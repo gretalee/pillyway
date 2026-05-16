@@ -1,15 +1,21 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 import { useCreateAccommodation } from '@/app/api/waypoints/use-create-accommodation';
 import { useUploadImages } from '@/app/api/waypoints/use-upload-images';
+import type {
+  AccommodationType,
+  PriceRange,
+} from '@/app/api/accommodations/accommodation-types';
 import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
 import { Textarea } from '@/app/components/ui/textarea';
 import { Label } from '@/app/components/ui/label';
+import { Select } from '@/app/components/ui/select';
 
 interface AddAccommodationFormProps {
   slug: string;
@@ -19,24 +25,74 @@ interface UploadError extends Error {
   isTooBig?: boolean;
 }
 
+interface FormValues {
+  name: string;
+  description: string;
+  type: AccommodationType | '';
+  email: string;
+  website: string;
+  addressStreet: string;
+  addressZip: string;
+  addressCity: string;
+  addressCountry: string;
+  priceRange: PriceRange | '';
+}
+
+const ACCOMMODATION_TYPES: AccommodationType[] = [
+  'hostel',
+  'monastery',
+  'b_and_b',
+  'hotel',
+  'apartment',
+  'private_room',
+];
+
+const PRICE_RANGES: PriceRange[] = ['budget', 'moderate', 'comfortable', 'luxury'];
+
 export function AddAccommodationForm({ slug }: AddAccommodationFormProps) {
   const t = useTranslations('accommodation_new');
+  const tWaypoint = useTranslations('waypoint_detail');
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
   const [selectedFileNames, setSelectedFileNames] = useState<string[]>([]);
   const [collectedImageUrls, setCollectedImageUrls] = useState<string[]>([]);
-  const [nameError, setNameError] = useState<string | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<FormValues>({
+    defaultValues: {
+      name: '',
+      description: '',
+      type: '',
+      email: '',
+      website: '',
+      addressStreet: '',
+      addressZip: '',
+      addressCity: '',
+      addressCountry: '',
+      priceRange: '',
+    },
+  });
 
   const createMutation = useCreateAccommodation(slug);
   const uploadMutation = useUploadImages();
 
   const nameId = 'accommodation-name';
   const descriptionId = 'accommodation-description';
+  const typeId = 'accommodation-type';
+  const emailId = 'accommodation-email';
+  const websiteId = 'accommodation-website';
+  const addressStreetId = 'accommodation-address-street';
+  const addressZipId = 'accommodation-address-zip';
+  const addressCityId = 'accommodation-address-city';
+  const addressCountryId = 'accommodation-address-country';
+  const priceRangeId = 'accommodation-price-range';
   const imagesId = 'accommodation-images';
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,7 +112,6 @@ export function AddAccommodationForm({ slug }: AddAccommodationFormProps) {
         } else {
           setUploadError(t('error_upload'));
         }
-        // Reset file input and collected names so the user can retry
         setSelectedFileNames([]);
         if (fileInputRef.current) {
           fileInputRef.current.value = '';
@@ -65,21 +120,25 @@ export function AddAccommodationForm({ slug }: AddAccommodationFormProps) {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setNameError(null);
+  const onSubmit = (values: FormValues) => {
     setFormError(null);
 
-    const trimmedName = name.trim();
-    if (!trimmedName) {
-      setNameError(t('error_name_required'));
-      return;
-    }
-
     const payload = {
-      name: trimmedName,
-      ...(description.trim() ? { description: description.trim() } : {}),
+      name: values.name.trim(),
+      ...(values.description.trim() ? { description: values.description.trim() } : {}),
       ...(collectedImageUrls.length > 0 ? { imageUrls: collectedImageUrls } : {}),
+      type: values.type as AccommodationType,
+      ...(values.email.trim() ? { email: values.email.trim() } : {}),
+      ...(values.website.trim() ? { website: values.website.trim() } : {}),
+      ...(values.addressStreet.trim()
+        ? { addressStreet: values.addressStreet.trim() }
+        : {}),
+      ...(values.addressZip.trim() ? { addressZip: values.addressZip.trim() } : {}),
+      ...(values.addressCity.trim() ? { addressCity: values.addressCity.trim() } : {}),
+      ...(values.addressCountry.trim()
+        ? { addressCountry: values.addressCountry.trim() }
+        : {}),
+      ...(values.priceRange ? { priceRange: values.priceRange as PriceRange } : {}),
     };
 
     createMutation.mutate(payload, {
@@ -96,7 +155,7 @@ export function AddAccommodationForm({ slug }: AddAccommodationFormProps) {
   const isUploading = uploadMutation.isPending;
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
       {formError && (
         <div
           role="alert"
@@ -113,15 +172,61 @@ export function AddAccommodationForm({ slug }: AddAccommodationFormProps) {
           <Input
             id={nameId}
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
             aria-required="true"
-            aria-describedby={nameError ? `${nameId}-error` : undefined}
+            aria-describedby={errors.name ? `${nameId}-error` : undefined}
+            aria-invalid={errors.name ? 'true' : undefined}
+            {...register('name', {
+              required: t('error_name_required'),
+              validate: (value) => value.trim().length > 0 || t('error_name_required'),
+            })}
           />
         </div>
-        {nameError && (
-          <p id={`${nameId}-error`} role="alert" className="mt-1 text-sm text-destructive">
-            {nameError}
+        {errors.name && (
+          <p
+            id={`${nameId}-error`}
+            role="alert"
+            className="mt-1 text-sm text-destructive">
+            {errors.name.message}
+          </p>
+        )}
+      </div>
+
+      {/* Type */}
+      <div>
+        <Label htmlFor={typeId}>{t('field_type')}</Label>
+        <div className="mt-1">
+          <Controller
+            name="type"
+            control={control}
+            rules={{ required: t('error_type_required') }}
+            render={({ field }) => (
+              <Select
+                id={typeId}
+                aria-required="true"
+                aria-describedby={errors.type ? `${typeId}-error` : undefined}
+                aria-invalid={errors.type ? 'true' : undefined}
+                value={field.value}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                ref={field.ref}>
+                <option value="">{t('field_type')}</option>
+                {ACCOMMODATION_TYPES.map((type) => (
+                  <option key={type} value={type}>
+                    {tWaypoint(
+                      `accommodation_type.${type}` as Parameters<typeof tWaypoint>[0],
+                    )}
+                  </option>
+                ))}
+              </Select>
+            )}
+          />
+        </div>
+        {errors.type && (
+          <p
+            id={`${typeId}-error`}
+            role="alert"
+            className="mt-1 text-sm text-destructive">
+            {errors.type.message}
           </p>
         )}
       </div>
@@ -130,14 +235,84 @@ export function AddAccommodationForm({ slug }: AddAccommodationFormProps) {
       <div>
         <Label htmlFor={descriptionId}>{t('field_description')}</Label>
         <div className="mt-1">
-          <Textarea
-            id={descriptionId}
-            rows={4}
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+          <Textarea id={descriptionId} rows={4} {...register('description')} />
+        </div>
+      </div>
+
+      {/* Price Range */}
+      <div>
+        <Label htmlFor={priceRangeId}>{t('field_price_range')}</Label>
+        <div className="mt-1">
+          <Controller
+            name="priceRange"
+            control={control}
+            render={({ field }) => (
+              <Select
+                id={priceRangeId}
+                value={field.value}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                ref={field.ref}>
+                <option value="">—</option>
+                {PRICE_RANGES.map((range) => (
+                  <option key={range} value={range}>
+                    {tWaypoint(`price_range.${range}` as Parameters<typeof tWaypoint>[0])}
+                  </option>
+                ))}
+              </Select>
+            )}
           />
         </div>
       </div>
+
+      {/* Email */}
+      <div>
+        <Label htmlFor={emailId}>{t('field_email')}</Label>
+        <div className="mt-1">
+          <Input id={emailId} type="email" {...register('email')} />
+        </div>
+      </div>
+
+      {/* Website */}
+      <div>
+        <Label htmlFor={websiteId}>{t('field_website')}</Label>
+        <div className="mt-1">
+          <Input id={websiteId} type="url" {...register('website')} />
+        </div>
+      </div>
+
+      {/* Address */}
+      <fieldset className="space-y-3">
+        <legend className="text-sm font-medium text-foreground">
+          {t('field_address_street')} / {t('field_address_city')}
+        </legend>
+        <div>
+          <Label htmlFor={addressStreetId}>{t('field_address_street')}</Label>
+          <div className="mt-1">
+            <Input id={addressStreetId} type="text" {...register('addressStreet')} />
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <Label htmlFor={addressZipId}>{t('field_address_zip')}</Label>
+            <div className="mt-1">
+              <Input id={addressZipId} type="text" {...register('addressZip')} />
+            </div>
+          </div>
+          <div>
+            <Label htmlFor={addressCityId}>{t('field_address_city')}</Label>
+            <div className="mt-1">
+              <Input id={addressCityId} type="text" {...register('addressCity')} />
+            </div>
+          </div>
+        </div>
+        <div>
+          <Label htmlFor={addressCountryId}>{t('field_address_country')}</Label>
+          <div className="mt-1">
+            <Input id={addressCountryId} type="text" {...register('addressCountry')} />
+          </div>
+        </div>
+      </fieldset>
 
       {/* Images */}
       <div>
@@ -157,7 +332,9 @@ export function AddAccommodationForm({ slug }: AddAccommodationFormProps) {
         <p className="mt-1 text-xs text-muted-foreground">{t('upload_hint')}</p>
 
         {isUploading && (
-          <p className="mt-2 flex items-center gap-1.5 text-sm text-muted-foreground" aria-live="polite">
+          <p
+            className="mt-2 flex items-center gap-1.5 text-sm text-muted-foreground"
+            aria-live="polite">
             <Loader2 className="size-3.5 animate-spin" aria-hidden="true" />
             {t('uploading')}
           </p>

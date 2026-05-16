@@ -37,9 +37,9 @@ export class WaypointsController {
 
   @Get(':slug')
   @ApiOperation({
-    summary: 'Get a waypoint (CaminoPoint) by slug, including accommodations and sights (public)',
+    summary: 'Get a waypoint (CaminoPoint) by slug (public)',
   })
-  @ApiOkResponse({ description: 'Waypoint detail with accommodations and sights.' })
+  @ApiOkResponse({ description: 'Waypoint detail.' })
   @ApiNotFoundResponse({ description: 'Waypoint not found.' })
   async findBySlug(@Param('slug') slug: string): Promise<WaypointDetailDto> {
     return this.waypointsService.findBySlug(slug);

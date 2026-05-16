@@ -1,4 +1,5 @@
-import { InternalServerErrorException } from '@nestjs/common';
+import { InternalServerErrorException, LoggerService } from '@nestjs/common';
+import { Readable } from 'stream';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
@@ -42,7 +43,7 @@ function makeFile(
     mimetype,
     size: 1024,
     buffer: Buffer.from('fake-image-data'),
-    stream: null as unknown as NodeJS.ReadableStream,
+    stream: null as unknown as Readable,
     destination: '',
     filename: '',
     path: '',
@@ -63,7 +64,7 @@ function buildModule(configValues: Record<string, string>): Promise<TestingModul
       { provide: ConfigService, useValue: configServiceMock },
     ],
   })
-    .setLogger(false)
+    .setLogger(false as unknown as LoggerService)
     .compile();
 }
 

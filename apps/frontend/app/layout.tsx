@@ -1,6 +1,7 @@
 import { getLocale, getMessages, getTimeZone, getTranslations } from 'next-intl/server';
 import { Providers } from '@/providers/providers';
 import { Header } from '@/app/components/layout/Header';
+import { PathTracker } from '@/app/components/PathTracker';
 import { getAuthUser } from '@/lib/getAuthUser';
 import type { Locale } from '@/i18n/detectLocale';
 import './globals.css';
@@ -28,6 +29,7 @@ export default async function RootLayout({
     <html lang={locale} className="h-full antialiased">
       <body className="min-h-full flex flex-col">
         <Providers locale={locale} messages={messages} timeZone={timeZone}>
+          <PathTracker />
           <Header user={authUser} />
           {children}
         </Providers>

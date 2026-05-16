@@ -167,7 +167,7 @@
   "waypoint_detail": {
     "meta_title": "{name} | Pillyway",
     "meta_description": "Discover accommodations and sights in {name}, {country}.",
-    "back_label": "Back to caminos",
+    "back_label": "Back",
     "accommodations_heading": "Accommodations",
     "sights_heading": "Sights",
     "no_accommodations": "No accommodations listed yet.",
@@ -177,7 +177,38 @@
     "verified_badge": "Verified",
     "vote_up_aria": "Vote up (coming soon)",
     "vote_down_aria": "Vote down (coming soon)",
-    "error_loading": "Failed to load waypoint. Please try again."
+    "error_loading": "Failed to load waypoint. Please try again.",
+    "error_loading_accommodations": "Failed to load accommodations. Please try again.",
+    "error_loading_sights": "Failed to load sights. Please try again.",
+    "accommodation_type": {
+      "hostel": "Hostel",
+      "monastery": "Monastery",
+      "b_and_b": "Bed & Breakfast",
+      "hotel": "Hotel",
+      "apartment": "Apartment",
+      "private_room": "Private Room"
+    },
+    "price_range": {
+      "budget": "€",
+      "moderate": "€€",
+      "comfortable": "€€€",
+      "luxury": "€€€€"
+    },
+    "edit_accommodation_label": "Edit accommodation",
+    "delete_accommodation_label": "Delete accommodation",
+    "edit_sight_label": "Edit sight",
+    "delete_sight_label": "Delete sight",
+    "delete_confirmation_title": "Delete",
+    "delete_confirmation_description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+    "delete_confirm_action": "Delete",
+    "delete_cancel_action": "Cancel"
+  },
+  "accommodation_detail": {
+    "meta_title": "{name} | Pillyway",
+    "meta_description": "View accommodation details.",
+    "back_label": "Back",
+    "edit_label": "Edit accommodation",
+    "error_loading": "Failed to load accommodation. Please try again."
   },
   "accommodation_new": {
     "title": "Add Accommodation",
@@ -186,6 +217,14 @@
     "field_name": "Name",
     "field_description": "Description (optional)",
     "field_images": "Photos (optional)",
+    "field_type": "Type",
+    "field_email": "Email",
+    "field_website": "Website",
+    "field_address_street": "Street",
+    "field_address_zip": "ZIP / Postal code",
+    "field_address_city": "City",
+    "field_address_country": "Country",
+    "field_price_range": "Price range",
     "upload_hint": "Max. 10 MB per photo. Up to 10 photos.",
     "upload_button": "Select images",
     "uploading": "Uploading…",
@@ -193,6 +232,7 @@
     "submitting": "Saving…",
     "cancel": "Cancel",
     "error_name_required": "Name is required.",
+    "error_type_required": "Please select an accommodation type.",
     "error_generic": "Failed to add accommodation. Please try again.",
     "error_upload": "Image upload failed. Please try again.",
     "error_upload_size": "One or more files exceed the 10 MB limit."
@@ -204,6 +244,9 @@
     "field_name": "Name",
     "field_description": "Description (optional)",
     "field_images": "Photos (optional)",
+    "field_address": "Address",
+    "field_latitude": "Latitude",
+    "field_longitude": "Longitude",
     "upload_hint": "Max. 10 MB per photo. Up to 10 photos.",
     "upload_button": "Select images",
     "uploading": "Uploading…",
@@ -211,8 +254,31 @@
     "submitting": "Saving…",
     "cancel": "Cancel",
     "error_name_required": "Name is required.",
+    "error_lat_lon_incomplete": "Please enter both latitude and longitude or leave both empty.",
     "error_generic": "Failed to add sight. Please try again.",
     "error_upload": "Image upload failed. Please try again.",
     "error_upload_size": "One or more files exceed the 10 MB limit."
+  },
+  "accommodation_edit": {
+    "title": "Edit Accommodation",
+    "meta_title": "Edit Accommodation | Pillyway",
+    "submit_label": "Save changes",
+    "submitting": "Saving…",
+    "cancel": "Cancel",
+    "remove_image_label": "Remove image",
+    "images_empty_state": "No images",
+    "error_generic": "Failed to save changes. Please try again.",
+    "error_forbidden": "You are not authorized to edit this accommodation."
+  },
+  "sight_edit": {
+    "title": "Edit Sight",
+    "meta_title": "Edit Sight | Pillyway",
+    "submit_label": "Save changes",
+    "submitting": "Saving…",
+    "cancel": "Cancel",
+    "remove_image_label": "Remove image",
+    "images_empty_state": "No images",
+    "error_generic": "Failed to save changes. Please try again.",
+    "error_forbidden": "You are not authorized to edit this sight."
   }
 }

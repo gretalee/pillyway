@@ -1,4 +1,4 @@
-import { InternalServerErrorException, Logger } from '@nestjs/common';
+import { InternalServerErrorException, Logger, LoggerService } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -28,7 +28,7 @@ async function buildModule(
       },
     ],
   })
-    .setLogger(false)
+    .setLogger(false as unknown as LoggerService)
     .compile();
   return module.get(CaminoPointsService);
 }

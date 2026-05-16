@@ -15,7 +15,9 @@
     "test": "yarn test:backend && yarn test:frontend",
     "test:backend": "yarn --cwd apps/backend test",
     "test:frontend": "yarn --cwd apps/frontend test",
-    "prettier:frontend": "yarn --cwd apps/frontend prettier --write ."
+    "prettier:frontend": "yarn --cwd apps/frontend prettier --write .",
+    "ts:backend": "yarn --cwd apps/backend tsc",
+    "ts:frontend": "yarn --cwd apps/frontend tsc"
   },
   "engines": {
     "node": ">=24.14.0"

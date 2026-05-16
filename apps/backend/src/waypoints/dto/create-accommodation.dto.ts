@@ -1,12 +1,16 @@
 import {
   ArrayMaxSize,
   IsArray,
+  IsEmail,
+  IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
   IsUrl,
   MaxLength,
 } from 'class-validator';
+
+import { AccommodationType, PriceRange } from '@prisma/client';
 
 export class CreateAccommodationDto {
   @IsString()
@@ -24,4 +28,35 @@ export class CreateAccommodationDto {
   @IsUrl({}, { each: true })
   @ArrayMaxSize(10)
   imageUrls?: string[];
+
+  @IsEnum(AccommodationType)
+  type: AccommodationType;
+
+  @IsOptional()
+  @IsEmail()
+  email?: string;
+
+  @IsOptional()
+  @IsUrl()
+  website?: string;
+
+  @IsOptional()
+  @IsString()
+  addressStreet?: string;
+
+  @IsOptional()
+  @IsString()
+  addressZip?: string;
+
+  @IsOptional()
+  @IsString()
+  addressCity?: string;
+
+  @IsOptional()
+  @IsString()
+  addressCountry?: string;
+
+  @IsOptional()
+  @IsEnum(PriceRange)
+  priceRange?: PriceRange;
 }

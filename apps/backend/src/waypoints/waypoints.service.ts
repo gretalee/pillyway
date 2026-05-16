@@ -14,15 +14,14 @@ export class WaypointsService {
   // ── findBySlug ───────────────────────────────────────────────────────────────
 
   /**
-   * Returns the full detail for a waypoint (CaminoPoint) identified by its slug,
-   * including all accommodations and sights associated with it.
+   * Returns the detail for a waypoint (CaminoPoint) identified by its slug.
+   * Accommodations and sights are now served by their own dedicated modules.
    *
    * @throws NotFoundException when no CaminoPoint with the given slug exists.
    */
   async findBySlug(slug: string): Promise<WaypointDetailDto> {
     const point = await this.prisma.caminoPoint.findUnique({
       where: { slug },
-      include: { accommodations: true, sights: true },
     });
 
     if (!point) {
@@ -35,28 +34,6 @@ export class WaypointsService {
       country: point.country,
       slug: point.slug,
       description: point.description,
-      accommodations: point.accommodations.map((a) => ({
-        id: a.id,
-        caminoPointId: a.caminoPointId,
-        name: a.name,
-        description: a.description,
-        imageUrls: a.imageUrls,
-        verified: a.verified,
-        createdBy: a.createdBy,
-        createdAt: a.createdAt,
-        updatedAt: a.updatedAt,
-      })),
-      sights: point.sights.map((s) => ({
-        id: s.id,
-        caminoPointId: s.caminoPointId,
-        name: s.name,
-        description: s.description,
-        imageUrls: s.imageUrls,
-        verified: s.verified,
-        createdBy: s.createdBy,
-        createdAt: s.createdAt,
-        updatedAt: s.updatedAt,
-      })),
     };
   }
 
@@ -83,6 +60,14 @@ export class WaypointsService {
         name: dto.name,
         description: dto.description ?? null,
         imageUrls: dto.imageUrls ?? [],
+        type: dto.type,
+        email: dto.email ?? null,
+        website: dto.website ?? null,
+        addressStreet: dto.addressStreet ?? null,
+        addressZip: dto.addressZip ?? null,
+        addressCity: dto.addressCity ?? null,
+        addressCountry: dto.addressCountry ?? null,
+        priceRange: dto.priceRange ?? null,
         createdBy: userId,
       },
     });
@@ -123,6 +108,9 @@ export class WaypointsService {
         name: dto.name,
         description: dto.description ?? null,
         imageUrls: dto.imageUrls ?? [],
+        address: dto.address ?? null,
+        latitude: dto.latitude ?? null,
+        longitude: dto.longitude ?? null,
         createdBy: userId,
       },
     });

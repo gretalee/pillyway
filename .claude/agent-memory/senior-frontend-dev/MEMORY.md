@@ -3,3 +3,4 @@
 - [Pillyway UI component library](project_ui_library.md) — Base UI React (not Radix), polymorphism via render prop, Menu API
 - [Pillyway i18n architecture](project_i18n.md) — next-intl v4, cookie-only locale, resolveLocale helper, translation file namespaces
 - [Pillyway Stage feature patterns](project_stage_patterns.md) — shared entity display, pre-save confirmation dialog, reorder detection, AccessDenied message prop
+- [Pillyway POI patterns](project_poi_patterns.md) — accommodation/sight API layer, WaypointDetailView server/client split, edit-page guard, delete dialog i18n

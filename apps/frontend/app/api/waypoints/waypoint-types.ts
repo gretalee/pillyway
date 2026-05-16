@@ -1,26 +1,5 @@
-export interface AccommodationSummary {
-  id: string;
-  caminoPointId: string;
-  name: string;
-  description: string | null;
-  imageUrls: string[];
-  verified: boolean;
-  createdBy: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface SightSummary {
-  id: string;
-  caminoPointId: string;
-  name: string;
-  description: string | null;
-  imageUrls: string[];
-  verified: boolean;
-  createdBy: string;
-  createdAt: string;
-  updatedAt: string;
-}
+export type { AccommodationType, PriceRange } from '../accommodations/accommodation-types';
+import type { AccommodationType, PriceRange } from '../accommodations/accommodation-types';
 
 export interface WaypointDetail {
   id: string;
@@ -28,20 +7,29 @@ export interface WaypointDetail {
   country: string;
   slug: string;
   description: string | null;
-  accommodations: AccommodationSummary[];
-  sights: SightSummary[];
 }
 
 export interface CreateAccommodationPayload {
   name: string;
   description?: string;
   imageUrls?: string[];
+  type: AccommodationType;
+  email?: string | null;
+  website?: string | null;
+  addressStreet?: string | null;
+  addressZip?: string | null;
+  addressCity?: string | null;
+  addressCountry?: string | null;
+  priceRange?: PriceRange | null;
 }
 
 export interface CreateSightPayload {
   name: string;
   description?: string;
   imageUrls?: string[];
+  address?: string;
+  latitude?: number;
+  longitude?: number;
 }
 
 export interface UploadImagesResponse {
