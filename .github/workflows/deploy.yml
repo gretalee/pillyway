@@ -20,6 +20,13 @@
 #   KINDE_POST_LOGOUT_REDIRECT_URL   — Where Kinde redirects after logout.
 #   KINDE_POST_LOGIN_REDIRECT_URL    — Where Kinde redirects after login.
 #
+#   SUPABASE_URL                     — Supabase project API URL (https://<ref>.supabase.co).
+#   SUPABASE_S3_URL                  — S3-compatible endpoint (Storage → S3 Access → URL).
+#   SUPABASE_S3_REGION               — Region shown in Storage → S3 Access.
+#   SUPABASE_S3_ACCESS_KEY           — S3 access key from Storage → S3 Access.
+#   SUPABASE_S3_SECRET_KEY           — S3 secret key from Storage → S3 Access.
+#   SUPABASE_STORAGE_BUCKET          — Exact name of the public bucket created in Storage.
+#
 # No env files need to be created manually on the server. The deploy job writes a
 # fresh .env from GitHub Secrets on every deployment.
 
@@ -176,11 +183,17 @@ jobs:
           KINDE_SITE_URL: ${{ secrets.KINDE_SITE_URL }}
           KINDE_POST_LOGOUT_REDIRECT_URL: ${{ secrets.KINDE_POST_LOGOUT_REDIRECT_URL }}
           KINDE_POST_LOGIN_REDIRECT_URL: ${{ secrets.KINDE_POST_LOGIN_REDIRECT_URL }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_S3_URL: ${{ secrets.SUPABASE_S3_URL }}
+          SUPABASE_S3_REGION: ${{ secrets.SUPABASE_S3_REGION }}
+          SUPABASE_S3_ACCESS_KEY: ${{ secrets.SUPABASE_S3_ACCESS_KEY }}
+          SUPABASE_S3_SECRET_KEY: ${{ secrets.SUPABASE_S3_SECRET_KEY }}
+          SUPABASE_STORAGE_BUCKET: ${{ secrets.SUPABASE_STORAGE_BUCKET }}
         with:
           host: ${{ secrets.HETZNER_HOST }}
           username: ${{ secrets.HETZNER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: GHCR_TOKEN,GHCR_USER,IMAGE_BACKEND,IMAGE_FRONTEND,DATABASE_URL,FRONTEND_URL,KINDE_ISSUER_URL,KINDE_CLIENT_ID,KINDE_CLIENT_SECRET,KINDE_SITE_URL,KINDE_POST_LOGOUT_REDIRECT_URL,KINDE_POST_LOGIN_REDIRECT_URL
+          envs: GHCR_TOKEN,GHCR_USER,IMAGE_BACKEND,IMAGE_FRONTEND,DATABASE_URL,FRONTEND_URL,KINDE_ISSUER_URL,KINDE_CLIENT_ID,KINDE_CLIENT_SECRET,KINDE_SITE_URL,KINDE_POST_LOGOUT_REDIRECT_URL,KINDE_POST_LOGIN_REDIRECT_URL,SUPABASE_URL,SUPABASE_S3_URL,SUPABASE_S3_REGION,SUPABASE_S3_ACCESS_KEY,SUPABASE_S3_SECRET_KEY,SUPABASE_STORAGE_BUCKET
           script: |
             # Write a fresh .env from GitHub Secrets — docker compose reads it automatically
             mkdir -p /opt/pillyway
@@ -195,6 +208,12 @@ jobs:
             KINDE_SITE_URL=$KINDE_SITE_URL
             KINDE_POST_LOGOUT_REDIRECT_URL=$KINDE_POST_LOGOUT_REDIRECT_URL
             KINDE_POST_LOGIN_REDIRECT_URL=$KINDE_POST_LOGIN_REDIRECT_URL
+            SUPABASE_URL=$SUPABASE_URL
+            SUPABASE_S3_URL=$SUPABASE_S3_URL
+            SUPABASE_S3_REGION=$SUPABASE_S3_REGION
+            SUPABASE_S3_ACCESS_KEY=$SUPABASE_S3_ACCESS_KEY
+            SUPABASE_S3_SECRET_KEY=$SUPABASE_S3_SECRET_KEY
+            SUPABASE_STORAGE_BUCKET=$SUPABASE_STORAGE_BUCKET
             EOF
 
             echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
