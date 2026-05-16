@@ -5,6 +5,8 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { StageDetail as StageDetailData } from '@/app/api/stages/stage-types';
 import type { AuthUser } from '@/lib/getAuthUser';
 import { fetchStage } from '@/app/api/stages/fetch-stage';
+import { fetchAccommodationsByWaypoint } from '@/app/api/accommodations/fetch-accommodation';
+import { AccommodationCard } from '@/app/waypoints/[slug]/components/AccommodationCard';
 
 interface StageDetailProps {
   caminoId: string;
@@ -23,6 +25,11 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
     console.error('[StageDetail] Error fetching stage:', e);
     return notFound();
   }
+
+  const [startAccommodations, endAccommodations] = await Promise.all([
+    fetchAccommodationsByWaypoint(stage.startPoint.id).catch(() => []),
+    fetchAccommodationsByWaypoint(stage.endPoint.id).catch(() => []),
+  ]);
 
   const canEdit = user?.roles.some((r) => r.key === 'pilgrim') ?? false;
 
@@ -182,6 +189,52 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
           </button>
         )}
       </nav>
+
+      {/* Accommodations at start point */}
+      <section className="mt-12" aria-labelledby="start-accommodations-heading">
+        <h2
+          id="start-accommodations-heading"
+          className="text-xl font-semibold tracking-tight">
+          {t('accommodations_at', { name: stage.startPoint.name })}
+        </h2>
+        {startAccommodations.length > 0 ? (
+          <ul className="mt-4 space-y-4">
+            {startAccommodations.map((accommodation) => (
+              <AccommodationCard
+                key={accommodation.id}
+                accommodation={accommodation}
+                slug={stage.startPoint.slug}
+                canContribute={canEdit}
+              />
+            ))}
+          </ul>
+        ) : (
+          <p className="mt-4 text-sm text-muted-foreground">{t('no_accommodations')}</p>
+        )}
+      </section>
+
+      {/* Accommodations at end point */}
+      <section className="mt-10" aria-labelledby="end-accommodations-heading">
+        <h2
+          id="end-accommodations-heading"
+          className="text-xl font-semibold tracking-tight">
+          {t('accommodations_at', { name: stage.endPoint.name })}
+        </h2>
+        {endAccommodations.length > 0 ? (
+          <ul className="mt-4 space-y-4">
+            {endAccommodations.map((accommodation) => (
+              <AccommodationCard
+                key={accommodation.id}
+                accommodation={accommodation}
+                slug={stage.endPoint.slug}
+                canContribute={canEdit}
+              />
+            ))}
+          </ul>
+        ) : (
+          <p className="mt-4 text-sm text-muted-foreground">{t('no_accommodations')}</p>
+        )}
+      </section>
     </article>
   );
 }
