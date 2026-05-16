@@ -1,17 +1,24 @@
 import {
   ForbiddenException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 
 import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { PrismaService } from '../prisma/prisma.service';
+import { UploadsService } from '../uploads/uploads.service';
 import { SightDetailDto } from './dto/sight-detail.dto';
 import { UpdateSightDto } from './dto/update-sight.dto';
 
 @Injectable()
 export class SightsService {
-  constructor(private readonly prisma: PrismaService) {}
+  private readonly logger = new Logger(SightsService.name);
+
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly uploadsService: UploadsService,
+  ) {}
 
   // ── findById ─────────────────────────────────────────────────────────────────
 
@@ -72,6 +79,15 @@ export class SightsService {
       },
     });
 
+    if (dto.removeImageUrls && dto.removeImageUrls.length > 0) {
+      try {
+        await this.uploadsService.deleteImages(dto.removeImageUrls);
+      } catch (err) {
+        // Storage cleanup is best-effort — DB write already succeeded
+        this.logger.error(`Storage cleanup failed after sight update: ${String(err)}`);
+      }
+    }
+
     return this.toDto(updated);
   }
 
@@ -88,6 +104,15 @@ export class SightsService {
     }
 
     await this.prisma.sight.delete({ where: { id } });
+
+    if (existing.imageUrls.length > 0) {
+      try {
+        await this.uploadsService.deleteImages(existing.imageUrls);
+      } catch (err) {
+        // Storage cleanup is best-effort — DB write already succeeded
+        this.logger.error(`Storage cleanup failed after sight delete: ${String(err)}`);
+      }
+    }
   }
 
   // ── private helpers ───────────────────────────────────────────────────────────

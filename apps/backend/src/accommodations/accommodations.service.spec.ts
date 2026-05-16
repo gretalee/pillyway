@@ -10,6 +10,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { PrismaService } from '../prisma/prisma.service';
+import { UploadsService } from '../uploads/uploads.service';
 import { AccommodationsService } from './accommodations.service';
 import { UpdateAccommodationDto } from './dto/update-accommodation.dto';
 
@@ -46,11 +47,14 @@ const NO_ROLES: KindeRole[] = [];
 
 // ─── Module builder ───────────────────────────────────────────────────────────
 
+const uploadsMock = { deleteImages: vi.fn().mockResolvedValue(undefined) };
+
 function buildModule(prismaMock: object): Promise<TestingModule> {
   return Test.createTestingModule({
     providers: [
       AccommodationsService,
       { provide: PrismaService, useValue: prismaMock },
+      { provide: UploadsService, useValue: uploadsMock },
     ],
   })
     .setLogger(false as unknown as LoggerService)
