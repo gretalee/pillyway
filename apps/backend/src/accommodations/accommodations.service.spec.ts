@@ -207,7 +207,7 @@ describe('AccommodationsService.update()', () => {
     const service = module.get(AccommodationsService);
 
     const dto = Object.assign(new UpdateAccommodationDto(), {
-      removeImageUrls: ['https://example.com/img1.jpg'],
+      removeImageUrls: ['https://example.com/img1.jpg', 'https://example.com/not-attached.jpg'],
     });
 
     const result = await service.update(ACCOMMODATION_ID, dto, PILGRIM_ROLES);
@@ -221,6 +221,7 @@ describe('AccommodationsService.update()', () => {
     );
     expect(result.imageUrls).toEqual(['https://example.com/img2.jpg']);
     expect(uploadsMock.deleteImages).toHaveBeenCalledWith(['https://example.com/img1.jpg']);
+    expect(uploadsMock.deleteImages).toHaveBeenCalledTimes(1);
   });
 
   it('deletes dropped URLs when imageUrls diff path is used', async () => {
@@ -245,7 +246,15 @@ describe('AccommodationsService.update()', () => {
 
     await service.update(ACCOMMODATION_ID, dto, PILGRIM_ROLES);
 
+    expect(prismaMock.accommodation.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          imageUrls: ['https://example.com/img2.jpg'],
+        }),
+      }),
+    );
     expect(uploadsMock.deleteImages).toHaveBeenCalledWith(['https://example.com/img1.jpg']);
+    expect(uploadsMock.deleteImages).toHaveBeenCalledTimes(1);
   });
 
   it('does not call deleteImages when update has no image changes', async () => {
