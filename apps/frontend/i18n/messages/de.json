@@ -188,7 +188,8 @@
       "b_and_b": "Bed & Breakfast",
       "hotel": "Hotel",
       "apartment": "Apartment",
-      "private_room": "Privatzimmer"
+      "private_room": "Privatzimmer",
+      "church": "Kirche"
     },
     "price_range": {
       "budget": "€",

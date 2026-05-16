@@ -45,6 +45,7 @@ const ACCOMMODATION_TYPES: AccommodationType[] = [
   'hotel',
   'apartment',
   'private_room',
+  'church',
 ];
 
 const PRICE_RANGES: PriceRange[] = ['budget', 'moderate', 'comfortable', 'luxury'];

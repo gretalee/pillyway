@@ -4,7 +4,8 @@ export type AccommodationType =
   | 'b_and_b'
   | 'hotel'
   | 'apartment'
-  | 'private_room';
+  | 'private_room'
+  | 'church';
 
 export type PriceRange = 'budget' | 'moderate' | 'comfortable' | 'luxury';
 

@@ -75,6 +75,7 @@ enum AccommodationType {
   hotel
   apartment
   private_room
+  church
 }
 
 enum PriceRange {
