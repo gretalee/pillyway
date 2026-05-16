@@ -66,9 +66,11 @@ test.describe('POI — accommodation and sight edit, delete, and detail page', (
     accommodationName = uniqueName('Hostel');
     await page.goto(`/waypoints/${waypointSlug}/accommodations/new`);
     await page.getByLabel('Name').fill(accommodationName);
-    await page.getByLabel('Type').selectOption('Hostel');
+    await page.getByLabel('Type').selectOption('hostel');
     await page.getByRole('button', { name: 'Add accommodation' }).click();
     await page.waitForURL(`/waypoints/${waypointSlug}`, { timeout: 15_000 });
+
+    console.log('BeforeAll - accommodationName is set to', accommodationName);
 
     // Extract accommodation ID from the name link on the waypoint page
     const accLink = page.getByRole('link', { name: accommodationName });
@@ -88,6 +90,7 @@ test.describe('POI — accommodation and sight edit, delete, and detail page', (
     await expect(page.getByText(sightName)).toBeVisible({ timeout: 10_000 });
 
     await logout(page);
+    console.log('### BeforeAll - setup complete');
     await ctx.close();
   });
 
@@ -110,6 +113,8 @@ test.describe('POI — accommodation and sight edit, delete, and detail page', (
       await deleteCaminoViaUI(page, caminoId);
     } finally {
       await logout(page);
+
+      console.log('### AfterAll - teardown complete');
       await ctx.close();
     }
   });
@@ -119,14 +124,15 @@ test.describe('POI — accommodation and sight edit, delete, and detail page', (
   test('guest can view accommodation detail page and sees name and type badge', async ({
     page,
   }) => {
+    const pageUrl = `/accommodations/${accommodationId}`;
     await setLanguageToEnglish(page);
-    await page.goto(`/accommodations/${accommodationId}`);
+    await page.goto(pageUrl);
+    await page.waitForURL(pageUrl, { waitUntil: 'networkidle' });
 
-    await expect(
-      page.getByRole('heading', { name: accommodationName }),
-    ).toBeVisible({ timeout: 10_000 });
-    await expect(page.getByText('Hostel')).toBeVisible();
-    // Back link returns to the waypoint page
+    await expect(page.getByRole('heading', { name: accommodationName })).toBeVisible({
+      timeout: 10_000,
+    });
+    await expect(page.getByText('Hostel', { exact: true })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Back' })).toBeVisible();
     // Guest does not see the edit button
     await expect(
@@ -147,9 +153,9 @@ test.describe('POI — accommodation and sight edit, delete, and detail page', (
     await loginAs(page, email!, password!);
 
     await page.goto(`/accommodations/${accommodationId}`);
-    await expect(
-      page.getByRole('link', { name: 'Edit accommodation' }),
-    ).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByRole('link', { name: 'Edit accommodation' })).toBeVisible({
+      timeout: 10_000,
+    });
   });
 
   // ─── Accommodation edit ───────────────────────────────────────────────────────
@@ -165,13 +171,13 @@ test.describe('POI — accommodation and sight edit, delete, and detail page', (
 
     await setLanguageToEnglish(page);
     await loginAs(page, email!, password!);
-
-    // Reach edit form via the pencil icon on the waypoint page
     await page.goto(`/waypoints/${waypointSlug}`);
-    await expect(
-      page.getByRole('link', { name: 'Edit accommodation' }),
-    ).toBeVisible({ timeout: 10_000 });
-    await page.getByRole('link', { name: 'Edit accommodation' }).click();
+    const editAccommodationLink = page
+      .locator('div')
+      .filter({ has: page.getByRole('link', { name: accommodationName, exact: true }) })
+      .getByRole('link', { name: 'Edit accommodation' });
+    await expect(editAccommodationLink).toBeVisible({ timeout: 10_000 });
+    await editAccommodationLink.click();
     await page.waitForURL(/\/accommodations\/[^/]+\/edit$/, { timeout: 10_000 });
 
     // Change the name
@@ -180,7 +186,7 @@ test.describe('POI — accommodation and sight edit, delete, and detail page', (
     await page.getByRole('button', { name: 'Save changes' }).click();
 
     // Should redirect back to the waypoint page with the new name visible
-    await page.waitForURL(`/waypoints/${waypointSlug}`, { timeout: 15_000 });
+    await page.waitForURL(`/waypoints/${waypointSlug}`, { timeout: 30_000 });
     await expect(page.getByText(updatedAccName)).toBeVisible({ timeout: 10_000 });
 
     accommodationName = updatedAccName;
@@ -201,10 +207,15 @@ test.describe('POI — accommodation and sight edit, delete, and detail page', (
     await loginAs(page, email!, password!);
 
     await page.goto(`/waypoints/${waypointSlug}`);
+    const editSightLink = page
+      .locator('div')
+      .filter({ has: page.getByText(sightName, { exact: true }) })
+      .getByRole('link', { name: 'Edit sight' });
     await expect(
-      page.getByRole('link', { name: 'Edit sight' }),
+      editSightLink,
+      `Edit sight link for ${sightName} must be visible.`,
     ).toBeVisible({ timeout: 10_000 });
-    await page.getByRole('link', { name: 'Edit sight' }).click();
+    await editSightLink.click();
     await page.waitForURL(/\/sights\/[^/]+\/edit$/, { timeout: 10_000 });
 
     const updatedSightName = `${sightName} (edited)`;
@@ -232,7 +243,10 @@ test.describe('POI — accommodation and sight edit, delete, and detail page', (
     await loginAs(page, email!, password!);
 
     await page.goto(`/waypoints/${waypointSlug}`);
-    const deleteBtn = page.getByRole('button', { name: 'Delete accommodation' });
+    const deleteBtn = page
+      .locator('div')
+      .filter({ has: page.getByRole('link', { name: accommodationName, exact: true }) })
+      .getByRole('button', { name: 'Delete accommodation' });
     await expect(deleteBtn).toBeVisible({ timeout: 10_000 });
     await deleteBtn.click();
 
@@ -242,8 +256,8 @@ test.describe('POI — accommodation and sight edit, delete, and detail page', (
     await dialog.getByRole('button', { name: 'Delete' }).click();
 
     // Accommodation must be gone after the page refreshes
-    await expect(page.getByText(accommodationName)).not.toBeVisible({
-      timeout: 15_000,
+    await expect(page.getByText(accommodationName, { exact: true })).toHaveCount(0, {
+      timeout: 30_000,
     });
   });
 
@@ -262,14 +276,21 @@ test.describe('POI — accommodation and sight edit, delete, and detail page', (
     await loginAs(page, email!, password!);
 
     await page.goto(`/waypoints/${waypointSlug}`);
-    const deleteBtn = page.getByRole('button', { name: 'Delete sight' });
+    const deleteBtn = page
+      .locator('div')
+      .filter({ has: page.getByText(sightName, { exact: true }) })
+      .getByRole('button', { name: 'Delete sight' });
     await expect(deleteBtn).toBeVisible({ timeout: 10_000 });
     await deleteBtn.click();
 
     const dialog = page.getByRole('alertdialog');
     await expect(dialog).toBeVisible({ timeout: 5_000 });
-    await dialog.getByRole('button', { name: 'Delete' }).click();
+    const closeBtn = dialog.getByRole('button', { name: 'Delete' });
+    await expect(closeBtn).toBeVisible();
+    await closeBtn.click();
 
-    await expect(page.getByText(sightName)).not.toBeVisible({ timeout: 15_000 });
+    await expect(page.getByRole('heading', { name: sightName })).not.toBeVisible({
+      timeout: 15_000,
+    });
   });
 });

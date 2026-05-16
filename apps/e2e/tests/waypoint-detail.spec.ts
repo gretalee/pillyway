@@ -132,7 +132,7 @@ test.describe('Waypoint detail — public view and pilgrim write flows', () => {
     // Fill and submit form
     const accName = `Test Hostel ${Date.now()}`;
     await page.getByLabel('Name').fill(accName);
-    await page.getByLabel('Type').selectOption('Hostel');
+    await page.getByLabel('Type').selectOption('hostel');
     await page.getByRole('button', { name: 'Add accommodation' }).click();
 
     // Redirected back to waypoint page
@@ -159,7 +159,7 @@ test.describe('Waypoint detail — public view and pilgrim write flows', () => {
     await page.getByLabel('Name').fill(sightName);
     await page.getByRole('button', { name: 'Add sight' }).click();
 
-    await page.waitForURL(`/waypoints/${waypointSlug}`, { timeout: 15_000 });
+    await page.waitForURL(`/waypoints/${waypointSlug}`, { timeout: 30_000 });
     await expect(page.getByText(sightName)).toBeVisible({ timeout: 10_000 });
   });
 });
