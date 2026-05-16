@@ -80,23 +80,26 @@ export default async function WaypointDetailPage({ params }: Props) {
       <h1 className="text-3xl font-bold tracking-tight">{waypoint.name}</h1>
       <p className="mt-1 text-sm text-muted-foreground">{countryLabel}</p>
       {waypoint.description && (
-        <p className="mt-4 whitespace-pre-wrap text-muted-foreground">
-          {waypoint.description}
-        </p>
+        <p className="mt-4 whitespace-pre-wrap">{waypoint.description}</p>
       )}
 
       {/* Accommodations */}
       <section className="mt-10" aria-labelledby="accommodations-heading">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2 bg-pillyGreen-300 rounded-tl-lg rounded-tr-lg px-4 py-2  overflow-hidden">
           <h2 id="accommodations-heading" className="text-xl font-semibold">
             {t('accommodations_heading')}
           </h2>
           {canContribute && (
-            <Link
-              href={`/waypoints/${slug}/accommodations/new`}
-              className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>
-              {t('add_accommodation')}
-            </Link>
+            <div className="flex-1 overflow-hidden flex justify-end">
+              <Link
+                href={`/waypoints/${slug}/accommodations/new`}
+                className={cn(
+                  buttonVariants({ variant: 'outline', size: 'sm' }),
+                  'max-w-full',
+                )}>
+                <span className="truncate">{t('add_accommodation')}</span>
+              </Link>
+            </div>
           )}
         </div>
 
@@ -122,16 +125,21 @@ export default async function WaypointDetailPage({ params }: Props) {
 
       {/* Sights */}
       <section className="mt-10" aria-labelledby="sights-heading">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2 bg-pillyGreen-300 rounded-tl-lg rounded-tr-lg px-4 py-2  overflow-hidden">
           <h2 id="sights-heading" className="text-xl font-semibold">
             {t('sights_heading')}
           </h2>
           {canContribute && (
-            <Link
-              href={`/waypoints/${slug}/sights/new`}
-              className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>
-              {t('add_sight')}
-            </Link>
+            <div className="overflow-hidden flex justify-end">
+              <Link
+                href={`/waypoints/${slug}/sights/new`}
+                className={cn(
+                  buttonVariants({ variant: 'outline', size: 'sm' }),
+                  'max-w-full',
+                )}>
+                <span className="truncate">{t('add_sight')}</span>
+              </Link>
+            </div>
           )}
         </div>
 

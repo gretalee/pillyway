@@ -88,7 +88,7 @@ export default async function AccommodationDetailPage({ params }: Props) {
       {/* Header row */}
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2 ">
             <h1 className="text-3xl font-bold tracking-tight">{accommodation.name}</h1>
             <span className="inline-block rounded-full border border-border px-2 py-0.5 text-xs font-medium text-muted-foreground">
               {tType(
@@ -112,18 +112,19 @@ export default async function AccommodationDetailPage({ params }: Props) {
           <Link
             href={`/waypoints/${accommodation.waypointSlug}/accommodations/${accommodation.id}/edit`}
             aria-label={t('edit_label')}
-            className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'shrink-0')}>
+            className={cn(
+              buttonVariants({ variant: 'outline', size: 'sm' }),
+              'shrink-0 mt-1',
+            )}>
             <Pencil className="size-4" aria-hidden="true" />
-            {t('edit_label')}
+            <span className="max-sm:hidden">{t('edit_label')}</span>
           </Link>
         )}
       </div>
 
       {/* Description */}
       {accommodation.description && (
-        <p className="mt-6 whitespace-pre-wrap text-muted-foreground">
-          {accommodation.description}
-        </p>
+        <p className="mt-6 whitespace-pre-wrap">{accommodation.description}</p>
       )}
 
       {/* Contact */}
@@ -150,22 +151,17 @@ export default async function AccommodationDetailPage({ params }: Props) {
 
       {/* Address */}
       {hasAddress && (
-        <address className="mt-6 not-italic text-sm text-muted-foreground">
-          {accommodation.addressStreet && (
-            <span>
-              {accommodation.addressStreet}
-              <br />
-            </span>
-          )}
+        <address className="mt-6 not-italic text-sm ">
+          {accommodation.addressStreet && <span>{accommodation.addressStreet}</span>}
           {(accommodation.addressZip || accommodation.addressCity) && (
             <span>
+              ,{' '}
               {[accommodation.addressZip, accommodation.addressCity]
                 .filter(Boolean)
                 .join(' ')}
-              <br />
             </span>
           )}
-          {accommodation.addressCountry && <span>{accommodation.addressCountry}</span>}
+          {accommodation.addressCountry && <span>, {accommodation.addressCountry}</span>}
         </address>
       )}
 

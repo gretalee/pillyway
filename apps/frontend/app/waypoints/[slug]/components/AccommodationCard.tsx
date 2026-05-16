@@ -60,29 +60,24 @@ export async function AccommodationCard({ accommodation, slug, canContribute }: 
           </div>
 
           {accommodation.description && (
-            <p className="mt-2 whitespace-pre-wrap text-sm text-muted-foreground">
+            <p className="mt-2 whitespace-pre-wrap text-sm ">
               {accommodation.description}
             </p>
           )}
 
           {hasAddress && (
-            <address className="mt-2 not-italic text-sm text-muted-foreground">
-              {accommodation.addressStreet && (
-                <span>
-                  {accommodation.addressStreet}
-                  <br />
-                </span>
-              )}
+            <address className="mt-2 not-italic text-sm">
+              {accommodation.addressStreet && <span>{accommodation.addressStreet}</span>}
               {(accommodation.addressZip || accommodation.addressCity) && (
                 <span>
+                  ,{' '}
                   {[accommodation.addressZip, accommodation.addressCity]
                     .filter(Boolean)
                     .join(' ')}
-                  <br />
                 </span>
               )}
               {accommodation.addressCountry && (
-                <span>{accommodation.addressCountry}</span>
+                <span>, {accommodation.addressCountry}</span>
               )}
             </address>
           )}
@@ -105,19 +100,6 @@ export async function AccommodationCard({ accommodation, slug, canContribute }: 
               </a>
             )}
           </div>
-
-          {firstImage && (
-            <div className="relative mt-3 h-48 w-full overflow-hidden rounded-md">
-              <Image
-                src={firstImage}
-                alt={accommodation.name}
-                fill
-                unoptimized
-                loading="eager"
-                className="object-cover"
-              />
-            </div>
-          )}
         </div>
 
         {canContribute && (
@@ -136,6 +118,18 @@ export async function AccommodationCard({ accommodation, slug, canContribute }: 
           </div>
         )}
       </div>
+      {firstImage && (
+        <div className="relative mt-3 h-48 w-full overflow-hidden rounded-md">
+          <Image
+            src={firstImage}
+            alt={accommodation.name}
+            fill
+            unoptimized
+            loading="eager"
+            className="object-cover"
+          />
+        </div>
+      )}
     </li>
   );
 }

@@ -30,18 +30,14 @@ export async function SightCard({ sight, slug, canContribute }: Props) {
           </div>
 
           {sight.description && (
-            <p className="mt-2 whitespace-pre-wrap text-sm text-muted-foreground">
-              {sight.description}
-            </p>
+            <p className="mt-2 whitespace-pre-wrap text-sm ">{sight.description}</p>
           )}
 
-          {sight.address && (
-            <p className="mt-2 text-sm text-muted-foreground">{sight.address}</p>
-          )}
+          {sight.address && <p className="mt-2 text-sm ">{sight.address}</p>}
 
           {sight.latitude !== null && sight.longitude !== null && (
-            <p className="mt-2 text-sm text-muted-foreground">
-              {sight.latitude.toFixed(6)}, {sight.longitude.toFixed(6)}
+            <p className="mt-2 text-sm ">
+              Pos: {sight.latitude.toFixed(6)}, {sight.longitude.toFixed(6)}
             </p>
           )}
 
