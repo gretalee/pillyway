@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
-const FORM_PATH_RE = /\/(edit|new)$/;
+const FORM_PATH_RE = /\/(edit|new|update)$/;
 
 export function PathTracker() {
   const pathname = usePathname();
