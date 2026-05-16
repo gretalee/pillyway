@@ -24,8 +24,7 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
     return notFound();
   }
 
-  const canEdit =
-    user?.roles.some((r) => r.key === 'pilgrim') ?? false;
+  const canEdit = user?.roles.some((r) => r.key === 'pilgrim') ?? false;
 
   const { previousStage, nextStage } = stage;
 
@@ -59,7 +58,7 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
           <dd className="mt-1 font-medium">
             <Link
               href={`/waypoints/${stage.startPoint.slug}`}
-              className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+              className="underline text-pillyGreen-600 font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
               {stage.startPoint.name}
             </Link>
             <span className="ml-2 text-sm text-muted-foreground">
@@ -74,7 +73,7 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
           <dd className="mt-1 font-medium">
             <Link
               href={`/waypoints/${stage.endPoint.slug}`}
-              className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+              className="underline text-pillyGreen-600 font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
               {stage.endPoint.name}
             </Link>
             <span className="ml-2 text-sm text-muted-foreground">

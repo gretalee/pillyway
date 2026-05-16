@@ -113,6 +113,7 @@ export async function AccommodationCard({ accommodation, slug, canContribute }: 
                 alt={accommodation.name}
                 fill
                 unoptimized
+                loading="eager"
                 className="object-cover"
               />
             </div>

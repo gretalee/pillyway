@@ -10,6 +10,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { PrismaService } from '../prisma/prisma.service';
+import { UploadsService } from '../uploads/uploads.service';
 import { AccommodationsService } from './accommodations.service';
 import { UpdateAccommodationDto } from './dto/update-accommodation.dto';
 
@@ -46,11 +47,14 @@ const NO_ROLES: KindeRole[] = [];
 
 // ─── Module builder ───────────────────────────────────────────────────────────
 
+const uploadsMock = { deleteImages: vi.fn().mockResolvedValue(undefined) };
+
 function buildModule(prismaMock: object): Promise<TestingModule> {
   return Test.createTestingModule({
     providers: [
       AccommodationsService,
       { provide: PrismaService, useValue: prismaMock },
+      { provide: UploadsService, useValue: uploadsMock },
     ],
   })
     .setLogger(false as unknown as LoggerService)
@@ -133,7 +137,10 @@ describe('AccommodationsService.findByCaminoPointId()', () => {
 // ─── AccommodationsService.update() ───────────────────────────────────────────
 
 describe('AccommodationsService.update()', () => {
-  afterEach(() => vi.restoreAllMocks());
+  afterEach(() => {
+    vi.restoreAllMocks();
+    uploadsMock.deleteImages.mockClear();
+  });
 
   it('throws ForbiddenException when user has no roles', async () => {
     const prismaMock = {
@@ -200,7 +207,7 @@ describe('AccommodationsService.update()', () => {
     const service = module.get(AccommodationsService);
 
     const dto = Object.assign(new UpdateAccommodationDto(), {
-      removeImageUrls: ['https://example.com/img1.jpg'],
+      removeImageUrls: ['https://example.com/img1.jpg', 'https://example.com/not-attached.jpg'],
     });
 
     const result = await service.update(ACCOMMODATION_ID, dto, PILGRIM_ROLES);
@@ -213,6 +220,59 @@ describe('AccommodationsService.update()', () => {
       }),
     );
     expect(result.imageUrls).toEqual(['https://example.com/img2.jpg']);
+    expect(uploadsMock.deleteImages).toHaveBeenCalledWith(['https://example.com/img1.jpg']);
+    expect(uploadsMock.deleteImages).toHaveBeenCalledTimes(1);
+  });
+
+  it('deletes dropped URLs when imageUrls diff path is used', async () => {
+    const existingWithImages = {
+      ...baseAccommodation,
+      imageUrls: ['https://example.com/img1.jpg', 'https://example.com/img2.jpg'],
+    };
+    const prismaMock = {
+      accommodation: {
+        findUnique: vi.fn().mockResolvedValue(existingWithImages),
+        update: vi.fn().mockImplementation(({ data }) =>
+          Promise.resolve({ ...existingWithImages, ...data }),
+        ),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(AccommodationsService);
+
+    const dto = Object.assign(new UpdateAccommodationDto(), {
+      imageUrls: ['https://example.com/img2.jpg'],
+    });
+
+    await service.update(ACCOMMODATION_ID, dto, PILGRIM_ROLES);
+
+    expect(prismaMock.accommodation.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          imageUrls: ['https://example.com/img2.jpg'],
+        }),
+      }),
+    );
+    expect(uploadsMock.deleteImages).toHaveBeenCalledWith(['https://example.com/img1.jpg']);
+    expect(uploadsMock.deleteImages).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not call deleteImages when update has no image changes', async () => {
+    const updated = { ...baseAccommodation, name: 'New Name', updatedAt: new Date() };
+    const prismaMock = {
+      accommodation: {
+        findUnique: vi.fn().mockResolvedValue(baseAccommodation),
+        update: vi.fn().mockResolvedValue(updated),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(AccommodationsService);
+
+    const dto = Object.assign(new UpdateAccommodationDto(), { name: 'New Name' });
+
+    await service.update(ACCOMMODATION_ID, dto, PILGRIM_ROLES);
+
+    expect(uploadsMock.deleteImages).not.toHaveBeenCalled();
   });
 
   it('throws BadRequestException when both imageUrls and removeImageUrls are provided', async () => {
@@ -263,7 +323,10 @@ describe('AccommodationsService.update()', () => {
 // ─── AccommodationsService.delete() ───────────────────────────────────────────
 
 describe('AccommodationsService.delete()', () => {
-  afterEach(() => vi.restoreAllMocks());
+  afterEach(() => {
+    vi.restoreAllMocks();
+    uploadsMock.deleteImages.mockClear();
+  });
 
   it('throws ForbiddenException when user has no roles', async () => {
     const prismaMock = {
@@ -307,6 +370,23 @@ describe('AccommodationsService.delete()', () => {
     expect(prismaMock.accommodation.delete).toHaveBeenCalledWith({
       where: { id: ACCOMMODATION_ID },
     });
+    expect(uploadsMock.deleteImages).toHaveBeenCalledWith(baseAccommodation.imageUrls);
+  });
+
+  it('does not call deleteImages when accommodation has no imageUrls', async () => {
+    const noImageAccommodation = { ...baseAccommodation, imageUrls: [] };
+    const prismaMock = {
+      accommodation: {
+        findUnique: vi.fn().mockResolvedValue(noImageAccommodation),
+        delete: vi.fn().mockResolvedValue(noImageAccommodation),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(AccommodationsService);
+
+    await service.delete(ACCOMMODATION_ID, PILGRIM_ROLES);
+
+    expect(uploadsMock.deleteImages).not.toHaveBeenCalled();
   });
 
   it('throws NotFoundException when accommodation does not exist', async () => {

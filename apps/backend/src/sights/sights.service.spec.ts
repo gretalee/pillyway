@@ -9,6 +9,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { PrismaService } from '../prisma/prisma.service';
+import { UploadsService } from '../uploads/uploads.service';
 import { SightsService } from './sights.service';
 import { UpdateSightDto } from './dto/update-sight.dto';
 
@@ -39,11 +40,14 @@ const NO_ROLES: KindeRole[] = [];
 
 // ─── Module builder ───────────────────────────────────────────────────────────
 
+const uploadsMock = { deleteImages: vi.fn().mockResolvedValue(undefined) };
+
 function buildModule(prismaMock: object): Promise<TestingModule> {
   return Test.createTestingModule({
     providers: [
       SightsService,
       { provide: PrismaService, useValue: prismaMock },
+      { provide: UploadsService, useValue: uploadsMock },
     ],
   })
     .setLogger(false as unknown as LoggerService)
@@ -121,7 +125,10 @@ describe('SightsService.findByCaminoPointId()', () => {
 // ─── SightsService.update() ───────────────────────────────────────────────────
 
 describe('SightsService.update()', () => {
-  afterEach(() => vi.restoreAllMocks());
+  afterEach(() => {
+    vi.restoreAllMocks();
+    uploadsMock.deleteImages.mockClear();
+  });
 
   it('throws ForbiddenException when user has no roles', async () => {
     const prismaMock = {
@@ -201,6 +208,50 @@ describe('SightsService.update()', () => {
       }),
     );
     expect(result.imageUrls).toEqual(['https://example.com/img2.jpg']);
+    expect(uploadsMock.deleteImages).toHaveBeenCalledWith(['https://example.com/img1.jpg']);
+  });
+
+  it('deletes dropped URLs when imageUrls diff path is used', async () => {
+    const existingWithImages = {
+      ...baseSight,
+      imageUrls: ['https://example.com/img1.jpg', 'https://example.com/img2.jpg'],
+    };
+    const prismaMock = {
+      sight: {
+        findUnique: vi.fn().mockResolvedValue(existingWithImages),
+        update: vi.fn().mockImplementation(({ data }) =>
+          Promise.resolve({ ...existingWithImages, ...data }),
+        ),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(SightsService);
+
+    const dto = Object.assign(new UpdateSightDto(), {
+      imageUrls: ['https://example.com/img2.jpg'],
+    });
+
+    await service.update(SIGHT_ID, dto, PILGRIM_ROLES);
+
+    expect(uploadsMock.deleteImages).toHaveBeenCalledWith(['https://example.com/img1.jpg']);
+  });
+
+  it('does not call deleteImages when update has no image changes', async () => {
+    const updated = { ...baseSight, name: 'Updated Sight', updatedAt: new Date() };
+    const prismaMock = {
+      sight: {
+        findUnique: vi.fn().mockResolvedValue(baseSight),
+        update: vi.fn().mockResolvedValue(updated),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(SightsService);
+
+    const dto = Object.assign(new UpdateSightDto(), { name: 'No Image Change' });
+
+    await service.update(SIGHT_ID, dto, PILGRIM_ROLES);
+
+    expect(uploadsMock.deleteImages).not.toHaveBeenCalled();
   });
 
   it('throws BadRequestException when both imageUrls and removeImageUrls are provided', async () => {
@@ -287,7 +338,10 @@ describe('SightsService.update()', () => {
 // ─── SightsService.delete() ───────────────────────────────────────────────────
 
 describe('SightsService.delete()', () => {
-  afterEach(() => vi.restoreAllMocks());
+  afterEach(() => {
+    vi.restoreAllMocks();
+    uploadsMock.deleteImages.mockClear();
+  });
 
   it('throws ForbiddenException when user has no roles', async () => {
     const prismaMock = {
@@ -331,6 +385,23 @@ describe('SightsService.delete()', () => {
     expect(prismaMock.sight.delete).toHaveBeenCalledWith({
       where: { id: SIGHT_ID },
     });
+    expect(uploadsMock.deleteImages).toHaveBeenCalledWith(baseSight.imageUrls);
+  });
+
+  it('does not call deleteImages when sight has no imageUrls', async () => {
+    const noImageSight = { ...baseSight, imageUrls: [] };
+    const prismaMock = {
+      sight: {
+        findUnique: vi.fn().mockResolvedValue(noImageSight),
+        delete: vi.fn().mockResolvedValue(noImageSight),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(SightsService);
+
+    await service.delete(SIGHT_ID, PILGRIM_ROLES);
+
+    expect(uploadsMock.deleteImages).not.toHaveBeenCalled();
   });
 
   it('throws NotFoundException when sight does not exist', async () => {

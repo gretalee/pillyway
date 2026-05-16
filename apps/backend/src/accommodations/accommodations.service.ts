@@ -1,18 +1,25 @@
 import {
   ForbiddenException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { AccommodationType, PriceRange } from '@prisma/client';
 
 import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { PrismaService } from '../prisma/prisma.service';
+import { UploadsService } from '../uploads/uploads.service';
 import { AccommodationDetailDto } from './dto/accommodation-detail.dto';
 import { UpdateAccommodationDto } from './dto/update-accommodation.dto';
 
 @Injectable()
 export class AccommodationsService {
-  constructor(private readonly prisma: PrismaService) {}
+  private readonly logger = new Logger(AccommodationsService.name);
+
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly uploadsService: UploadsService,
+  ) {}
 
   // ── findById ─────────────────────────────────────────────────────────────────
 
@@ -61,13 +68,18 @@ export class AccommodationsService {
       throw new NotFoundException('Accommodation not found.');
     }
 
-    // Compute new imageUrls when removeImageUrls is provided
+    // Compute new imageUrls and which URLs were dropped (for storage cleanup)
     let resolvedImageUrls: string[] | undefined;
+    let urlsToDelete: string[] = [];
+
     if (dto.removeImageUrls !== undefined) {
       const toRemove = new Set(dto.removeImageUrls);
+      urlsToDelete = existing.imageUrls.filter((url) => toRemove.has(url));
       resolvedImageUrls = existing.imageUrls.filter((url) => !toRemove.has(url));
     } else if (dto.imageUrls !== undefined) {
       resolvedImageUrls = dto.imageUrls;
+      const kept = new Set(dto.imageUrls);
+      urlsToDelete = existing.imageUrls.filter((url) => !kept.has(url));
     }
 
     const updated = await this.prisma.accommodation.update({
@@ -88,6 +100,15 @@ export class AccommodationsService {
       },
     });
 
+    if (urlsToDelete.length > 0) {
+      try {
+        await this.uploadsService.deleteImages(urlsToDelete);
+      } catch (err) {
+        // Storage cleanup is best-effort — DB write already succeeded
+        this.logger.error(`Storage cleanup failed after accommodation update: ${String(err)}`);
+      }
+    }
+
     return this.toDto({ ...updated, caminoPoint: existing.caminoPoint });
   }
 
@@ -104,6 +125,15 @@ export class AccommodationsService {
     }
 
     await this.prisma.accommodation.delete({ where: { id } });
+
+    if (existing.imageUrls.length > 0) {
+      try {
+        await this.uploadsService.deleteImages(existing.imageUrls);
+      } catch (err) {
+        // Storage cleanup is best-effort — DB write already succeeded
+        this.logger.error(`Storage cleanup failed after accommodation delete: ${String(err)}`);
+      }
+    }
   }
 
   // ── private helpers ───────────────────────────────────────────────────────────

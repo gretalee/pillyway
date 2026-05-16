@@ -1,6 +1,6 @@
 import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand, DeleteObjectsCommand } from '@aws-sdk/client-s3';
 import { randomUUID } from 'crypto';
 
 @Injectable()
@@ -68,5 +68,42 @@ export class UploadsService {
     }
 
     return { urls };
+  }
+
+  async deleteImages(urls: string[]): Promise<void> {
+    if (urls.length === 0) {
+      return;
+    }
+
+    const prefix = `${this.publicBaseUrl}/`;
+    const keys = urls
+      .filter((url) => url.startsWith(prefix))
+      .map((url) => url.slice(prefix.length));
+
+    if (keys.length === 0) {
+      return;
+    }
+
+    this.logger.debug(
+      `Deleting ${keys.length} object(s) from bucket "${this.bucket}": ${keys.join(', ')}`,
+    );
+
+    const response = await this.s3.send(
+      new DeleteObjectsCommand({
+        Bucket: this.bucket,
+        Delete: {
+          Objects: keys.map((Key) => ({ Key })),
+          Quiet: false,
+        },
+      }),
+    );
+
+    if (response.Errors && response.Errors.length > 0) {
+      for (const err of response.Errors) {
+        this.logger.error(
+          `S3 delete failed for key "${err.Key ?? '?'}": [${err.Code ?? '?'}] ${err.Message ?? '?'}`,
+        );
+      }
+    }
   }
 }
