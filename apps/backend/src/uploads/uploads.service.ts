@@ -88,20 +88,22 @@ export class UploadsService {
       `Deleting ${keys.length} object(s) from bucket "${this.bucket}": ${keys.join(', ')}`,
     );
 
-    try {
-      await this.s3.send(
-        new DeleteObjectsCommand({
-          Bucket: this.bucket,
-          Delete: {
-            Objects: keys.map((Key) => ({ Key })),
-            Quiet: true,
-          },
-        }),
-      );
-    } catch (err) {
-      this.logger.error(
-        `S3 batch delete failed for ${keys.length} object(s): ${String(err)}`,
-      );
+    const response = await this.s3.send(
+      new DeleteObjectsCommand({
+        Bucket: this.bucket,
+        Delete: {
+          Objects: keys.map((Key) => ({ Key })),
+          Quiet: false,
+        },
+      }),
+    );
+
+    if (response.Errors && response.Errors.length > 0) {
+      for (const err of response.Errors) {
+        this.logger.error(
+          `S3 delete failed for key "${err.Key ?? '?'}": [${err.Code ?? '?'}] ${err.Message ?? '?'}`,
+        );
+      }
     }
   }
 }
