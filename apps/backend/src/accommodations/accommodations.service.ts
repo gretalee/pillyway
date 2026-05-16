@@ -68,13 +68,18 @@ export class AccommodationsService {
       throw new NotFoundException('Accommodation not found.');
     }
 
-    // Compute new imageUrls when removeImageUrls is provided
+    // Compute new imageUrls and which URLs were dropped (for storage cleanup)
     let resolvedImageUrls: string[] | undefined;
+    let urlsToDelete: string[] = [];
+
     if (dto.removeImageUrls !== undefined) {
       const toRemove = new Set(dto.removeImageUrls);
       resolvedImageUrls = existing.imageUrls.filter((url) => !toRemove.has(url));
+      urlsToDelete = dto.removeImageUrls;
     } else if (dto.imageUrls !== undefined) {
       resolvedImageUrls = dto.imageUrls;
+      const kept = new Set(dto.imageUrls);
+      urlsToDelete = existing.imageUrls.filter((url) => !kept.has(url));
     }
 
     const updated = await this.prisma.accommodation.update({
@@ -95,9 +100,9 @@ export class AccommodationsService {
       },
     });
 
-    if (dto.removeImageUrls && dto.removeImageUrls.length > 0) {
+    if (urlsToDelete.length > 0) {
       try {
-        await this.uploadsService.deleteImages(dto.removeImageUrls);
+        await this.uploadsService.deleteImages(urlsToDelete);
       } catch (err) {
         // Storage cleanup is best-effort — DB write already succeeded
         this.logger.error(`Storage cleanup failed after accommodation update: ${String(err)}`);
