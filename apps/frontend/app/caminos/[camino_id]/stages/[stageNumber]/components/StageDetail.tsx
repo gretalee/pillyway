@@ -5,6 +5,9 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { StageDetail as StageDetailData } from '@/app/api/stages/stage-types';
 import type { AuthUser } from '@/lib/getAuthUser';
 import { fetchStage } from '@/app/api/stages/fetch-stage';
+import { fetchAccommodationsByWaypoint } from '@/app/api/accommodations/fetch-accommodation';
+import { AccommodationCard } from '@/app/waypoints/[slug]/components/AccommodationCard';
+import { cn } from '@/lib/utils';
 
 interface StageDetailProps {
   caminoId: string;
@@ -23,6 +26,11 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
     console.error('[StageDetail] Error fetching stage:', e);
     return notFound();
   }
+
+  const [startAccommodations, endAccommodations] = await Promise.all([
+    fetchAccommodationsByWaypoint(stage.startPoint.id).catch(() => []),
+    fetchAccommodationsByWaypoint(stage.endPoint.id).catch(() => []),
+  ]);
 
   const canEdit = user?.roles.some((r) => r.key === 'pilgrim') ?? false;
 
@@ -125,7 +133,7 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
       {/* Stage navigation */}
       <nav
         aria-label={t('nav_aria')}
-        className="mt-10 flex items-center justify-between gap-4">
+        className="mt-10 flex items-stretch justify-between gap-4 overflow-hidden max-w-full">
         {previousStage !== null ? (
           <Link
             href={`/caminos/${caminoId}/stages/${previousStage.stageNumber}`}
@@ -133,23 +141,27 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
               start: previousStage.startPointName,
               end: previousStage.endPointName,
             })}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+            className={cn(
+              'overflow-hidden flex items-center gap-1.5 lg:gap-2 rounded-lg border border-border px-2 py-2 ',
+              'text-sm font-medium text-foreground transition-colors ',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+              'bg-pillyGreen-400 hover:bg-pillyGreen-300',
+            )}>
             <ChevronLeft className="size-4" aria-hidden="true" />
-            <span>
+            <p className="overflow-hidden text-ellipsis">
               {previousStage.startPointName}
-              <span className="mx-1.5 text-muted-foreground" aria-hidden="true">
+              <span className="mx-1.5" aria-hidden="true">
                 →
               </span>
               {previousStage.endPointName}
-            </span>
+            </p>
           </Link>
         ) : (
           <button
             type="button"
             disabled
             aria-label={t('first_stage_label')}
-            className="inline-flex cursor-not-allowed items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted-foreground opacity-50">
-            <ChevronLeft className="size-4" aria-hidden="true" />
+            className="inline-flex cursor-not-allowed items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-gray-700 opacity-50">
             {t('first_stage_label')}
           </button>
         )}
@@ -161,14 +173,19 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
               start: nextStage.startPointName,
               end: nextStage.endPointName,
             })}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-            <span>
+            className={cn(
+              'overflow-hidden flex items-center gap-1.5 lg:gap-2 rounded-lg border border-border px-2 py-2 ',
+              'text-sm font-medium text-foreground transition-colors ',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+              'bg-pillyGreen-400 hover:bg-pillyGreen-300',
+            )}>
+            <p className="overflow-hidden text-ellipsis">
               {nextStage.startPointName}
-              <span className="mx-1.5 text-muted-foreground" aria-hidden="true">
+              <span className="mx-1.5" aria-hidden="true">
                 →
               </span>
               {nextStage.endPointName}
-            </span>
+            </p>
             <ChevronRight className="size-4" aria-hidden="true" />
           </Link>
         ) : (
@@ -176,12 +193,57 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
             type="button"
             disabled
             aria-label={t('last_stage_label')}
-            className="inline-flex cursor-not-allowed items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted-foreground opacity-50">
+            className="inline-flex cursor-not-allowed items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-gray-700 opacity-50">
             {t('last_stage_label')}
-            <ChevronRight className="size-4" aria-hidden="true" />
           </button>
         )}
       </nav>
+
+      {/* Accommodations at start point */}
+      <section className="mt-12" aria-labelledby="start-accommodations-heading">
+        <h2
+          id="start-accommodations-heading"
+          className="text-xl font-semibold border-b-2 border-pillyGreen-400 drop-shadow-sm">
+          {t('accommodations_at', { name: stage.startPoint.name })}
+        </h2>
+        {startAccommodations.length > 0 ? (
+          <ul className="mt-4 space-y-4">
+            {startAccommodations.map((accommodation) => (
+              <AccommodationCard
+                key={accommodation.id}
+                accommodation={accommodation}
+                slug={stage.startPoint.slug}
+                canContribute={canEdit}
+              />
+            ))}
+          </ul>
+        ) : (
+          <p className="mt-4 text-sm text-muted-foreground">{t('no_accommodations')}</p>
+        )}
+      </section>
+
+      {/* Accommodations at end point */}
+      <section className="my-16" aria-labelledby="end-accommodations-heading">
+        <h2
+          id="end-accommodations-heading"
+          className="text-xl font-semibold border-b-2 border-pillyGreen-400 drop-shadow-sm">
+          {t('accommodations_at', { name: stage.endPoint.name })}
+        </h2>
+        {endAccommodations.length > 0 ? (
+          <ul className="mt-4 space-y-4">
+            {endAccommodations.map((accommodation) => (
+              <AccommodationCard
+                key={accommodation.id}
+                accommodation={accommodation}
+                slug={stage.endPoint.slug}
+                canContribute={canEdit}
+              />
+            ))}
+          </ul>
+        ) : (
+          <p className="mt-4 text-sm text-muted-foreground">{t('no_accommodations')}</p>
+        )}
+      </section>
     </article>
   );
 }
