@@ -5,6 +5,9 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { ChevronLeft, Pencil } from 'lucide-react';
 
+import { VerifiedBadge } from '@/app/caminos/components/VerifiedBadge';
+import { VerificationSection } from './VerificationSection';
+
 import { Input } from '@/app/components/ui/input';
 import { Textarea } from '@/app/components/ui/textarea';
 import type { CaminoDetailFull } from '@/app/api/caminos/caminos';
@@ -185,8 +188,8 @@ export function CaminoDetail({
 
       {/* Verified badge */}
       {camino.verified && (
-        <span className="mt-2 inline-block rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
-          {tCaminos('verified')}
+        <span className="mt-2 inline-flex">
+          <VerifiedBadge />
         </span>
       )}
 
@@ -226,6 +229,9 @@ export function CaminoDetail({
           </>
         )}
       </div>
+
+      {/* Verification voting */}
+      <VerificationSection caminoId={caminoId} />
 
       {/* Stages */}
       <section className="mt-8">

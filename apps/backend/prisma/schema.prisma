@@ -16,9 +16,24 @@ model Camino {
   updatedAt   DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
 
   caminoPointOrder CaminoPointOrder[]
+  votes            CaminoVote[]
 
   @@unique([name])
   @@map("caminos")
+}
+
+model CaminoVote {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  caminoId  String   @map("camino_id") @db.Uuid
+  userId    String   @map("user_id")
+  vote      Boolean
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  camino Camino @relation(fields: [caminoId], references: [id], onDelete: Cascade)
+
+  @@unique([caminoId, userId])
+  @@map("camino_votes")
 }
 
 model CaminoPoint {
