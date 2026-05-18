@@ -37,6 +37,7 @@ import {
   CaminoSummary,
 } from './caminos.service';
 import { CreateCaminoDto } from './dto/create-camino.dto';
+import { SetCaminoVerifiedDto } from './dto/set-camino-verified.dto';
 import { UpdateCaminoDto } from './dto/update-camino.dto';
 
 @ApiTags('Caminos')
@@ -80,6 +81,23 @@ export class CaminosController {
     @Req() req: Request & { user: KindeJwtPayload },
   ): Promise<CaminoDetail> {
     return this.caminosService.create(dto, req.user.sub);
+  }
+
+  // CRITICAL: declared before @Patch(':id') to prevent NestJS route shadowing.
+  @Patch(':id/verified')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('owner')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Set camino verified flag (requires owner role)' })
+  @ApiOkResponse({ description: 'Camino verified status updated.' })
+  @ApiUnauthorizedResponse({ description: 'Missing or invalid JWT.' })
+  @ApiForbiddenResponse({ description: 'JWT present but missing owner role.' })
+  @ApiNotFoundResponse({ description: 'Camino not found.' })
+  async setVerified(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: SetCaminoVerifiedDto,
+  ): Promise<CaminoDetailFull> {
+    return this.caminosService.setVerified(id, dto.verified);
   }
 
   @Patch(':id')

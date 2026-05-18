@@ -515,6 +515,23 @@ export class CaminosService {
     }
   }
 
+  // ── setVerified ─────────────────────────────────────────────────────────────
+
+  async setVerified(id: string, verified: boolean): Promise<CaminoDetailFull> {
+    this.logger.debug(`setVerified caminoId=${id} verified=${verified}`);
+
+    const camino = await this.prisma.camino.findUnique({ where: { id } });
+    if (!camino) throw new NotFoundException('Camino not found.');
+
+    // updatedAt must be set manually — Camino schema does not use @updatedAt.
+    await this.prisma.camino.update({
+      where: { id },
+      data: { verified, updatedAt: new Date() },
+    });
+
+    return this.findById(id);
+  }
+
   // ── delete ──────────────────────────────────────────────────────────────────
 
   async delete(id: string, userRoles: KindeRole[]): Promise<void> {
