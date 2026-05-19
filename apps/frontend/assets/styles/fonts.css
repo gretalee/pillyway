@@ -1,0 +1,31 @@
+/* Normal */
+@font-face {
+  font-family: 'Casper';
+  src: url(../fonts/Casper/Casper-Regular.ttf) format('truetype');
+  font-style: normal;
+  font-weight: 400;
+}
+
+/* Normal italic */
+@font-face {
+  font-family: 'Casper';
+  src: url(../fonts/Casper/Casper-RegularItalic.ttf) format('truetype');
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* Bold */
+@font-face {
+  font-family: 'Casper';
+  src: url(../fonts/Casper/Casper-Bold.ttf) format('truetype');
+  font-style: normal;
+  font-weight: 700;
+}
+
+/* Bold italic */
+@font-face {
+  font-family: 'Casper';
+  src: url(../fonts/Casper/Casper-BoldItalic.ttf) format('truetype');
+  font-style: italic;
+  font-weight: 700;
+}

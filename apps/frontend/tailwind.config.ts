@@ -4,6 +4,8 @@ const config = {
   theme: {
     extend: {
       fontFamily: {
+        canaro: ['Canaro', 'sans-serif'],
+        casper: ['Casper', 'sans-serif'],
         sans: ['system-ui', 'sans-serif'],
         mono: ['ui-monospace', 'monospace'],
       },

@@ -1,9 +1,11 @@
 @import 'tailwindcss';
-@config "../tailwind.config.ts";
+@config "../../tailwind.config.ts";
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
 
 @custom-variant dark (&:is(.dark *));
+
+@import './fonts.css';
 
 @theme inline {
   --color-background: var(--background);
@@ -124,6 +126,18 @@
     @apply bg-background text-foreground;
   }
   html {
-    @apply font-sans;
+    @apply font-casper antialiased;
+  }
+
+  h1 {
+    @apply text-4xl font-bold my-2;
+  }
+
+  h2 {
+    @apply text-3xl font-bold my-1;
+  }
+
+  h3 {
+    @apply text-xl font-bold my-1;
   }
 }

@@ -4,7 +4,8 @@ import { Header } from '@/app/components/layout/Header';
 import { PathTracker } from '@/app/components/PathTracker';
 import { getAuthUser } from '@/lib/getAuthUser';
 import type { Locale } from '@/i18n/detectLocale';
-import './globals.css';
+// import './globals.css';
+import '../assets/styles/global.css';
 
 export async function generateMetadata() {
   const t = await getTranslations('meta');
