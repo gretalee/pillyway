@@ -1,6 +1,5 @@
 'use client';
 
-import * as React from 'react';
 import { Dialog as DialogPrimitive } from '@base-ui/react/dialog';
 import { X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -8,11 +7,12 @@ import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import { Button } from '@/app/components/ui/button';
 import { useModalStore } from '@/store/modal-store';
+import { ReactNode, useEffect, useLayoutEffect, useRef } from 'react';
 
 interface ModalProps {
   id: string;
   title: string;
-  children: React.ReactNode;
+  children: ReactNode;
   onOk?: () => void;
   onDismiss?: () => void;
 }
@@ -26,18 +26,16 @@ export function Modal({ id, title, children, onOk, onDismiss }: ModalProps) {
 
   // Refs ensure the store always calls the latest onOk/onDismiss even if props
   // change between renders without re-registering (id stays the same).
-  const onOkRef = React.useRef(onOk);
-  const onDismissRef = React.useRef(onDismiss);
-  React.useLayoutEffect(() => {
+  const onOkRef = useRef(onOk);
+  const onDismissRef = useRef(onDismiss);
+  useLayoutEffect(() => {
     onOkRef.current = onOk;
     onDismissRef.current = onDismiss;
   });
 
-  React.useEffect(() => {
-    register(
-      id,
-      onOkRef.current ? () => onOkRef.current?.() : undefined,
-      () => onDismissRef.current?.(),
+  useEffect(() => {
+    register(id, onOkRef.current ? () => onOkRef.current?.() : undefined, () =>
+      onDismissRef.current?.(),
     );
   }, [id, register]);
 
