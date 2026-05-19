@@ -54,9 +54,10 @@ export function CaminoListFilter({ caminos, isPilgrim }: CaminoListFilterProps) 
         </label>
       </div>
 
-      {filteredCaminos.length === 0 ? (
+      {onlyVerified && filteredCaminos.length === 0 && (
         <p className="text-muted-foreground">{t('filter_no_verified')}</p>
-      ) : (
+      )}
+      {filteredCaminos.length > 0 && (
         <ul className="space-y-4" aria-label={t('title')}>
           {filteredCaminos.map((camino) => (
             <li
