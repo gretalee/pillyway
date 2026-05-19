@@ -312,5 +312,10 @@
     "modal_vote_no": "No",
     "modal_empty": "No votes cast yet.",
     "error_loading": "Failed to load caminos. Please try again."
+  },
+  "modal": {
+    "close_aria": "Close",
+    "cancel": "Cancel",
+    "ok": "OK"
   }
 }

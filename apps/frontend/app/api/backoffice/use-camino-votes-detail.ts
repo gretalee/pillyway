@@ -6,7 +6,6 @@ import { useQuery } from '@tanstack/react-query';
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? '';
 
 export interface CaminoVoteDetail {
-  userId: string;
   vote: boolean;
   updatedAt: string;
 }

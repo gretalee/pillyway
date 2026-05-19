@@ -312,5 +312,10 @@
     "modal_vote_no": "Nein",
     "modal_empty": "Noch keine Stimmen abgegeben.",
     "error_loading": "Caminos konnten nicht geladen werden. Bitte versuche es erneut."
+  },
+  "modal": {
+    "close_aria": "Schließen",
+    "cancel": "Abbrechen",
+    "ok": "OK"
   }
 }

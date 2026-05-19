@@ -2,20 +2,8 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? '';
-
-export interface CaminoVoteSummary {
-  yesCount: number;
-  noCount: number;
-}
-
-export async function fetchCaminoVoteSummary(caminoId: string): Promise<CaminoVoteSummary> {
-  const response = await fetch(`${API_URL}/caminos/${caminoId}/votes/summary`);
-  if (!response.ok) {
-    throw Object.assign(new Error('Failed to fetch vote summary'), { status: response.status });
-  }
-  return response.json() as Promise<CaminoVoteSummary>;
-}
+export { fetchCaminoVoteSummary, type CaminoVoteSummary } from './fetch-camino-vote-summary';
+import { fetchCaminoVoteSummary } from './fetch-camino-vote-summary';
 
 export function useCaminoVoteSummary(caminoId: string) {
   return useQuery({

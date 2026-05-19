@@ -1,12 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useTranslations } from 'next-intl';
+import { useState } from 'react';
+import { useTranslations, useFormatter } from 'next-intl';
 
-import { cn } from '@/lib/utils';
-import { Switch as SwitchPrimitive } from '@base-ui/react/switch';
 import { Button } from '@/app/components/ui/button';
-import { Modal } from '@/app/components/Modal';
+import { Modal } from '@/app/components/ui/modal';
+import { ToggleSwitch } from '@/app/components/ui/toggle-switch';
 import { useBackofficeCaminos } from '@/app/api/backoffice/use-backoffice-caminos';
 import { useCaminoVotesDetail } from '@/app/api/backoffice/use-camino-votes-detail';
 import { useSetCaminoVerified } from '@/app/api/caminos/use-set-camino-verified';
@@ -22,15 +21,8 @@ interface CaminoVotesModalProps {
 
 function CaminoVotesModal({ caminoId }: CaminoVotesModalProps) {
   const t = useTranslations('backoffice_caminos');
+  const format = useFormatter();
   const { data: votes, isLoading } = useCaminoVotesDetail(caminoId);
-
-  function formatDate(iso: string): string {
-    return new Date(iso).toLocaleDateString('de-DE', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    });
-  }
 
   if (isLoading) {
     return <p className="text-sm text-muted-foreground">…</p>;
@@ -53,7 +45,9 @@ function CaminoVotesModal({ caminoId }: CaminoVotesModalProps) {
           {votes.map((v, idx) => (
             <tr key={idx} className="border-b border-border last:border-0">
               <td className="py-2 pr-4">{v.vote ? t('modal_vote_yes') : t('modal_vote_no')}</td>
-              <td className="py-2">{formatDate(v.updatedAt)}</td>
+              <td className="py-2">
+                {format.dateTime(new Date(v.updatedAt), { dateStyle: 'short' })}
+              </td>
             </tr>
           ))}
         </tbody>
@@ -72,11 +66,6 @@ export function BackofficeCaminosClient() {
   const modalStore = useModalStore();
   const { data: caminos, isLoading, isError } = useBackofficeCaminos();
   const verifyMutation = useSetCaminoVerified();
-
-  useEffect(() => {
-    modalStore.register(MODAL_ID, undefined, () => setSelectedCaminoId(null));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const selectedCamino = caminos?.find((c) => c.id === selectedCaminoId) ?? null;
 
@@ -128,31 +117,18 @@ export function BackofficeCaminosClient() {
                   key={camino.id}
                   className="border-b border-border last:border-0 align-middle">
                   <td className="py-3 pr-4 font-medium text-foreground">{camino.name}</td>
-                  <td className="py-3 pr-4 tabular-nums">{camino.yesVotes}</td>
-                  <td className="py-3 pr-4 tabular-nums">{camino.noVotes}</td>
+                  <td className="py-3 pr-4 tabular-nums">{camino.yesCount}</td>
+                  <td className="py-3 pr-4 tabular-nums">{camino.noCount}</td>
                   <td className="py-3 pr-4">
                     <div className="flex flex-col gap-1">
-                      <SwitchPrimitive.Root
+                      <ToggleSwitch
                         checked={camino.verified}
                         onCheckedChange={() =>
                           handleToggleVerified(camino.id, camino.verified)
                         }
                         disabled={verifyMutation.isPending}
                         aria-label={t('toggle_aria', { name: camino.name })}
-                        className={cn(
-                          'relative inline-flex h-5 w-9 cursor-pointer items-center rounded-full border border-transparent',
-                          'bg-input transition-colors outline-none',
-                          'focus-visible:ring-3 focus-visible:ring-ring/50',
-                          'data-checked:bg-primary',
-                          'disabled:pointer-events-none disabled:opacity-50',
-                        )}>
-                        <SwitchPrimitive.Thumb
-                          className={cn(
-                            'block size-4 rounded-full bg-background shadow-sm transition-transform',
-                            'translate-x-0.5 data-checked:translate-x-[calc(100%-2px)]',
-                          )}
-                        />
-                      </SwitchPrimitive.Root>
+                      />
                       {toggleErrors[camino.id] && (
                         <p role="alert" className="text-xs text-destructive">
                           {toggleErrors[camino.id]}
@@ -179,7 +155,8 @@ export function BackofficeCaminosClient() {
         id={MODAL_ID}
         title={
           selectedCamino ? t('modal_heading', { name: selectedCamino.name }) : t('heading')
-        }>
+        }
+        onDismiss={() => setSelectedCaminoId(null)}>
         <CaminoVotesModal caminoId={selectedCaminoId} />
       </Modal>
     </main>

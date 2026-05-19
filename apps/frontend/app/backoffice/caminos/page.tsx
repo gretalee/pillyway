@@ -1,4 +1,5 @@
 import { getTranslations } from 'next-intl/server';
+import { redirect } from 'next/navigation';
 import { getAuthUser } from '@/lib/getAuthUser';
 import { BackofficeCaminosClient } from './BackofficeCaminosClient';
 
@@ -16,7 +17,7 @@ export default async function BackofficeCaminosPage() {
   const isOwner = user?.roles.some((r) => r.key === 'owner') ?? false;
 
   if (!isOwner) {
-    return null;
+    redirect('/');
   }
 
   return <BackofficeCaminosClient />;

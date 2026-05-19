@@ -2,6 +2,8 @@
 
 import * as React from 'react';
 import { Dialog as DialogPrimitive } from '@base-ui/react/dialog';
+import { X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/app/components/ui/button';
@@ -16,17 +18,31 @@ interface ModalProps {
 }
 
 export function Modal({ id, title, children, onOk, onDismiss }: ModalProps) {
+  const t = useTranslations('modal');
   const register = useModalStore((s) => s.register);
   const close = useModalStore((s) => s.close);
+  const dismiss = useModalStore((s) => s.dismiss);
   const isOpen = useModalStore((s) => s.modals[id]?.isOpen ?? false);
 
+  // Refs ensure the store always calls the latest onOk/onDismiss even if props
+  // change between renders without re-registering (id stays the same).
+  const onOkRef = React.useRef(onOk);
+  const onDismissRef = React.useRef(onDismiss);
+  React.useLayoutEffect(() => {
+    onOkRef.current = onOk;
+    onDismissRef.current = onDismiss;
+  });
+
   React.useEffect(() => {
-    register(id, onOk, onDismiss);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+    register(
+      id,
+      onOkRef.current ? () => onOkRef.current?.() : undefined,
+      () => onDismissRef.current?.(),
+    );
+  }, [id, register]);
 
   function handleOpenChange(open: boolean) {
-    if (!open) close(id);
+    if (!open) dismiss(id);
   }
 
   return (
@@ -57,20 +73,8 @@ export function Modal({ id, title, children, onOk, onDismiss }: ModalProps) {
                 'rounded p-1 text-muted-foreground hover:bg-accent hover:text-accent-foreground',
                 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
               )}
-              aria-label="Schließen">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="size-4"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true">
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
+              aria-label={t('close_aria')}>
+              <X className="size-4" aria-hidden="true" />
             </DialogPrimitive.Close>
           </div>
 
@@ -78,15 +82,15 @@ export function Modal({ id, title, children, onOk, onDismiss }: ModalProps) {
 
           {onOk && (
             <div className="flex justify-end gap-2">
-              <Button variant="outline" onClick={() => close(id)}>
-                Abbrechen
+              <Button variant="outline" onClick={() => dismiss(id)}>
+                {t('cancel')}
               </Button>
               <Button
                 onClick={() => {
                   onOk();
                   close(id);
                 }}>
-                OK
+                {t('ok')}
               </Button>
             </div>
           )}

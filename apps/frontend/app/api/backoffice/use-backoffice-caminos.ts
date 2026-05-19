@@ -9,8 +9,8 @@ export interface BackofficeCamino {
   id: string;
   name: string;
   verified: boolean;
-  yesVotes: number;
-  noVotes: number;
+  yesCount: number;
+  noCount: number;
 }
 
 export async function fetchBackofficeCaminos(token: string): Promise<BackofficeCamino[]> {

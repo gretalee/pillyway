@@ -3,10 +3,9 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { Switch as SwitchPrimitive } from '@base-ui/react/switch';
 
 import { buttonVariants } from '@/app/components/ui/button';
-import { cn } from '@/lib/utils';
+import { ToggleSwitch } from '@/app/components/ui/toggle-switch';
 import type { CaminoSummary } from '@/app/api/caminos/caminos';
 import { CaminoActionsMenu } from './CaminoActionsMenu';
 import { VerifiedBadge } from './VerifiedBadge';
@@ -30,7 +29,7 @@ export function CaminoListFilter({ caminos, isPilgrim }: CaminoListFilterProps) 
   const t = useTranslations('caminos');
   const [onlyVerified, setOnlyVerified] = useState(false);
 
-  const displayed = onlyVerified ? caminos.filter((c) => c.verified) : caminos;
+  const filteredCaminos = onlyVerified ? caminos.filter((c) => c.verified) : caminos;
 
   return (
     <>
@@ -43,24 +42,11 @@ export function CaminoListFilter({ caminos, isPilgrim }: CaminoListFilterProps) 
       )}
 
       <div className="mb-4 flex items-center gap-3">
-        <SwitchPrimitive.Root
+        <ToggleSwitch
           id="filter-verified-switch"
           checked={onlyVerified}
           onCheckedChange={setOnlyVerified}
-          className={cn(
-            'relative inline-flex h-5 w-9 cursor-pointer items-center rounded-full border border-transparent',
-            'bg-input transition-colors outline-none',
-            'focus-visible:ring-3 focus-visible:ring-ring/50',
-            'data-checked:bg-primary',
-            'disabled:pointer-events-none disabled:opacity-50',
-          )}>
-          <SwitchPrimitive.Thumb
-            className={cn(
-              'block size-4 rounded-full bg-background shadow-sm transition-transform',
-              'translate-x-0.5 data-checked:translate-x-[calc(100%-2px)]',
-            )}
-          />
-        </SwitchPrimitive.Root>
+        />
         <label
           htmlFor="filter-verified-switch"
           className="cursor-pointer select-none text-sm text-foreground">
@@ -68,11 +54,11 @@ export function CaminoListFilter({ caminos, isPilgrim }: CaminoListFilterProps) 
         </label>
       </div>
 
-      {displayed.length === 0 ? (
+      {filteredCaminos.length === 0 ? (
         <p className="text-muted-foreground">{t('filter_no_verified')}</p>
       ) : (
         <ul className="space-y-4" aria-label={t('title')}>
-          {displayed.map((camino) => (
+          {filteredCaminos.map((camino) => (
             <li
               key={camino.id}
               className="rounded-xl border border-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md">
