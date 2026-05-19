@@ -6,7 +6,7 @@
  * deep dependency tree. We only test setVerified here, so we construct the
  * service directly with a prisma mock and a stub StagesService.
  */
-import { ForbiddenException, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { NotFoundException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Test } from '@nestjs/testing';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -95,12 +95,16 @@ describe('CaminosService.setVerified', () => {
   it('sets verified=true and returns the updated camino', async () => {
     vi.mocked(prisma.camino.findUnique)
       .mockResolvedValueOnce(CAMINO_STUB as never) // existence check
-      .mockResolvedValueOnce({                      // findById call inside setVerified
+      .mockResolvedValueOnce({
+        // findById call inside setVerified
         ...CAMINO_STUB,
         verified: true,
         caminoPointOrder: [],
       } as never);
-    vi.mocked(prisma.camino.update).mockResolvedValue({ ...CAMINO_STUB, verified: true } as never);
+    vi.mocked(prisma.camino.update).mockResolvedValue({
+      ...CAMINO_STUB,
+      verified: true,
+    } as never);
 
     const result = await service.setVerified(CAMINO_ID, true);
 
@@ -117,8 +121,15 @@ describe('CaminosService.setVerified', () => {
     const verifiedCamino = { ...CAMINO_STUB, verified: true };
     vi.mocked(prisma.camino.findUnique)
       .mockResolvedValueOnce(verifiedCamino as never)
-      .mockResolvedValueOnce({ ...verifiedCamino, verified: false, caminoPointOrder: [] } as never);
-    vi.mocked(prisma.camino.update).mockResolvedValue({ ...verifiedCamino, verified: false } as never);
+      .mockResolvedValueOnce({
+        ...verifiedCamino,
+        verified: false,
+        caminoPointOrder: [],
+      } as never);
+    vi.mocked(prisma.camino.update).mockResolvedValue({
+      ...verifiedCamino,
+      verified: false,
+    } as never);
 
     const result = await service.setVerified(CAMINO_ID, false);
 
@@ -133,15 +144,24 @@ describe('CaminosService.setVerified', () => {
   it('throws NotFoundException when the camino does not exist', async () => {
     vi.mocked(prisma.camino.findUnique).mockResolvedValue(null);
 
-    await expect(service.setVerified(CAMINO_ID, true)).rejects.toThrow(NotFoundException);
+    await expect(service.setVerified(CAMINO_ID, true)).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('sets updatedAt manually because the schema does not use @updatedAt', async () => {
     // The service must explicitly set updatedAt on every update.
     vi.mocked(prisma.camino.findUnique)
       .mockResolvedValueOnce(CAMINO_STUB as never)
-      .mockResolvedValueOnce({ ...CAMINO_STUB, verified: true, caminoPointOrder: [] } as never);
-    vi.mocked(prisma.camino.update).mockResolvedValue({ ...CAMINO_STUB, verified: true } as never);
+      .mockResolvedValueOnce({
+        ...CAMINO_STUB,
+        verified: true,
+        caminoPointOrder: [],
+      } as never);
+    vi.mocked(prisma.camino.update).mockResolvedValue({
+      ...CAMINO_STUB,
+      verified: true,
+    } as never);
 
     await service.setVerified(CAMINO_ID, true);
 
@@ -196,7 +216,9 @@ describe('CaminosController PATCH /:id/verified — setVerified', () => {
   });
 
   it('delegates a false value correctly (unverify)', async () => {
-    vi.mocked(caminosService.setVerified).mockResolvedValue(CAMINO_FULL_STUB_UNVERIFIED);
+    vi.mocked(caminosService.setVerified).mockResolvedValue(
+      CAMINO_FULL_STUB_UNVERIFIED,
+    );
     const dto: SetCaminoVerifiedDto = { verified: false };
 
     const result = await controller.setVerified(CAMINO_ID, dto);
@@ -219,13 +241,21 @@ describe('CaminosController PATCH /:id/verified — setVerified', () => {
     // Guards only execute in the HTTP pipeline, not on direct method calls.
     // Verify the decorator metadata is wired correctly so the runtime enforces it.
     const guards: unknown[] =
-      Reflect.getMetadata('__guards__', CaminosController.prototype.setVerified) ?? [];
-    expect(guards, 'setVerified must declare JwtAuthGuard').toContain(JwtAuthGuard);
+      Reflect.getMetadata(
+        '__guards__',
+        CaminosController.prototype.setVerified,
+      ) ?? [];
+    expect(guards, 'setVerified must declare JwtAuthGuard').toContain(
+      JwtAuthGuard,
+    );
   });
 
   it('has RolesGuard applied — non-owner callers are blocked', () => {
     const guards: unknown[] =
-      Reflect.getMetadata('__guards__', CaminosController.prototype.setVerified) ?? [];
+      Reflect.getMetadata(
+        '__guards__',
+        CaminosController.prototype.setVerified,
+      ) ?? [];
     expect(guards, 'setVerified must declare RolesGuard').toContain(RolesGuard);
   });
 
@@ -238,7 +268,10 @@ describe('CaminosController PATCH /:id/verified — setVerified', () => {
       CaminosController.prototype.setVerified,
     );
 
-    expect(handlerMetadata, "Expected @Roles('owner') metadata on setVerified handler").toBeTruthy();
+    expect(
+      handlerMetadata,
+      "Expected @Roles('owner') metadata on setVerified handler",
+    ).toBeTruthy();
     expect(handlerMetadata).toContain('owner');
     expect(handlerMetadata).not.toContain('pilgrim');
 
@@ -247,6 +280,9 @@ describe('CaminosController PATCH /:id/verified — setVerified', () => {
       { id: 'pilgrim', key: 'pilgrim', name: 'Pilgrim' },
     ];
     const hasOwnerRole = pilgrimRoles?.some((r) => r.key === 'owner') ?? false;
-    expect(hasOwnerRole, 'A pilgrim-only user must not satisfy the owner role check').toBe(false);
+    expect(
+      hasOwnerRole,
+      'A pilgrim-only user must not satisfy the owner role check',
+    ).toBe(false);
   });
 });

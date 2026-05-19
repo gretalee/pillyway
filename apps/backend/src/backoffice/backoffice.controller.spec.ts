@@ -1,13 +1,18 @@
-import { ForbiddenException, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { NotFoundException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
-import { CaminoVotesService, VoteEntry } from '../camino-votes/camino-votes.service';
+import {
+  CaminoVotesService,
+  VoteEntry,
+} from '../camino-votes/camino-votes.service';
 import { BackofficeController } from './backoffice.controller';
-import { BackofficeCaminosService, CaminoWithTally } from './backoffice-caminos.service';
+import {
+  BackofficeCaminosService,
+  CaminoWithTally,
+} from './backoffice-caminos.service';
 
 // ─── Fixtures ─────────────────────────────────────────────────────────────────
 
@@ -15,7 +20,13 @@ const CAMINO_ID = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
 const NOW = new Date('2024-01-01T00:00:00.000Z');
 
 const CAMINOS_WITH_TALLIES: CaminoWithTally[] = [
-  { id: CAMINO_ID, name: 'Camino Frances', verified: true, yesCount: 10, noCount: 2 },
+  {
+    id: CAMINO_ID,
+    name: 'Camino Frances',
+    verified: true,
+    yesCount: 10,
+    noCount: 2,
+  },
   {
     id: 'cccccccc-cccc-cccc-cccc-cccccccccccc',
     name: 'Via de la Plata',
@@ -73,18 +84,22 @@ describe('BackofficeController', () => {
 
   describe('GET /backoffice/caminos — getCaminosWithTallies', () => {
     it('returns the list of caminos with vote tallies', async () => {
-      vi.mocked(backofficeCaminosService.getCaminosWithTallies).mockResolvedValue(
-        CAMINOS_WITH_TALLIES,
-      );
+      vi.mocked(
+        backofficeCaminosService.getCaminosWithTallies,
+      ).mockResolvedValue(CAMINOS_WITH_TALLIES);
 
       const result = await controller.getCaminosWithTallies();
 
-      expect(backofficeCaminosService.getCaminosWithTallies).toHaveBeenCalledTimes(1);
+      expect(
+        backofficeCaminosService.getCaminosWithTallies,
+      ).toHaveBeenCalledTimes(1);
       expect(result).toEqual(CAMINOS_WITH_TALLIES);
     });
 
     it('returns an empty array when no caminos exist', async () => {
-      vi.mocked(backofficeCaminosService.getCaminosWithTallies).mockResolvedValue([]);
+      vi.mocked(
+        backofficeCaminosService.getCaminosWithTallies,
+      ).mockResolvedValue([]);
 
       const result = await controller.getCaminosWithTallies();
 
@@ -92,9 +107,9 @@ describe('BackofficeController', () => {
     });
 
     it('includes id, name, verified, yesCount, and noCount in each entry', async () => {
-      vi.mocked(backofficeCaminosService.getCaminosWithTallies).mockResolvedValue(
-        CAMINOS_WITH_TALLIES,
-      );
+      vi.mocked(
+        backofficeCaminosService.getCaminosWithTallies,
+      ).mockResolvedValue(CAMINOS_WITH_TALLIES);
 
       const result = await controller.getCaminosWithTallies();
 
@@ -112,9 +127,15 @@ describe('BackofficeController', () => {
     it('has JwtAuthGuard and RolesGuard applied at the class level', () => {
       // Guards only execute in the HTTP pipeline, not on direct method calls.
       // Verify the class-level decorator metadata is wired correctly.
-      const guards: unknown[] = Reflect.getMetadata('__guards__', BackofficeController) ?? [];
-      expect(guards, 'BackofficeController must declare JwtAuthGuard').toContain(JwtAuthGuard);
-      expect(guards, 'BackofficeController must declare RolesGuard').toContain(RolesGuard);
+      const guards: unknown[] =
+        Reflect.getMetadata('__guards__', BackofficeController) ?? [];
+      expect(
+        guards,
+        'BackofficeController must declare JwtAuthGuard',
+      ).toContain(JwtAuthGuard);
+      expect(guards, 'BackofficeController must declare RolesGuard').toContain(
+        RolesGuard,
+      );
     });
   });
 
@@ -122,11 +143,15 @@ describe('BackofficeController', () => {
 
   describe('GET /backoffice/caminos/:caminoId/votes — listVotes', () => {
     it('returns the ordered list of vote entries for a given camino', async () => {
-      vi.mocked(caminoVotesService.listVotesForOwner).mockResolvedValue(VOTE_ENTRIES);
+      vi.mocked(caminoVotesService.listVotesForOwner).mockResolvedValue(
+        VOTE_ENTRIES,
+      );
 
       const result = await controller.listVotes(CAMINO_ID);
 
-      expect(caminoVotesService.listVotesForOwner).toHaveBeenCalledWith(CAMINO_ID);
+      expect(caminoVotesService.listVotesForOwner).toHaveBeenCalledWith(
+        CAMINO_ID,
+      );
       expect(result).toEqual(VOTE_ENTRIES);
     });
 
@@ -143,7 +168,9 @@ describe('BackofficeController', () => {
         new NotFoundException('Camino not found.'),
       );
 
-      await expect(controller.listVotes(CAMINO_ID)).rejects.toThrow(NotFoundException);
+      await expect(controller.listVotes(CAMINO_ID)).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('delegates to CaminoVotesService.listVotesForOwner, not a local method', async () => {
@@ -157,7 +184,9 @@ describe('BackofficeController', () => {
     });
 
     it('does not expose userId in any vote entry', async () => {
-      vi.mocked(caminoVotesService.listVotesForOwner).mockResolvedValue(VOTE_ENTRIES);
+      vi.mocked(caminoVotesService.listVotesForOwner).mockResolvedValue(
+        VOTE_ENTRIES,
+      );
 
       const result = await controller.listVotes(CAMINO_ID);
 
@@ -169,7 +198,8 @@ describe('BackofficeController', () => {
     it('inherits class-level JwtAuthGuard and RolesGuard — same as all backoffice routes', () => {
       // listVotes inherits the class-level @UseGuards(JwtAuthGuard, RolesGuard).
       // Confirm no method-level override removes the guards.
-      const classGuards: unknown[] = Reflect.getMetadata('__guards__', BackofficeController) ?? [];
+      const classGuards: unknown[] =
+        Reflect.getMetadata('__guards__', BackofficeController) ?? [];
       expect(classGuards).toContain(JwtAuthGuard);
       expect(classGuards).toContain(RolesGuard);
     });

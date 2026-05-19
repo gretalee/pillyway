@@ -43,8 +43,12 @@ function CaminoVotesModal({ caminoId }: CaminoVotesModalProps) {
         </thead>
         <tbody>
           {votes.map((v, idx) => (
-            <tr key={idx} className="border-b border-border last:border-0">
-              <td className="py-2 pr-4">{v.vote ? t('modal_vote_yes') : t('modal_vote_no')}</td>
+            <tr
+              key={`${v.updatedAt}-${v.vote}-${idx}`}
+              className="border-b border-border last:border-0">
+              <td className="py-2 pr-4">
+                {v.vote ? t('modal_vote_yes') : t('modal_vote_no')}
+              </td>
               <td className="py-2">
                 {format.dateTime(new Date(v.updatedAt), { dateStyle: 'short' })}
               </td>
@@ -63,7 +67,7 @@ export function BackofficeCaminosClient() {
   const [selectedCaminoId, setSelectedCaminoId] = useState<string | null>(null);
   const [toggleErrors, setToggleErrors] = useState<Record<string, string>>({});
 
-  const modalStore = useModalStore();
+  const openModal = useModalStore((s) => s.open);
   const { data: caminos, isLoading, isError } = useBackofficeCaminos();
   const verifyMutation = useSetCaminoVerified();
 
@@ -83,7 +87,7 @@ export function BackofficeCaminosClient() {
 
   function handleOpenVotes(caminoId: string) {
     setSelectedCaminoId(caminoId);
-    modalStore.open(MODAL_ID);
+    openModal(MODAL_ID);
   }
 
   return (
@@ -154,7 +158,9 @@ export function BackofficeCaminosClient() {
       <Modal
         id={MODAL_ID}
         title={
-          selectedCamino ? t('modal_heading', { name: selectedCamino.name }) : t('heading')
+          selectedCamino
+            ? t('modal_heading', { name: selectedCamino.name })
+            : t('heading')
         }
         onDismiss={() => setSelectedCaminoId(null)}>
         <CaminoVotesModal caminoId={selectedCaminoId} />
