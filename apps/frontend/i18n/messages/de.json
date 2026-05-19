@@ -43,7 +43,11 @@
     "delete_dialog_error": "Der Camino konnte nicht gelöscht werden. Bitte versuche es erneut.",
     "edit_name_aria": "Caminonamen bearbeiten",
     "edit_description_aria": "Caminobeschreibung bearbeiten",
-    "no_description": "Keine Beschreibung vorhanden."
+    "no_description": "Keine Beschreibung vorhanden.",
+    "verified_icon_aria": "Verifizierter Weg",
+    "verified_tooltip": "Pilgerer haben diesen Weg bestätigt",
+    "filter_verified_label": "Nur verifizierte Caminos anzeigen",
+    "filter_no_verified": "Keine verifizierten Caminos gefunden."
   },
   "caminos_new": {
     "title": "Neuen Camino erstellen",
@@ -86,7 +90,14 @@
     "inline_save_error": "Änderungen konnten nicht gespeichert werden. Vorheriger Wert wurde wiederhergestellt.",
     "stages_heading": "Etappen",
     "no_stages": "Dieser Camino hat noch keine Etappen. Füge mindestens zwei Wegpunkte hinzu, um Etappen zu erzeugen.",
-    "error_loading_stages": "Etappen konnten nicht geladen werden. Bitte versuche es erneut."
+    "error_loading_stages": "Etappen konnten nicht geladen werden. Bitte versuche es erneut.",
+    "verification_heading": "Verifizierter Weg",
+    "vote_yes": "Ja, der Weg ist aktuell",
+    "vote_no": "Nein, der Weg existiert so nicht mehr",
+    "vote_login_hint": "Sie müssen sich einloggen, um den Weg verifizieren zu können",
+    "vote_yes_count": "{count} Ja",
+    "vote_no_count": "{count} Nein",
+    "vote_error": "Deine Stimme konnte nicht gespeichert werden. Bitte versuche es erneut."
   },
   "caminos_update": {
     "title": "Camino bearbeiten",
@@ -164,7 +175,8 @@
     "title": "Backoffice | Pillyway",
     "description": "Administrationsbereich für Pillyway.",
     "heading": "Backoffice",
-    "subtitle": "Administrationsbereich."
+    "subtitle": "Administrationsbereich.",
+    "nav_caminos": "Caminos"
   },
   "waypoint_detail": {
     "meta_title": "{name} | Pillyway",
@@ -177,8 +189,6 @@
     "add_accommodation": "Unterkunft hinzufügen",
     "add_sight": "Sehenswürdigkeit hinzufügen",
     "verified_badge": "Verifiziert",
-    "vote_up_aria": "Positiv bewerten (demnächst verfügbar)",
-    "vote_down_aria": "Negativ bewerten (demnächst verfügbar)",
     "error_loading": "Wegpunkt konnte nicht geladen werden. Bitte versuche es erneut.",
     "error_loading_accommodations": "Unterkünfte konnten nicht geladen werden. Bitte versuche es erneut.",
     "error_loading_sights": "Sehenswürdigkeiten konnten nicht geladen werden. Bitte versuche es erneut.",
@@ -283,5 +293,29 @@
     "images_empty_state": "Keine Bilder",
     "error_generic": "Änderungen konnten nicht gespeichert werden. Bitte versuche es erneut.",
     "error_forbidden": "Du bist nicht berechtigt, diese Sehenswürdigkeit zu bearbeiten."
+  },
+  "backoffice_caminos": {
+    "heading": "Caminos",
+    "subtitle": "Stimmen einsehen und Verifizierungsstatus verwalten.",
+    "col_name": "Name",
+    "col_yes_votes": "Ja-Stimmen",
+    "col_no_votes": "Nein-Stimmen",
+    "col_verified": "Verifiziert",
+    "col_details": "Details",
+    "toggle_aria": "Verifizierungsstatus für {name} umschalten",
+    "toggle_error": "Status konnte nicht aktualisiert werden. Bitte versuche es erneut.",
+    "details_button": "Stimmen ansehen",
+    "modal_heading": "Stimmen für {name}",
+    "modal_col_vote": "Stimme",
+    "modal_col_date": "Letzte Änderung",
+    "modal_vote_yes": "Ja",
+    "modal_vote_no": "Nein",
+    "modal_empty": "Noch keine Stimmen abgegeben.",
+    "error_loading": "Caminos konnten nicht geladen werden. Bitte versuche es erneut."
+  },
+  "modal": {
+    "close_aria": "Schließen",
+    "cancel": "Abbrechen",
+    "ok": "OK"
   }
 }

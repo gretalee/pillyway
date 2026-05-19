@@ -10,14 +10,30 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api');
   app.useGlobalPipes(
-    new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }),
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    }),
   );
 
   const configService = app.get(ConfigService);
-  const frontendUrl =
-    configService.get<string>('FRONTEND_URL') ?? 'http://localhost:3000';
+  const frontendUrl = configService.get<string>('FRONTEND_URL');
+  const isProduction = configService.get<string>('NODE_ENV') === 'production';
   app.enableCors({
-    origin: frontendUrl,
+    origin: isProduction
+      ? (frontendUrl ?? 'http://localhost:3000')
+      : (
+          origin: string | undefined,
+          callback: (err: Error | null, allow?: boolean) => void,
+        ) => {
+          // In development accept any localhost port so the port in use never matters.
+          if (!origin || /^https?:\/\/localhost(:\d+)?$/.test(origin)) {
+            callback(null, true);
+          } else {
+            callback(new Error(`CORS: origin ${origin} not allowed`));
+          }
+        },
   });
 
   const swaggerConfig = new DocumentBuilder()

@@ -1,5 +1,7 @@
 import { getTranslations } from 'next-intl/server';
+import Link from 'next/link';
 import { getAuthUser } from '@/lib/getAuthUser';
+import { buttonVariants } from '@/app/components/ui/button';
 import { BackofficeUserDebug } from './BackofficeUserDebug';
 
 export async function generateMetadata() {
@@ -18,6 +20,11 @@ export default async function BackofficePage() {
     <main className="flex flex-1 flex-col px-4 py-16 sm:px-6 lg:px-8">
       <h1 className="text-3xl font-bold tracking-tight">{t('heading')}</h1>
       <p className="mt-2 text-muted-foreground">{t('subtitle')}</p>
+      <nav className="mt-8 flex flex-col gap-2" aria-label={t('heading')}>
+        <Link href="/backoffice/caminos" className={buttonVariants({ variant: 'outline', size: 'sm' })}>
+          {t('nav_caminos')}
+        </Link>
+      </nav>
       <BackofficeUserDebug user={user} />
     </main>
   );

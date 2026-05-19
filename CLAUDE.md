@@ -178,6 +178,27 @@ Prisma 7 is the ORM. The schema lives at `apps/backend/prisma/schema.prisma`; th
 - Never run `prisma migrate reset` in production — it drops the entire database
 - `prisma.config.ts` at the backend root controls the migration URL; do not add `url`/`directUrl` back to `schema.prisma`
 
+**Migration hygiene — the root cause of recurring drift:**
+
+The following actions corrupt the migration history and must never happen:
+
+| Forbidden action | Why it breaks things |
+|---|---|
+| `prisma db push` on a local dev DB | Applies schema changes without creating or recording a migration |
+| `prisma db execute` for DDL (CREATE TABLE, ALTER TABLE, CREATE INDEX, …) | Applies SQL to the DB without recording it in `_prisma_migrations` |
+| Editing a migration file after `prisma migrate dev` has applied it | Changes the file checksum; Prisma detects the file was tampered with |
+| Applying SQL via `psql` or a GUI client for schema changes | Same as `db execute` — leaves no migration record |
+
+**Correct workflow for every schema change:**
+
+1. Edit `prisma/schema.prisma`
+2. Run `yarn prisma:migrate:dev --name <short-description>` from `apps/backend/` — this creates the migration file **and** records it in `_prisma_migrations` atomically
+3. Commit `schema.prisma` and the new migration file together in the same commit
+4. Before opening a PR, run `yarn prisma:migrate:dev` once more and confirm the output is `Already in sync, no schema change or pending migration was found.`
+
+**Iteration during development:**  
+If you need to tweak the schema while still on a feature branch (before committing the migration), do **not** run `prisma migrate dev` multiple times on a partially-changed schema. Instead, delete the draft migration directory, revert `schema.prisma` to its last committed state, make all schema changes at once, then run `prisma migrate dev --name <description>` a single time.
+
 ## Frontend Conventions (Next.js)
 
 ### Code Style

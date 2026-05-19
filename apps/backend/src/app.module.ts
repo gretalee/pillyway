@@ -5,7 +5,9 @@ import { AccommodationsModule } from './accommodations/accommodations.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { BackofficeModule } from './backoffice/backoffice.module';
 import { CaminoPointsModule } from './camino-points/camino-points.module';
+import { CaminoVotesModule } from './camino-votes/camino-votes.module';
 import { CaminosModule } from './caminos/caminos.module';
 import { CountriesModule } from './countries/countries.module';
 import { PrismaModule } from './prisma/prisma.module';
@@ -21,12 +23,14 @@ import { WaypointsModule } from './waypoints/waypoints.module';
     AuthModule,
     CaminosModule,
     CaminoPointsModule,
+    CaminoVotesModule,
     CountriesModule,
     StagesModule,
     WaypointsModule,
     AccommodationsModule,
     SightsModule,
     UploadsModule,
+    BackofficeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

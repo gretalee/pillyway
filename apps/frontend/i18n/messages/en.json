@@ -43,7 +43,11 @@
     "delete_dialog_error": "Failed to delete the camino. Please try again.",
     "edit_name_aria": "Edit camino name",
     "edit_description_aria": "Edit camino description",
-    "no_description": "No description provided."
+    "no_description": "No description provided.",
+    "verified_icon_aria": "Verified route",
+    "verified_tooltip": "Pilgrims have confirmed this route",
+    "filter_verified_label": "Show only verified caminos",
+    "filter_no_verified": "No verified caminos found."
   },
   "caminos_new": {
     "title": "Create New Camino",
@@ -86,7 +90,14 @@
     "inline_save_error": "Failed to save changes. Reverted to previous value.",
     "stages_heading": "Stages",
     "no_stages": "This camino has no stages yet. Add at least two waypoints to generate stages.",
-    "error_loading_stages": "Failed to load stages. Please try again."
+    "error_loading_stages": "Failed to load stages. Please try again.",
+    "verification_heading": "Verified Route",
+    "vote_yes": "Yes, the route is current",
+    "vote_no": "No, the route no longer exists as described",
+    "vote_login_hint": "You must be logged in to verify the route",
+    "vote_yes_count": "{count} Yes",
+    "vote_no_count": "{count} No",
+    "vote_error": "Your vote could not be saved. Please try again."
   },
   "caminos_update": {
     "title": "Update Camino",
@@ -164,7 +175,8 @@
     "title": "Backoffice | Pillyway",
     "description": "Administrative backoffice for Pillyway.",
     "heading": "Backoffice",
-    "subtitle": "Administrative area."
+    "subtitle": "Administrative area.",
+    "nav_caminos": "Caminos"
   },
   "waypoint_detail": {
     "meta_title": "{name} | Pillyway",
@@ -177,8 +189,6 @@
     "add_accommodation": "Add accommodation",
     "add_sight": "Add sight",
     "verified_badge": "Verified",
-    "vote_up_aria": "Vote up (coming soon)",
-    "vote_down_aria": "Vote down (coming soon)",
     "error_loading": "Failed to load waypoint. Please try again.",
     "error_loading_accommodations": "Failed to load accommodations. Please try again.",
     "error_loading_sights": "Failed to load sights. Please try again.",
@@ -283,5 +293,29 @@
     "images_empty_state": "No images",
     "error_generic": "Failed to save changes. Please try again.",
     "error_forbidden": "You are not authorized to edit this sight."
+  },
+  "backoffice_caminos": {
+    "heading": "Caminos",
+    "subtitle": "Review votes and manage verification status.",
+    "col_name": "Name",
+    "col_yes_votes": "Yes Votes",
+    "col_no_votes": "No Votes",
+    "col_verified": "Verified",
+    "col_details": "Details",
+    "toggle_aria": "Toggle verification status for {name}",
+    "toggle_error": "Status could not be updated. Please try again.",
+    "details_button": "View votes",
+    "modal_heading": "Votes for {name}",
+    "modal_col_vote": "Vote",
+    "modal_col_date": "Last changed",
+    "modal_vote_yes": "Yes",
+    "modal_vote_no": "No",
+    "modal_empty": "No votes cast yet.",
+    "error_loading": "Failed to load caminos. Please try again."
+  },
+  "modal": {
+    "close_aria": "Close",
+    "cancel": "Cancel",
+    "ok": "OK"
   }
 }
