@@ -5,8 +5,8 @@ import { useQuery } from '@tanstack/react-query';
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? '';
 
 export interface CaminoVoteSummary {
-  yesVotes: number;
-  noVotes: number;
+  yesCount: number;
+  noCount: number;
 }
 
 export async function fetchCaminoVoteSummary(caminoId: string): Promise<CaminoVoteSummary> {

@@ -21,8 +21,8 @@ export function VerificationSection({ caminoId }: VerificationSectionProps) {
   const mutation = useCastVote(caminoId);
 
   const activeVote = myVoteQuery.data?.vote;
-  const yesVotes = summaryQuery.data?.yesVotes ?? 0;
-  const noVotes = summaryQuery.data?.noVotes ?? 0;
+  const yesVotes = summaryQuery.data?.yesCount ?? 0;
+  const noVotes = summaryQuery.data?.noCount ?? 0;
 
   function handleVote(vote: boolean) {
     mutation.mutate({ vote });

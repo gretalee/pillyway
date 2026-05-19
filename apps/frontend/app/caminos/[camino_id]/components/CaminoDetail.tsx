@@ -173,6 +173,7 @@ export function CaminoDetail({
         ) : (
           <>
             <h1 className="text-3xl font-bold tracking-tight">{camino.name}</h1>
+            {camino.verified && <VerifiedBadge />}
             {canEdit && (
               <button
                 type="button"
@@ -185,13 +186,6 @@ export function CaminoDetail({
           </>
         )}
       </div>
-
-      {/* Verified badge */}
-      {camino.verified && (
-        <span className="mt-2 inline-flex">
-          <VerifiedBadge />
-        </span>
-      )}
 
       {/* Inline save error */}
       {inlineError && (
