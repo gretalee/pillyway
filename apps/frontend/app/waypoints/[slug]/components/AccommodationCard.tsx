@@ -19,9 +19,10 @@ interface Props {
   accommodation: AccommodationDetail;
   slug: string;
   canContribute: boolean;
+  isOwner: boolean;
 }
 
-export async function AccommodationCard({ accommodation, slug, canContribute }: Props) {
+export async function AccommodationCard({ accommodation, slug, canContribute, isOwner }: Props) {
   const t = await getTranslations('waypoint_detail');
 
   const firstImage =
@@ -102,14 +103,16 @@ export async function AccommodationCard({ accommodation, slug, canContribute }: 
           </div>
         </div>
 
-        {canContribute && (
+        {(canContribute || isOwner) && (
           <div className="flex shrink-0 flex-col gap-1">
-            <Link
-              href={`/waypoints/${slug}/accommodations/${accommodation.id}/edit`}
-              aria-label={t('edit_accommodation_label')}
-              className="inline-flex items-center justify-center rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-              <Pencil className="size-4" aria-hidden="true" />
-            </Link>
+            {canContribute && (
+              <Link
+                href={`/waypoints/${slug}/accommodations/${accommodation.id}/edit`}
+                aria-label={t('edit_accommodation_label')}
+                className="inline-flex items-center justify-center rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                <Pencil className="size-4" aria-hidden="true" />
+              </Link>
+            )}
             <DeleteAccommodationButton
               id={accommodation.id}
               caminoPointId={accommodation.caminoPointId}

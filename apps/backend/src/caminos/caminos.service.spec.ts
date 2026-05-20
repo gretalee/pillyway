@@ -808,6 +808,8 @@ describe('CaminosService.findAll()', () => {
         name: 'Camino Francés',
         description: null,
         verified: true,
+        createdBy: 'kinde-user-001',
+        createdAt: new Date('2026-01-01'),
       },
     ];
     const prismaMock = {

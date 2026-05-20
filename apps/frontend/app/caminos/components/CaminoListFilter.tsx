@@ -23,9 +23,10 @@ function truncateAtSentence(text: string): string {
 interface CaminoListFilterProps {
   caminos: CaminoSummary[];
   isPilgrim: boolean;
+  isOwner: boolean;
 }
 
-export function CaminoListFilter({ caminos, isPilgrim }: CaminoListFilterProps) {
+export function CaminoListFilter({ caminos, isPilgrim, isOwner }: CaminoListFilterProps) {
   const t = useTranslations('caminos');
   const [onlyVerified, setOnlyVerified] = useState(false);
 
@@ -75,7 +76,7 @@ export function CaminoListFilter({ caminos, isPilgrim }: CaminoListFilterProps) 
 
                 <div className="flex shrink-0 items-center gap-2">
                   {camino.verified && <VerifiedBadge />}
-                  {isPilgrim && <CaminoActionsMenu camino={camino} />}
+                  {(isPilgrim || isOwner) && <CaminoActionsMenu camino={camino} />}
                 </div>
               </div>
             </li>

@@ -25,6 +25,7 @@ export interface CaminoSummary {
   description: string | null;
   verified: boolean;
   createdBy: string;
+  createdAt: Date;
 }
 
 export interface CaminoPointInResponse {
@@ -135,6 +136,7 @@ export class CaminosService {
           description: true,
           verified: true,
           createdBy: true,
+          createdAt: true,
         },
         orderBy: { createdAt: 'desc' },
       });
