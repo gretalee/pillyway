@@ -1,7 +1,6 @@
 'use client';
 
 import { Menu } from '@base-ui/react/menu';
-import { CircleUser } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 
@@ -22,7 +21,7 @@ export function UserMenu({ firstName }: UserMenuProps) {
           'text-foreground transition-colors',
           'hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
         )}>
-        <CircleUser className="size-5" aria-hidden="true" />
+        <i className="icon-user-circle-o text-xl" aria-hidden="true" />
       </Menu.Trigger>
 
       <Menu.Portal>
