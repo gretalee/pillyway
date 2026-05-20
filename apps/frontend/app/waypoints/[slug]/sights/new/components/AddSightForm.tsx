@@ -4,7 +4,6 @@ import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { Loader2 } from 'lucide-react';
 import { useCreateSight } from '@/app/api/waypoints/use-create-sight';
 import { useUploadImages } from '@/app/api/waypoints/use-upload-images';
 import { Button } from '@/app/components/ui/button';
@@ -264,7 +263,7 @@ export function AddSightForm({ slug }: AddSightFormProps) {
           <p
             className="mt-2 flex items-center gap-1.5 text-sm text-muted-foreground"
             aria-live="polite">
-            <Loader2 className="size-3.5 animate-spin" aria-hidden="true" />
+            <i className="icon-spinner text-xl animate-spin" aria-hidden="true" />
             {t('uploading')}
           </p>
         )}
@@ -295,7 +294,10 @@ export function AddSightForm({ slug }: AddSightFormProps) {
           className="w-full sm:w-auto">
           {isPending ? (
             <>
-              <Loader2 className="mr-2 size-4 animate-spin" aria-hidden="true" />
+              <i
+                className="icon-spinner mr-2 text-base animate-spin"
+                aria-hidden="true"
+              />
               {t('submitting')}
             </>
           ) : (

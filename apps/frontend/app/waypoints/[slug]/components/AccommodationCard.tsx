@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Pencil } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 import type {
   AccommodationDetail,
@@ -108,7 +107,7 @@ export async function AccommodationCard({ accommodation, slug, canContribute }: 
               href={`/waypoints/${slug}/accommodations/${accommodation.id}/edit`}
               aria-label={t('edit_accommodation_label')}
               className="inline-flex items-center justify-center rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-              <Pencil className="size-4" aria-hidden="true" />
+              <i className="icon-pencil text-xl" aria-hidden="true" />
             </Link>
             <DeleteAccommodationButton
               id={accommodation.id}

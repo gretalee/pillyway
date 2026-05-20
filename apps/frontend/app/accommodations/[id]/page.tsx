@@ -2,7 +2,6 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
-import { ChevronLeft, Pencil } from 'lucide-react';
 import { getAuthUser } from '@/lib/getAuthUser';
 import { fetchAccommodation } from '@/app/api/accommodations/fetch-accommodation';
 import { buttonVariants } from '@/app/components/ui/button';
@@ -80,7 +79,7 @@ export default async function AccommodationDetailPage({ params }: Props) {
         <Link
           href={`/waypoints/${accommodation.waypointSlug}`}
           className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-          <ChevronLeft className="size-4" aria-hidden="true" />
+          <i className="icon-chevron-left text-xl" aria-hidden="true" />
           {t('back_label')}
         </Link>
       </div>
@@ -116,7 +115,7 @@ export default async function AccommodationDetailPage({ params }: Props) {
               buttonVariants({ variant: 'outline', size: 'sm' }),
               'shrink-0 mt-1',
             )}>
-            <Pencil className="size-4" aria-hidden="true" />
+            <i className="icon-pencil text-xl" aria-hidden="true" />
             <span className="max-sm:hidden">{t('edit_label')}</span>
           </Link>
         )}

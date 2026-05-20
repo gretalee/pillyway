@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { StageDetail as StageDetailData } from '@/app/api/stages/stage-types';
 import type { AuthUser } from '@/lib/getAuthUser';
 import { fetchStage } from '@/app/api/stages/fetch-stage';
@@ -186,7 +185,7 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
               </span>
               {nextStage.endPointName}
             </p>
-            <ChevronRight className="size-4" aria-hidden="true" />
+            <i className="icon-chevron-right text-xl" aria-hidden="true" />
           </Link>
         ) : (
           <button

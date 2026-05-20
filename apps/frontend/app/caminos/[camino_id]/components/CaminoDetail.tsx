@@ -3,7 +3,6 @@
 import { useState, useRef, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { ChevronLeft, Pencil } from 'lucide-react';
 
 import { VerifiedBadge } from '@/app/caminos/components/VerifiedBadge';
 import { VerificationSection } from './VerificationSection';
@@ -92,8 +91,7 @@ export function CaminoDetail({
   const tCaminos = useTranslations('caminos');
   const mutation = useUpdateCamino();
 
-  const canEdit =
-    user?.roles.some((r) => r.key === 'pilgrim') ?? false;
+  const canEdit = user?.roles.some((r) => r.key === 'pilgrim') ?? false;
 
   const [camino, setCamino] = useState(initialCamino);
   const [editingField, setEditingField] = useState<EditingField>(null);
@@ -153,7 +151,7 @@ export function CaminoDetail({
         <Link
           href="/caminos"
           className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-          <ChevronLeft className="size-4" aria-hidden="true" />
+          <i className="icon-chevron-left text-xl" aria-hidden="true" />
           {t('back_to_list')}
         </Link>
       </div>
@@ -180,7 +178,7 @@ export function CaminoDetail({
                 aria-label={tCaminos('edit_name_aria')}
                 onClick={() => startEdit('name')}
                 className="rounded p-1 text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                <Pencil className="size-4" aria-hidden="true" />
+                <i className="icon-pencil text-xl" aria-hidden="true" />
               </button>
             )}
           </>
@@ -217,7 +215,7 @@ export function CaminoDetail({
                 aria-label={tCaminos('edit_description_aria')}
                 onClick={() => startEdit('description')}
                 className="shrink-0 rounded p-1 text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                <Pencil className="size-4" aria-hidden="true" />
+                <i className="icon-pencil text-xl" aria-hidden="true" />
               </button>
             )}
           </>
@@ -239,7 +237,7 @@ export function CaminoDetail({
           <Link
             href={`/caminos/${caminoId}/update`}
             className="inline-flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-            <Pencil className="size-4" aria-hidden="true" />
+            <i className="icon-pencil text-xl" aria-hidden="true" />
             {t('edit_waypoints')}
           </Link>
         </div>

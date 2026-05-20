@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { MoreHorizontal } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -19,7 +18,10 @@ interface CaminoActionsMenuProps {
 export function CaminoActionsMenu({ camino }: CaminoActionsMenuProps) {
   const t = useTranslations('caminos');
   const router = useRouter();
-  const [deletingCamino, setDeletingCamino] = useState<{ id: string; name: string } | null>(null);
+  const [deletingCamino, setDeletingCamino] = useState<{
+    id: string;
+    name: string;
+  } | null>(null);
 
   return (
     <>
@@ -27,7 +29,7 @@ export function CaminoActionsMenu({ camino }: CaminoActionsMenuProps) {
         <DropdownMenuTrigger
           aria-label={t('actions_menu_aria', { name: camino.name })}
           className="rounded-md p-1 text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-          <MoreHorizontal className="size-4" aria-hidden="true" />
+          <i className="icon-ellipsis-v text-xl" aria-hidden="true" />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" ignoreAnchorWidth>
           <DropdownMenuItem

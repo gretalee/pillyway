@@ -5,7 +5,6 @@ import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { Loader2 } from 'lucide-react';
 
 import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
@@ -245,7 +244,7 @@ export function CreateCaminoForm() {
           className="w-full sm:w-auto">
           {isPending ? (
             <>
-              <Loader2 className="mr-2 size-4 animate-spin" aria-hidden="true" />
+              <i className="icon-spinner mr-2 text-xl animate-spin" aria-hidden="true" />
               {t('submitting')}
             </>
           ) : (

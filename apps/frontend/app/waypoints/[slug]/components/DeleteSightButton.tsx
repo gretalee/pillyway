@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useDeleteSight } from '@/app/api/sights/use-delete-sight';
 import { DeleteSightDialog } from './DeleteSightDialog';
@@ -35,7 +34,7 @@ export function DeleteSightButton({ id, caminoPointId, name }: Props) {
         aria-label={t('delete_sight_label')}
         onClick={() => setOpen(true)}
         className="inline-flex items-center justify-center rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-        <Trash2 className="size-4" aria-hidden="true" />
+        <i className="icon-trash text-xl" aria-hidden="true" />
       </button>
 
       <DeleteSightDialog

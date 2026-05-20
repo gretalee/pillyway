@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { Loader2 } from 'lucide-react';
 
 import {
   AlertDialog,
@@ -81,7 +80,10 @@ export function DeleteCaminoDialog({
             onClick={handleConfirm}>
             {mutation.isPending ? (
               <>
-                <Loader2 className="mr-2 size-4 animate-spin" aria-hidden="true" />
+                <i
+                  className="icon-spinner mr-2 text-xl animate-spin"
+                  aria-hidden="true"
+                />
                 {t('delete_dialog_deleting')}
               </>
             ) : (

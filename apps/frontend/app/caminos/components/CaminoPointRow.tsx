@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
-import { ArrowDown, ArrowUp, Link2Off, X } from 'lucide-react';
 import { Input } from '@/app/components/ui/input';
 import { Select } from '@/app/components/ui/select';
 import { Label } from '@/app/components/ui/label';
@@ -108,7 +107,7 @@ export function CaminoPointRow({
               'rounded p-1 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
               'disabled:cursor-not-allowed disabled:opacity-40',
             )}>
-            <ArrowUp className="size-4" aria-hidden="true" />
+            <i className="icon-long-arrow-up text-xl" aria-hidden="true" />
           </button>
           <button
             type="button"
@@ -119,7 +118,7 @@ export function CaminoPointRow({
               'rounded p-1 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
               'disabled:cursor-not-allowed disabled:opacity-40',
             )}>
-            <ArrowDown className="size-4" aria-hidden="true" />
+            <i className="icon-long-arrow-down text-xl" aria-hidden="true" />
           </button>
           <button
             type="button"
@@ -130,7 +129,7 @@ export function CaminoPointRow({
               'rounded p-1 text-muted-foreground transition-colors hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
               'disabled:cursor-not-allowed disabled:opacity-40',
             )}>
-            <X className="size-4" aria-hidden="true" />
+            <i className="icon-times text-xl" aria-hidden="true" />
           </button>
         </div>
       </div>
@@ -162,7 +161,7 @@ export function CaminoPointRow({
               onClick={() => onUnlink(index)}
               aria-label={t('unlink')}
               className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-0.5 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-              <Link2Off className="size-3.5" aria-hidden="true" />
+              <i className="icon-chain-broken text-lg" aria-hidden="true" />
             </button>
           )}
         </div>

@@ -5,7 +5,6 @@ import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { Loader2, X } from 'lucide-react';
 import { useUpdateSight } from '@/app/api/sights/use-update-sight';
 import { useUploadImages } from '@/app/api/waypoints/use-upload-images';
 import type { SightDetail } from '@/app/api/sights/sight-types';
@@ -276,7 +275,7 @@ export function EditSightForm({ slug, sight }: EditSightFormProps) {
                   onClick={() => handleRemoveExistingImage(url)}
                   aria-label={tEdit('remove_image_label')}
                   className="absolute -right-1.5 -top-1.5 inline-flex size-5 items-center justify-center rounded-full bg-destructive text-destructive-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                  <X className="size-3" aria-hidden="true" />
+                  <i className="icon-times text-lg" aria-hidden="true" />
                 </button>
               </li>
             ))}
@@ -296,7 +295,7 @@ export function EditSightForm({ slug, sight }: EditSightFormProps) {
                   onClick={() => handleRemoveUploadedImage(url)}
                   aria-label={tEdit('remove_image_label')}
                   className="absolute -right-1.5 -top-1.5 inline-flex size-5 items-center justify-center rounded-full bg-destructive text-destructive-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                  <X className="size-3" aria-hidden="true" />
+                  <i className="icon-times text-lg" aria-hidden="true" />
                 </button>
               </li>
             ))}
@@ -323,7 +322,7 @@ export function EditSightForm({ slug, sight }: EditSightFormProps) {
             <p
               className="mt-2 flex items-center gap-1.5 text-sm text-muted-foreground"
               aria-live="polite">
-              <Loader2 className="size-3.5 animate-spin" aria-hidden="true" />
+              <i className="icon-spinner text-lg animate-spin" aria-hidden="true" />
               {tNew('uploading')}
             </p>
           )}
@@ -355,7 +354,7 @@ export function EditSightForm({ slug, sight }: EditSightFormProps) {
           className="w-full sm:w-auto">
           {isPending ? (
             <>
-              <Loader2 className="mr-2 size-4 animate-spin" aria-hidden="true" />
+              <i className="icon-spinner mr-2 text-xl animate-spin" aria-hidden="true" />
               {tEdit('submitting')}
             </>
           ) : (

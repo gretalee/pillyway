@@ -1,6 +1,5 @@
 'use client';
 
-import { Loader2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import {
   AlertDialog,
@@ -49,7 +48,10 @@ export function DeleteAccommodationDialog({
             onClick={onConfirm}>
             {isPending ? (
               <>
-                <Loader2 className="mr-2 size-4 animate-spin" aria-hidden="true" />
+                <i
+                  className="icon-spinner mr-2 text-xl  animate-spin"
+                  aria-hidden="true"
+                />
                 {t('delete_confirm_action')}
               </>
             ) : (
