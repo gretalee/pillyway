@@ -187,6 +187,7 @@ describe('SightsController.delete()', () => {
     ).resolves.toBeUndefined();
     expect(serviceMock.delete).toHaveBeenCalledWith(
       SIGHT_ID,
+      mockRequest.user.sub,
       mockRequest.user.roles,
     );
   });

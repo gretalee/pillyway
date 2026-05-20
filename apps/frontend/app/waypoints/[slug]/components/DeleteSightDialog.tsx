@@ -17,6 +17,7 @@ interface Props {
   name: string;
   open: boolean;
   isPending: boolean;
+  error: string | null;
   onOpenChange: (open: boolean) => void;
   onConfirm: () => void;
 }
@@ -25,6 +26,7 @@ export function DeleteSightDialog({
   name,
   open,
   isPending,
+  error,
   onOpenChange,
   onConfirm,
 }: Props) {
@@ -39,6 +41,13 @@ export function DeleteSightDialog({
             {t('delete_confirmation_description', { name })}
           </AlertDialogDescription>
         </AlertDialogHeader>
+
+        {error && (
+          <p role="alert" className="text-sm text-destructive">
+            {error}
+          </p>
+        )}
+
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isPending}>
             {t('delete_cancel_action')}

@@ -67,6 +67,8 @@ export async function SightCard({ sight, slug, canContribute }: Props) {
               id={sight.id}
               caminoPointId={sight.caminoPointId}
               name={sight.name}
+              createdBy={sight.createdBy}
+              createdAt={sight.createdAt}
             />
           </div>
         )}

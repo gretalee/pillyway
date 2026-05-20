@@ -11,6 +11,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { KindeRole } from '../auth/kinde-jwt.strategy';
+import { DeleteAuthorizationService } from '../common/delete-authorization.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { StagesService } from '../stages/stages.service';
 import { CaminosService } from './caminos.service';
@@ -73,6 +74,7 @@ function buildModule(prismaMock: object): Promise<TestingModule> {
       CaminosService,
       { provide: PrismaService, useValue: prismaMock },
       { provide: StagesService, useValue: stagesServiceMock },
+      DeleteAuthorizationService,
     ],
   })
     .setLogger(false as unknown as LoggerService)
@@ -563,7 +565,8 @@ describe('CaminosService.update()', () => {
 // ─── CaminosService.delete() ─────────────────────────────────────────────────
 
 describe('CaminosService.delete()', () => {
-  it('allows a pilgrim to delete any camino', async () => {
+  // Owner role is always allowed regardless of who created the camino or when.
+  it('allows a user with owner role to delete any camino', async () => {
     const prismaMock = {
       camino: {
         findUnique: vi.fn().mockResolvedValue(baseCamino),
@@ -574,12 +577,32 @@ describe('CaminosService.delete()', () => {
     const service = module.get(CaminosService);
 
     await expect(
-      service.delete(CAMINO_ID, PILGRIM_ROLES),
+      service.delete(CAMINO_ID, OTHER_ID, OWNER_ROLES),
     ).resolves.toBeUndefined();
     expect(prismaMock.camino.delete).toHaveBeenCalledOnce();
   });
 
-  it('throws ForbiddenException when user has owner role but not pilgrim', async () => {
+  // Creator within the 2-hour window is allowed.
+  it('allows the creator to delete their own camino within the time window', async () => {
+    const recentCamino = { ...baseCamino, createdBy: OWNER_ID, createdAt: new Date(Date.now() - 60 * 1000) };
+    const prismaMock = {
+      camino: {
+        findUnique: vi.fn().mockResolvedValue(recentCamino),
+        delete: vi.fn().mockResolvedValue(recentCamino),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
+
+    await expect(
+      service.delete(CAMINO_ID, OWNER_ID, PILGRIM_ROLES),
+    ).resolves.toBeUndefined();
+    expect(prismaMock.camino.delete).toHaveBeenCalledOnce();
+  });
+
+  // Creator after the 2-hour window is forbidden.
+  it('throws ForbiddenException when creator is outside the time window', async () => {
+    // baseCamino.createdAt is 2026-01-01 — well outside the 2-hour window
     const prismaMock = {
       camino: {
         findUnique: vi.fn().mockResolvedValue(baseCamino),
@@ -589,13 +612,33 @@ describe('CaminosService.delete()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
-    await expect(service.delete(CAMINO_ID, OWNER_ROLES)).rejects.toBeInstanceOf(
-      ForbiddenException,
-    );
+    await expect(
+      service.delete(CAMINO_ID, OWNER_ID, PILGRIM_ROLES),
+    ).rejects.toBeInstanceOf(ForbiddenException);
     expect(prismaMock.camino.delete).not.toHaveBeenCalled();
   });
 
-  it('throws ForbiddenException when user has no roles', async () => {
+  // Non-creator, non-owner is always forbidden.
+  it('throws ForbiddenException when user is neither creator nor owner', async () => {
+    const recentCamino = { ...baseCamino, createdBy: OWNER_ID, createdAt: new Date(Date.now() - 60 * 1000) };
+    const prismaMock = {
+      camino: {
+        findUnique: vi.fn().mockResolvedValue(recentCamino),
+        delete: vi.fn(),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
+
+    // OTHER_ID is not the creator (OWNER_ID) and has only pilgrim role (not owner)
+    await expect(
+      service.delete(CAMINO_ID, OTHER_ID, PILGRIM_ROLES),
+    ).rejects.toBeInstanceOf(ForbiddenException);
+    expect(prismaMock.camino.delete).not.toHaveBeenCalled();
+  });
+
+  // User with no roles and not the creator is forbidden.
+  it('throws ForbiddenException when user has no roles and is not the creator', async () => {
     const prismaMock = {
       camino: {
         findUnique: vi.fn().mockResolvedValue(baseCamino),
@@ -605,9 +648,9 @@ describe('CaminosService.delete()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
-    await expect(service.delete(CAMINO_ID, NO_ROLES)).rejects.toBeInstanceOf(
-      ForbiddenException,
-    );
+    await expect(
+      service.delete(CAMINO_ID, OTHER_ID, NO_ROLES),
+    ).rejects.toBeInstanceOf(ForbiddenException);
     expect(prismaMock.camino.delete).not.toHaveBeenCalled();
   });
 
@@ -621,9 +664,9 @@ describe('CaminosService.delete()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
-    await expect(service.delete(CAMINO_ID, NO_ROLES)).rejects.toBeInstanceOf(
-      NotFoundException,
-    );
+    await expect(
+      service.delete(CAMINO_ID, OTHER_ID, NO_ROLES),
+    ).rejects.toBeInstanceOf(NotFoundException);
     expect(prismaMock.camino.delete).not.toHaveBeenCalled();
   });
 });

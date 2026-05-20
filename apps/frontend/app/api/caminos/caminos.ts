@@ -6,6 +6,7 @@ export interface CaminoSummary {
   description: string | null;
   verified: boolean;
   createdBy: string;
+  createdAt: string;
 }
 
 export interface CaminoPointDetail {

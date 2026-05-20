@@ -75,6 +75,7 @@ const verifiedCamino: CaminoSummary = {
   description: 'The classic route.',
   verified: true,
   createdBy: 'user-1',
+  createdAt: '2024-01-01T00:00:00.000Z',
 };
 
 const unverifiedCamino: CaminoSummary = {
@@ -83,6 +84,7 @@ const unverifiedCamino: CaminoSummary = {
   description: 'Southern route.',
   verified: false,
   createdBy: 'user-2',
+  createdAt: '2024-01-01T00:00:00.000Z',
 };
 
 const allCaminos: CaminoSummary[] = [verifiedCamino, unverifiedCamino];

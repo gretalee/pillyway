@@ -10,6 +10,15 @@ vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
 }));
 
+// ── Kinde mock ─────────────────────────────────────────────────────────────────
+// TEST_CAMINO.createdBy matches user-1 and createdAt is 1 min ago — within window.
+vi.mock('@kinde-oss/kinde-auth-nextjs', () => ({
+  useKindeBrowserClient: () => ({
+    user: { id: 'user-1' },
+    accessToken: { roles: [{ key: 'pilgrim' }] },
+  }),
+}));
+
 // ── next/navigation mock ───────────────────────────────────────────────────────
 const mockPush = vi.fn();
 const mockRefresh = vi.fn();
@@ -46,7 +55,12 @@ vi.mock('./DeleteCaminoDialog', () => ({
 
 // ── Fixtures ───────────────────────────────────────────────────────────────────
 
-const TEST_CAMINO = { id: 'camino-99', name: 'Camino del Norte' };
+const TEST_CAMINO = {
+  id: 'camino-99',
+  name: 'Camino del Norte',
+  createdBy: 'user-1',
+  createdAt: new Date(Date.now() - 60_000).toISOString(), // 1 min ago — within window
+};
 
 function renderMenu(camino = TEST_CAMINO) {
   render(<CaminoActionsMenu camino={camino} />);

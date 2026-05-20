@@ -41,6 +41,7 @@
     "delete_dialog_confirm": "Löschen",
     "delete_dialog_deleting": "Wird gelöscht…",
     "delete_dialog_error": "Der Camino konnte nicht gelöscht werden. Bitte versuche es erneut.",
+    "delete_dialog_error_forbidden": "Dieser Camino kann nicht mehr gelöscht werden. Das 2-Stunden-Fenster ist abgelaufen.",
     "edit_name_aria": "Caminonamen bearbeiten",
     "edit_description_aria": "Caminobeschreibung bearbeiten",
     "no_description": "Keine Beschreibung vorhanden.",
@@ -214,7 +215,9 @@
     "delete_confirmation_title": "Löschen",
     "delete_confirmation_description": "Möchtest du \"{name}\" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
     "delete_confirm_action": "Löschen",
-    "delete_cancel_action": "Abbrechen"
+    "delete_cancel_action": "Abbrechen",
+    "delete_error": "Löschen fehlgeschlagen. Bitte versuche es erneut.",
+    "delete_error_forbidden": "Dieses Element kann nicht mehr gelöscht werden. Das 1-Stunden-Fenster ist abgelaufen."
   },
   "accommodation_detail": {
     "meta_title": "{name} | Pillyway",

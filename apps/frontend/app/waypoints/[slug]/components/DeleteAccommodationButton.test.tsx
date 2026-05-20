@@ -14,7 +14,11 @@ vi.mock('next-intl', () => ({
 }));
 
 vi.mock('@kinde-oss/kinde-auth-nextjs', () => ({
-  useKindeBrowserClient: () => ({ accessTokenEncoded: 'test-token' }),
+  useKindeBrowserClient: () => ({
+    accessTokenEncoded: 'test-token',
+    user: { id: 'user-1' },
+    accessToken: { roles: [{ key: 'owner' }] },
+  }),
 }));
 
 const mockFetch = vi.fn();
@@ -34,6 +38,8 @@ const TEST_PROPS = {
   id: 'accom-99',
   caminoPointId: 'point-1',
   name: 'Albergue Sol',
+  createdBy: 'user-1',
+  createdAt: '2024-01-01T00:00:00.000Z',
 };
 
 function renderButton(props = TEST_PROPS) {

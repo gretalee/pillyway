@@ -23,6 +23,7 @@ function renderDialog({
   name = 'Catedral de Santiago',
   open = true,
   isPending = false,
+  error = null as string | null,
   onOpenChange = vi.fn(),
   onConfirm = vi.fn(),
 } = {}) {
@@ -31,6 +32,7 @@ function renderDialog({
       name={name}
       open={open}
       isPending={isPending}
+      error={error}
       onOpenChange={onOpenChange}
       onConfirm={onConfirm}
     />,

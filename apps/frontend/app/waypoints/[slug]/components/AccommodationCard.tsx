@@ -114,6 +114,8 @@ export async function AccommodationCard({ accommodation, slug, canContribute }: 
               id={accommodation.id}
               caminoPointId={accommodation.caminoPointId}
               name={accommodation.name}
+              createdBy={accommodation.createdBy}
+              createdAt={accommodation.createdAt}
             />
           </div>
         )}

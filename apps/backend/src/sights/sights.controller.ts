@@ -104,16 +104,21 @@ export class SightsController {
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Delete a sight (pilgrim role required)' })
+  @ApiOperation({
+    summary:
+      'Delete a sight. Owner role: always. Creator: within 1 hour of creation.',
+  })
   @ApiNoContentResponse({ description: 'Sight deleted successfully.' })
   @ApiUnauthorizedResponse({ description: 'Missing or invalid JWT.' })
-  @ApiForbiddenResponse({ description: 'Requires pilgrim role.' })
+  @ApiForbiddenResponse({
+    description:
+      'User is not an owner and is either not the creator or the 1-hour window has expired.',
+  })
   @ApiNotFoundResponse({ description: 'Sight not found.' })
   async delete(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Req() req: Request & { user: KindeJwtPayload },
   ): Promise<void> {
-    const roles = req.user.roles ?? [];
-    await this.sightsService.delete(id, roles);
+    await this.sightsService.delete(id, req.user.sub, req.user.roles ?? []);
   }
 }
