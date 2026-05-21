@@ -34,6 +34,7 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
   ]);
 
   const canEdit = user?.roles.some((r) => r.key === 'pilgrim') ?? false;
+  const isOwner = user?.roles.some((r) => r.key === 'owner') ?? false;
 
   const { previousStage, nextStage } = stage;
 
@@ -120,9 +121,9 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
         </p>
       </div>
 
-      {/* Edit button */}
       {canEdit && (
-        <div className="mt-8">
+        <div className="mt-8 flex gap-4">
+          {/* Edit stage */}
           <Link
             href={`/caminos/${caminoId}/stages/${stageNumber}/edit`}
             className={cn(
@@ -229,6 +230,7 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
                 accommodation={accommodation}
                 slug={stage.startPoint.slug}
                 canContribute={canEdit}
+                isOwner={isOwner}
               />
             ))}
           </ul>
@@ -252,6 +254,7 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
                 accommodation={accommodation}
                 slug={stage.endPoint.slug}
                 canContribute={canEdit}
+                isOwner={isOwner}
               />
             ))}
           </ul>

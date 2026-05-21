@@ -103,11 +103,12 @@ export class CaminosController {
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Update a camino (requires pilgrim role)' })
+  @ApiOperation({ summary: 'Update a camino (owner always; creator within 2-hour window)' })
   @ApiOkResponse({ description: 'Camino updated successfully.' })
   @ApiUnauthorizedResponse({ description: 'Missing or invalid JWT.' })
   @ApiForbiddenResponse({
-    description: 'JWT present but missing pilgrim role.',
+    description:
+      'User is not an owner and is either not the creator or the 2-hour window has expired.',
   })
   @ApiNotFoundResponse({ description: 'Camino not found.' })
   @ApiConflictResponse({
@@ -118,24 +119,28 @@ export class CaminosController {
     @Body() dto: UpdateCaminoDto,
     @Req() req: Request & { user: KindeJwtPayload },
   ): Promise<CaminoDetailFull> {
-    return this.caminosService.update(id, dto, req.user.roles ?? []);
+    return this.caminosService.update(id, dto, req.user.sub, req.user.roles ?? []);
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Delete a camino (requires pilgrim role)' })
+  @ApiOperation({
+    summary:
+      'Delete a camino. Owner role: always. Creator: within 2 hours of creation.',
+  })
   @ApiNoContentResponse({ description: 'Camino deleted.' })
   @ApiUnauthorizedResponse({ description: 'Missing or invalid JWT.' })
   @ApiForbiddenResponse({
-    description: 'JWT present but missing pilgrim role.',
+    description:
+      'User is not an owner and is either not the creator or the 2-hour window has expired.',
   })
   @ApiNotFoundResponse({ description: 'Camino not found.' })
   async delete(
     @Param('id', ParseUUIDPipe) id: string,
     @Req() req: Request & { user: KindeJwtPayload },
   ): Promise<void> {
-    return this.caminosService.delete(id, req.user.roles ?? []);
+    return this.caminosService.delete(id, req.user.sub, req.user.roles ?? []);
   }
 }

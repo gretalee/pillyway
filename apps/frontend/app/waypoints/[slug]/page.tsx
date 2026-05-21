@@ -66,6 +66,7 @@ export default async function WaypointDetailPage({ params }: Props) {
   const sights = sightsResult.status === 'fulfilled' ? sightsResult.value : null;
 
   const canContribute = user?.roles.some((r) => r.key === 'pilgrim') ?? false;
+  const isOwner = user?.roles.some((r) => r.key === 'owner') ?? false;
 
   const countryLabel = tCountries(
     waypoint.country.toLowerCase() as Parameters<typeof tCountries>[0],
@@ -117,6 +118,7 @@ export default async function WaypointDetailPage({ params }: Props) {
                 accommodation={acc}
                 slug={slug}
                 canContribute={canContribute}
+                isOwner={isOwner}
               />
             ))}
           </ul>
@@ -157,6 +159,7 @@ export default async function WaypointDetailPage({ params }: Props) {
                 sight={sight}
                 slug={slug}
                 canContribute={canContribute}
+                isOwner={isOwner}
               />
             ))}
           </ul>

@@ -48,8 +48,13 @@ export function DeleteCaminoDialog({
         onClose();
         onSuccess?.();
       },
-      onError: () => {
-        setDeleteError(t('delete_dialog_error'));
+      onError: (err) => {
+        const status = (err as { status?: number }).status;
+        setDeleteError(
+          status === 403
+            ? t('delete_dialog_error_forbidden')
+            : t('delete_dialog_error'),
+        );
       },
     });
   }

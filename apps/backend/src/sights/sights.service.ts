@@ -1,15 +1,14 @@
-import {
-  ForbiddenException,
-  Injectable,
-  Logger,
-  NotFoundException,
-} from '@nestjs/common';
+import { ForbiddenException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 
 import { KindeRole } from '../auth/kinde-jwt.strategy';
+import { DeleteAuthorizationService } from '../common/delete-authorization.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { UploadsService } from '../uploads/uploads.service';
 import { SightDetailDto } from './dto/sight-detail.dto';
 import { UpdateSightDto } from './dto/update-sight.dto';
+
+/** Creators may delete their own sights within this period after creation. */
+const SIGHT_DELETE_WINDOW_MS = 60 * 60 * 1000; // 1 hour
 
 @Injectable()
 export class SightsService {
@@ -18,6 +17,7 @@ export class SightsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly uploadsService: UploadsService,
+    private readonly deleteAuthorizationService: DeleteAuthorizationService,
   ) {}
 
   // ── findById ─────────────────────────────────────────────────────────────────
@@ -98,15 +98,29 @@ export class SightsService {
 
   // ── delete ────────────────────────────────────────────────────────────────────
 
-  async delete(id: string, roles: KindeRole[]): Promise<void> {
-    if (!roles.some((r) => r.key === 'pilgrim')) {
-      throw new ForbiddenException('Requires pilgrim role.');
-    }
-
+  /**
+   * Deletes a sight. Authorization rules:
+   *   - `owner` role: always permitted.
+   *   - Creator: permitted within 1 hour of creation.
+   *   - All others: ForbiddenException (403).
+   */
+  async delete(
+    id: string,
+    userId: string,
+    roles: KindeRole[],
+  ): Promise<void> {
+    // Fetch first so we return 404 before 403
     const existing = await this.prisma.sight.findUnique({ where: { id } });
     if (!existing) {
       throw new NotFoundException('Sight not found.');
     }
+
+    this.deleteAuthorizationService.assertCanDelete(
+      userId,
+      roles,
+      existing,
+      SIGHT_DELETE_WINDOW_MS,
+    );
 
     await this.prisma.sight.delete({ where: { id } });
 

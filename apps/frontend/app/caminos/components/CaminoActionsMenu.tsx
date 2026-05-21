@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -12,9 +13,12 @@ import {
 import { DeleteCaminoDialog } from './DeleteCaminoDialog';
 import { buttonVariants } from '@/app/components/ui/button';
 import { cn } from '@/lib/utils';
+import { canDelete } from '@/lib/can-delete';
+
+const CAMINO_DELETE_WINDOW_MS = 2 * 60 * 60 * 1000; // 2 hours
 
 interface CaminoActionsMenuProps {
-  camino: { id: string; name: string };
+  camino: { id: string; name: string; createdBy: string; createdAt: string };
 }
 
 export function CaminoActionsMenu({ camino }: CaminoActionsMenuProps) {
@@ -24,6 +28,19 @@ export function CaminoActionsMenu({ camino }: CaminoActionsMenuProps) {
     id: string;
     name: string;
   } | null>(null);
+
+  const { user, accessToken } = useKindeBrowserClient();
+  const roleKeys = accessToken?.roles?.map((r) => r.key) ?? [];
+
+  const showDelete =
+    user !== null &&
+    canDelete({
+      userId: user.id,
+      roles: roleKeys,
+      createdBy: camino.createdBy,
+      createdAt: camino.createdAt,
+      windowMs: CAMINO_DELETE_WINDOW_MS,
+    });
 
   return (
     <>
@@ -42,12 +59,14 @@ export function CaminoActionsMenu({ camino }: CaminoActionsMenuProps) {
             onClick={() => router.push(`/caminos/${camino.id}/update`)}>
             {t('menu_change_data')}
           </DropdownMenuItem>
-          <DropdownMenuItem
-            className="whitespace-nowrap"
-            variant="destructive"
-            onClick={() => setDeletingCamino({ id: camino.id, name: camino.name })}>
-            {t('menu_delete')}
-          </DropdownMenuItem>
+          {showDelete && (
+            <DropdownMenuItem
+              className="whitespace-nowrap"
+              variant="destructive"
+              onClick={() => setDeletingCamino({ id: camino.id, name: camino.name })}>
+              {t('menu_delete')}
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
 

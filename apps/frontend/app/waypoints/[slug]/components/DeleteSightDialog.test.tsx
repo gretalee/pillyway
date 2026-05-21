@@ -23,6 +23,7 @@ function renderDialog({
   name = 'Catedral de Santiago',
   open = true,
   isPending = false,
+  error = null as string | null,
   onOpenChange = vi.fn(),
   onConfirm = vi.fn(),
 } = {}) {
@@ -31,6 +32,7 @@ function renderDialog({
       name={name}
       open={open}
       isPending={isPending}
+      error={error}
       onOpenChange={onOpenChange}
       onConfirm={onConfirm}
     />,
@@ -78,5 +80,14 @@ describe('DeleteSightDialog — pending state', () => {
     const confirmBtn = screen.getByText('delete_confirm_action').closest('button');
     expect(cancelBtn).toBeDisabled();
     expect(confirmBtn).toBeDisabled();
+  });
+});
+
+describe('DeleteSightDialog — error state', () => {
+  it('renders the error message with role="alert" when error is provided', () => {
+    renderDialog({ error: 'delete_error_forbidden' });
+    const alert = screen.getByRole('alert');
+    expect(alert).toBeInTheDocument();
+    expect(alert).toHaveTextContent('delete_error_forbidden');
   });
 });

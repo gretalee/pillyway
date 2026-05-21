@@ -1,11 +1,13 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
+import { canDelete } from '@/lib/can-delete';
 
 import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
@@ -47,6 +49,8 @@ interface CaminoFormValues {
   caminoPoints: CaminoPointFormItem[];
 }
 
+const CAMINO_EDIT_WINDOW_MS = 2 * 60 * 60 * 1000; // 2 hours — matches backend policy
+
 interface UpdateCaminoFormProps {
   caminoId: string;
 }
@@ -61,8 +65,22 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
   const { data: stages } = useStages(caminoId);
   const mutation = useUpdateCamino();
 
+  const { user, accessToken } = useKindeBrowserClient();
+  const roleKeys = accessToken?.roles?.map((r) => r.key) ?? [];
+  // True while user/camino is loading or when the user is the owner/creator within window.
+  const canRemoveWaypoints =
+    user === null ||
+    !camino ||
+    canDelete({
+      userId: user.id,
+      roles: roleKeys,
+      createdBy: camino.createdBy,
+      createdAt: camino.createdAt,
+      windowMs: CAMINO_EDIT_WINDOW_MS,
+    });
+
   const [formError, setFormError] = useState<string | null>(null);
-  const [initialized, setInitialized] = useState(false);
+  const initializedRef = useRef(false);
   const [pendingPayload, setPendingPayload] = useState<UpdateCaminoPayload | null>(null);
   const [reorderWarningCount, setReorderWarningCount] = useState(0);
 
@@ -90,7 +108,8 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
 
   // Pre-populate form once camino data is loaded
   useEffect(() => {
-    if (camino && !initialized) {
+    if (camino && !initializedRef.current) {
+      initializedRef.current = true;
       reset({
         name: camino.name,
         description: camino.description ?? '',
@@ -101,9 +120,8 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
           description: p.description ?? '',
         })),
       });
-      setInitialized(true);
     }
-  }, [camino, initialized, reset]);
+  }, [camino, reset]);
 
   const onLinkCaminoPoints = useCallback(
     (index: number, suggestion: CaminoPointSearchResult) => {
@@ -344,6 +362,7 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
                 onLink={onLinkCaminoPoints}
                 onUnlink={onUnlinkCaminoPoints}
                 watchedPoints={watchedPoints ?? []}
+                canRemove={canRemoveWaypoints}
               />
             ))}
           </div>

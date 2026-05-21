@@ -24,9 +24,10 @@ function truncateAtSentence(text: string): string {
 interface CaminoListFilterProps {
   caminos: CaminoSummary[];
   isPilgrim: boolean;
+  isOwner: boolean;
 }
 
-export function CaminoListFilter({ caminos, isPilgrim }: CaminoListFilterProps) {
+export function CaminoListFilter({ caminos, isPilgrim, isOwner }: CaminoListFilterProps) {
   const t = useTranslations('caminos');
   const [onlyVerified, setOnlyVerified] = useState(false);
 

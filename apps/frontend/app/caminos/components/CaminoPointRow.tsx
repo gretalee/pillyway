@@ -13,6 +13,7 @@ import {
 } from '@/app/api/caminos/use-camino-points-search';
 import { useDebounce } from '@/lib/use-debounce';
 import { SuggestionCard } from './SuggestionCard';
+import { Button } from '@/app/components/ui/button';
 
 interface CaminoPointFormItem {
   caminoPointId: string | null;
@@ -39,6 +40,7 @@ export interface CaminoPointRowProps {
   onLink: (index: number, suggestion: CaminoPointSearchResult) => void;
   onUnlink: (index: number) => void;
   watchedPoints: CaminoPointFormItem[];
+  canRemove?: boolean;
 }
 
 export function CaminoPointRow({
@@ -53,6 +55,7 @@ export function CaminoPointRow({
   onLink,
   onUnlink,
   watchedPoints,
+  canRemove = true,
 }: CaminoPointRowProps) {
   const t = useTranslations('caminos_new');
   const tCountries = useTranslations('countries');
@@ -98,39 +101,33 @@ export function CaminoPointRow({
           {index + 1}.
         </span>
         <div className="flex items-center gap-1">
-          <button
-            type="button"
+          <Button
+            variant="ghost"
             onClick={() => onMoveUp(index)}
             disabled={index === 0}
-            aria-label={t('move_up')}
-            className={cn(
-              'rounded p-1 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-              'disabled:cursor-not-allowed disabled:opacity-40',
-            )}>
+            aria-label={t('move_up')}>
             <i className="icon-long-arrow-up text-xl" aria-hidden="true" />
-          </button>
-          <button
-            type="button"
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => onMoveDown(index)}
             disabled={index === totalCount - 1}
-            aria-label={t('move_down')}
-            className={cn(
-              'rounded p-1 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-              'disabled:cursor-not-allowed disabled:opacity-40',
-            )}>
+            aria-label={t('move_down')}>
             <i className="icon-long-arrow-down text-xl" aria-hidden="true" />
-          </button>
-          <button
-            type="button"
-            onClick={() => onRemove(index)}
-            disabled={totalCount === 1}
-            aria-label={t('remove_point')}
-            className={cn(
-              'rounded p-1 text-muted-foreground transition-colors hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-              'disabled:cursor-not-allowed disabled:opacity-40',
-            )}>
-            <i className="icon-times text-xl" aria-hidden="true" />
-          </button>
+          </Button>
+
+          {canRemove && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => onRemove(index)}
+              disabled={totalCount === 1}
+              aria-label={t('remove_point')}>
+              <i className="icon-times text-xl" aria-hidden="true" />
+            </Button>
+          )}
         </div>
       </div>
 

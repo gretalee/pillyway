@@ -24,8 +24,10 @@ vi.mock('next/link', () => ({
 }));
 
 // ── Kinde mock ─────────────────────────────────────────────────────────────────
+// Default: unauthenticated user (user === null → canRemoveWaypoints = true, remove button visible).
+const mockUseKindeBrowserClient = vi.fn();
 vi.mock('@kinde-oss/kinde-auth-nextjs', () => ({
-  useKindeBrowserClient: () => ({ accessTokenEncoded: 'test-token' }),
+  useKindeBrowserClient: () => mockUseKindeBrowserClient(),
 }));
 
 // ── Global fetch mock ─────────────────────────────────────────────────────────
@@ -46,6 +48,8 @@ beforeEach(() => {
   vi.useFakeTimers({ shouldAdvanceTime: true });
   mockFetch.mockReset();
   mockPush.mockReset();
+  // Default: unauthenticated (user === null → canRemoveWaypoints = true → remove button visible)
+  mockUseKindeBrowserClient.mockReturnValue({ user: null, accessToken: null, accessTokenEncoded: 'test-token' });
 
   // Default: fetch dispatcher — routes by URL pattern.
   mockFetch.mockImplementation((url: string, opts?: RequestInit) => {
@@ -336,6 +340,54 @@ describe('UpdateCaminoForm — cancel', () => {
 
     await user.click(screen.getByRole('button', { name: 'cancel' }));
     expect(mockPush).toHaveBeenCalledWith(`/caminos/${CAMINO_ID}`);
+  });
+});
+
+// ── Remove-waypoint authorisation ─────────────────────────────────────────────
+
+describe('UpdateCaminoForm — remove waypoint authorisation', () => {
+  it('hides the remove button for a pilgrim who is not the creator and is outside the time window', async () => {
+    // User is authenticated as a pilgrim but NOT the creator (user-1) and NOT an owner.
+    mockUseKindeBrowserClient.mockReturnValue({
+      user: { id: 'other-user' },
+      accessToken: { roles: [{ key: 'pilgrim' }] },
+      accessTokenEncoded: 'other-token',
+    });
+    renderForm();
+    await waitForForm();
+
+    // The remove button must not be present for an unauthorised pilgrim.
+    expect(screen.queryByRole('button', { name: 'remove_point' })).not.toBeInTheDocument();
+  });
+
+  it('shows the remove button for the camino creator within the 2-hour window', async () => {
+    // user-1 is the creator; CAMINO_FIXTURE.createdAt is set to "now" so they are within the window.
+    const recentCreatedAt = new Date().toISOString();
+    mockFetch.mockImplementation((url: string, opts?: RequestInit) => {
+      if (typeof url !== 'string') return Promise.resolve({ ok: false, status: 400 });
+      if (url.includes('/countries'))
+        return Promise.resolve({ ok: true, json: () => Promise.resolve(['France']) });
+      if (url.includes('/camino-points/search'))
+        return Promise.resolve({ ok: true, json: () => Promise.resolve([]) });
+      if (url.includes('/stages') && !url.includes('stages/') && opts?.method !== 'PATCH')
+        return Promise.resolve({ ok: true, json: () => Promise.resolve([]) });
+      if (url.includes('/caminos/'))
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({ ...CAMINO_FIXTURE, createdAt: recentCreatedAt }),
+        });
+      return Promise.resolve({ ok: false, status: 404 });
+    });
+    mockUseKindeBrowserClient.mockReturnValue({
+      user: { id: 'user-1' },
+      accessToken: { roles: [{ key: 'pilgrim' }] },
+      accessTokenEncoded: 'creator-token',
+    });
+
+    renderForm();
+    await waitForForm();
+
+    expect(screen.getByRole('button', { name: 'remove_point' })).toBeInTheDocument();
   });
 });
 

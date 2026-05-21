@@ -3,14 +3,17 @@ import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import type { SightDetail } from '@/app/api/sights/sight-types';
 import { DeleteSightButton } from './DeleteSightButton';
+import { buttonVariants } from '@/app/components/ui/button';
+import { cn } from '@/lib/utils';
 
 interface Props {
   sight: SightDetail;
   slug: string;
   canContribute: boolean;
+  isOwner: boolean;
 }
 
-export async function SightCard({ sight, slug, canContribute }: Props) {
+export async function SightCard({ sight, slug, canContribute, isOwner }: Props) {
   const t = await getTranslations('waypoint_detail');
 
   const firstImage = sight.imageUrls.length > 0 ? sight.imageUrls[0] : null;
@@ -54,18 +57,22 @@ export async function SightCard({ sight, slug, canContribute }: Props) {
           )}
         </div>
 
-        {canContribute && (
+        {(canContribute || isOwner) && (
           <div className="flex shrink-0 flex-col gap-1">
-            <Link
-              href={`/waypoints/${slug}/sights/${sight.id}/edit`}
-              aria-label={t('edit_sight_label')}
-              className="inline-flex items-center justify-center rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-              <i className="icon-pencil text-xl" aria-hidden="true" />
-            </Link>
+            {canContribute && (
+              <Link
+                href={`/waypoints/${slug}/sights/${sight.id}/edit`}
+                aria-label={t('edit_sight_label')}
+                className={cn(buttonVariants({ variant: 'outline' }))}>
+                <i className="icon-pencil text-xl" aria-hidden="true" />
+              </Link>
+            )}
             <DeleteSightButton
               id={sight.id}
               caminoPointId={sight.caminoPointId}
               name={sight.name}
+              createdBy={sight.createdBy}
+              createdAt={sight.createdAt}
             />
           </div>
         )}

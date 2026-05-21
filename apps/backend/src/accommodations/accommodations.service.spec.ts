@@ -9,6 +9,7 @@ import { AccommodationType } from '@prisma/client';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { KindeRole } from '../auth/kinde-jwt.strategy';
+import { DeleteAuthorizationService } from '../common/delete-authorization.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { UploadsService } from '../uploads/uploads.service';
 import { AccommodationsService } from './accommodations.service';
@@ -19,6 +20,8 @@ import { UpdateAccommodationDto } from './dto/update-accommodation.dto';
 const ACCOMMODATION_ID = 'ac-1111-0000-0000-0000';
 const CAMINO_POINT_ID = 'pt-1111-0000-0000-0000';
 const USER_ID = 'kinde-user-001';
+const OTHER_USER_ID = 'kinde-other-001';
+const OWNER_USER_ID = 'kinde-owner-001';
 
 const baseAccommodation = {
   id: ACCOMMODATION_ID,
@@ -55,6 +58,7 @@ function buildModule(prismaMock: object): Promise<TestingModule> {
       AccommodationsService,
       { provide: PrismaService, useValue: prismaMock },
       { provide: UploadsService, useValue: uploadsMock },
+      DeleteAuthorizationService,
     ],
   })
     .setLogger(false as unknown as LoggerService)
@@ -328,33 +332,8 @@ describe('AccommodationsService.delete()', () => {
     uploadsMock.deleteImages.mockClear();
   });
 
-  it('throws ForbiddenException when user has no roles', async () => {
-    const prismaMock = {
-      accommodation: { findUnique: vi.fn(), delete: vi.fn() },
-    };
-    const module = await buildModule(prismaMock);
-    const service = module.get(AccommodationsService);
-
-    await expect(
-      service.delete(ACCOMMODATION_ID, NO_ROLES),
-    ).rejects.toBeInstanceOf(ForbiddenException);
-    expect(prismaMock.accommodation.delete).not.toHaveBeenCalled();
-  });
-
-  it('throws ForbiddenException when user has owner role but not pilgrim', async () => {
-    const prismaMock = {
-      accommodation: { findUnique: vi.fn(), delete: vi.fn() },
-    };
-    const module = await buildModule(prismaMock);
-    const service = module.get(AccommodationsService);
-
-    await expect(
-      service.delete(ACCOMMODATION_ID, OWNER_ROLES),
-    ).rejects.toBeInstanceOf(ForbiddenException);
-    expect(prismaMock.accommodation.delete).not.toHaveBeenCalled();
-  });
-
-  it('calls prisma.accommodation.delete for pilgrim role', async () => {
+  // Owner role is always allowed regardless of who created the accommodation or when.
+  it('allows a user with owner role to delete any accommodation', async () => {
     const prismaMock = {
       accommodation: {
         findUnique: vi.fn().mockResolvedValue(baseAccommodation),
@@ -365,7 +344,100 @@ describe('AccommodationsService.delete()', () => {
     const service = module.get(AccommodationsService);
 
     await expect(
-      service.delete(ACCOMMODATION_ID, PILGRIM_ROLES),
+      service.delete(ACCOMMODATION_ID, OWNER_USER_ID, OWNER_ROLES),
+    ).resolves.toBeUndefined();
+    expect(prismaMock.accommodation.delete).toHaveBeenCalledWith({
+      where: { id: ACCOMMODATION_ID },
+    });
+  });
+
+  // Creator within the 1-hour window is allowed.
+  it('allows the creator to delete their own accommodation within the time window', async () => {
+    const recentAccommodation = { ...baseAccommodation, createdBy: USER_ID, createdAt: new Date(Date.now() - 60 * 1000) };
+    const prismaMock = {
+      accommodation: {
+        findUnique: vi.fn().mockResolvedValue(recentAccommodation),
+        delete: vi.fn().mockResolvedValue(recentAccommodation),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(AccommodationsService);
+
+    await expect(
+      service.delete(ACCOMMODATION_ID, USER_ID, PILGRIM_ROLES),
+    ).resolves.toBeUndefined();
+    expect(prismaMock.accommodation.delete).toHaveBeenCalledWith({
+      where: { id: ACCOMMODATION_ID },
+    });
+    expect(uploadsMock.deleteImages).toHaveBeenCalledWith(recentAccommodation.imageUrls);
+  });
+
+  // Creator after the 1-hour window is forbidden.
+  it('throws ForbiddenException when creator is outside the time window', async () => {
+    // baseAccommodation.createdAt is 2026-02-01 — well outside the 1-hour window
+    const prismaMock = {
+      accommodation: {
+        findUnique: vi.fn().mockResolvedValue(baseAccommodation),
+        delete: vi.fn(),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(AccommodationsService);
+
+    await expect(
+      service.delete(ACCOMMODATION_ID, USER_ID, PILGRIM_ROLES),
+    ).rejects.toBeInstanceOf(ForbiddenException);
+    expect(prismaMock.accommodation.delete).not.toHaveBeenCalled();
+  });
+
+  // Non-creator, non-owner is always forbidden.
+  it('throws ForbiddenException when user is neither creator nor owner', async () => {
+    const recentAccommodation = { ...baseAccommodation, createdBy: USER_ID, createdAt: new Date(Date.now() - 60 * 1000) };
+    const prismaMock = {
+      accommodation: {
+        findUnique: vi.fn().mockResolvedValue(recentAccommodation),
+        delete: vi.fn(),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(AccommodationsService);
+
+    // OTHER_USER_ID is not the creator (USER_ID) and has only pilgrim role (not owner)
+    await expect(
+      service.delete(ACCOMMODATION_ID, OTHER_USER_ID, PILGRIM_ROLES),
+    ).rejects.toBeInstanceOf(ForbiddenException);
+    expect(prismaMock.accommodation.delete).not.toHaveBeenCalled();
+  });
+
+  // User with no roles and not the creator is forbidden.
+  it('throws ForbiddenException when user has no roles and is not the creator', async () => {
+    const prismaMock = {
+      accommodation: {
+        findUnique: vi.fn().mockResolvedValue(baseAccommodation),
+        delete: vi.fn(),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(AccommodationsService);
+
+    await expect(
+      service.delete(ACCOMMODATION_ID, OTHER_USER_ID, NO_ROLES),
+    ).rejects.toBeInstanceOf(ForbiddenException);
+    expect(prismaMock.accommodation.delete).not.toHaveBeenCalled();
+  });
+
+  it('calls prisma.accommodation.delete and cleans up images for owner', async () => {
+    const prismaMock = {
+      accommodation: {
+        findUnique: vi.fn().mockResolvedValue(baseAccommodation),
+        delete: vi.fn().mockResolvedValue(baseAccommodation),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(AccommodationsService);
+
+    await expect(
+      service.delete(ACCOMMODATION_ID, OWNER_USER_ID, OWNER_ROLES),
     ).resolves.toBeUndefined();
     expect(prismaMock.accommodation.delete).toHaveBeenCalledWith({
       where: { id: ACCOMMODATION_ID },
@@ -384,7 +456,7 @@ describe('AccommodationsService.delete()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(AccommodationsService);
 
-    await service.delete(ACCOMMODATION_ID, PILGRIM_ROLES);
+    await service.delete(ACCOMMODATION_ID, OWNER_USER_ID, OWNER_ROLES);
 
     expect(uploadsMock.deleteImages).not.toHaveBeenCalled();
   });
@@ -400,7 +472,7 @@ describe('AccommodationsService.delete()', () => {
     const service = module.get(AccommodationsService);
 
     await expect(
-      service.delete(ACCOMMODATION_ID, PILGRIM_ROLES),
+      service.delete(ACCOMMODATION_ID, OWNER_USER_ID, OWNER_ROLES),
     ).rejects.toBeInstanceOf(NotFoundException);
     expect(prismaMock.accommodation.delete).not.toHaveBeenCalled();
   });

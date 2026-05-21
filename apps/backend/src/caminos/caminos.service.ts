@@ -11,6 +11,7 @@ import {
 import { Prisma } from '@prisma/client';
 
 import { KindeRole } from '../auth/kinde-jwt.strategy';
+import { DeleteAuthorizationService } from '../common/delete-authorization.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { StagesService } from '../stages/stages.service';
 import { CreateCaminoDto } from './dto/create-camino.dto';
@@ -24,6 +25,7 @@ export interface CaminoSummary {
   description: string | null;
   verified: boolean;
   createdBy: string;
+  createdAt: Date;
 }
 
 export interface CaminoPointInResponse {
@@ -72,6 +74,9 @@ export interface CaminoDetailFull {
 
 // ─── Service ─────────────────────────────────────────────────────────────────
 
+/** Creators may delete their own caminos within this period after creation. */
+const CAMINO_DELETE_WINDOW_MS = 2 * 60 * 60 * 1000; // 2 hours
+
 @Injectable()
 export class CaminosService {
   private readonly logger = new Logger(CaminosService.name);
@@ -79,6 +84,7 @@ export class CaminosService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly stagesService: StagesService,
+    private readonly deleteAuthorizationService: DeleteAuthorizationService,
   ) {}
 
   // ── generateSlug ────────────────────────────────────────────────────────────
@@ -130,6 +136,7 @@ export class CaminosService {
           description: true,
           verified: true,
           createdBy: true,
+          createdAt: true,
         },
         orderBy: { createdAt: 'desc' },
       });
@@ -345,22 +352,46 @@ export class CaminosService {
   async update(
     id: string,
     dto: UpdateCaminoDto,
+    userId: string,
     userRoles: KindeRole[],
   ): Promise<CaminoDetailFull> {
     this.logger.debug(`Updating camino ${id}`);
 
-    // 1. Verify the camino exists
-    const camino = await this.prisma.camino.findUnique({ where: { id } });
+    // 1. Verify the camino exists; fetch existing waypoint ids for removal detection.
+    const camino = await this.prisma.camino.findUnique({
+      where: { id },
+      include: { caminoPointOrder: { select: { caminoPointId: true } } },
+    });
     if (!camino) {
       throw new NotFoundException('Camino not found.');
     }
 
-    // 2. Authorisation: pilgrim role can modify any camino
-    const canModify = userRoles.some((r) => r.key === 'pilgrim');
-    if (!canModify) {
+    // 2. Base authorisation: pilgrim role required for any update.
+    if (!userRoles.some((r) => r.key === 'pilgrim')) {
       throw new ForbiddenException(
         'You do not have permission to update this camino.',
       );
+    }
+
+    // 3. Removal authorisation: removing an existing waypoint requires owner or
+    //    creator-within-window — same policy as camino deletion.
+    if (dto.caminoPoints !== undefined) {
+      const newlyReferencedIds = new Set(
+        dto.caminoPoints
+          .filter((p) => p.caminoPointId != null)
+          .map((p) => p.caminoPointId as string),
+      );
+      const hasRemoval = camino.caminoPointOrder.some(
+        (o) => !newlyReferencedIds.has(o.caminoPointId),
+      );
+      if (hasRemoval) {
+        this.deleteAuthorizationService.assertCanDelete(
+          userId,
+          userRoles,
+          camino,
+          CAMINO_DELETE_WINDOW_MS,
+        );
+      }
     }
 
     try {
@@ -534,22 +565,32 @@ export class CaminosService {
 
   // ── delete ──────────────────────────────────────────────────────────────────
 
-  async delete(id: string, userRoles: KindeRole[]): Promise<void> {
+  /**
+   * Deletes a camino. Authorization rules:
+   *   - `owner` role: always permitted.
+   *   - Creator: permitted within 2 hours of creation.
+   *   - All others: ForbiddenException (403).
+   */
+  async delete(
+    id: string,
+    userId: string,
+    userRoles: KindeRole[],
+  ): Promise<void> {
     this.logger.debug(`Deleting camino ${id}`);
 
-    // 1. Verify the camino exists
+    // 1. Verify the camino exists (must precede auth check to return 404, not 403)
     const camino = await this.prisma.camino.findUnique({ where: { id } });
     if (!camino) {
       throw new NotFoundException('Camino not found.');
     }
 
-    // 2. Authorisation: pilgrim role can modify any camino
-    const canModify = userRoles.some((r) => r.key === 'pilgrim');
-    if (!canModify) {
-      throw new ForbiddenException(
-        'You do not have permission to delete this camino.',
-      );
-    }
+    // 2. Time-windowed authorization
+    this.deleteAuthorizationService.assertCanDelete(
+      userId,
+      userRoles,
+      camino,
+      CAMINO_DELETE_WINDOW_MS,
+    );
 
     // 3. Delete the camino; DB cascade removes camino_point_order rows.
     //    camino_points rows are intentionally left untouched.

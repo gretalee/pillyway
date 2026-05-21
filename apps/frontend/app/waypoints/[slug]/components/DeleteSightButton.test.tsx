@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { DeleteSightButton } from './DeleteSightButton';
+import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 
 vi.mock('next/navigation', () => ({
   useRouter: vi.fn(),
@@ -14,7 +15,7 @@ vi.mock('next-intl', () => ({
 }));
 
 vi.mock('@kinde-oss/kinde-auth-nextjs', () => ({
-  useKindeBrowserClient: () => ({ accessTokenEncoded: 'test-token' }),
+  useKindeBrowserClient: vi.fn(),
 }));
 
 const mockFetch = vi.fn();
@@ -34,6 +35,8 @@ const TEST_PROPS = {
   id: 'sight-77',
   caminoPointId: 'point-2',
   name: 'Catedral de Santiago',
+  createdBy: 'user-1',
+  createdAt: '2024-01-01T00:00:00.000Z',
 };
 
 function renderButton(props = TEST_PROPS) {
@@ -47,6 +50,11 @@ function renderButton(props = TEST_PROPS) {
 const originalConsoleError = console.error.bind(console);
 
 beforeEach(() => {
+  vi.mocked(useKindeBrowserClient).mockReturnValue({
+    accessTokenEncoded: 'test-token',
+    user: { id: 'user-1' },
+    accessToken: { roles: [{ key: 'owner' }] },
+  } as unknown as ReturnType<typeof useKindeBrowserClient>);
   vi.mocked(useRouter).mockReturnValue({ refresh: mockRefresh } as unknown as ReturnType<typeof useRouter>);
   mockFetch.mockReset();
   mockRefresh.mockReset();
@@ -108,5 +116,42 @@ describe('DeleteSightButton — confirm delete', () => {
       expect(mockRefresh).toHaveBeenCalledOnce();
       expect(screen.queryByText('delete_confirmation_title')).not.toBeInTheDocument();
     });
+  });
+});
+
+describe('DeleteSightButton — hidden when not authorized', () => {
+  it('renders nothing when user is neither owner nor creator', () => {
+    vi.mocked(useKindeBrowserClient).mockReturnValue({
+      accessTokenEncoded: 'test-token',
+      user: { id: 'other-user' },
+      accessToken: { roles: [{ key: 'pilgrim' }] },
+    } as unknown as ReturnType<typeof useKindeBrowserClient>);
+    renderButton();
+    expect(screen.queryByRole('button', { name: 'delete_sight_label' })).not.toBeInTheDocument();
+  });
+});
+
+describe('DeleteSightButton — 403 error handling', () => {
+  it('shows the forbidden error message on a 403 response', async () => {
+    mockFetch.mockResolvedValue({ ok: false, status: 403 });
+    const user = userEvent.setup();
+    renderButton();
+    await user.click(screen.getByRole('button', { name: 'delete_sight_label' }));
+    await user.click(screen.getByText('delete_confirm_action'));
+    await waitFor(() =>
+      expect(screen.getByRole('alert')).toHaveTextContent('delete_error_forbidden'),
+    );
+  });
+
+  it('clears the error when the dialog is closed and reopened', async () => {
+    mockFetch.mockResolvedValue({ ok: false, status: 403 });
+    const user = userEvent.setup();
+    renderButton();
+    await user.click(screen.getByRole('button', { name: 'delete_sight_label' }));
+    await user.click(screen.getByText('delete_confirm_action'));
+    await waitFor(() => expect(screen.getByRole('alert')).toBeInTheDocument());
+    // Close via cancel
+    await user.click(screen.getByText('delete_cancel_action'));
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 });

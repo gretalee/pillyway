@@ -77,6 +77,7 @@
     "delete_dialog_confirm": "Delete",
     "delete_dialog_deleting": "Deleting…",
     "delete_dialog_error": "Failed to delete the camino. Please try again.",
+    "delete_dialog_error_forbidden": "You are not authorized to delete this camino. Only the creator (within 2 hours of creation) or an administrator can delete it.",
     "edit_name_aria": "Edit camino name",
     "edit_description_aria": "Edit camino description",
     "no_description": "No description provided.",
@@ -130,7 +131,7 @@
     "verification_heading": "Verified Route",
     "vote_yes": "Yes, the route is current",
     "vote_no": "No, the route no longer exists as described",
-    "vote_login_hint": "You must be logged in to verify the route",
+    "vote_login_hint": "Log in to verify this route.",
     "vote_yes_count": "{count} Yes",
     "vote_no_count": "{count} No",
     "vote_error": "Your vote could not be saved. Please try again."
@@ -144,7 +145,7 @@
     "cancel": "Cancel",
     "error_generic": "Failed to update camino. Please try again.",
     "error_conflict": "A camino with this name already exists. Please choose a different name.",
-    "error_forbidden": "You are not authorized to edit this camino.",
+    "error_forbidden": "You are not authorized to edit this camino. Only the creator (within 2 hours of creation) or an administrator can edit it.",
     "error_loading": "Failed to load camino data for editing.",
     "back_to_caminos": "← Back to caminos",
     "reorder_warning_title": "Waypoint order changed",
@@ -250,7 +251,9 @@
     "delete_confirmation_title": "Delete",
     "delete_confirmation_description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
     "delete_confirm_action": "Delete",
-    "delete_cancel_action": "Cancel"
+    "delete_cancel_action": "Cancel",
+    "delete_error": "Failed to delete. Please try again.",
+    "delete_error_forbidden": "You are not authorized to delete this item. Only the creator (within 1 hour of creation) or an administrator can delete it."
   },
   "accommodation_detail": {
     "meta_title": "{name} | Pillyway",

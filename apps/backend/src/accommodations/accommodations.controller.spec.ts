@@ -200,6 +200,7 @@ describe('AccommodationsController.delete()', () => {
     ).resolves.toBeUndefined();
     expect(serviceMock.delete).toHaveBeenCalledWith(
       ACCOMMODATION_ID,
+      mockRequest.user.sub,
       mockRequest.user.roles,
     );
   });

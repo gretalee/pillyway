@@ -1,16 +1,15 @@
-import {
-  ForbiddenException,
-  Injectable,
-  Logger,
-  NotFoundException,
-} from '@nestjs/common';
+import { ForbiddenException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { AccommodationType, PriceRange } from '@prisma/client';
 
 import { KindeRole } from '../auth/kinde-jwt.strategy';
+import { DeleteAuthorizationService } from '../common/delete-authorization.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { UploadsService } from '../uploads/uploads.service';
 import { AccommodationDetailDto } from './dto/accommodation-detail.dto';
 import { UpdateAccommodationDto } from './dto/update-accommodation.dto';
+
+/** Creators may delete their own accommodations within this period after creation. */
+const ACCOMMODATION_DELETE_WINDOW_MS = 60 * 60 * 1000; // 1 hour
 
 @Injectable()
 export class AccommodationsService {
@@ -19,6 +18,7 @@ export class AccommodationsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly uploadsService: UploadsService,
+    private readonly deleteAuthorizationService: DeleteAuthorizationService,
   ) {}
 
   // ── findById ─────────────────────────────────────────────────────────────────
@@ -114,15 +114,29 @@ export class AccommodationsService {
 
   // ── delete ────────────────────────────────────────────────────────────────────
 
-  async delete(id: string, roles: KindeRole[]): Promise<void> {
-    if (!roles.some((r) => r.key === 'pilgrim')) {
-      throw new ForbiddenException('Requires pilgrim role.');
-    }
-
+  /**
+   * Deletes an accommodation. Authorization rules:
+   *   - `owner` role: always permitted.
+   *   - Creator: permitted within 1 hour of creation.
+   *   - All others: ForbiddenException (403).
+   */
+  async delete(
+    id: string,
+    userId: string,
+    roles: KindeRole[],
+  ): Promise<void> {
+    // Fetch first so we return 404 before 403
     const existing = await this.prisma.accommodation.findUnique({ where: { id } });
     if (!existing) {
       throw new NotFoundException('Accommodation not found.');
     }
+
+    this.deleteAuthorizationService.assertCanDelete(
+      userId,
+      roles,
+      existing,
+      ACCOMMODATION_DELETE_WINDOW_MS,
+    );
 
     await this.prisma.accommodation.delete({ where: { id } });
 

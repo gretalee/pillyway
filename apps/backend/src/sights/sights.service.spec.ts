@@ -8,6 +8,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { KindeRole } from '../auth/kinde-jwt.strategy';
+import { DeleteAuthorizationService } from '../common/delete-authorization.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { UploadsService } from '../uploads/uploads.service';
 import { SightsService } from './sights.service';
@@ -18,6 +19,8 @@ import { UpdateSightDto } from './dto/update-sight.dto';
 const SIGHT_ID = 'si-1111-0000-0000-0000';
 const CAMINO_POINT_ID = 'pt-1111-0000-0000-0000';
 const USER_ID = 'kinde-user-001';
+const OTHER_USER_ID = 'kinde-other-001';
+const OWNER_USER_ID = 'kinde-owner-001';
 
 const baseSight = {
   id: SIGHT_ID,
@@ -48,6 +51,7 @@ function buildModule(prismaMock: object): Promise<TestingModule> {
       SightsService,
       { provide: PrismaService, useValue: prismaMock },
       { provide: UploadsService, useValue: uploadsMock },
+      DeleteAuthorizationService,
     ],
   })
     .setLogger(false as unknown as LoggerService)
@@ -343,33 +347,8 @@ describe('SightsService.delete()', () => {
     uploadsMock.deleteImages.mockClear();
   });
 
-  it('throws ForbiddenException when user has no roles', async () => {
-    const prismaMock = {
-      sight: { findUnique: vi.fn(), delete: vi.fn() },
-    };
-    const module = await buildModule(prismaMock);
-    const service = module.get(SightsService);
-
-    await expect(
-      service.delete(SIGHT_ID, NO_ROLES),
-    ).rejects.toBeInstanceOf(ForbiddenException);
-    expect(prismaMock.sight.delete).not.toHaveBeenCalled();
-  });
-
-  it('throws ForbiddenException when user has owner role but not pilgrim', async () => {
-    const prismaMock = {
-      sight: { findUnique: vi.fn(), delete: vi.fn() },
-    };
-    const module = await buildModule(prismaMock);
-    const service = module.get(SightsService);
-
-    await expect(
-      service.delete(SIGHT_ID, OWNER_ROLES),
-    ).rejects.toBeInstanceOf(ForbiddenException);
-    expect(prismaMock.sight.delete).not.toHaveBeenCalled();
-  });
-
-  it('calls prisma.sight.delete for pilgrim role', async () => {
+  // Owner role is always allowed regardless of who created the sight or when.
+  it('allows a user with owner role to delete any sight', async () => {
     const prismaMock = {
       sight: {
         findUnique: vi.fn().mockResolvedValue(baseSight),
@@ -380,7 +359,100 @@ describe('SightsService.delete()', () => {
     const service = module.get(SightsService);
 
     await expect(
-      service.delete(SIGHT_ID, PILGRIM_ROLES),
+      service.delete(SIGHT_ID, OWNER_USER_ID, OWNER_ROLES),
+    ).resolves.toBeUndefined();
+    expect(prismaMock.sight.delete).toHaveBeenCalledWith({
+      where: { id: SIGHT_ID },
+    });
+  });
+
+  // Creator within the 1-hour window is allowed.
+  it('allows the creator to delete their own sight within the time window', async () => {
+    const recentSight = { ...baseSight, createdBy: USER_ID, createdAt: new Date(Date.now() - 60 * 1000) };
+    const prismaMock = {
+      sight: {
+        findUnique: vi.fn().mockResolvedValue(recentSight),
+        delete: vi.fn().mockResolvedValue(recentSight),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(SightsService);
+
+    await expect(
+      service.delete(SIGHT_ID, USER_ID, PILGRIM_ROLES),
+    ).resolves.toBeUndefined();
+    expect(prismaMock.sight.delete).toHaveBeenCalledWith({
+      where: { id: SIGHT_ID },
+    });
+    expect(uploadsMock.deleteImages).toHaveBeenCalledWith(recentSight.imageUrls);
+  });
+
+  // Creator after the 1-hour window is forbidden.
+  it('throws ForbiddenException when creator is outside the time window', async () => {
+    // baseSight.createdAt is 2026-02-01 — well outside the 1-hour window
+    const prismaMock = {
+      sight: {
+        findUnique: vi.fn().mockResolvedValue(baseSight),
+        delete: vi.fn(),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(SightsService);
+
+    await expect(
+      service.delete(SIGHT_ID, USER_ID, PILGRIM_ROLES),
+    ).rejects.toBeInstanceOf(ForbiddenException);
+    expect(prismaMock.sight.delete).not.toHaveBeenCalled();
+  });
+
+  // Non-creator, non-owner is always forbidden.
+  it('throws ForbiddenException when user is neither creator nor owner', async () => {
+    const recentSight = { ...baseSight, createdBy: USER_ID, createdAt: new Date(Date.now() - 60 * 1000) };
+    const prismaMock = {
+      sight: {
+        findUnique: vi.fn().mockResolvedValue(recentSight),
+        delete: vi.fn(),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(SightsService);
+
+    // OTHER_USER_ID is not the creator (USER_ID) and has only pilgrim role (not owner)
+    await expect(
+      service.delete(SIGHT_ID, OTHER_USER_ID, PILGRIM_ROLES),
+    ).rejects.toBeInstanceOf(ForbiddenException);
+    expect(prismaMock.sight.delete).not.toHaveBeenCalled();
+  });
+
+  // User with no roles and not the creator is forbidden.
+  it('throws ForbiddenException when user has no roles and is not the creator', async () => {
+    const prismaMock = {
+      sight: {
+        findUnique: vi.fn().mockResolvedValue(baseSight),
+        delete: vi.fn(),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(SightsService);
+
+    await expect(
+      service.delete(SIGHT_ID, OTHER_USER_ID, NO_ROLES),
+    ).rejects.toBeInstanceOf(ForbiddenException);
+    expect(prismaMock.sight.delete).not.toHaveBeenCalled();
+  });
+
+  it('calls prisma.sight.delete and cleans up images for owner', async () => {
+    const prismaMock = {
+      sight: {
+        findUnique: vi.fn().mockResolvedValue(baseSight),
+        delete: vi.fn().mockResolvedValue(baseSight),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(SightsService);
+
+    await expect(
+      service.delete(SIGHT_ID, OWNER_USER_ID, OWNER_ROLES),
     ).resolves.toBeUndefined();
     expect(prismaMock.sight.delete).toHaveBeenCalledWith({
       where: { id: SIGHT_ID },
@@ -399,7 +471,7 @@ describe('SightsService.delete()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(SightsService);
 
-    await service.delete(SIGHT_ID, PILGRIM_ROLES);
+    await service.delete(SIGHT_ID, OWNER_USER_ID, OWNER_ROLES);
 
     expect(uploadsMock.deleteImages).not.toHaveBeenCalled();
   });
@@ -415,7 +487,7 @@ describe('SightsService.delete()', () => {
     const service = module.get(SightsService);
 
     await expect(
-      service.delete(SIGHT_ID, PILGRIM_ROLES),
+      service.delete(SIGHT_ID, OWNER_USER_ID, OWNER_ROLES),
     ).rejects.toBeInstanceOf(NotFoundException);
     expect(prismaMock.sight.delete).not.toHaveBeenCalled();
   });

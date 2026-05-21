@@ -77,6 +77,7 @@
     "delete_dialog_confirm": "Löschen",
     "delete_dialog_deleting": "Wird gelöscht…",
     "delete_dialog_error": "Der Camino konnte nicht gelöscht werden. Bitte versuche es erneut.",
+    "delete_dialog_error_forbidden": "Du bist nicht berechtigt, diesen Camino zu löschen. Nur der Ersteller (innerhalb von 2 Stunden nach der Erstellung) oder ein Administrator kann ihn löschen.",
     "edit_name_aria": "Caminonamen bearbeiten",
     "edit_description_aria": "Caminobeschreibung bearbeiten",
     "no_description": "Keine Beschreibung vorhanden.",
@@ -130,9 +131,9 @@
     "verification_heading": "Verifizierter Weg",
     "vote_yes": "Ja, der Weg ist aktuell",
     "vote_no": "Nein, der Weg existiert so nicht mehr",
-    "vote_login_hint": "Sie müssen sich einloggen, um den Weg verifizieren zu können",
-    "vote_yes_count": "{count} Ja",
-    "vote_no_count": "{count} Nein",
+    "vote_login_hint": "Melde dich an, um den Weg verifizieren zu können.",
+    "vote_yes_count": "Ja: {count}",
+    "vote_no_count": "Nein: {count}",
     "vote_error": "Deine Stimme konnte nicht gespeichert werden. Bitte versuche es erneut."
   },
   "caminos_update": {
@@ -144,7 +145,7 @@
     "cancel": "Abbrechen",
     "error_generic": "Camino konnte nicht aktualisiert werden. Bitte versuche es erneut.",
     "error_conflict": "Ein Camino mit diesem Namen existiert bereits. Bitte wähle einen anderen Namen.",
-    "error_forbidden": "Du bist nicht berechtigt, diesen Camino zu bearbeiten.",
+    "error_forbidden": "Du bist nicht berechtigt, diesen Camino zu bearbeiten. Nur der Ersteller (innerhalb von 2 Stunden nach der Erstellung) oder ein Administrator kann ihn bearbeiten.",
     "error_loading": "Camino-Daten konnten nicht zum Bearbeiten geladen werden.",
     "back_to_caminos": "← Zurück zu Caminos",
     "reorder_warning_title": "Reihenfolge der Wegpunkte geändert",
@@ -250,7 +251,9 @@
     "delete_confirmation_title": "Löschen",
     "delete_confirmation_description": "Möchtest du \"{name}\" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
     "delete_confirm_action": "Löschen",
-    "delete_cancel_action": "Abbrechen"
+    "delete_cancel_action": "Abbrechen",
+    "delete_error": "Löschen fehlgeschlagen. Bitte versuche es erneut.",
+    "delete_error_forbidden": "Du bist nicht berechtigt, dieses Element zu löschen. Nur der Ersteller (innerhalb von 1 Stunde nach der Erstellung) oder ein Administrator kann es löschen."
   },
   "accommodation_detail": {
     "meta_title": "{name} | Pillyway",
