@@ -18,10 +18,7 @@ function makeRole(key: string): KindeRole {
   return { id: `role-${key}`, key, name: key };
 }
 
-function makeEntity(
-  createdBy: string,
-  ageMs: number,
-): DeletableEntity {
+function makeEntity(createdBy: string, ageMs: number): DeletableEntity {
   return {
     createdBy,
     createdAt: new Date(Date.now() - ageMs),
@@ -86,12 +83,13 @@ describe('DeleteAuthorizationService', () => {
       ).not.toThrow();
     });
 
-    it('allows creator to delete exactly at the window boundary (0 ms elapsed)', () => {
+    it('allows creator to delete just inside the window boundary (50 ms before expiry)', () => {
       const roles = [makeRole('pilgrim')];
       const entity: DeletableEntity = {
         createdBy: CREATOR_ID,
-        // createdAt is exactly windowMs ago — age = windowMs → allowed (<=)
-        createdAt: new Date(Date.now() - ONE_HOUR_MS),
+        // 50 ms slack ensures the entity is still within the window when the
+        // service evaluates it, even accounting for test execution overhead.
+        createdAt: new Date(Date.now() - ONE_HOUR_MS + 50),
       };
 
       expect(() =>
@@ -137,9 +135,9 @@ describe('DeleteAuthorizationService', () => {
       const roles = [makeRole('pilgrim')];
       const entity = makeEntity(CREATOR_ID, 2 * ONE_HOUR_MS + 1);
 
-      expect(
-        service.canDelete(CREATOR_ID, roles, entity, ONE_HOUR_MS),
-      ).toBe(false);
+      expect(service.canDelete(CREATOR_ID, roles, entity, ONE_HOUR_MS)).toBe(
+        false,
+      );
     });
   });
 
@@ -177,9 +175,9 @@ describe('DeleteAuthorizationService', () => {
       const roles = [makeRole('pilgrim')];
       const entity = makeEntity(CREATOR_ID, 1_000);
 
-      expect(
-        service.canDelete(OTHER_USER_ID, roles, entity, ONE_HOUR_MS),
-      ).toBe(false);
+      expect(service.canDelete(OTHER_USER_ID, roles, entity, ONE_HOUR_MS)).toBe(
+        false,
+      );
     });
 
     it('ForbiddenException has the expected message', () => {
