@@ -14,6 +14,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { KindeJwtPayload } from '../auth/kinde-jwt.strategy';
+import { DeleteAuthorizationService } from '../common/delete-authorization.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { StagesService } from '../stages/stages.service';
 import { CaminosController } from './caminos.controller';
@@ -89,7 +90,7 @@ describe('CaminosService.setVerified', () => {
 
   beforeEach(() => {
     prisma = buildPrismaMock();
-    service = new CaminosService(prisma, stagesServiceStub);
+    service = new CaminosService(prisma, stagesServiceStub, new DeleteAuthorizationService());
   });
 
   it('sets verified=true and returns the updated camino', async () => {

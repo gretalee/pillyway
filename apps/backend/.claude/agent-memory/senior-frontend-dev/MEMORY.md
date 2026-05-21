@@ -1,0 +1,1 @@
+- [Kinde auth patterns in frontend client components](project_auth_patterns.md) — how to access userId/roles/token; delete-window authorization utility

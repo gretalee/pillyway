@@ -7,6 +7,9 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Loader2 } from 'lucide-react';
+import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
+
+import { canDelete } from '@/lib/can-delete';
 
 import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
@@ -48,6 +51,8 @@ interface CaminoFormValues {
   caminoPoints: CaminoPointFormItem[];
 }
 
+const CAMINO_EDIT_WINDOW_MS = 2 * 60 * 60 * 1000; // 2 hours — matches backend policy
+
 interface UpdateCaminoFormProps {
   caminoId: string;
 }
@@ -61,6 +66,20 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
   const { data: camino, isLoading, isError: caminoError } = useCamino(caminoId);
   const { data: stages } = useStages(caminoId);
   const mutation = useUpdateCamino();
+
+  const { user, accessToken } = useKindeBrowserClient();
+  const roleKeys = accessToken?.roles?.map((r) => r.key) ?? [];
+  // True while user/camino is loading or when the user is the owner/creator within window.
+  const canRemoveWaypoints =
+    user === null ||
+    !camino ||
+    canDelete({
+      userId: user.id,
+      roles: roleKeys,
+      createdBy: camino.createdBy,
+      createdAt: camino.createdAt,
+      windowMs: CAMINO_EDIT_WINDOW_MS,
+    });
 
   const [formError, setFormError] = useState<string | null>(null);
   const [initialized, setInitialized] = useState(false);
@@ -345,6 +364,7 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
                 onLink={onLinkCaminoPoints}
                 onUnlink={onUnlinkCaminoPoints}
                 watchedPoints={watchedPoints ?? []}
+                canRemove={canRemoveWaypoints}
               />
             ))}
           </div>

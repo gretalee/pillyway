@@ -104,16 +104,25 @@ export class AccommodationsController {
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Delete an accommodation (pilgrim role required)' })
+  @ApiOperation({
+    summary:
+      'Delete an accommodation. Owner role: always. Creator: within 1 hour of creation.',
+  })
   @ApiNoContentResponse({ description: 'Accommodation deleted successfully.' })
   @ApiUnauthorizedResponse({ description: 'Missing or invalid JWT.' })
-  @ApiForbiddenResponse({ description: 'Requires pilgrim role.' })
+  @ApiForbiddenResponse({
+    description:
+      'User is not an owner and is either not the creator or the 1-hour window has expired.',
+  })
   @ApiNotFoundResponse({ description: 'Accommodation not found.' })
   async delete(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Req() req: Request & { user: KindeJwtPayload },
   ): Promise<void> {
-    const roles = req.user.roles ?? [];
-    await this.accommodationsService.delete(id, roles);
+    await this.accommodationsService.delete(
+      id,
+      req.user.sub,
+      req.user.roles ?? [],
+    );
   }
 }

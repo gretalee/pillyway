@@ -4,10 +4,17 @@ import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { CaminoActionsMenu } from './CaminoActionsMenu';
 import { DeleteCaminoDialog } from './DeleteCaminoDialog';
+import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 
 // ── i18n mock ──────────────────────────────────────────────────────────────────
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
+}));
+
+// ── Kinde mock ─────────────────────────────────────────────────────────────────
+// TEST_CAMINO.createdBy matches user-1 and createdAt is 1 min ago — within window.
+vi.mock('@kinde-oss/kinde-auth-nextjs', () => ({
+  useKindeBrowserClient: vi.fn(),
 }));
 
 // ── next/navigation mock ───────────────────────────────────────────────────────
@@ -46,7 +53,12 @@ vi.mock('./DeleteCaminoDialog', () => ({
 
 // ── Fixtures ───────────────────────────────────────────────────────────────────
 
-const TEST_CAMINO = { id: 'camino-99', name: 'Camino del Norte' };
+const TEST_CAMINO = {
+  id: 'camino-99',
+  name: 'Camino del Norte',
+  createdBy: 'user-1',
+  createdAt: new Date(Date.now() - 60_000).toISOString(), // 1 min ago — within window
+};
 
 function renderMenu(camino = TEST_CAMINO) {
   render(<CaminoActionsMenu camino={camino} />);
@@ -69,6 +81,10 @@ function defaultDialogImpl({ open, onClose, camino }: DialogProps) {
 }
 
 beforeEach(() => {
+  vi.mocked(useKindeBrowserClient).mockReturnValue({
+    user: { id: 'user-1' },
+    accessToken: { roles: [{ key: 'pilgrim' }] },
+  } as unknown as ReturnType<typeof useKindeBrowserClient>);
   vi.mocked(DeleteCaminoDialog).mockImplementation(defaultDialogImpl);
 });
 
@@ -138,5 +154,18 @@ describe('CaminoActionsMenu — delete action', () => {
     await user.click(screen.getByText('menu_delete'));
     await user.click(screen.getByText('trigger-success'));
     expect(mockRefresh).toHaveBeenCalledOnce();
+  });
+});
+
+// ── Delete hidden when not authorized ─────────────────────────────────────────
+
+describe('CaminoActionsMenu — delete hidden when not authorized', () => {
+  it('does NOT render the delete menu item when the user is neither owner nor creator', () => {
+    vi.mocked(useKindeBrowserClient).mockReturnValueOnce({
+      user: { id: 'other-user' },
+      accessToken: { roles: [{ key: 'pilgrim' }] },
+    } as unknown as ReturnType<typeof useKindeBrowserClient>);
+    renderMenu();
+    expect(screen.queryByText('menu_delete')).not.toBeInTheDocument();
   });
 });

@@ -14,6 +14,7 @@ export async function CaminoList({ caminos, user }: CaminoListProps) {
   const t = await getTranslations('caminos');
 
   const isPilgrim = user?.roles.some((r) => r.key === 'pilgrim') ?? false;
+  const isOwner = user?.roles.some((r) => r.key === 'owner') ?? false;
 
   return (
     <section className="mt-8">
@@ -29,7 +30,7 @@ export async function CaminoList({ caminos, user }: CaminoListProps) {
           <p className="text-muted-foreground">{t('empty')}</p>
         </>
       ) : (
-        <CaminoListFilter caminos={caminos} isPilgrim={isPilgrim} />
+        <CaminoListFilter caminos={caminos} isPilgrim={isPilgrim} isOwner={isOwner} />
       )}
     </section>
   );
