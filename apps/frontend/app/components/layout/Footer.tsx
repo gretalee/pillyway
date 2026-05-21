@@ -20,7 +20,7 @@ export async function Footer({ className }: { className?: string }) {
             </Link>
           </li>{' '}
           <li>
-            <Link href="/tac" className="text-sm xl:text-base">
+            <Link href="/terms" className="text-sm xl:text-base">
               {t('tac')}
             </Link>
           </li>

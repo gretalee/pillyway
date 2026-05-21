@@ -26,7 +26,7 @@ export function LanguageSwitcher() {
     <div
       role="group"
       aria-label={t('aria_language_switcher')}
-      className="flex items-center gap-0.5">
+      className="flex items-center sm:gap-0.5">
       {LOCALES.map((loc) => {
         const isActive = loc === locale;
         return (

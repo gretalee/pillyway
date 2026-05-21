@@ -33,7 +33,7 @@ export function Tooltip({
           <TooltipPrimitive.Positioner sideOffset={4}>
             <TooltipPrimitive.Popup
               className={cn(
-                'z-50 rounded-xs bg-popover px-3 py-3 text-base text-popover-foreground antialiased',
+                'z-50 rounded-xs bg-black px-3 py-3 text-base text-white antialiased',
                 'ring-1 ring-foreground/10 shadow-sm',
                 'origin-(--transform-origin)',
                 'data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95',

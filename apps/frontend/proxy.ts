@@ -16,7 +16,17 @@ export default withAuth(
   },
   {
     // Proxy still runs on all routes, but doesn't protect these routes:
-    publicPaths: ['/', '/accommodations', '/caminos', '/waypoints', '/contact', '/imprint', '/auth-error'],
+    publicPaths: [
+      '/',
+      '/accommodations',
+      '/caminos',
+      '/waypoints',
+      '/contact',
+      '/imprint',
+      '/privacy',
+      '/terms',
+      '/auth-error',
+    ],
   },
 );
 
