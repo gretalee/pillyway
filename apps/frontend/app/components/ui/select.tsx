@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ChevronDown } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
@@ -17,8 +16,8 @@ const Select = React.forwardRef<HTMLSelectElement, React.ComponentProps<'select'
           {...props}>
           {children}
         </select>
-        <ChevronDown
-          className="pointer-events-none absolute right-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+        <i
+          className="icon-chevron-down text-sm pointer-events-none absolute right-2.5 top-[50%] -translate-y-1/2"
           aria-hidden="true"
         />
       </div>
