@@ -4,6 +4,7 @@ import { buttonVariants } from '@/app/components/ui/button';
 import type { CaminoSummary } from '@/app/api/caminos/caminos';
 import type { AuthUser } from '@/lib/getAuthUser';
 import { CaminoListFilter } from './CaminoListFilter';
+import { cn } from '@/lib/utils';
 
 interface CaminoListProps {
   caminos: CaminoSummary[];
@@ -21,7 +22,9 @@ export async function CaminoList({ caminos, user }: CaminoListProps) {
         <>
           {isPilgrim && (
             <div className="mb-6">
-              <Link href="/caminos/new" className={buttonVariants({ variant: 'default' })}>
+              <Link
+                href="/caminos/new"
+                className={cn(buttonVariants({ variant: 'default' }))}>
                 {t('create_link')}
               </Link>
             </div>

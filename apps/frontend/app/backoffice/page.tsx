@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { getAuthUser } from '@/lib/getAuthUser';
 import { buttonVariants } from '@/app/components/ui/button';
 import { BackofficeUserDebug } from './BackofficeUserDebug';
+import { cn } from '@/lib/utils';
 
 export async function generateMetadata() {
   const t = await getTranslations('backoffice');
@@ -21,7 +22,9 @@ export default async function BackofficePage() {
       <h1 className="text-3xl font-bold tracking-tight">{t('heading')}</h1>
       <p className="mt-2 text-muted-foreground">{t('subtitle')}</p>
       <nav className="mt-8 flex flex-col gap-2" aria-label={t('heading')}>
-        <Link href="/backoffice/caminos" className={buttonVariants({ variant: 'outline', size: 'sm' })}>
+        <Link
+          href="/backoffice/caminos"
+          className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>
           {t('nav_caminos')}
         </Link>
       </nav>

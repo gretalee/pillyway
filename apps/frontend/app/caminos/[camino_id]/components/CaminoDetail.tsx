@@ -12,6 +12,8 @@ import { Textarea } from '@/app/components/ui/textarea';
 import type { CaminoDetailFull } from '@/app/api/caminos/caminos';
 import { useUpdateCamino } from '@/app/api/caminos/use-update-camino';
 import type { AuthUser } from '@/lib/getAuthUser';
+import { Button, buttonVariants } from '@/app/components/ui/button';
+import { cn } from '@/lib/utils';
 
 type EditingField = 'name' | 'description' | null;
 
@@ -169,19 +171,27 @@ export function CaminoDetail({
             />
           </div>
         ) : (
-          <>
-            <h1 className="text-3xl font-bold tracking-tight">{camino.name}</h1>
-            {camino.verified && <VerifiedBadge />}
+          <div
+            className={cn(
+              'flex items-center justify-between gap-4 w-full',
+              canEdit && 'hover:bg-accent/50 rounded-md pr-1',
+            )}>
+            <div className="flex items-center gap-2">
+              <h1 className="text-3xl font-bold tracking-tight">{camino.name}</h1>
+              {camino.verified && <VerifiedBadge />}
+            </div>
             {canEdit && (
-              <button
-                type="button"
+              <Button
+                variant={'ghost'}
                 aria-label={tCaminos('edit_name_aria')}
-                onClick={() => startEdit('name')}
-                className="rounded p-1 text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                <i className="icon-pencil text-xl" aria-hidden="true" />
-              </button>
+                onClick={() => startEdit('name')}>
+                <i
+                  className="icon-pencil text-xl text-muted-foreground hover:text-accent-foreground"
+                  aria-hidden="true"
+                />
+              </Button>
             )}
-          </>
+          </div>
         )}
       </div>
 
@@ -193,7 +203,7 @@ export function CaminoDetail({
       )}
 
       {/* Description */}
-      <div className="mt-4 flex items-start gap-2">
+      <div className="mt-4">
         {editingField === 'description' ? (
           <div className="flex-1">
             <InlineField
@@ -205,20 +215,26 @@ export function CaminoDetail({
             />
           </div>
         ) : (
-          <>
+          <div
+            className={cn(
+              'mt-4 flex items-start justify-between gap-2',
+              canEdit && 'hover:bg-accent/50 rounded-md pr-1',
+            )}>
             <p className="flex-1 whitespace-pre-wrap text-muted-foreground">
               {camino.description ?? tCaminos('no_description')}
             </p>
             {canEdit && (
-              <button
-                type="button"
+              <Button
+                variant={'ghost'}
                 aria-label={tCaminos('edit_description_aria')}
-                onClick={() => startEdit('description')}
-                className="shrink-0 rounded p-1 text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                <i className="icon-pencil text-xl" aria-hidden="true" />
-              </button>
+                onClick={() => startEdit('description')}>
+                <i
+                  className="icon-pencil text-xl text-muted-foreground hover:text-accent-foreground"
+                  aria-hidden="true"
+                />
+              </Button>
             )}
-          </>
+          </div>
         )}
       </div>
 
@@ -236,9 +252,11 @@ export function CaminoDetail({
         <div className="mt-8">
           <Link
             href={`/caminos/${caminoId}/update`}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-            <i className="icon-pencil text-xl" aria-hidden="true" />
-            {t('edit_waypoints')}
+            className={cn(buttonVariants({ variant: 'outline' }))}>
+            <div className="pt-1 flex items-center gap-2">
+              <i className="icon-pencil text-xl -translate-y-0.5" aria-hidden="true" />
+              {t('edit_waypoints')}
+            </div>
           </Link>
         </div>
       )}

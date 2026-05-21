@@ -7,6 +7,7 @@ import { fetchStage } from '@/app/api/stages/fetch-stage';
 import { fetchAccommodationsByWaypoint } from '@/app/api/accommodations/fetch-accommodation';
 import { AccommodationCard } from '@/app/waypoints/[slug]/components/AccommodationCard';
 import { cn } from '@/lib/utils';
+import { buttonVariants } from '@/app/components/ui/button';
 
 interface StageDetailProps {
   caminoId: string;
@@ -16,6 +17,7 @@ interface StageDetailProps {
 
 export async function StageDetail({ caminoId, stageNumber, user }: StageDetailProps) {
   const t = await getTranslations('stage_detail');
+  const tGlobal = await getTranslations();
   const tCountries = await getTranslations('countries');
 
   let stage: StageDetailData;
@@ -42,7 +44,7 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
         <Link
           href={`/caminos/${caminoId}`}
           className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-          <ChevronLeft className="size-4" aria-hidden="true" />
+          <i className="icon-chevron-left text-xl" aria-hidden="true" />
           {t('back_to_camino')}
         </Link>
       </div>
@@ -123,8 +125,22 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
         <div className="mt-8">
           <Link
             href={`/caminos/${caminoId}/stages/${stageNumber}/edit`}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+            className={cn(
+              buttonVariants({ variant: 'outline', size: 'sm' }),
+              'shrink-0 mt-1',
+            )}>
+            <i className="icon-pencil text-xl" aria-hidden="true" />
             {t('edit')}
+          </Link>
+          {/* Edit waypoints */}
+          <Link
+            href={`/caminos/${caminoId}/update`}
+            className={cn(
+              buttonVariants({ variant: 'outline', size: 'sm' }),
+              'shrink-0 mt-1',
+            )}>
+            <i className="icon-pencil text-xl" aria-hidden="true" />
+            {tGlobal('camino_detail.edit_waypoints')}
           </Link>
         </div>
       )}
@@ -146,7 +162,7 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
               'bg-pillyGreen-400 hover:bg-pillyGreen-300',
             )}>
-            <ChevronLeft className="size-4" aria-hidden="true" />
+            <i className="icon-chevron-left text-xl" aria-hidden="true" />
             <p className="overflow-hidden text-ellipsis">
               {previousStage.startPointName}
               <span className="mx-1.5" aria-hidden="true">

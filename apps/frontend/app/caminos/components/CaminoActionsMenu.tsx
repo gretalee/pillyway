@@ -10,6 +10,8 @@ import {
   DropdownMenuItem,
 } from '@/app/components/ui/dropdown-menu';
 import { DeleteCaminoDialog } from './DeleteCaminoDialog';
+import { buttonVariants } from '@/app/components/ui/button';
+import { cn } from '@/lib/utils';
 
 interface CaminoActionsMenuProps {
   camino: { id: string; name: string };
@@ -28,8 +30,11 @@ export function CaminoActionsMenu({ camino }: CaminoActionsMenuProps) {
       <DropdownMenu>
         <DropdownMenuTrigger
           aria-label={t('actions_menu_aria', { name: camino.name })}
-          className="rounded-md p-1 text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-          <i className="icon-ellipsis-v text-xl" aria-hidden="true" />
+          className={cn(buttonVariants({ variant: 'ghost' }))}>
+          <i
+            className="icon-ellipsis-v text-xl text-muted-foreground hover:text-foreground"
+            aria-hidden="true"
+          />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" ignoreAnchorWidth>
           <DropdownMenuItem
