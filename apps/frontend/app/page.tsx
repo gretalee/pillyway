@@ -15,7 +15,9 @@ export default async function Home() {
           <br />
           {t('hero_body_2')}
         </p>
-        <Link href="/caminos" className="mt-4 text-blue-500 underline">
+        <Link
+          href="/caminos"
+          className={cn(buttonVariants({ variant: 'tertiary', size: 'xl' }), '')}>
           {t('hero_cta')}
         </Link>
       </section>

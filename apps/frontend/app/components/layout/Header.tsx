@@ -23,7 +23,7 @@ export async function Header({ user }: HeaderProps) {
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link
           href="/"
-          className="text-base font-semibold tracking-tight text-foreground hover:opacity-80 transition-opacity"
+          className="text-lg font-semibold hover:opacity-80 transition-opacity"
           aria-label={t('aria_home')}>
           {t('home_label')}
         </Link>

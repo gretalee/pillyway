@@ -97,16 +97,16 @@ export function CaminoPointRow({
   return (
     <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
       <div className="mb-2 flex items-center justify-between">
-        <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+        <span className="font-semibold uppercase tracking-wider text-muted-foreground">
           {index + 1}.
         </span>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center">
           <Button
             variant="ghost"
             onClick={() => onMoveUp(index)}
             disabled={index === 0}
             aria-label={t('move_up')}>
-            <i className="icon-long-arrow-up text-xl" aria-hidden="true" />
+            <i className="icon-chevron-up text-sm" aria-hidden="true" />
           </Button>
 
           <Button
@@ -115,7 +115,7 @@ export function CaminoPointRow({
             onClick={() => onMoveDown(index)}
             disabled={index === totalCount - 1}
             aria-label={t('move_down')}>
-            <i className="icon-long-arrow-down text-xl" aria-hidden="true" />
+            <i className="icon-chevron-down text-sm" aria-hidden="true" />
           </Button>
 
           {canRemove && (
@@ -158,7 +158,7 @@ export function CaminoPointRow({
               onClick={() => onUnlink(index)}
               aria-label={t('unlink')}
               className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-0.5 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-              <i className="icon-chain-broken text-lg" aria-hidden="true" />
+              <i className="icon-chain-broken text-sm" aria-hidden="true" />
             </button>
           )}
         </div>

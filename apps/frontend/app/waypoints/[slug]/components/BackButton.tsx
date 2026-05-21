@@ -2,14 +2,19 @@
 
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import { getLastPath } from '@/app/components/PathTracker';
 
 export function BackButton() {
   const router = useRouter();
   const t = useTranslations('waypoint_detail');
 
   function handleClick() {
-    const previousPath = sessionStorage.getItem('navPreviousPath');
-    router.push(previousPath ?? '/caminos');
+    const lastPath = getLastPath();
+    if (lastPath) {
+      router.push(lastPath);
+    } else {
+      router.push('/caminos');
+    }
   }
 
   return (

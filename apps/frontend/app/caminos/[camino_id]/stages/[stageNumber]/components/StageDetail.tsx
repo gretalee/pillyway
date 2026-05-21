@@ -7,7 +7,7 @@ import { fetchStage } from '@/app/api/stages/fetch-stage';
 import { fetchAccommodationsByWaypoint } from '@/app/api/accommodations/fetch-accommodation';
 import { AccommodationCard } from '@/app/waypoints/[slug]/components/AccommodationCard';
 import { cn } from '@/lib/utils';
-import { buttonVariants } from '@/app/components/ui/button';
+import { Button, buttonVariants } from '@/app/components/ui/button';
 
 interface StageDetailProps {
   caminoId: string;
@@ -130,7 +130,7 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
               buttonVariants({ variant: 'outline', size: 'sm' }),
               'shrink-0 mt-1',
             )}>
-            <i className="icon-pencil text-xl" aria-hidden="true" />
+            <i className="icon-pencil text-sm mr-1 -translate-y-0.5" aria-hidden="true" />
             {t('edit')}
           </Link>
           {/* Edit waypoints */}
@@ -140,7 +140,7 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
               buttonVariants({ variant: 'outline', size: 'sm' }),
               'shrink-0 mt-1',
             )}>
-            <i className="icon-pencil text-xl" aria-hidden="true" />
+            <i className="icon-pencil text-sm mr-1 -translate-y-0.5" aria-hidden="true" />
             {tGlobal('camino_detail.edit_waypoints')}
           </Link>
         </div>
@@ -149,7 +149,7 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
       {/* Stage navigation */}
       <nav
         aria-label={t('nav_aria')}
-        className="mt-10 flex items-stretch justify-between gap-4 overflow-hidden max-w-full">
+        className="mt-10 flex flex-col lg:flex-row items-stretch justify-between gap-4 overflow-hidden max-w-full">
         {previousStage !== null ? (
           <Link
             href={`/caminos/${caminoId}/stages/${previousStage.stageNumber}`}
@@ -157,12 +157,7 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
               start: previousStage.startPointName,
               end: previousStage.endPointName,
             })}
-            className={cn(
-              'overflow-hidden flex items-center gap-1.5 lg:gap-2 rounded-lg border border-border px-2 py-2 ',
-              'text-sm font-medium text-foreground transition-colors ',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-              'bg-pillyGreen-400 hover:bg-pillyGreen-300',
-            )}>
+            className={cn(buttonVariants({ variant: 'tertiary', size: 'xl' }))}>
             <i className="icon-chevron-left text-xl" aria-hidden="true" />
             <p className="overflow-hidden text-ellipsis">
               {previousStage.startPointName}
@@ -173,13 +168,13 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
             </p>
           </Link>
         ) : (
-          <button
-            type="button"
+          <Button
+            variant={'outline'}
+            size={'xl'}
             disabled
-            aria-label={t('first_stage_label')}
-            className="inline-flex cursor-not-allowed items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-gray-700 opacity-50">
+            aria-label={t('first_stage_label')}>
             {t('first_stage_label')}
-          </button>
+          </Button>
         )}
 
         {nextStage !== null ? (
@@ -189,12 +184,7 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
               start: nextStage.startPointName,
               end: nextStage.endPointName,
             })}
-            className={cn(
-              'overflow-hidden flex items-center gap-1.5 lg:gap-2 rounded-lg border border-border px-2 py-2 ',
-              'text-sm font-medium text-foreground transition-colors ',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-              'bg-pillyGreen-400 hover:bg-pillyGreen-300',
-            )}>
+            className={cn(buttonVariants({ variant: 'tertiary', size: 'xl' }))}>
             <p className="overflow-hidden text-ellipsis">
               {nextStage.startPointName}
               <span className="mx-1.5" aria-hidden="true">
@@ -205,13 +195,13 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
             <i className="icon-chevron-right text-xl" aria-hidden="true" />
           </Link>
         ) : (
-          <button
-            type="button"
+          <Button
+            variant={'outline'}
+            size={'xl'}
             disabled
-            aria-label={t('last_stage_label')}
-            className="inline-flex cursor-not-allowed items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-gray-700 opacity-50">
+            aria-label={t('last_stage_label')}>
             {t('last_stage_label')}
-          </button>
+          </Button>
         )}
       </nav>
 

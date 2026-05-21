@@ -129,6 +129,7 @@
     "no_stages": "This camino has no stages yet. Add at least two waypoints to generate stages.",
     "error_loading_stages": "Failed to load stages. Please try again.",
     "verification_heading": "Verified Route",
+    "verification_label": "Vote: Have you walked this route?",
     "vote_yes": "Yes, the route is current",
     "vote_no": "No, the route no longer exists as described",
     "vote_login_hint": "Log in to verify this route.",

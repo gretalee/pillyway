@@ -3,8 +3,6 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-
-import { buttonVariants } from '@/app/components/ui/button';
 import { ToggleSwitch } from '@/app/components/ui/toggle-switch';
 import type { CaminoSummary } from '@/app/api/caminos/caminos';
 import { CaminoActionsMenu } from './CaminoActionsMenu';
@@ -27,7 +25,7 @@ interface CaminoListFilterProps {
   isOwner: boolean;
 }
 
-export function CaminoListFilter({ caminos, isPilgrim, isOwner }: CaminoListFilterProps) {
+export function CaminoListFilter({ caminos, isPilgrim }: CaminoListFilterProps) {
   const t = useTranslations('caminos');
   const [onlyVerified, setOnlyVerified] = useState(false);
 
@@ -35,16 +33,6 @@ export function CaminoListFilter({ caminos, isPilgrim, isOwner }: CaminoListFilt
 
   return (
     <>
-      {isPilgrim && (
-        <div className="mb-6">
-          <Link
-            href="/caminos/new"
-            className={cn(buttonVariants({ variant: 'default' }))}>
-            {t('create_link')}
-          </Link>
-        </div>
-      )}
-
       <div className="mb-4 flex items-center gap-3">
         <ToggleSwitch
           id="filter-verified-switch"

@@ -39,7 +39,7 @@ export function ToggleSwitch({
       <SwitchPrimitive.Thumb
         className={cn(
           'block size-4 rounded-full bg-background shadow-sm transition-transform',
-          'translate-x-0.5 data-checked:translate-x-[calc(100%-2px)]',
+          'translate-x-0.5 data-checked:translate-x-full',
         )}
       />
     </SwitchPrimitive.Root>

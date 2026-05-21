@@ -333,7 +333,7 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
         <div>
           <Label htmlFor={descriptionId}>{tNew('field_description')}</Label>
           <div className="mt-1">
-            <Textarea id={descriptionId} rows={3} {...register('description')} />
+            <Textarea id={descriptionId} rows={8} {...register('description')} />
           </div>
         </div>
 

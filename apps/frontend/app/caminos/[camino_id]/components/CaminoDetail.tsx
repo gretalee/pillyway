@@ -239,7 +239,7 @@ export function CaminoDetail({
       </div>
 
       {/* Verification voting */}
-      <VerificationSection caminoId={caminoId} />
+      {camino.caminoPoints.length >= 3 && <VerificationSection caminoId={caminoId} />}
 
       {/* Stages */}
       <section className="mt-8">
@@ -253,10 +253,8 @@ export function CaminoDetail({
           <Link
             href={`/caminos/${caminoId}/update`}
             className={cn(buttonVariants({ variant: 'outline' }))}>
-            <div className="pt-1 flex items-center gap-2">
-              <i className="icon-pencil text-xl -translate-y-0.5" aria-hidden="true" />
-              {t('edit_waypoints')}
-            </div>
+            <i className="icon-pencil text-base -translate-y-0.5" aria-hidden="true" />
+            {t('edit_waypoints')}
           </Link>
         </div>
       )}

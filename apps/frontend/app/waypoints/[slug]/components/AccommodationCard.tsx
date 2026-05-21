@@ -116,7 +116,10 @@ export async function AccommodationCard({
                 href={`/waypoints/${slug}/accommodations/${accommodation.id}/edit`}
                 aria-label={t('edit_accommodation_label')}
                 className={cn(buttonVariants({ variant: 'outline' }))}>
-                <i className="icon-pencil text-xl" aria-hidden="true" />
+                <i
+                  className="icon-pencil -translate-y-0.5 text-lg text-muted-foreground hover:text-foreground"
+                  aria-hidden="true"
+                />
               </Link>
             )}
             <DeleteAccommodationButton
