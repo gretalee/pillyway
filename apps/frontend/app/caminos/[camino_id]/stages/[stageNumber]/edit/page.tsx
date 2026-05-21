@@ -43,7 +43,7 @@ export default async function StageEditPage({ params }: Props) {
   const t = await getTranslations('stage_edit');
 
   return (
-    <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-16 sm:px-6 lg:px-8">
+    <div className="mx-auto w-full max-w-2xl flex-1 px-4 py-16 sm:px-6 lg:px-8">
       <h1 className="mb-8 text-3xl font-bold tracking-tight">
         {t('title', { number: n })}
       </h1>
@@ -52,6 +52,6 @@ export default async function StageEditPage({ params }: Props) {
       ) : (
         <AccessDenied message={t('access_denied')} />
       )}
-    </main>
+    </div>
   );
 }

@@ -24,21 +24,21 @@ export default async function CaminosPage() {
     caminos = await fetchCaminos();
   } catch {
     return (
-      <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-4 py-16 sm:px-6 lg:px-8">
+      <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-4 py-16 sm:px-6 lg:px-8">
         <h1 className="text-3xl font-bold tracking-tight">{t('title')}</h1>
         <p className="mt-2 text-muted-foreground">{t('browse')}</p>
         <p role="alert" className="mt-8 text-destructive">
           {t('error_loading')}
         </p>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-4 py-16 sm:px-6 lg:px-8">
+    <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-4 py-16 sm:px-6 lg:px-8">
       <h1 className="text-3xl font-bold tracking-tight">{t('title')}</h1>
       <p className="mt-2 text-muted-foreground">{t('browse')}</p>
       <CaminoList caminos={caminos} user={user} />
-    </main>
+    </div>
   );
 }

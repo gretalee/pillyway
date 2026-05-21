@@ -58,11 +58,11 @@ export default async function AccommodationDetailPage({ params }: Props) {
       notFound();
     }
     return (
-      <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-16 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-3xl flex-1 px-4 py-16 sm:px-6 lg:px-8">
         <p role="alert" className="text-destructive">
           {t('error_loading')}
         </p>
-      </main>
+      </div>
     );
   }
 
@@ -73,7 +73,7 @@ export default async function AccommodationDetailPage({ params }: Props) {
     accommodation.addressCountry;
 
   return (
-    <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-16 sm:px-6 lg:px-8">
+    <div className="mx-auto w-full max-w-3xl flex-1 px-4 py-16 sm:px-6 lg:px-8">
       {/* Back link */}
       <div className="mb-6">
         <Link
@@ -181,6 +181,6 @@ export default async function AccommodationDetailPage({ params }: Props) {
           ))}
         </ul>
       )}
-    </main>
+    </div>
   );
 }

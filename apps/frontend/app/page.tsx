@@ -17,7 +17,7 @@ export default async function Home() {
   const t = await getTranslations('home');
 
   return (
-    <main className="w-full">
+    <div className="w-full">
       <section className="relative bg-slate-100 py-16 h-[500px]">
         <Image src={heroBg} alt="" fill className="object-cover object-center" priority />
       </section>
@@ -125,6 +125,6 @@ export default async function Home() {
           </Link>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

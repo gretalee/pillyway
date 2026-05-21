@@ -91,7 +91,7 @@ export function BackofficeCaminosClient() {
   }
 
   return (
-    <main className="flex flex-1 flex-col px-4 py-16 sm:px-6 lg:px-8">
+    <div className="flex flex-1 flex-col px-4 py-16 sm:px-6 lg:px-8">
       <h1 className="text-3xl font-bold tracking-tight">{t('heading')}</h1>
       <p className="mt-2 text-muted-foreground">{t('subtitle')}</p>
 
@@ -165,6 +165,6 @@ export function BackofficeCaminosClient() {
         onDismiss={() => setSelectedCaminoId(null)}>
         <CaminoVotesModal caminoId={selectedCaminoId} />
       </Modal>
-    </main>
+    </div>
   );
 }

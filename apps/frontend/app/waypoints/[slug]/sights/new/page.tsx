@@ -30,9 +30,9 @@ export default async function AddSightPage({ params }: Props) {
   }
 
   return (
-    <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-16 sm:px-6 lg:px-8">
+    <div className="mx-auto w-full max-w-3xl flex-1 px-4 py-16 sm:px-6 lg:px-8">
       <h1 className="mb-8 text-3xl font-bold tracking-tight">{t('title')}</h1>
       <AddSightForm slug={slug} />
-    </main>
+    </div>
   );
 }

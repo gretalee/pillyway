@@ -34,19 +34,19 @@ export default async function CaminoDetailPage({ params }: Props) {
       notFound();
     }
     return (
-      <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-16 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-3xl flex-1 px-4 py-16 sm:px-6 lg:px-8">
         <p role="alert" className="text-destructive">
           {t('error_loading')}
         </p>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-16 sm:px-6 lg:px-8">
+    <div className="mx-auto w-full max-w-3xl flex-1 px-4 py-16 sm:px-6 lg:px-8">
       <CaminoDetail camino={camino} caminoId={camino_id} user={user}>
         {camino_id && <StageList caminoId={camino_id} />}
       </CaminoDetail>
-    </main>
+    </div>
   );
 }
