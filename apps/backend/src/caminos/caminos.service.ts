@@ -352,22 +352,46 @@ export class CaminosService {
   async update(
     id: string,
     dto: UpdateCaminoDto,
+    userId: string,
     userRoles: KindeRole[],
   ): Promise<CaminoDetailFull> {
     this.logger.debug(`Updating camino ${id}`);
 
-    // 1. Verify the camino exists
-    const camino = await this.prisma.camino.findUnique({ where: { id } });
+    // 1. Verify the camino exists; fetch existing waypoint ids for removal detection.
+    const camino = await this.prisma.camino.findUnique({
+      where: { id },
+      include: { caminoPointOrder: { select: { caminoPointId: true } } },
+    });
     if (!camino) {
       throw new NotFoundException('Camino not found.');
     }
 
-    // 2. Authorisation: pilgrim role can modify any camino
-    const canModify = userRoles.some((r) => r.key === 'pilgrim');
-    if (!canModify) {
+    // 2. Base authorisation: pilgrim role required for any update.
+    if (!userRoles.some((r) => r.key === 'pilgrim')) {
       throw new ForbiddenException(
         'You do not have permission to update this camino.',
       );
+    }
+
+    // 3. Removal authorisation: removing an existing waypoint requires owner or
+    //    creator-within-window — same policy as camino deletion.
+    if (dto.caminoPoints !== undefined) {
+      const newlyReferencedIds = new Set(
+        dto.caminoPoints
+          .filter((p) => p.caminoPointId != null)
+          .map((p) => p.caminoPointId as string),
+      );
+      const hasRemoval = camino.caminoPointOrder.some(
+        (o) => !newlyReferencedIds.has(o.caminoPointId),
+      );
+      if (hasRemoval) {
+        this.deleteAuthorizationService.assertCanDelete(
+          userId,
+          userRoles,
+          camino,
+          CAMINO_DELETE_WINDOW_MS,
+        );
+      }
     }
 
     try {

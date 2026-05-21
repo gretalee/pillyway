@@ -1,13 +1,14 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Pencil } from 'lucide-react';
 import type { StageDetail as StageDetailData } from '@/app/api/stages/stage-types';
 import type { AuthUser } from '@/lib/getAuthUser';
 import { fetchStage } from '@/app/api/stages/fetch-stage';
 import { fetchAccommodationsByWaypoint } from '@/app/api/accommodations/fetch-accommodation';
 import { AccommodationCard } from '@/app/waypoints/[slug]/components/AccommodationCard';
 import { cn } from '@/lib/utils';
+import { buttonVariants } from '@/app/components/ui/button';
 
 interface StageDetailProps {
   caminoId: string;
@@ -17,6 +18,7 @@ interface StageDetailProps {
 
 export async function StageDetail({ caminoId, stageNumber, user }: StageDetailProps) {
   const t = await getTranslations('stage_detail');
+  const tGlobal = await getTranslations();
   const tCountries = await getTranslations('countries');
 
   let stage: StageDetailData;
@@ -120,13 +122,27 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
         </p>
       </div>
 
-      {/* Edit button */}
       {canEdit && (
-        <div className="mt-8">
+        <div className="mt-8 flex gap-4">
+          {/* Edit stage */}
           <Link
             href={`/caminos/${caminoId}/stages/${stageNumber}/edit`}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+            className={cn(
+              buttonVariants({ variant: 'outline', size: 'sm' }),
+              'shrink-0 mt-1',
+            )}>
+            <Pencil className="size-4" aria-hidden="true" />
             {t('edit')}
+          </Link>
+          {/* Edit waypoints */}
+          <Link
+            href={`/caminos/${caminoId}/update`}
+            className={cn(
+              buttonVariants({ variant: 'outline', size: 'sm' }),
+              'shrink-0 mt-1',
+            )}>
+            <Pencil className="size-4" aria-hidden="true" />
+            {tGlobal('camino_detail.edit_waypoints')}
           </Link>
         </div>
       )}

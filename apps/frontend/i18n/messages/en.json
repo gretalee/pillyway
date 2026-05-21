@@ -95,7 +95,7 @@
     "verification_heading": "Verified Route",
     "vote_yes": "Yes, the route is current",
     "vote_no": "No, the route no longer exists as described",
-    "vote_login_hint": "You must be logged in to verify the route",
+    "vote_login_hint": "Log in to verify this route.",
     "vote_yes_count": "{count} Yes",
     "vote_no_count": "{count} No",
     "vote_error": "Your vote could not be saved. Please try again."
@@ -109,7 +109,7 @@
     "cancel": "Cancel",
     "error_generic": "Failed to update camino. Please try again.",
     "error_conflict": "A camino with this name already exists. Please choose a different name.",
-    "error_forbidden": "You are not authorized to edit this camino.",
+    "error_forbidden": "You are not authorized to edit this camino. Only the creator (within 2 hours of creation) or an administrator can edit it.",
     "error_loading": "Failed to load camino data for editing.",
     "back_to_caminos": "← Back to caminos",
     "reorder_warning_title": "Waypoint order changed",

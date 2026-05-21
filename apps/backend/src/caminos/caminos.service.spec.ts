@@ -409,6 +409,10 @@ const PILGRIM_ROLES: KindeRole[] = [
   { id: 'r1', key: 'pilgrim', name: 'Pilgrim' },
 ];
 const OWNER_ROLES: KindeRole[] = [{ id: 'r2', key: 'owner', name: 'Owner' }];
+const OWNER_AND_PILGRIM_ROLES: KindeRole[] = [
+  { id: 'r1', key: 'pilgrim', name: 'Pilgrim' },
+  { id: 'r2', key: 'owner', name: 'Owner' },
+];
 const NO_ROLES: KindeRole[] = [];
 
 const baseCamino = {
@@ -434,6 +438,13 @@ const caminoWithOrder = {
       },
     },
   ],
+};
+
+// Shape returned by findUnique with { select: { caminoPointId: true } } —
+// used by update() to detect whether existing waypoints are being removed.
+const caminoWithPointIds = {
+  ...baseCamino,
+  caminoPointOrder: [{ caminoPointId: 'pt-1' }],
 };
 
 // ─── CaminosService.findById() ───────────────────────────────────────────────
@@ -469,9 +480,27 @@ describe('CaminosService.findById()', () => {
 // ─── CaminosService.update() ─────────────────────────────────────────────────
 
 describe('CaminosService.update()', () => {
-  function makeUpdatePrismaMock() {
+  // DTO without caminoPoints — name-only update, removal check never triggered
+  const nameDto: UpdateCaminoDto = {
+    name: 'Camino Updated',
+  } as UpdateCaminoDto;
+
+  // DTO whose only point is a brand-new one — existing pt-1 is absent → triggers removal check
+  const removalDto: UpdateCaminoDto = {
+    caminoPoints: [{ name: 'New Point', country: 'Spain' }],
+  } as UpdateCaminoDto;
+
+  // Builds a Prisma mock suitable for update() tests.
+  // firstResult  — returned by the first camino.findUnique (existence + removal check)
+  // secondResult — returned by the second camino.findUnique (findById after update)
+  function makeUpdatePrismaMock(
+    firstResult: object = caminoWithPointIds,
+    secondResult: object = caminoWithOrder,
+  ) {
     const caminoMock = {
-      findUnique: vi.fn().mockResolvedValue(caminoWithOrder),
+      findUnique: vi.fn()
+        .mockResolvedValueOnce(firstResult)
+        .mockResolvedValueOnce(secondResult),
       findFirst: vi.fn().mockResolvedValue(null),
       update: vi.fn().mockResolvedValue(baseCamino),
     };
@@ -484,7 +513,13 @@ describe('CaminosService.update()', () => {
       },
       caminoPoint: {
         findUnique: vi.fn().mockResolvedValue(null),
-        upsert: vi.fn().mockResolvedValue({}),
+        upsert: vi.fn().mockResolvedValue({
+          id: 'new-pt-id',
+          name: 'New Point',
+          country: 'Spain',
+          slug: 'new-point',
+          description: null,
+        }),
       },
     };
 
@@ -496,45 +531,72 @@ describe('CaminosService.update()', () => {
     };
   }
 
-  const nameDto: UpdateCaminoDto = {
-    name: 'Camino Updated',
-  } as UpdateCaminoDto;
+  // ─ Name/description edits: any pilgrim is allowed ────────────────────────
 
-  it('allows a pilgrim to update any camino', async () => {
+  it('allows any pilgrim to update name or description regardless of creator or time window', async () => {
     const prismaMock = makeUpdatePrismaMock();
-    // findById is called internally after update — stub second findUnique call
-    prismaMock.camino.findUnique = vi
-      .fn()
-      .mockResolvedValueOnce(baseCamino) // existence check
-      .mockResolvedValueOnce(caminoWithOrder); // findById
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
-    const result = await service.update(CAMINO_ID, nameDto, PILGRIM_ROLES);
+    const result = await service.update(CAMINO_ID, nameDto, OTHER_ID, PILGRIM_ROLES);
     expect(result.id).toBe(CAMINO_ID);
   });
 
-  it('throws ForbiddenException when user has owner role but not pilgrim', async () => {
+  it('throws ForbiddenException when user has no pilgrim role', async () => {
     const prismaMock = makeUpdatePrismaMock();
-    prismaMock.camino.findUnique = vi.fn().mockResolvedValue(baseCamino);
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
     await expect(
-      service.update(CAMINO_ID, nameDto, OWNER_ROLES),
+      service.update(CAMINO_ID, nameDto, OTHER_ID, NO_ROLES),
     ).rejects.toBeInstanceOf(ForbiddenException);
   });
 
-  it('throws ForbiddenException when user has no roles', async () => {
+  // ─ Waypoint removal: requires owner or creator-within-window ─────────────
+
+  it('allows a user with owner role to remove waypoints from any camino', async () => {
     const prismaMock = makeUpdatePrismaMock();
-    prismaMock.camino.findUnique = vi.fn().mockResolvedValue(baseCamino);
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
+
+    const result = await service.update(CAMINO_ID, removalDto, OTHER_ID, OWNER_AND_PILGRIM_ROLES);
+    expect(result.id).toBe(CAMINO_ID);
+  });
+
+  it('allows the creator to remove waypoints within the time window', async () => {
+    const recentWithIds = { ...caminoWithPointIds, createdBy: OWNER_ID, createdAt: new Date(Date.now() - 60 * 1000) };
+    const recentWithOrder = { ...caminoWithOrder, createdBy: OWNER_ID, createdAt: recentWithIds.createdAt };
+    const prismaMock = makeUpdatePrismaMock(recentWithIds, recentWithOrder);
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
+
+    const result = await service.update(CAMINO_ID, removalDto, OWNER_ID, PILGRIM_ROLES);
+    expect(result.id).toBe(CAMINO_ID);
+  });
+
+  it('throws ForbiddenException when a non-creator pilgrim tries to remove waypoints', async () => {
+    // baseCamino.createdBy is OWNER_ID — OTHER_ID is not the creator
+    const prismaMock = makeUpdatePrismaMock();
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
     await expect(
-      service.update(CAMINO_ID, nameDto, NO_ROLES),
+      service.update(CAMINO_ID, removalDto, OTHER_ID, PILGRIM_ROLES),
     ).rejects.toBeInstanceOf(ForbiddenException);
   });
+
+  it('throws ForbiddenException when creator is outside the time window and tries to remove waypoints', async () => {
+    // baseCamino.createdAt is 2026-01-01 — well outside the 2-hour window
+    const prismaMock = makeUpdatePrismaMock();
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
+
+    await expect(
+      service.update(CAMINO_ID, removalDto, OWNER_ID, PILGRIM_ROLES),
+    ).rejects.toBeInstanceOf(ForbiddenException);
+  });
+
+  // ─ Common error cases ─────────────────────────────────────────────────────
 
   it('throws NotFoundException when camino does not exist', async () => {
     const prismaMock = makeUpdatePrismaMock();
@@ -543,13 +605,12 @@ describe('CaminosService.update()', () => {
     const service = module.get(CaminosService);
 
     await expect(
-      service.update(CAMINO_ID, nameDto, NO_ROLES),
+      service.update(CAMINO_ID, nameDto, OWNER_ID, NO_ROLES),
     ).rejects.toBeInstanceOf(NotFoundException);
   });
 
   it('throws ConflictException when new name conflicts with another camino', async () => {
     const prismaMock = makeUpdatePrismaMock();
-    prismaMock.camino.findUnique = vi.fn().mockResolvedValue(baseCamino);
     prismaMock.camino.findFirst = vi
       .fn()
       .mockResolvedValue({ id: 'other-id', name: 'Camino Updated' });
@@ -557,7 +618,7 @@ describe('CaminosService.update()', () => {
     const service = module.get(CaminosService);
 
     await expect(
-      service.update(CAMINO_ID, nameDto, PILGRIM_ROLES),
+      service.update(CAMINO_ID, nameDto, OTHER_ID, PILGRIM_ROLES),
     ).rejects.toBeInstanceOf(ConflictException);
   });
 });

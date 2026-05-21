@@ -40,6 +40,7 @@ export interface CaminoPointRowProps {
   onLink: (index: number, suggestion: CaminoPointSearchResult) => void;
   onUnlink: (index: number) => void;
   watchedPoints: CaminoPointFormItem[];
+  canRemove?: boolean;
 }
 
 export function CaminoPointRow({
@@ -54,6 +55,7 @@ export function CaminoPointRow({
   onLink,
   onUnlink,
   watchedPoints,
+  canRemove = true,
 }: CaminoPointRowProps) {
   const t = useTranslations('caminos_new');
   const tCountries = useTranslations('countries');
@@ -121,17 +123,19 @@ export function CaminoPointRow({
             )}>
             <ArrowDown className="size-4" aria-hidden="true" />
           </button>
-          <button
-            type="button"
-            onClick={() => onRemove(index)}
-            disabled={totalCount === 1}
-            aria-label={t('remove_point')}
-            className={cn(
-              'rounded p-1 text-muted-foreground transition-colors hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-              'disabled:cursor-not-allowed disabled:opacity-40',
-            )}>
-            <X className="size-4" aria-hidden="true" />
-          </button>
+          {canRemove && (
+            <button
+              type="button"
+              onClick={() => onRemove(index)}
+              disabled={totalCount === 1}
+              aria-label={t('remove_point')}
+              className={cn(
+                'rounded p-1 text-muted-foreground transition-colors hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                'disabled:cursor-not-allowed disabled:opacity-40',
+              )}>
+              <X className="size-4" aria-hidden="true" />
+            </button>
+          )}
         </div>
       </div>
 
