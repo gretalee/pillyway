@@ -58,7 +58,7 @@ export function DeleteAccommodationDialog({
             {isPending ? (
               <>
                 <i
-                  className="icon-spinner mr-2 text-xl  animate-spin"
+                  className="icon-spinner mr-2 text-xl animate-spin"
                   aria-hidden="true"
                 />
                 {t('delete_confirm_action')}

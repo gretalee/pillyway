@@ -4,6 +4,7 @@
   src: url(../fonts/Casper/Casper-Regular.ttf) format('truetype');
   font-style: normal;
   font-weight: 400;
+  font-display: swap;
 }
 
 /* Normal italic */
@@ -12,6 +13,7 @@
   src: url(../fonts/Casper/Casper-RegularItalic.ttf) format('truetype');
   font-style: italic;
   font-weight: 400;
+  font-display: swap;
 }
 
 /* Bold */
@@ -20,6 +22,7 @@
   src: url(../fonts/Casper/Casper-Bold.ttf) format('truetype');
   font-style: normal;
   font-weight: 700;
+  font-display: swap;
 }
 
 /* Bold italic */
@@ -28,4 +31,5 @@
   src: url(../fonts/Casper/Casper-BoldItalic.ttf) format('truetype');
   font-style: italic;
   font-weight: 700;
+  font-display: swap;
 }
