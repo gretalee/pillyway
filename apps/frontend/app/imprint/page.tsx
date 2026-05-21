@@ -1,14 +1,25 @@
+import { getTranslations } from 'next-intl/server';
 import { cn } from '@/lib/utils';
 
+export async function generateMetadata() {
+  const t = await getTranslations('imprint');
+  return {
+    title: t('meta_title'),
+    description: t('meta_description'),
+  };
+}
+
 export default async function Imprint() {
+  const t = await getTranslations('imprint');
+
   return (
     <div className="w-full mt-10 mb-10">
       <section className={cn('max-w-4xl w-full mx-auto ', 'px-4 sm:px-6 lg:px-8')}>
-        <h1>Impressum</h1>
+        <h1>{t('title')}</h1>
 
-        <p>Angaben gemäß § 5 TMG</p>
+        <p>{t('legal_notice')}</p>
 
-        <h2 className="mt-4">Betreiber der Plattform</h2>
+        <h2 className="mt-4">{t('operator_heading')}</h2>
 
         <div>
           <p>
@@ -26,7 +37,7 @@ export default async function Imprint() {
           </p>
         </div>
 
-        <h2 className="mt-4">Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
+        <h2 className="mt-4">{t('responsible_heading')}</h2>
 
         <p>
           Hendrike Heydenreich
@@ -38,76 +49,46 @@ export default async function Imprint() {
           Deutschland
         </p>
 
-        <h2 className="mt-4">Haftung für Inhalte</h2>
+        <h2 className="mt-4">{t('liability_content_heading')}</h2>
 
-        <p>
-          Die Inhalte dieser Website wurden mit größtmöglicher Sorgfalt erstellt. Für die
-          Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine
-          Gewähr übernehmen.
-        </p>
+        <p>{t('liability_content_body_1')}</p>
 
-        <p>
-          Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen
-          Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind
-          wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder
-          gespeicherte fremde Informationen zu überwachen.
-        </p>
+        <p>{t('liability_content_body_2')}</p>
 
-        <h2 className="mt-4">Haftung für Links</h2>
+        <h2 className="mt-4">{t('liability_links_heading')}</h2>
 
-        <p>
-          Diese Website enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir
-          keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine
-          Gewähr übernehmen.
-        </p>
+        <p>{t('liability_links_body')}</p>
 
-        <h2 className="mt-4">Urheberrecht</h2>
+        <h2 className="mt-4">{t('copyright_heading')}</h2>
 
-        <p>
-          Die durch die Seitenbetreiber erstellten Inhalte und Werke auf dieser Website
-          unterliegen dem deutschen Urheberrecht.
-        </p>
+        <p>{t('copyright_body_1')}</p>
 
-        <p>
-          Von Nutzern eingestellte Inhalte verbleiben im Verantwortungsbereich der
-          jeweiligen Nutzer.
-        </p>
+        <p>{t('copyright_body_2')}</p>
 
-        <h2 className="mt-4">Hinweis zu nutzergenerierten Inhalten</h2>
+        <h2 className="mt-4">{t('ugc_heading')}</h2>
 
-        <p>
-          Pillyway ist eine gemeinschaftlich gepflegte Plattform für Pilgerwege und
-          Wanderinformationen.
-        </p>
+        <p>{t('ugc_body_1')}</p>
 
-        <p>
-          Für von Nutzern erstellte Inhalte, Routenbeschreibungen, Unterkünfte,
-          Wegempfehlungen oder sonstige Angaben übernehmen wir keine Gewähr hinsichtlich:
-        </p>
+        <p>{t('ugc_body_2')}</p>
 
         <ul className="list-disc py-2 pl-6">
-          <li>Vollständigkeit,</li>
-          <li>Richtigkeit,</li>
-          <li>Aktualität,</li>
-          <li>Sicherheit oder Begehbarkeit von Wegen.</li>
+          <li>{t('ugc_item_completeness')}</li>
+          <li>{t('ugc_item_accuracy')}</li>
+          <li>{t('ugc_item_currency')}</li>
+          <li>{t('ugc_item_safety')}</li>
         </ul>
 
-        <p>
-          Die Nutzung der bereitgestellten Informationen erfolgt auf eigene Verantwortung.
-        </p>
+        <p>{t('ugc_body_3')}</p>
 
-        <h2 className="mt-4">Open Source</h2>
+        <h2 className="mt-4">{t('open_source_heading')}</h2>
 
-        <p>
-          Pillyway ist ein Open-Source-Projekt und wird unter der MIT-Lizenz
-          veröffentlicht.
-        </p>
+        <p>{t('open_source_body_1')}</p>
 
-        <p>Der Quellcode ist öffentlich zugänglich.</p>
+        <p>{t('open_source_body_2')}</p>
 
-        <h2 className="mt-4">Kontakt</h2>
+        <h2 className="mt-4">{t('contact_heading')}</h2>
 
-        <p>Bei Fragen, Hinweisen oder rechtlichen Anliegen kontaktieren Sie bitte:</p>
+        <p>{t('contact_body')}</p>
 
         <p>
           <a href="mailto:mail@gretalee.de">mail@gretalee.de</a>

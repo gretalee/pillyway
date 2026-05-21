@@ -1,17 +1,25 @@
+import { getTranslations } from 'next-intl/server';
 import { cn } from '@/lib/utils';
 
+export async function generateMetadata() {
+  const t = await getTranslations('privacy');
+  return {
+    title: t('meta_title'),
+    description: t('meta_description'),
+  };
+}
+
 export default async function Privacy() {
+  const t = await getTranslations('privacy');
+
   return (
     <div className="w-full mt-10 mb-10">
       <section className={cn('max-w-4xl w-full mx-auto ', 'px-4 sm:px-6 lg:px-8')}>
-        <h1>Datenschutzerklärung</h1>
+        <h1>{t('title')}</h1>
 
-        <p>
-          Diese Datenschutzerklärung informiert über die Art, den Umfang und den Zweck der
-          Verarbeitung personenbezogener Daten innerhalb der Webanwendung Pillyway.
-        </p>
+        <p>{t('intro')}</p>
 
-        <h2 className="mt-4">1. Verantwortlicher</h2>
+        <h2 className="mt-4">{t('responsible_heading')}</h2>
 
         <p>
           Hendrike Heydenreich
@@ -25,64 +33,43 @@ export default async function Privacy() {
           E-Mail: <a href="mailto:mail@gretalee.de">mail@gretalee.de</a>
         </p>
 
-        <h2 className="mt-4">2. Allgemeine Hinweise zur Datenverarbeitung</h2>
+        <h2 className="mt-4">{t('general_heading')}</h2>
 
-        <p>
-          Wir verarbeiten personenbezogene Daten der Nutzer grundsätzlich nur, soweit dies
-          zur Bereitstellung einer funktionsfähigen Website sowie unserer Inhalte und
-          Leistungen erforderlich ist.
-        </p>
+        <p>{t('general_body')}</p>
 
-        <h2 className="mt-4">3. Welche Daten verarbeitet werden</h2>
+        <h2 className="mt-4">{t('data_heading')}</h2>
 
-        <p>
-          Beim Besuch und der Nutzung von Pillyway können folgende Daten verarbeitet
-          werden:
-        </p>
+        <p>{t('data_intro')}</p>
 
         <ul className="list-disc py-2 pl-6">
-          <li>E-Mail-Adresse</li>
-          <li>Benutzername</li>
-          <li>IP-Adresse</li>
-          <li>Technische Logdaten</li>
-          <li>Account- und Sitzungsdaten</li>
-          <li>Von Nutzern erstellte Inhalte (Routen, Kommentare, Unterkünfte etc.)</li>
+          <li>{t('data_email')}</li>
+          <li>{t('data_username')}</li>
+          <li>{t('data_ip')}</li>
+          <li>{t('data_logs')}</li>
+          <li>{t('data_session')}</li>
+          <li>{t('data_ugc')}</li>
         </ul>
 
-        <h2 className="mt-4">4. Registrierung und Benutzerkonto</h2>
+        <h2 className="mt-4">{t('registration_heading')}</h2>
+
+        <p>{t('registration_body_1')}</p>
+
+        <p>{t('registration_body_2')}</p>
+
+        <h2 className="mt-4">{t('ugc_heading')}</h2>
+
+        <p>{t('ugc_body_1')}</p>
+
+        <p>{t('ugc_body_2')}</p>
+
+        <h2 className="mt-4">{t('hosting_heading')}</h2>
+
+        <p>{t('hosting_body_1')}</p>
+
+        <p>{t('hosting_body_2')}</p>
 
         <p>
-          Nutzer können ein Benutzerkonto erstellen, um Inhalte beizutragen und bestehende
-          Inhalte zu bearbeiten.
-        </p>
-
-        <p>
-          Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO zur
-          Bereitstellung der Plattformfunktionen.
-        </p>
-
-        <h2 className="mt-4">5. Speicherung nutzergenerierter Inhalte</h2>
-
-        <p>
-          Inhalte, die Nutzer auf Pillyway veröffentlichen, können öffentlich sichtbar
-          sein.
-        </p>
-
-        <p>
-          Bitte veröffentlichen Sie keine sensiblen personenbezogenen Daten innerhalb
-          öffentlicher Inhalte.
-        </p>
-
-        <h2 className="mt-4">6. Hosting und Datenbank</h2>
-
-        <p>Pillyway verwendet Supabase als Hosting- und Datenbankdienstleister.</p>
-
-        <p>
-          Dabei können personenbezogene Daten auf Servern von Supabase verarbeitet werden.
-        </p>
-
-        <p>
-          Weitere Informationen:
+          {t('hosting_body_3')}{' '}
           <a
             href="https://supabase.com/privacy"
             target="_blank"
@@ -91,94 +78,69 @@ export default async function Privacy() {
           </a>
         </p>
 
-        <h2 className="mt-4">7. Server-Logfiles</h2>
+        <h2 className="mt-4">{t('logs_heading')}</h2>
 
-        <p>
-          Beim Aufruf der Website werden automatisch Informationen durch den Browser
-          übermittelt.
-        </p>
+        <p>{t('logs_body_1')}</p>
 
-        <p>Dies umfasst unter anderem:</p>
+        <p>{t('logs_body_2')}</p>
 
         <ul className="list-disc py-2 pl-6">
-          <li>IP-Adresse</li>
-          <li>Datum und Uhrzeit der Anfrage</li>
-          <li>Browsertyp</li>
-          <li>Betriebssystem</li>
-          <li>Referrer-URL</li>
+          <li>{t('logs_ip')}</li>
+          <li>{t('logs_datetime')}</li>
+          <li>{t('logs_browser')}</li>
+          <li>{t('logs_os')}</li>
+          <li>{t('logs_referrer')}</li>
         </ul>
 
-        <p>
-          Diese Daten dienen ausschließlich der technischen Sicherheit und Stabilität der
-          Plattform.
-        </p>
+        <p>{t('logs_body_3')}</p>
 
-        <h2 className="mt-4">8. Cookies</h2>
+        <h2 className="mt-4">{t('cookies_heading')}</h2>
 
-        <p>
-          Pillyway verwendet technisch notwendige Cookies und Session-Daten, die für den
-          Betrieb der Plattform erforderlich sind.
-        </p>
+        <p>{t('cookies_body_1')}</p>
 
-        <p>
-          Diese Cookies dienen beispielsweise der Anmeldung und Authentifizierung von
-          Nutzern.
-        </p>
+        <p>{t('cookies_body_2')}</p>
 
-        <p>Es erfolgt kein Einsatz von Werbe- oder Marketing-Cookies.</p>
+        <p>{t('cookies_body_3')}</p>
 
-        <h2 className="mt-4">9. Rechtsgrundlagen der Verarbeitung</h2>
+        <h2 className="mt-4">{t('legal_basis_heading')}</h2>
 
-        <p>Die Verarbeitung personenbezogener Daten erfolgt auf Grundlage von:</p>
+        <p>{t('legal_basis_intro')}</p>
 
         <ul className="list-disc py-2 pl-6">
-          <li>Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung)</li>
-          <li>Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse)</li>
+          <li>{t('legal_basis_contract')}</li>
+          <li>{t('legal_basis_interest')}</li>
         </ul>
 
-        <h2 className="mt-4">10. Rechte der betroffenen Personen</h2>
+        <h2 className="mt-4">{t('rights_heading')}</h2>
 
-        <p>Nutzer haben nach der DSGVO insbesondere folgende Rechte:</p>
+        <p>{t('rights_intro')}</p>
 
         <ul className="list-disc py-2 pl-6">
-          <li>Auskunft über gespeicherte Daten</li>
-          <li>Berichtigung unrichtiger Daten</li>
-          <li>Löschung personenbezogener Daten</li>
-          <li>Einschränkung der Verarbeitung</li>
-          <li>Datenübertragbarkeit</li>
-          <li>Widerspruch gegen die Verarbeitung</li>
+          <li>{t('rights_access')}</li>
+          <li>{t('rights_rectification')}</li>
+          <li>{t('rights_erasure')}</li>
+          <li>{t('rights_restriction')}</li>
+          <li>{t('rights_portability')}</li>
+          <li>{t('rights_objection')}</li>
         </ul>
 
-        <p>
-          Anfragen hierzu können jederzeit an die oben genannte Kontaktadresse gerichtet
-          werden.
-        </p>
+        <p>{t('rights_contact')}</p>
 
-        <h2 className="mt-4">11. Speicherdauer</h2>
+        <h2 className="mt-4">{t('retention_heading')}</h2>
 
-        <p>
-          Personenbezogene Daten werden nur so lange gespeichert, wie dies für den
-          jeweiligen Zweck erforderlich ist oder gesetzliche Aufbewahrungspflichten
-          bestehen.
-        </p>
+        <p>{t('retention_body')}</p>
 
-        <h2 className="mt-4">12. Datensicherheit</h2>
+        <h2 className="mt-4">{t('security_heading')}</h2>
 
-        <p>
-          Wir treffen technische und organisatorische Maßnahmen, um personenbezogene Daten
-          gegen Verlust, Manipulation und unberechtigten Zugriff zu schützen.
-        </p>
+        <p>{t('security_body')}</p>
 
-        <h2 className="mt-4">13. Änderungen dieser Datenschutzerklärung</h2>
+        <h2 className="mt-4">{t('changes_heading')}</h2>
 
-        <p>
-          Diese Datenschutzerklärung kann angepasst werden, wenn sich technische oder
-          rechtliche Anforderungen ändern.
-        </p>
+        <p>{t('changes_body')}</p>
 
-        <h2 className="mt-4">14. Kontakt</h2>
+        <h2 className="mt-4">{t('contact_heading')}</h2>
 
-        <p>Bei Fragen zum Datenschutz kontaktieren Sie bitte:</p>
+        <p>{t('contact_body')}</p>
 
         <p>
           <a href="mailto:mail@gretalee.de">mail@gretalee.de</a>
