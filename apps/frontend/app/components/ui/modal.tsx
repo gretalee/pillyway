@@ -1,7 +1,6 @@
 'use client';
 
 import { Dialog as DialogPrimitive } from '@base-ui/react/dialog';
-import { X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
@@ -72,7 +71,7 @@ export function Modal({ id, title, children, onOk, onDismiss }: ModalProps) {
                 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
               )}
               aria-label={t('close_aria')}>
-              <X className="size-4" aria-hidden="true" />
+              <i className="icon-times text-xl" aria-hidden="true" />
             </DialogPrimitive.Close>
           </div>
 

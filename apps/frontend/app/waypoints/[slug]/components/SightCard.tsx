@@ -1,9 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Pencil } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 import type { SightDetail } from '@/app/api/sights/sight-types';
 import { DeleteSightButton } from './DeleteSightButton';
+import { buttonVariants } from '@/app/components/ui/button';
+import { cn } from '@/lib/utils';
 
 interface Props {
   sight: SightDetail;
@@ -62,8 +63,8 @@ export async function SightCard({ sight, slug, canContribute, isOwner }: Props) 
               <Link
                 href={`/waypoints/${slug}/sights/${sight.id}/edit`}
                 aria-label={t('edit_sight_label')}
-                className="inline-flex items-center justify-center rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                <Pencil className="size-4" aria-hidden="true" />
+                className={cn(buttonVariants({ variant: 'outline' }))}>
+                <i className="icon-pencil text-xl" aria-hidden="true" />
               </Link>
             )}
             <DeleteSightButton

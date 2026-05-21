@@ -15,6 +15,6 @@ vi.mock('next/link', () => ({
 describe('Home page', () => {
   it('renders the app name', async () => {
     render(await Home());
-    expect(screen.getByRole('heading', { name: /heading/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
   });
 });

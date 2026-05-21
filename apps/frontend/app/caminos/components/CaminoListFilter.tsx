@@ -3,12 +3,11 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-
-import { buttonVariants } from '@/app/components/ui/button';
 import { ToggleSwitch } from '@/app/components/ui/toggle-switch';
 import type { CaminoSummary } from '@/app/api/caminos/caminos';
 import { CaminoActionsMenu } from './CaminoActionsMenu';
 import { VerifiedBadge } from './VerifiedBadge';
+import { cn } from '@/lib/utils';
 
 const DESCRIPTION_MAX = 665;
 
@@ -26,7 +25,7 @@ interface CaminoListFilterProps {
   isOwner: boolean;
 }
 
-export function CaminoListFilter({ caminos, isPilgrim, isOwner }: CaminoListFilterProps) {
+export function CaminoListFilter({ caminos, isPilgrim }: CaminoListFilterProps) {
   const t = useTranslations('caminos');
   const [onlyVerified, setOnlyVerified] = useState(false);
 
@@ -34,14 +33,6 @@ export function CaminoListFilter({ caminos, isPilgrim, isOwner }: CaminoListFilt
 
   return (
     <>
-      {isPilgrim && (
-        <div className="mb-6">
-          <Link href="/caminos/new" className={buttonVariants({ variant: 'default' })}>
-            {t('create_link')}
-          </Link>
-        </div>
-      )}
-
       <div className="mb-4 flex items-center gap-3">
         <ToggleSwitch
           id="filter-verified-switch"
@@ -64,21 +55,25 @@ export function CaminoListFilter({ caminos, isPilgrim, isOwner }: CaminoListFilt
             <li
               key={camino.id}
               className="rounded-xl border border-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md">
-              <div className="flex items-start justify-between gap-2">
-                <Link href={`/caminos/${camino.id}`} className="flex-1">
-                  <h2 className="text-lg font-semibold text-foreground">{camino.name}</h2>
-                  {camino.description && (
-                    <p className="mt-1 whitespace-pre-wrap text-sm text-muted-foreground">
-                      {truncateAtSentence(camino.description)}
-                    </p>
-                  )}
-                </Link>
-
-                <div className="flex shrink-0 items-center gap-2">
+              <div className="flex items-center justify-between gap-2 ">
+                <div className="flex itms-center gap-2">
+                  <Link href={`/caminos/${camino.id}`}>
+                    <h2 className="text-lg font-semibold text-foreground">
+                      {camino.name}
+                    </h2>
+                  </Link>
                   {camino.verified && <VerifiedBadge />}
-                  {(isPilgrim || isOwner) && <CaminoActionsMenu camino={camino} />}
                 </div>
+                {isPilgrim && <CaminoActionsMenu camino={camino} />}
               </div>
+
+              <Link href={`/caminos/${camino.id}`} className="flex-1">
+                {camino.description && (
+                  <p className="mt-1 whitespace-pre-wrap text-sm text-muted-foreground">
+                    {truncateAtSentence(camino.description)}
+                  </p>
+                )}
+              </Link>
             </li>
           ))}
         </ul>

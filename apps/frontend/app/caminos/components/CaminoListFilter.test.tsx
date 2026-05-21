@@ -11,7 +11,15 @@ vi.mock('next-intl', () => ({
 
 // next/link renders a plain <a> in tests.
 vi.mock('next/link', () => ({
-  default: ({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) => (
+  default: ({
+    href,
+    children,
+    className,
+  }: {
+    href: string;
+    children: React.ReactNode;
+    className?: string;
+  }) => (
     <a href={href} className={className}>
       {children}
     </a>
@@ -105,8 +113,14 @@ describe('CaminoListFilter', () => {
   it('renders all caminos when the filter is off', () => {
     render(<CaminoListFilter caminos={allCaminos} isPilgrim={false} isOwner={false} />);
 
-    expect(screen.getByText('Camino Francés'), 'verified camino must appear').toBeInTheDocument();
-    expect(screen.getByText('Via de la Plata'), 'unverified camino must appear').toBeInTheDocument();
+    expect(
+      screen.getByText('Camino Francés'),
+      'verified camino must appear',
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('Via de la Plata'),
+      'unverified camino must appear',
+    ).toBeInTheDocument();
   });
 
   it('shows only verified caminos after toggling the switch on', async () => {
@@ -115,7 +129,10 @@ describe('CaminoListFilter', () => {
 
     await user.click(getSwitch());
 
-    expect(screen.getByText('Camino Francés'), 'verified camino must still appear').toBeInTheDocument();
+    expect(
+      screen.getByText('Camino Francés'),
+      'verified camino must still appear',
+    ).toBeInTheDocument();
     expect(
       screen.queryByText('Via de la Plata'),
       'unverified camino must be hidden when filter is active',
@@ -135,7 +152,9 @@ describe('CaminoListFilter', () => {
 
   it('shows the empty-state message when filter is on and no caminos are verified', async () => {
     const user = userEvent.setup();
-    render(<CaminoListFilter caminos={[unverifiedCamino]} isPilgrim={false} isOwner={false} />);
+    render(
+      <CaminoListFilter caminos={[unverifiedCamino]} isPilgrim={false} isOwner={false} />,
+    );
 
     await user.click(getSwitch());
 
@@ -159,19 +178,6 @@ describe('CaminoListFilter', () => {
     expect(badges, 'exactly one badge for the one verified camino').toHaveLength(1);
   });
 
-  it('renders the "Create" link for pilgrims', () => {
-    render(<CaminoListFilter caminos={allCaminos} isPilgrim={true} isOwner={false} />);
-
-    const createLink = screen.getByRole('link', { name: 'create_link' });
-    expect(createLink).toBeInTheDocument();
-    expect(createLink).toHaveAttribute('href', '/caminos/new');
-  });
-
-  it('does NOT render the "Create" link for non-pilgrims', () => {
-    render(<CaminoListFilter caminos={allCaminos} isPilgrim={false} isOwner={false} />);
-    expect(screen.queryByRole('link', { name: 'create_link' })).not.toBeInTheDocument();
-  });
-
   it('renders the actions menu for pilgrims', () => {
     render(<CaminoListFilter caminos={allCaminos} isPilgrim={true} isOwner={false} />);
 
@@ -182,7 +188,9 @@ describe('CaminoListFilter', () => {
 
   it('does NOT render actions menus for non-pilgrims', () => {
     render(<CaminoListFilter caminos={allCaminos} isPilgrim={false} isOwner={false} />);
-    expect(screen.queryByLabelText(`actions-${verifiedCamino.name}`)).not.toBeInTheDocument();
+    expect(
+      screen.queryByLabelText(`actions-${verifiedCamino.name}`),
+    ).not.toBeInTheDocument();
   });
 
   it('renders an empty list gracefully without errors', () => {
@@ -192,7 +200,9 @@ describe('CaminoListFilter', () => {
   });
 
   it('camino names link to their detail pages', () => {
-    render(<CaminoListFilter caminos={[verifiedCamino]} isPilgrim={false} isOwner={false} />);
+    render(
+      <CaminoListFilter caminos={[verifiedCamino]} isPilgrim={false} isOwner={false} />,
+    );
 
     const link = screen.getByRole('link', { name: /Camino Francés/i });
     expect(link).toHaveAttribute('href', `/caminos/${verifiedCamino.id}`);
@@ -210,9 +220,10 @@ describe('CaminoListFilter', () => {
     // The truncated text should end with an ellipsis character and not contain
     // the full 700-char string verbatim.
     const descriptionEl = screen.getByText(/A+…/);
-    expect(descriptionEl.textContent!.length, 'description must be truncated').toBeLessThan(
-      longDescription.length,
-    );
+    expect(
+      descriptionEl.textContent!.length,
+      'description must be truncated',
+    ).toBeLessThan(longDescription.length);
   });
 
   it('filter switch has correct initial aria-checked state (false)', () => {
@@ -247,9 +258,13 @@ describe('CaminoListFilter', () => {
     expect(items).toHaveLength(allCaminos.length);
   });
 
-  it('renders the actions menu for owners (non-pilgrims)', () => {
+  it('does NOT render actions menus for owners when isPilgrim is false', () => {
     render(<CaminoListFilter caminos={allCaminos} isPilgrim={false} isOwner={true} />);
-    expect(screen.getByLabelText(`actions-${verifiedCamino.name}`)).toBeInTheDocument();
-    expect(screen.getByLabelText(`actions-${unverifiedCamino.name}`)).toBeInTheDocument();
+    expect(
+      screen.queryByLabelText(`actions-${verifiedCamino.name}`),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByLabelText(`actions-${unverifiedCamino.name}`),
+    ).not.toBeInTheDocument();
   });
 });

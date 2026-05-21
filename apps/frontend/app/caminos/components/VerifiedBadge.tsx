@@ -1,16 +1,22 @@
 'use client';
 
-import { BadgeCheck } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Tooltip } from '@/app/components/ui/tooltip';
+import { cn } from '@/lib/utils';
 
-export function VerifiedBadge() {
+export function VerifiedBadge({ className }: { className?: string }) {
   const t = useTranslations('caminos');
 
   return (
     <Tooltip content={t('verified_tooltip')} aria-label={t('verified_icon_aria')}>
-      <BadgeCheck className="size-5 text-green-600" aria-hidden="true" />
+      <i
+        className={cn(
+          'icon-certificate text-2xl text-pillyGreen-500 cursor-help',
+          className,
+        )}
+        aria-hidden="true"
+      />
     </Tooltip>
   );
 }

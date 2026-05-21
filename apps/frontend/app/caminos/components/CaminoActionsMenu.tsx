@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { MoreHorizontal } from 'lucide-react';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import {
   DropdownMenu,
@@ -12,6 +11,8 @@ import {
   DropdownMenuItem,
 } from '@/app/components/ui/dropdown-menu';
 import { DeleteCaminoDialog } from './DeleteCaminoDialog';
+import { buttonVariants } from '@/app/components/ui/button';
+import { cn } from '@/lib/utils';
 import { canDelete } from '@/lib/can-delete';
 
 const CAMINO_DELETE_WINDOW_MS = 2 * 60 * 60 * 1000; // 2 hours
@@ -23,7 +24,10 @@ interface CaminoActionsMenuProps {
 export function CaminoActionsMenu({ camino }: CaminoActionsMenuProps) {
   const t = useTranslations('caminos');
   const router = useRouter();
-  const [deletingCamino, setDeletingCamino] = useState<{ id: string; name: string } | null>(null);
+  const [deletingCamino, setDeletingCamino] = useState<{
+    id: string;
+    name: string;
+  } | null>(null);
 
   const { user, accessToken } = useKindeBrowserClient();
   const roleKeys = accessToken?.roles?.map((r) => r.key) ?? [];
@@ -43,8 +47,11 @@ export function CaminoActionsMenu({ camino }: CaminoActionsMenuProps) {
       <DropdownMenu>
         <DropdownMenuTrigger
           aria-label={t('actions_menu_aria', { name: camino.name })}
-          className="rounded-md p-1 text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-          <MoreHorizontal className="size-4" aria-hidden="true" />
+          className={cn(buttonVariants({ variant: 'ghost' }))}>
+          <i
+            className="icon-ellipsis-v text-xl text-muted-foreground hover:text-foreground"
+            aria-hidden="true"
+          />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" ignoreAnchorWidth>
           <DropdownMenuItem

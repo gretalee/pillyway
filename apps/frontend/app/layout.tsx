@@ -1,10 +1,11 @@
 import { getLocale, getMessages, getTimeZone, getTranslations } from 'next-intl/server';
 import { Providers } from '@/providers/providers';
 import { Header } from '@/app/components/layout/Header';
+import { Footer } from '@/app/components/layout/Footer';
 import { PathTracker } from '@/app/components/PathTracker';
 import { getAuthUser } from '@/lib/getAuthUser';
 import type { Locale } from '@/i18n/detectLocale';
-import './globals.css';
+import '../assets/styles/global.css';
 
 export async function generateMetadata() {
   const t = await getTranslations('meta');
@@ -31,7 +32,10 @@ export default async function RootLayout({
         <Providers locale={locale} messages={messages} timeZone={timeZone}>
           <PathTracker />
           <Header user={authUser} />
-          {children}
+          <div className="flex flex-col flex-1">
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </div>
         </Providers>
       </body>
     </html>

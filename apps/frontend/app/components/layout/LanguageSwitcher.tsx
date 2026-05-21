@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useLocaleStore } from '@/store/locale-store';
 import type { Locale } from '@/i18n/detectLocale';
-import { cn } from '@/lib/utils';
+import { Button } from '../ui/button';
 
 const LOCALES: Locale[] = ['de', 'en'];
 const LOCALE_LABELS: Record<Locale, string> = { de: 'DE', en: 'EN' };
@@ -30,20 +30,14 @@ export function LanguageSwitcher() {
       {LOCALES.map((loc) => {
         const isActive = loc === locale;
         return (
-          <button
+          <Button
             key={loc}
-            type="button"
+            variant={isActive ? 'default' : 'ghost'}
+            size={'sm'}
             onClick={() => handleSelect(loc)}
-            aria-pressed={isActive}
-            className={cn(
-              'rounded px-2 py-1 text-sm leading-none transition-colors',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1',
-              isActive
-                ? 'font-semibold text-foreground'
-                : 'font-normal text-muted-foreground hover:text-foreground',
-            )}>
+            aria-pressed={isActive}>
             {LOCALE_LABELS[loc]}
-          </button>
+          </Button>
         );
       })}
     </div>

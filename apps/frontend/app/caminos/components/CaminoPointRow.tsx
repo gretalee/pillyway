@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
-import { ArrowDown, ArrowUp, Link2Off, X } from 'lucide-react';
 import { Input } from '@/app/components/ui/input';
 import { Select } from '@/app/components/ui/select';
 import { Label } from '@/app/components/ui/label';
@@ -14,6 +13,7 @@ import {
 } from '@/app/api/caminos/use-camino-points-search';
 import { useDebounce } from '@/lib/use-debounce';
 import { SuggestionCard } from './SuggestionCard';
+import { Button } from '@/app/components/ui/button';
 
 interface CaminoPointFormItem {
   caminoPointId: string | null;
@@ -97,44 +97,36 @@ export function CaminoPointRow({
   return (
     <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
       <div className="mb-2 flex items-center justify-between">
-        <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+        <span className="font-semibold uppercase tracking-wider text-muted-foreground">
           {index + 1}.
         </span>
-        <div className="flex items-center gap-1">
-          <button
-            type="button"
+        <div className="flex items-center">
+          <Button
+            variant="ghost"
             onClick={() => onMoveUp(index)}
             disabled={index === 0}
-            aria-label={t('move_up')}
-            className={cn(
-              'rounded p-1 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-              'disabled:cursor-not-allowed disabled:opacity-40',
-            )}>
-            <ArrowUp className="size-4" aria-hidden="true" />
-          </button>
-          <button
-            type="button"
+            aria-label={t('move_up')}>
+            <i className="icon-chevron-up text-sm" aria-hidden="true" />
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => onMoveDown(index)}
             disabled={index === totalCount - 1}
-            aria-label={t('move_down')}
-            className={cn(
-              'rounded p-1 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-              'disabled:cursor-not-allowed disabled:opacity-40',
-            )}>
-            <ArrowDown className="size-4" aria-hidden="true" />
-          </button>
+            aria-label={t('move_down')}>
+            <i className="icon-chevron-down text-sm" aria-hidden="true" />
+          </Button>
+
           {canRemove && (
-            <button
-              type="button"
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={() => onRemove(index)}
               disabled={totalCount === 1}
-              aria-label={t('remove_point')}
-              className={cn(
-                'rounded p-1 text-muted-foreground transition-colors hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-                'disabled:cursor-not-allowed disabled:opacity-40',
-              )}>
-              <X className="size-4" aria-hidden="true" />
-            </button>
+              aria-label={t('remove_point')}>
+              <i className="icon-times text-xl" aria-hidden="true" />
+            </Button>
           )}
         </div>
       </div>
@@ -166,7 +158,7 @@ export function CaminoPointRow({
               onClick={() => onUnlink(index)}
               aria-label={t('unlink')}
               className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-0.5 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-              <Link2Off className="size-3.5" aria-hidden="true" />
+              <i className="icon-chain-broken text-sm" aria-hidden="true" />
             </button>
           )}
         </div>

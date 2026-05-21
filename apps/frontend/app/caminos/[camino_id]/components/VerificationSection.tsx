@@ -36,26 +36,31 @@ export function VerificationSection({ caminoId }: VerificationSectionProps) {
         {t('camino_detail.verification_heading')}
       </h2>
 
-      <div className="flex flex-wrap items-center gap-3">
-        <Button
-          variant={isAuthenticated && activeVote === true ? 'default' : 'outline'}
-          disabled={!isAuthenticated || mutation.isPending}
-          onClick={() => handleVote(true)}
-          aria-pressed={activeVote === true}>
-          {t('camino_detail.vote_yes')}
-        </Button>
+      <div className="flex flex-wrap items-center gap-3 mt-6">
+        <div className="flex items-center gap-2 relative border border-pillyGreen-500 rounded-md pt-6 pb-4 px-3">
+          <Button
+            variant={isAuthenticated && activeVote === true ? 'default' : 'outline'}
+            disabled={!isAuthenticated || mutation.isPending}
+            onClick={() => handleVote(true)}
+            aria-pressed={activeVote === true}>
+            {t('camino_detail.vote_yes')}
+          </Button>
+          <Button
+            variant={isAuthenticated && activeVote === false ? 'default' : 'outline'}
+            disabled={!isAuthenticated || mutation.isPending}
+            onClick={() => handleVote(false)}
+            aria-pressed={activeVote === false}>
+            {t('camino_detail.vote_no')}
+          </Button>
 
-        <Button
-          variant={isAuthenticated && activeVote === false ? 'default' : 'outline'}
-          disabled={!isAuthenticated || mutation.isPending}
-          onClick={() => handleVote(false)}
-          aria-pressed={activeVote === false}>
-          {t('camino_detail.vote_no')}
-        </Button>
+          <div className="flex flex-col items-start text-sm pl-6 text-muted-foreground pr-2">
+            <p>{t('camino_detail.vote_yes_count', { count: yesVotes })}</p>
+            <p>{t('camino_detail.vote_no_count', { count: noVotes })}</p>
+          </div>
 
-        <div className="flex items-center gap-4 text-sm border border-pillyGreen-500 bg-pillyGreen-50 rounded-md px-3 py-1 opacity-70">
-          <p>{t('camino_detail.vote_yes_count', { count: yesVotes })}</p>
-          <p>{t('camino_detail.vote_no_count', { count: noVotes })}</p>
+          <label className="absolute -top-2 left-4 bg-white px-1 text-sm text-pillyGreen-700">
+            {t('camino_detail.verification_label')}
+          </label>
         </div>
       </div>
 

@@ -1,14 +1,12 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Loader2 } from 'lucide-react';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
-
 import { canDelete } from '@/lib/can-delete';
 
 import { Button } from '@/app/components/ui/button';
@@ -82,7 +80,7 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
     });
 
   const [formError, setFormError] = useState<string | null>(null);
-  const [initialized, setInitialized] = useState(false);
+  const initializedRef = useRef(false);
   const [pendingPayload, setPendingPayload] = useState<UpdateCaminoPayload | null>(null);
   const [reorderWarningCount, setReorderWarningCount] = useState(0);
 
@@ -110,7 +108,8 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
 
   // Pre-populate form once camino data is loaded
   useEffect(() => {
-    if (camino && !initialized) {
+    if (camino && !initializedRef.current) {
+      initializedRef.current = true;
       reset({
         name: camino.name,
         description: camino.description ?? '',
@@ -121,9 +120,8 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
           description: p.description ?? '',
         })),
       });
-      setInitialized(true);
     }
-  }, [camino, initialized, reset]);
+  }, [camino, reset]);
 
   const onLinkCaminoPoints = useCallback(
     (index: number, suggestion: CaminoPointSearchResult) => {
@@ -335,7 +333,7 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
         <div>
           <Label htmlFor={descriptionId}>{tNew('field_description')}</Label>
           <div className="mt-1">
-            <Textarea id={descriptionId} rows={3} {...register('description')} />
+            <Textarea id={descriptionId} rows={8} {...register('description')} />
           </div>
         </div>
 
@@ -391,7 +389,10 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
             className="w-full sm:w-auto">
             {mutation.isPending ? (
               <>
-                <Loader2 className="mr-2 size-4 animate-spin" aria-hidden="true" />
+                <i
+                  className="icon-spinner mr-2 text-xl animate-spin"
+                  aria-hidden="true"
+                />
                 {t('submitting')}
               </>
             ) : (

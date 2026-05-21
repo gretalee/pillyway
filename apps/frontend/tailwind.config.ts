@@ -4,6 +4,7 @@ const config = {
   theme: {
     extend: {
       fontFamily: {
+        casper: ['Casper', 'sans-serif'],
         sans: ['system-ui', 'sans-serif'],
         mono: ['ui-monospace', 'monospace'],
       },
@@ -12,7 +13,7 @@ const config = {
           50: '#f1fcf6',
           100: '#e0f8eb',
           200: '#c2f0d8',
-          300: '#92e3ba',
+          300: '#93e392',
           400: '#5bcd93',
           500: '#34b373',
           600: '#238855',
