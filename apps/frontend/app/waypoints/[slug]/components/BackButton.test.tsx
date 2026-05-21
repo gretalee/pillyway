@@ -17,7 +17,9 @@ import { useRouter } from 'next/navigation';
 const mockPush = vi.fn();
 
 beforeEach(() => {
-  vi.mocked(useRouter).mockReturnValue({ push: mockPush } as unknown as ReturnType<typeof useRouter>);
+  vi.mocked(useRouter).mockReturnValue({ push: mockPush } as unknown as ReturnType<
+    typeof useRouter
+  >);
   mockPush.mockReset();
   sessionStorage.clear();
 });
@@ -33,14 +35,14 @@ describe('BackButton — rendering', () => {
 
 describe('BackButton — navigation', () => {
   it('calls router.push with the stored navPreviousPath when one is set', async () => {
-    sessionStorage.setItem('navPreviousPath', '/waypoints/my-stage');
+    sessionStorage.setItem('pilly_lastPath', '/waypoints/my-stage');
     const user = userEvent.setup();
     render(<BackButton />);
     await user.click(screen.getByRole('button'));
     expect(mockPush).toHaveBeenCalledWith('/waypoints/my-stage');
   });
 
-  it('falls back to /caminos when sessionStorage has no navPreviousPath', async () => {
+  it('falls back to /caminos when sessionStorage has no pilly_lastPath', async () => {
     const user = userEvent.setup();
     render(<BackButton />);
     await user.click(screen.getByRole('button'));

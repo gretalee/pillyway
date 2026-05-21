@@ -1,12 +1,16 @@
-import React from 'react';
-import { render } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { render } from '@testing-library/react';
 import { usePathname } from 'next/navigation';
-import { PathTracker } from './PathTracker';
+import { PathTracker, getLastPath } from './PathTracker';
 
 vi.mock('next/navigation', () => ({
   usePathname: vi.fn(),
 }));
+
+const mockPathname = (path: string) => vi.mocked(usePathname).mockReturnValue(path);
+
+const STAGE_PATH = '/caminos/via-francigena/stages/3';
+const LAST_PATH_KEY = 'pilly_lastPath';
 
 beforeEach(() => {
   sessionStorage.clear();
@@ -14,76 +18,70 @@ beforeEach(() => {
 
 afterEach(() => vi.restoreAllMocks());
 
-describe('PathTracker — initial mount', () => {
-  it('sets navCurrentPath on first mount with no prior session', () => {
-    const pathToTrack = '/caminos/abc-123/stages/1';
-    vi.mocked(usePathname).mockReturnValue(pathToTrack);
-    render(<PathTracker />);
-    expect(sessionStorage.getItem('navCurrentPath')).toBe(pathToTrack);
-    expect(sessionStorage.getItem('navPreviousPath')).toBeNull();
+describe('PathTracker', () => {
+  describe('stores the path when on a stage view route', () => {
+    it('saves a stage path to sessionStorage', () => {
+      mockPathname(STAGE_PATH);
+      render(<PathTracker />);
+      expect(sessionStorage.getItem(LAST_PATH_KEY)).toBe(STAGE_PATH);
+    });
+
+    it('updates sessionStorage when the path changes to another stage', () => {
+      const secondPath = '/caminos/via-francigena/stages/5';
+      mockPathname(STAGE_PATH);
+      const { rerender } = render(<PathTracker />);
+
+      mockPathname(secondPath);
+      rerender(<PathTracker />);
+
+      expect(sessionStorage.getItem(LAST_PATH_KEY)).toBe(secondPath);
+    });
+  });
+
+  describe('does NOT store the path for non-stage routes', () => {
+    it.each([
+      '/caminos/via-francigena',
+      '/caminos/via-francigena/stages/3/edit',
+      '/caminos/via-francigena/stages/new',
+      '/caminos/via-francigena/update',
+      '/caminos',
+      '/',
+    ])('ignores path: %s', (path) => {
+      mockPathname(path);
+      render(<PathTracker />);
+      expect(sessionStorage.getItem(LAST_PATH_KEY)).toBeNull();
+    });
+  });
+
+  describe('does NOT overwrite an existing stored path with a non-stage path', () => {
+    it('keeps the previously stored stage path after navigating to an edit page', () => {
+      mockPathname(STAGE_PATH);
+      const { rerender } = render(<PathTracker />);
+
+      mockPathname('/caminos/via-francigena/stages/3/edit');
+      rerender(<PathTracker />);
+
+      expect(sessionStorage.getItem(LAST_PATH_KEY)).toBe(STAGE_PATH);
+    });
+  });
+
+  describe('renders nothing', () => {
+    it('returns null and produces no DOM output', () => {
+      mockPathname(STAGE_PATH);
+      const { container } = render(<PathTracker />);
+      expect(container).toBeEmptyDOMElement();
+    });
   });
 });
 
-describe('PathTracker — navigation tracking', () => {
-  it('updates navPreviousPath when navigating from a prior non-form page', () => {
-    const pathToTrack = '/caminos/abc-123/stages/1';
-    const newPath = '/caminos/abc-123/stages/2';
-    vi.mocked(usePathname).mockReturnValue(pathToTrack);
-    const { rerender } = render(<PathTracker />);
-
-    vi.mocked(usePathname).mockReturnValue(newPath);
-    rerender(<PathTracker />);
-
-    expect(sessionStorage.getItem('navPreviousPath')).toBe(pathToTrack);
-    expect(sessionStorage.getItem('navCurrentPath')).toBe(newPath);
+describe('getLastPath', () => {
+  it('returns null when sessionStorage is empty', () => {
+    expect(getLastPath()).toBeNull();
   });
 
-  it('updates navPreviousPath NOT when next path is no stage url', () => {
-    const pathToTrack = '/caminos/abc-123/stages/1';
-    const newPath = '/caminos';
-    vi.mocked(usePathname).mockReturnValue(pathToTrack);
-    const { rerender } = render(<PathTracker />);
-
-    vi.mocked(usePathname).mockReturnValue(newPath);
-    rerender(<PathTracker />);
-
-    expect(sessionStorage.getItem('navPreviousPath')).toBeNull();
-    expect(sessionStorage.getItem('navCurrentPath')).toBe(pathToTrack);
-  });
-
-  it('does not update navPreviousPath when pathname has not changed', () => {
-    const pathToTrack = '/caminos/abc-123/stages/1';
-    vi.mocked(usePathname).mockReturnValue(pathToTrack);
-    const { rerender } = render(<PathTracker />);
-
-    vi.mocked(usePathname).mockReturnValue(pathToTrack);
-    rerender(<PathTracker />);
-
-    expect(sessionStorage.getItem('navPreviousPath')).toBeNull();
-    expect(sessionStorage.getItem('navCurrentPath')).toBe(pathToTrack);
-  });
-});
-
-describe('PathTracker — form path exclusion', () => {
-  it('does not update sessionStorage when pathname ends with /edit', () => {
-    sessionStorage.setItem('navCurrentPath', '/caminos/abc-123');
-    sessionStorage.setItem('navPreviousPath', '/caminos');
-
-    vi.mocked(usePathname).mockReturnValue('/caminos/abc-123/edit');
+  it('returns the stored path after PathTracker has saved it', () => {
+    mockPathname(STAGE_PATH);
     render(<PathTracker />);
-
-    expect(sessionStorage.getItem('navCurrentPath')).toBe('/caminos/abc-123');
-    expect(sessionStorage.getItem('navPreviousPath')).toBe('/caminos');
-  });
-
-  it('does not update sessionStorage when pathname ends with /new', () => {
-    sessionStorage.setItem('navCurrentPath', '/caminos');
-    sessionStorage.setItem('navPreviousPath', '/');
-
-    vi.mocked(usePathname).mockReturnValue('/caminos/new');
-    render(<PathTracker />);
-
-    expect(sessionStorage.getItem('navCurrentPath')).toBe('/caminos');
-    expect(sessionStorage.getItem('navPreviousPath')).toBe('/');
+    expect(getLastPath()).toBe(STAGE_PATH);
   });
 });
