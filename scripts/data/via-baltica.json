@@ -1,0 +1,941 @@
+{
+  "_meta": {
+    "sources": [
+      "https://www.jakobsweg.de/via-baltica/",
+      "https://www.kirche-mv.de/pilgerwege/pilgerweg-via-baltica",
+      "https://jakobswegfreun.de/baltica/",
+      "https://pilger-im-norden.de/via-baltica/",
+      "https://www.missesbackpack.de/via-baltica-pilgerherbergen-wismar-bremen/",
+      "https://daspilgerforum.de/viewtopic.php?t=1050",
+      "https://fwspass.de/jakobsweg-via-baltica-bremen-osnabrueck/",
+      "https://caminotogo.de/via-baltica/",
+      "https://www.deutsche-jakobus-gesellschaft.de/aktuelles/einzelansicht/via-baltica-zwischen-bremen-und-osnabrueck-runderneuert-67",
+      "https://www.nordkreis-vechta.de/erlebnisse/aktiv/wandern-pilgern/jakobsweg.php",
+      "https://www.dammer-berge.de/erlebnisse/touren/jacobsweg.php",
+      "https://bistum-osnabrueck.de/pilgerwege-im-bistum-osnabrueck/",
+      "https://de.wikipedia.org/wiki/Via_Baltica_(Pilgerweg)"
+    ],
+    "notes": [
+      "Accommodation data sourced exclusively from German pilgrimage authority websites and verified pilgrim reports.",
+      "Distances for stages 25–36 (Bremen–Osnabrück) are approximate (~) — sourced from fwspass.de and camino-michel.de.",
+      "Swinemünde (Świnoujście) is the Polish starting point before crossing into Germany at Kamminke/Usedom island.",
+      "Zirchow is an intermediate stop on Stage 1 within Usedom island (between the Polish border crossing and Usedom Stadt).",
+      "Travenbrück (Kloster Nütschau) lies on the Lübeck–Bad Oldesloe stage; accommodation assigned to Bad Oldesloe waypoint.",
+      "Otterstedt (Kirchengemeinde) lies on the Zeven–Ottersberg stage; accommodation assigned to Ottersberg waypoint.",
+      "Some small waypoints (Lassan, Hohendorf, Hanshagen, Sanitz, Barrien, Harpstedt, Wildeshausen, Neuenkirchen, Steinfeld, Engter, Rulle) have no confirmed pilgrim accommodation in public sources — contact caminotogo.de guide for current options.",
+      "Accommodation status may have changed since source publication (2018–2024). Always call ahead.",
+      "createdBy: 'seed' is a placeholder — replace with actual user ID before running the import script.",
+      "Guidebook recommendation: 'Jakobsweg Via Baltica von Bremen nach Osnabrück' by Gottschewski (caminotogo.de/shop, 268 pp., 2022) for complete southern section details."
+    ]
+  },
+  "camino": {
+    "name": "Via Baltica",
+    "description": "Die Via Baltica ist mit rund 762 km der längste deutsche Jakobsweg. Sie führt vom Nordosteck Deutschlands — der Insel Usedom an der polnisch-deutschen Grenze — durch die Hansestädte Greifswald, Rostock, Wismar und Lübeck über Hamburg und Bremen bis nach Osnabrück. Von dort setzt sich der Weg als Westfälischer Jakobsweg in Richtung Köln fort. Der Weg verläuft durch fünf Bundesländer (Mecklenburg-Vorpommern, Schleswig-Holstein, Hamburg, Bremen, Niedersachsen) und ist durchgehend mit Muschel und gelbem Pfeil markiert. Zwischen Usedom und Westfalen besteht ein dichtes Netz nichtkommerzieller Pilgerherbergen in Kirchengemeinden und Klöstern.",
+    "verified": true,
+    "createdBy": "seed"
+  },
+  "points": [
+    {
+      "position": 1,
+      "name": "Swinemünde",
+      "country": "PL",
+      "slug": "swindemuende",
+      "description": "Polnische Hafenstadt Świnoujście an der Mündung der Swine. Ausgangspunkt der Via Baltica; Fährverbindungen von Kopenhagen und Ystad.",
+      "accommodations": []
+    },
+    {
+      "position": 2,
+      "name": "Zirchow",
+      "country": "DE",
+      "slug": "zirchow",
+      "description": "Erster Ort auf der Insel Usedom nach der Grenze zu Polen. Ideale erste Übernachtung auf der Insel.",
+      "accommodations": [
+        {
+          "name": "Pilgerherberge der Ev.-luth. Kirchengemeinde Ahlbeck-Zirchow",
+          "type": "hostel",
+          "description": "Kleine Pilgerherberge gegenüber der St.-Jacobi-Kirche. Schlafraum, Dusche, Pilgerküche, Garten. Spontane Übernachtungen willkommen.",
+          "addressStreet": null,
+          "addressZip": "17419",
+          "addressCity": "Zirchow",
+          "addressCountry": "DE",
+          "website": "https://kirche-auf-usedom.de",
+          "email": "ahlbeck-zirchow@pek.de",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 3,
+      "name": "Usedom",
+      "country": "DE",
+      "slug": "usedom",
+      "description": "Historische Bischofstadt auf der Insel Usedom. Erste größere Station nach dem Grenzübertritt.",
+      "accommodations": [
+        {
+          "name": "Pilgerherberge der Ev. Kirchengemeinde Usedom",
+          "type": "hostel",
+          "description": "Pilgerherberge der evangelischen Kirchengemeinde im Stadtzentrum.",
+          "addressStreet": "Markt 20",
+          "addressZip": "17406",
+          "addressCity": "Usedom",
+          "addressCountry": "DE",
+          "website": "https://www.usedom-kirche.de/seite/212340/pilgerherberge.html",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 4,
+      "name": "Lassan",
+      "country": "DE",
+      "slug": "lassan",
+      "description": null,
+      "accommodations": []
+    },
+    {
+      "position": 5,
+      "name": "Hohendorf",
+      "country": "DE",
+      "slug": "hohendorf",
+      "description": null,
+      "accommodations": []
+    },
+    {
+      "position": 6,
+      "name": "Hanshagen",
+      "country": "DE",
+      "slug": "hanshagen",
+      "description": null,
+      "accommodations": []
+    },
+    {
+      "position": 7,
+      "name": "Greifswald",
+      "country": "DE",
+      "slug": "greifswald",
+      "description": "Hansestadt mit mittelalterlichem Stadtkern und der ältesten Universität Norddeutschlands (1456). Heimat des Malers Caspar David Friedrich.",
+      "accommodations": [
+        {
+          "name": "Pilgerherberge Dom St. Nikolai",
+          "type": "hostel",
+          "description": "Pilgerherberge am gotischen Dom. Bis 10 Personen, Matratzen vorhanden (Schlafsack mitbringen), WC, Waschbecken, kleine Gemeinschaftsküche. Pilgerstempel erhältlich. Zugang nur bis 8 Uhr morgens.",
+          "addressStreet": "Domstraße 13",
+          "addressZip": "17489",
+          "addressCity": "Greifswald",
+          "addressCountry": "DE",
+          "website": "https://www.dom-greifswald.de",
+          "email": "hgw-dom@pek.de",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 8,
+      "name": "Grimmen",
+      "country": "DE",
+      "slug": "grimmen",
+      "description": null,
+      "accommodations": [
+        {
+          "name": "Pilgerherberge Pfarrscheune",
+          "type": "hostel",
+          "description": "Historische Pfarrscheune (ca. 1780), restauriert und für Pilger geöffnet. Garten, Teeküche, Toilette (Dusche im Haupthaus). Selbstverpflegung.",
+          "addressStreet": "Domstraße 7",
+          "addressZip": "18507",
+          "addressCity": "Grimmen",
+          "addressCountry": "DE",
+          "website": "https://www.kirche-grimmen.de",
+          "email": "grimmen-pfa@pek.de",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 9,
+      "name": "Tribsees",
+      "country": "DE",
+      "slug": "tribsees",
+      "description": null,
+      "accommodations": [
+        {
+          "name": "Pilgerherberge der Ev.-luth. Kirchengemeinde Tribsees",
+          "type": "hostel",
+          "description": "Pilgerstation an der St.-Thomas-Kirche. Vorab anmelden.",
+          "addressStreet": "Papenstraße 9",
+          "addressZip": "18465",
+          "addressCity": "Tribsees",
+          "addressCountry": "DE",
+          "website": null,
+          "email": "tribsees@pek.de",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 10,
+      "name": "Sanitz",
+      "country": "DE",
+      "slug": "sanitz",
+      "description": null,
+      "accommodations": []
+    },
+    {
+      "position": 11,
+      "name": "Rostock",
+      "country": "DE",
+      "slug": "rostock",
+      "description": "Größte Stadt Mecklenburg-Vorpommerns und bedeutende Hansestadt. Gotische Backsteinarchitektur, historisches Rathaus und Kröpeliner Straße.",
+      "accommodations": [
+        {
+          "name": "Pilgerherberge der Ev.-luth. Jakobus-Kirchengemeinde",
+          "type": "hostel",
+          "description": "Seit Pfingsten 2008 in Betrieb. Einfache Unterkunft für Fuß- und Radpilger mit Pilgerausweis. Voranmeldung erforderlich (kein Empfangspersonal vor Ort).",
+          "addressStreet": "Friedhofsweg 49",
+          "addressZip": "18055",
+          "addressCity": "Rostock",
+          "addressCountry": "DE",
+          "website": "https://jakobus-rostock.de",
+          "email": "rostock-jakobus@elkm.de",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 12,
+      "name": "Bad Doberan",
+      "country": "DE",
+      "slug": "bad-doberan",
+      "description": "Kurstadt mit dem bedeutenden hochgotischen Doberaner Münster (13. Jh.), einem der besterhaltenen Backsteinkirchen Norddeutschlands.",
+      "accommodations": [
+        {
+          "name": "Klosterherberge Bad Doberan",
+          "type": "monastery",
+          "description": "Herberge auf dem historischen Klosterhof direkt neben dem Doberaner Münster. Pilgerstempel am Münster erhältlich.",
+          "addressStreet": "Klosterhof 1",
+          "addressZip": "18209",
+          "addressCity": "Bad Doberan",
+          "addressCountry": "DE",
+          "website": "https://kornhaus-baddoberan.de",
+          "email": "klosterherberge@kornhaus-doberan.de",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 13,
+      "name": "Neubukow",
+      "country": "DE",
+      "slug": "neubukow",
+      "description": null,
+      "accommodations": [
+        {
+          "name": "Pilgerherberge im Gemeindehaus Neubukow",
+          "type": "hostel",
+          "description": "Pilgerherberge der Kirchengemeinde. Vorab anmelden.",
+          "addressStreet": "Mühlenstraße 3",
+          "addressZip": "18233",
+          "addressCity": "Neubukow",
+          "addressCountry": "DE",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 14,
+      "name": "Wismar",
+      "country": "DE",
+      "slug": "wismar",
+      "description": "UNESCO-Welterbe-Hansestadt mit beeindruckenden mittelalterlichen Backsteinkirchen und historischem Altstadtkern.",
+      "accommodations": [
+        {
+          "name": "Pilgerherberge im Heilig-Geist-Hospital",
+          "type": "hostel",
+          "description": "Zwei Feldbetten, Decken, Kühlschrank, Innenhof. Keine Dusche. Hinweis: Stand 2022 war Renovierung im Gange — vorab anfragen.",
+          "addressStreet": "Lübsche Straße 31",
+          "addressZip": "23966",
+          "addressCity": "Wismar",
+          "addressCountry": "DE",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 15,
+      "name": "Grevesmühlen",
+      "country": "DE",
+      "slug": "grevesmuehlen",
+      "description": null,
+      "accommodations": [
+        {
+          "name": "Pilgerherberge der Ev.-luth. Kirchengemeinde Grevesmühlen",
+          "type": "hostel",
+          "description": "Schlafsofa, Matratzen, Decken, Dusche, Küche, Wäscheleine, WLAN. Nicht an Wochenenden verfügbar.",
+          "addressStreet": "Kirchstraße 28",
+          "addressZip": "23936",
+          "addressCity": "Grevesmühlen",
+          "addressCountry": "DE",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 16,
+      "name": "Schönberg",
+      "country": "DE",
+      "slug": "schoenberg",
+      "description": null,
+      "accommodations": [
+        {
+          "name": "Katharinenhaus",
+          "type": "church",
+          "description": "2 Sofas, Matratzen, Decken, Küche. Keine Dusche. Auch an Wochenenden offen.",
+          "addressStreet": "An der Kirche 12",
+          "addressZip": "23923",
+          "addressCity": "Schönberg",
+          "addressCountry": "DE",
+          "website": "https://www.kirche-mv.de/schoenberg/jakobsweg-via-baltica",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 17,
+      "name": "Lübeck",
+      "country": "DE",
+      "slug": "luebeck",
+      "description": "Ehemalige Hauptstadt der Hanse, UNESCO-Welterbe. Bekannt für das Holstentor, die Marienkirche und das Marzipan.",
+      "accommodations": [
+        {
+          "name": "Jakobus-Herberge der St. Jakobi-Kirchengemeinde",
+          "type": "hostel",
+          "description": "2 Zimmer mit Etagenbetten + 1 Zimmer mit Einzelbetten. Decken, Dusche, Küche. Walk-in möglich; Anmeldung bei der Kirchenvorsteherin von St. Jakobi. Pilgerstempel erhältlich.",
+          "addressStreet": "Jakobikirchhof 5",
+          "addressZip": "23552",
+          "addressCity": "Lübeck",
+          "addressCountry": "DE",
+          "website": "https://st-jakobi-luebeck.de",
+          "email": "info@st-jakobi-luebeck.de",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 18,
+      "name": "Bad Oldesloe",
+      "country": "DE",
+      "slug": "bad-oldesloe",
+      "description": null,
+      "accommodations": [
+        {
+          "name": "Benediktinerkloster Nütschau (Priorat St. Ansgar)",
+          "type": "monastery",
+          "description": "Benediktinerkloster im nahen Travenbrück (~3 km vom Weg). Pilgerhospitalität nach Benediktinischer Tradition. Übernachtung für eine Nacht möglich.",
+          "addressStreet": "Schloßstraße 26",
+          "addressZip": "23843",
+          "addressCity": "Travenbrück",
+          "addressCountry": "DE",
+          "website": "https://www.kloster-nuetschau.de",
+          "email": "info@kloster-nuetschau.de",
+          "priceRange": "comfortable",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 19,
+      "name": "Nahe",
+      "country": "DE",
+      "slug": "nahe",
+      "description": null,
+      "accommodations": [
+        {
+          "name": "Pilgerherberge im Ev. Gemeindehaus Nahe",
+          "type": "hostel",
+          "description": "Feldbetten, Decken, Dusche, Küche, frische Handtücher, Außensitzbereich. Option zu schlafen in der Kirche. Sehr herzliche Aufnahme.",
+          "addressStreet": "Rungenrade 2",
+          "addressZip": "23866",
+          "addressCity": "Nahe",
+          "addressCountry": "DE",
+          "website": null,
+          "email": "pastor.wulf.nahe@t-online.de",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 20,
+      "name": "Poppenbüttel",
+      "country": "DE",
+      "slug": "poppenbuettel",
+      "description": "Nördlicher Hamburger Stadtteil, Endpunkt der Etappe vor der Einfahrt ins Hamburger Zentrum.",
+      "accommodations": []
+    },
+    {
+      "position": 21,
+      "name": "Hamburg",
+      "country": "DE",
+      "slug": "hamburg",
+      "description": "Zweitgrößte Stadt Deutschlands und bedeutende Hafenmetropole. Pilgerstation in Hamburg-Altona mit spezieller Pilgerherberge.",
+      "accommodations": [
+        {
+          "name": "Pilgerherberge Baltica Hamburg",
+          "type": "hostel",
+          "description": "Speziell auf Via-Baltica-Pilger ausgerichtete Herberge im Trinitatis-Quartier vor der St. Trinitatis-Kirche in Altona. Teil der Pflegediakonie Alten Eichen.",
+          "addressStreet": "Kirchenstraße 42",
+          "addressZip": "22767",
+          "addressCity": "Hamburg",
+          "addressCountry": "DE",
+          "website": "https://baltica-hamburg.de",
+          "email": "mail@baltica-hamburg.de",
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Deutsche Seemannsmission Hamburg-Altona",
+          "type": "hostel",
+          "description": "Übernachtung mit Pilgerrabatt bei Vorlage des Pilgerpasses.",
+          "addressStreet": "Große Elbstraße 132",
+          "addressZip": "22767",
+          "addressCity": "Hamburg",
+          "addressCountry": "DE",
+          "website": "https://seemannsheim-hamburg.de",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 22,
+      "name": "Harsefeld",
+      "country": "DE",
+      "slug": "harsefeld",
+      "description": null,
+      "accommodations": [
+        {
+          "name": "Pilgerherberge der Kath. Kirchengemeinde Harsefeld",
+          "type": "hostel",
+          "description": "Matratzen, Decken, Küche. Keine Dusche. Garten vorhanden. Offizielle Pilgerstation seit Mai 2008.",
+          "addressStreet": "Böberstroot 11a",
+          "addressZip": "21698",
+          "addressCity": "Harsefeld",
+          "addressCountry": "DE",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 23,
+      "name": "Zeven",
+      "country": "DE",
+      "slug": "zeven",
+      "description": null,
+      "accommodations": [
+        {
+          "name": "Pilgerherberge der Kath. Kirchengemeinde Corpus Christi",
+          "type": "hostel",
+          "description": "Matratzen, Decken, Küche. Keine Dusche.",
+          "addressStreet": "Hoftohorn 9",
+          "addressZip": "27404",
+          "addressCity": "Zeven",
+          "addressCountry": "DE",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 24,
+      "name": "Ottersberg",
+      "country": "DE",
+      "slug": "ottersberg",
+      "description": null,
+      "accommodations": [
+        {
+          "name": "Pilgerherberge der Ev.-luth. Kirchengemeinde Otterstedt",
+          "type": "hostel",
+          "description": "Feldbetten, Matratzen, Decken, Küche. Keine Dusche. Fahrrad und Fußbad-Utensilien verfügbar. See mit Restaurant 1,5 km entfernt. Herberge liegt in Otterstedt, ca. 2 km vor Ottersberg.",
+          "addressStreet": "Brügger Straße 5",
+          "addressZip": "28870",
+          "addressCity": "Otterstedt",
+          "addressCountry": "DE",
+          "website": null,
+          "email": "kg.otterstedt@evlka.de",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 25,
+      "name": "Bremen",
+      "country": "DE",
+      "slug": "bremen",
+      "description": "Freie Hansestadt und bedeutender Pilgerort mit dem Bremer Dom St. Petri (11. Jh.). Hier zweigt der Weg von der Via Baltica auf den Westfälischen Jakobsweg ab.",
+      "accommodations": [
+        {
+          "name": "DJH Jugendherberge Bremen",
+          "type": "hostel",
+          "description": "Jugendherberge mit Dachterrasse über der Weser. Standard DJH-Preise (DJH-Mitgliedschaft empfohlen).",
+          "addressStreet": "Kalkstraße 6",
+          "addressZip": "28195",
+          "addressCity": "Bremen",
+          "addressCountry": "DE",
+          "website": "https://www.jugendherberge.de",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 26,
+      "name": "Barrien",
+      "country": "DE",
+      "slug": "barrien",
+      "description": null,
+      "accommodations": []
+    },
+    {
+      "position": 27,
+      "name": "Harpstedt",
+      "country": "DE",
+      "slug": "harpstedt",
+      "description": null,
+      "accommodations": []
+    },
+    {
+      "position": 28,
+      "name": "Wildeshausen",
+      "country": "DE",
+      "slug": "wildeshausen",
+      "description": null,
+      "accommodations": []
+    },
+    {
+      "position": 29,
+      "name": "Visbek",
+      "country": "DE",
+      "slug": "visbek",
+      "description": "Wallfahrtsort im Oldenburger Land. Pilgerstation auf dem Jakobsweg nach Osnabrück.",
+      "accommodations": [
+        {
+          "name": "Seminarhaus Marienstein",
+          "type": "hostel",
+          "description": "Seminarhaus mit Pilgerzimmern. Vorab anmelden.",
+          "addressStreet": "Endel 28",
+          "addressZip": "49429",
+          "addressCity": "Visbek",
+          "addressCountry": "DE",
+          "website": null,
+          "email": "marienstein-endel-visbek@ewetel.net",
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Pfarrheim St. Vitus",
+          "type": "church",
+          "description": "Kirchliches Pilgerquartier. Vorab anmelden.",
+          "addressStreet": "Inseldamm 2",
+          "addressZip": "49429",
+          "addressCity": "Visbek",
+          "addressCountry": "DE",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Ferienhof Hubbermann",
+          "type": "b_and_b",
+          "description": "Bauernhof mit Übernachtungsmöglichkeit.",
+          "addressStreet": "Hubertusmühle 4",
+          "addressZip": "49429",
+          "addressCity": "Visbek",
+          "addressCountry": "DE",
+          "website": null,
+          "email": "info@hof-hubbermann.de",
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Landgasthof Wigger",
+          "type": "b_and_b",
+          "description": null,
+          "addressStreet": "Overbergstraße 4",
+          "addressZip": "49429",
+          "addressCity": "Visbek",
+          "addressCountry": "DE",
+          "website": null,
+          "email": "info@landgasthof-wigger.de",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 30,
+      "name": "Lohne-Kroge",
+      "country": "DE",
+      "slug": "lohne-kroge",
+      "description": null,
+      "accommodations": [
+        {
+          "name": "Hof Göttke-Krogmann",
+          "type": "b_and_b",
+          "description": "Bauernhof-Unterkunft direkt an der Route.",
+          "addressStreet": "Diepholzer Straße 21",
+          "addressZip": "49393",
+          "addressCity": "Lohne-Kroge",
+          "addressCountry": "DE",
+          "website": null,
+          "email": "j.goettke-krogmann@t-online.de",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 31,
+      "name": "Neuenkirchen",
+      "country": "DE",
+      "slug": "neuenkirchen",
+      "description": null,
+      "accommodations": []
+    },
+    {
+      "position": 32,
+      "name": "Steinfeld",
+      "country": "DE",
+      "slug": "steinfeld",
+      "description": null,
+      "accommodations": []
+    },
+    {
+      "position": 33,
+      "name": "Damme",
+      "country": "DE",
+      "slug": "damme",
+      "description": "Marktstadt in den Dammer Bergen. Das Benediktinerkloster Damme stellt keinen Schlafplatz mehr zur Verfügung, gibt aber noch Pilgerstempel aus.",
+      "accommodations": [
+        {
+          "name": "DJH Jugendherberge Damme",
+          "type": "hostel",
+          "description": null,
+          "addressStreet": null,
+          "addressZip": "49401",
+          "addressCity": "Damme",
+          "addressCountry": "DE",
+          "website": "https://www.jugendherberge.de",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 34,
+      "name": "Vörden",
+      "country": "DE",
+      "slug": "voerden",
+      "description": null,
+      "accommodations": [
+        {
+          "name": "Pension Dalinghaus",
+          "type": "b_and_b",
+          "description": null,
+          "addressStreet": null,
+          "addressZip": "49434",
+          "addressCity": "Vörden",
+          "addressCountry": "DE",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 35,
+      "name": "Engter",
+      "country": "DE",
+      "slug": "engter",
+      "description": null,
+      "accommodations": []
+    },
+    {
+      "position": 36,
+      "name": "Rulle",
+      "country": "DE",
+      "slug": "rulle",
+      "description": "Kleines Dorf mit Wallfahrtskirche kurz vor Osnabrück.",
+      "accommodations": []
+    },
+    {
+      "position": 37,
+      "name": "Osnabrück",
+      "country": "DE",
+      "slug": "osnabrueck",
+      "description": "Bischofstadt und Zielort der Via Baltica in Deutschland. Am Dom St. Peter endet die Route und geht als Westfälischer Jakobsweg weiter in Richtung Köln.",
+      "accommodations": [
+        {
+          "name": "Dom Hotel Osnabrück",
+          "type": "hotel",
+          "description": "Hotel direkt am Dom St. Peter. Kein spezifisches Pilgerangebot, aber zentrale Lage am Endpunkt der Route. Bistum Osnabrück (Tel. 0541/318-0) für aktuelle Pilgerquartier-Hinweise kontaktieren.",
+          "addressStreet": "Kleine Domsfreiheit 5",
+          "addressZip": "49074",
+          "addressCity": "Osnabrück",
+          "addressCountry": "DE",
+          "website": null,
+          "email": null,
+          "priceRange": "comfortable",
+          "verified": false
+        }
+      ]
+    }
+  ],
+  "stages": [
+    {
+      "from": "Swinemünde",
+      "to": "Zirchow",
+      "distance": 5,
+      "description": null
+    },
+    {
+      "from": "Zirchow",
+      "to": "Usedom",
+      "distance": 25,
+      "description": null
+    },
+    {
+      "from": "Usedom",
+      "to": "Lassan",
+      "distance": 27,
+      "description": null
+    },
+    {
+      "from": "Lassan",
+      "to": "Hohendorf",
+      "distance": 16,
+      "description": null
+    },
+    {
+      "from": "Hohendorf",
+      "to": "Hanshagen",
+      "distance": 18,
+      "description": null
+    },
+    {
+      "from": "Hanshagen",
+      "to": "Greifswald",
+      "distance": 16,
+      "description": null
+    },
+    {
+      "from": "Greifswald",
+      "to": "Grimmen",
+      "distance": 27,
+      "description": null
+    },
+    {
+      "from": "Grimmen",
+      "to": "Tribsees",
+      "distance": 24,
+      "description": null
+    },
+    {
+      "from": "Tribsees",
+      "to": "Sanitz",
+      "distance": 35,
+      "description": null
+    },
+    {
+      "from": "Sanitz",
+      "to": "Rostock",
+      "distance": 22,
+      "description": null
+    },
+    {
+      "from": "Rostock",
+      "to": "Bad Doberan",
+      "distance": 24,
+      "description": null
+    },
+    {
+      "from": "Bad Doberan",
+      "to": "Neubukow",
+      "distance": 26,
+      "description": null
+    },
+    {
+      "from": "Neubukow",
+      "to": "Wismar",
+      "distance": 29,
+      "description": null
+    },
+    {
+      "from": "Wismar",
+      "to": "Grevesmühlen",
+      "distance": 26,
+      "description": null
+    },
+    {
+      "from": "Grevesmühlen",
+      "to": "Schönberg",
+      "distance": 24,
+      "description": null
+    },
+    {
+      "from": "Schönberg",
+      "to": "Lübeck",
+      "distance": 25,
+      "description": null
+    },
+    {
+      "from": "Lübeck",
+      "to": "Bad Oldesloe",
+      "distance": 32,
+      "description": null
+    },
+    {
+      "from": "Bad Oldesloe",
+      "to": "Nahe",
+      "distance": 23,
+      "description": null
+    },
+    {
+      "from": "Nahe",
+      "to": "Poppenbüttel",
+      "distance": 19,
+      "description": null
+    },
+    {
+      "from": "Poppenbüttel",
+      "to": "Hamburg",
+      "distance": 20,
+      "description": null
+    },
+    {
+      "from": "Hamburg",
+      "to": "Harsefeld",
+      "distance": 22,
+      "description": null
+    },
+    {
+      "from": "Harsefeld",
+      "to": "Zeven",
+      "distance": 28,
+      "description": null
+    },
+    {
+      "from": "Zeven",
+      "to": "Ottersberg",
+      "distance": 23,
+      "description": null
+    },
+    {
+      "from": "Ottersberg",
+      "to": "Bremen",
+      "distance": 35,
+      "description": null
+    },
+    {
+      "from": "Bremen",
+      "to": "Barrien",
+      "distance": 14,
+      "description": null
+    },
+    {
+      "from": "Barrien",
+      "to": "Harpstedt",
+      "distance": 20,
+      "description": null
+    },
+    {
+      "from": "Harpstedt",
+      "to": "Wildeshausen",
+      "distance": 14,
+      "description": null
+    },
+    {
+      "from": "Wildeshausen",
+      "to": "Visbek",
+      "distance": 20,
+      "description": null
+    },
+    {
+      "from": "Visbek",
+      "to": "Lohne-Kroge",
+      "distance": 31,
+      "description": null
+    },
+    {
+      "from": "Lohne-Kroge",
+      "to": "Neuenkirchen",
+      "distance": 26,
+      "description": null
+    },
+    {
+      "from": "Neuenkirchen",
+      "to": "Steinfeld",
+      "distance": 15,
+      "description": null
+    },
+    {
+      "from": "Steinfeld",
+      "to": "Damme",
+      "distance": 15,
+      "description": null
+    },
+    {
+      "from": "Damme",
+      "to": "Vörden",
+      "distance": 15,
+      "description": null
+    },
+    {
+      "from": "Vörden",
+      "to": "Engter",
+      "distance": 19,
+      "description": null
+    },
+    {
+      "from": "Engter",
+      "to": "Rulle",
+      "distance": 7,
+      "description": null
+    },
+    {
+      "from": "Rulle",
+      "to": "Osnabrück",
+      "distance": 10,
+      "description": null
+    }
+  ]
+}
