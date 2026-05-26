@@ -21,7 +21,8 @@
     "seed:camino": "yarn --cwd apps/backend seed:camino",
     "seed:camino:prod": "yarn --cwd apps/backend seed:camino:prod",
     "db:backup:dev": "yarn --cwd apps/backend db:backup:dev",
-    "db:backup:prod": "yarn --cwd apps/backend db:backup:prod"
+    "db:backup:prod": "yarn --cwd apps/backend db:backup:prod",
+    "db:restore:dev": "yarn --cwd apps/backend db:restore:dev"
   },
   "engines": {
     "node": ">=24.14.0"

@@ -25,7 +25,8 @@
     "seed:camino": "ts-node --project tsconfig.scripts.json scripts/seed-camino.ts",
     "seed:camino:prod": "node --env-file=.env.prod ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/seed-camino.ts",
     "db:backup:dev": "DB_BACKUP_ENV=dev node --env-file=.env ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/backup-db.ts",
-    "db:backup:prod": "DB_BACKUP_ENV=prod node --env-file=.env.prod ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/backup-db.ts"
+    "db:backup:prod": "DB_BACKUP_ENV=prod node --env-file=.env.prod ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/backup-db.ts",
+    "db:restore:dev": "node --env-file=.env ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/restore-db.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1045.0",
