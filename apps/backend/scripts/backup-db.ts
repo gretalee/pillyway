@@ -2,12 +2,15 @@ import { spawnSync } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 
-if (!process.env.DATABASE_URL) {
-  console.error('DATABASE_URL is not set.');
-  console.error(
-    '  Use: node --env-file=.env.prod ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/backup-db.ts',
-  );
+const connectionUrl = process.env.DIRECT_URL ?? process.env.DATABASE_URL;
+if (!connectionUrl) {
+  console.error('Neither DIRECT_URL nor DATABASE_URL is set.');
   process.exit(1);
+}
+if (process.env.DIRECT_URL) {
+  console.log('Using DIRECT_URL (direct connection, required for pg_dump).');
+} else {
+  console.log('DIRECT_URL not set — falling back to DATABASE_URL.');
 }
 
 const backupDir = path.resolve('backups');
@@ -23,13 +26,13 @@ console.log(`\nCreating backup: ${filename}`);
 console.log('This may take a moment...\n');
 
 const result = spawnSync(
-  'supabase',
-  ['db', 'dump', '--db-url', process.env.DATABASE_URL, '-f', filename],
+  'pg_dump',
+  ['--format=plain', `--file=${filename}`, process.env.DATABASE_URL],
   { stdio: 'inherit' },
 );
 
 if (result.error) {
-  console.error('Failed to start supabase CLI:', result.error.message);
+  console.error('Failed to start pg_dump:', result.error.message);
   process.exit(1);
 }
 

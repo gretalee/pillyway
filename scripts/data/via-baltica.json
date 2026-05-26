@@ -38,7 +38,7 @@
     {
       "position": 1,
       "name": "Swinemünde",
-      "country": "PL",
+      "country": "poland",
       "slug": "swindemuende",
       "description": "Polnische Hafenstadt Świnoujście an der Mündung der Swine. Ausgangspunkt der Via Baltica; Fährverbindungen von Kopenhagen und Ystad.",
       "accommodations": []
@@ -46,7 +46,7 @@
     {
       "position": 2,
       "name": "Zirchow",
-      "country": "DE",
+      "country": "germany",
       "slug": "zirchow",
       "description": "Erster Ort auf der Insel Usedom nach der Grenze zu Polen. Ideale erste Übernachtung auf der Insel.",
       "accommodations": [
@@ -57,7 +57,7 @@
           "addressStreet": null,
           "addressZip": "17419",
           "addressCity": "Zirchow",
-          "addressCountry": "DE",
+          "addressCountry": "Deutschland",
           "website": "https://kirche-auf-usedom.de",
           "email": "ahlbeck-zirchow@pek.de",
           "priceRange": "budget",
@@ -68,7 +68,7 @@
     {
       "position": 3,
       "name": "Usedom",
-      "country": "DE",
+      "country": "germany",
       "slug": "usedom",
       "description": "Historische Bischofstadt auf der Insel Usedom. Erste größere Station nach dem Grenzübertritt.",
       "accommodations": [
@@ -79,7 +79,7 @@
           "addressStreet": "Markt 20",
           "addressZip": "17406",
           "addressCity": "Usedom",
-          "addressCountry": "DE",
+          "addressCountry": "Deutschland",
           "website": "https://www.usedom-kirche.de/seite/212340/pilgerherberge.html",
           "email": null,
           "priceRange": "budget",
@@ -90,7 +90,7 @@
     {
       "position": 4,
       "name": "Lassan",
-      "country": "DE",
+      "country": "germany",
       "slug": "lassan",
       "description": null,
       "accommodations": []
@@ -98,7 +98,7 @@
     {
       "position": 5,
       "name": "Hohendorf",
-      "country": "DE",
+      "country": "germany",
       "slug": "hohendorf",
       "description": null,
       "accommodations": []
@@ -106,7 +106,7 @@
     {
       "position": 6,
       "name": "Hanshagen",
-      "country": "DE",
+      "country": "germany",
       "slug": "hanshagen",
       "description": null,
       "accommodations": []
@@ -114,7 +114,7 @@
     {
       "position": 7,
       "name": "Greifswald",
-      "country": "DE",
+      "country": "germany",
       "slug": "greifswald",
       "description": "Hansestadt mit mittelalterlichem Stadtkern und der ältesten Universität Norddeutschlands (1456). Heimat des Malers Caspar David Friedrich.",
       "accommodations": [
@@ -125,7 +125,7 @@
           "addressStreet": "Domstraße 13",
           "addressZip": "17489",
           "addressCity": "Greifswald",
-          "addressCountry": "DE",
+          "addressCountry": "Deutschland",
           "website": "https://www.dom-greifswald.de",
           "email": "hgw-dom@pek.de",
           "priceRange": "budget",
@@ -136,7 +136,7 @@
     {
       "position": 8,
       "name": "Grimmen",
-      "country": "DE",
+      "country": "germany",
       "slug": "grimmen",
       "description": null,
       "accommodations": [
@@ -147,7 +147,7 @@
           "addressStreet": "Domstraße 7",
           "addressZip": "18507",
           "addressCity": "Grimmen",
-          "addressCountry": "DE",
+          "addressCountry": "Deutschland",
           "website": "https://www.kirche-grimmen.de",
           "email": "grimmen-pfa@pek.de",
           "priceRange": "budget",
@@ -158,7 +158,7 @@
     {
       "position": 9,
       "name": "Tribsees",
-      "country": "DE",
+      "country": "germany",
       "slug": "tribsees",
       "description": null,
       "accommodations": [
@@ -169,7 +169,7 @@
           "addressStreet": "Papenstraße 9",
           "addressZip": "18465",
           "addressCity": "Tribsees",
-          "addressCountry": "DE",
+          "addressCountry": "Deutschland",
           "website": null,
           "email": "tribsees@pek.de",
           "priceRange": "budget",
@@ -180,7 +180,7 @@
     {
       "position": 10,
       "name": "Sanitz",
-      "country": "DE",
+      "country": "germany",
       "slug": "sanitz",
       "description": null,
       "accommodations": []
@@ -188,7 +188,7 @@
     {
       "position": 11,
       "name": "Rostock",
-      "country": "DE",
+      "country": "germany",
       "slug": "rostock",
       "description": "Größte Stadt Mecklenburg-Vorpommerns und bedeutende Hansestadt. Gotische Backsteinarchitektur, historisches Rathaus und Kröpeliner Straße.",
       "accommodations": [
@@ -199,7 +199,7 @@
           "addressStreet": "Friedhofsweg 49",
           "addressZip": "18055",
           "addressCity": "Rostock",
-          "addressCountry": "DE",
+          "addressCountry": "Deutschland",
           "website": "https://jakobus-rostock.de",
           "email": "rostock-jakobus@elkm.de",
           "priceRange": "budget",
@@ -210,7 +210,7 @@
     {
       "position": 12,
       "name": "Bad Doberan",
-      "country": "DE",
+      "country": "germany",
       "slug": "bad-doberan",
       "description": "Kurstadt mit dem bedeutenden hochgotischen Doberaner Münster (13. Jh.), einem der besterhaltenen Backsteinkirchen Norddeutschlands.",
       "accommodations": [
@@ -221,7 +221,7 @@
           "addressStreet": "Klosterhof 1",
           "addressZip": "18209",
           "addressCity": "Bad Doberan",
-          "addressCountry": "DE",
+          "addressCountry": "Deutschland",
           "website": "https://kornhaus-baddoberan.de",
           "email": "klosterherberge@kornhaus-doberan.de",
           "priceRange": "budget",
@@ -232,7 +232,7 @@
     {
       "position": 13,
       "name": "Neubukow",
-      "country": "DE",
+      "country": "germany",
       "slug": "neubukow",
       "description": null,
       "accommodations": [
@@ -243,7 +243,7 @@
           "addressStreet": "Mühlenstraße 3",
           "addressZip": "18233",
           "addressCity": "Neubukow",
-          "addressCountry": "DE",
+          "addressCountry": "Deutschland",
           "website": null,
           "email": null,
           "priceRange": "budget",
@@ -254,7 +254,7 @@
     {
       "position": 14,
       "name": "Wismar",
-      "country": "DE",
+      "country": "germany",
       "slug": "wismar",
       "description": "UNESCO-Welterbe-Hansestadt mit beeindruckenden mittelalterlichen Backsteinkirchen und historischem Altstadtkern.",
       "accommodations": [
@@ -265,7 +265,7 @@
           "addressStreet": "Lübsche Straße 31",
           "addressZip": "23966",
           "addressCity": "Wismar",
-          "addressCountry": "DE",
+          "addressCountry": "Deutschland",
           "website": null,
           "email": null,
           "priceRange": "budget",
@@ -276,7 +276,7 @@
     {
       "position": 15,
       "name": "Grevesmühlen",
-      "country": "DE",
+      "country": "germany",
       "slug": "grevesmuehlen",
       "description": null,
       "accommodations": [
@@ -287,7 +287,7 @@
           "addressStreet": "Kirchstraße 28",
           "addressZip": "23936",
           "addressCity": "Grevesmühlen",
-          "addressCountry": "DE",
+          "addressCountry": "Deutschland",
           "website": null,
           "email": null,
           "priceRange": "budget",
@@ -298,7 +298,7 @@
     {
       "position": 16,
       "name": "Schönberg",
-      "country": "DE",
+      "country": "germany",
       "slug": "schoenberg",
       "description": null,
       "accommodations": [
@@ -309,7 +309,7 @@
           "addressStreet": "An der Kirche 12",
           "addressZip": "23923",
           "addressCity": "Schönberg",
-          "addressCountry": "DE",
+          "addressCountry": "Deutschland",
           "website": "https://www.kirche-mv.de/schoenberg/jakobsweg-via-baltica",
           "email": null,
           "priceRange": "budget",
@@ -320,7 +320,7 @@
     {
       "position": 17,
       "name": "Lübeck",
-      "country": "DE",
+      "country": "germany",
       "slug": "luebeck",
       "description": "Ehemalige Hauptstadt der Hanse, UNESCO-Welterbe. Bekannt für das Holstentor, die Marienkirche und das Marzipan.",
       "accommodations": [
@@ -331,7 +331,7 @@
           "addressStreet": "Jakobikirchhof 5",
           "addressZip": "23552",
           "addressCity": "Lübeck",
-          "addressCountry": "DE",
+          "addressCountry": "Deutschland",
           "website": "https://st-jakobi-luebeck.de",
           "email": "info@st-jakobi-luebeck.de",
           "priceRange": "budget",
@@ -342,7 +342,7 @@
     {
       "position": 18,
       "name": "Bad Oldesloe",
-      "country": "DE",
+      "country": "germany",
       "slug": "bad-oldesloe",
       "description": null,
       "accommodations": [
@@ -353,7 +353,7 @@
           "addressStreet": "Schloßstraße 26",
           "addressZip": "23843",
           "addressCity": "Travenbrück",
-          "addressCountry": "DE",
+          "addressCountry": "Deutschland",
           "website": "https://www.kloster-nuetschau.de",
           "email": "info@kloster-nuetschau.de",
           "priceRange": "comfortable",
@@ -364,7 +364,7 @@
     {
       "position": 19,
       "name": "Nahe",
-      "country": "DE",
+      "country": "germany",
       "slug": "nahe",
       "description": null,
       "accommodations": [
@@ -375,7 +375,7 @@
           "addressStreet": "Rungenrade 2",
           "addressZip": "23866",
           "addressCity": "Nahe",
-          "addressCountry": "DE",
+          "addressCountry": "Deutschland",
           "website": null,
           "email": "pastor.wulf.nahe@t-online.de",
           "priceRange": "budget",
@@ -386,7 +386,7 @@
     {
       "position": 20,
       "name": "Poppenbüttel",
-      "country": "DE",
+      "country": "germany",
       "slug": "poppenbuettel",
       "description": "Nördlicher Hamburger Stadtteil, Endpunkt der Etappe vor der Einfahrt ins Hamburger Zentrum.",
       "accommodations": []
@@ -394,7 +394,7 @@
     {
       "position": 21,
       "name": "Hamburg",
-      "country": "DE",
+      "country": "germany",
       "slug": "hamburg",
       "description": "Zweitgrößte Stadt Deutschlands und bedeutende Hafenmetropole. Pilgerstation in Hamburg-Altona mit spezieller Pilgerherberge.",
       "accommodations": [
@@ -405,7 +405,7 @@
           "addressStreet": "Kirchenstraße 42",
           "addressZip": "22767",
           "addressCity": "Hamburg",
-          "addressCountry": "DE",
+          "addressCountry": "Deutschland",
           "website": "https://baltica-hamburg.de",
           "email": "mail@baltica-hamburg.de",
           "priceRange": "budget",
@@ -418,7 +418,7 @@
           "addressStreet": "Große Elbstraße 132",
           "addressZip": "22767",
           "addressCity": "Hamburg",
-          "addressCountry": "DE",
+          "addressCountry": "Deutschland",
           "website": "https://seemannsheim-hamburg.de",
           "email": null,
           "priceRange": "budget",
@@ -429,7 +429,7 @@
     {
       "position": 22,
       "name": "Harsefeld",
-      "country": "DE",
+      "country": "germany",
       "slug": "harsefeld",
       "description": null,
       "accommodations": [
@@ -440,7 +440,7 @@
           "addressStreet": "Böberstroot 11a",
           "addressZip": "21698",
           "addressCity": "Harsefeld",
-          "addressCountry": "DE",
+          "addressCountry": "Deutschland",
           "website": null,
           "email": null,
           "priceRange": "budget",
@@ -451,7 +451,7 @@
     {
       "position": 23,
       "name": "Zeven",
-      "country": "DE",
+      "country": "germany",
       "slug": "zeven",
       "description": null,
       "accommodations": [
@@ -462,7 +462,7 @@
           "addressStreet": "Hoftohorn 9",
           "addressZip": "27404",
           "addressCity": "Zeven",
-          "addressCountry": "DE",
+          "addressCountry": "Deutschland",
           "website": null,
           "email": null,
           "priceRange": "budget",
@@ -473,7 +473,7 @@
     {
       "position": 24,
       "name": "Ottersberg",
-      "country": "DE",
+      "country": "germany",
       "slug": "ottersberg",
       "description": null,
       "accommodations": [
@@ -484,7 +484,7 @@
           "addressStreet": "Brügger Straße 5",
           "addressZip": "28870",
           "addressCity": "Otterstedt",
-          "addressCountry": "DE",
+          "addressCountry": "Deutschland",
           "website": null,
           "email": "kg.otterstedt@evlka.de",
           "priceRange": "budget",
@@ -495,7 +495,7 @@
     {
       "position": 25,
       "name": "Bremen",
-      "country": "DE",
+      "country": "germany",
       "slug": "bremen",
       "description": "Freie Hansestadt und bedeutender Pilgerort mit dem Bremer Dom St. Petri (11. Jh.). Hier zweigt der Weg von der Via Baltica auf den Westfälischen Jakobsweg ab.",
       "accommodations": [
@@ -506,7 +506,7 @@
           "addressStreet": "Kalkstraße 6",
           "addressZip": "28195",
           "addressCity": "Bremen",
-          "addressCountry": "DE",
+          "addressCountry": "Deutschland",
           "website": "https://www.jugendherberge.de",
           "email": null,
           "priceRange": "budget",
@@ -517,7 +517,7 @@
     {
       "position": 26,
       "name": "Barrien",
-      "country": "DE",
+      "country": "germany",
       "slug": "barrien",
       "description": null,
       "accommodations": []
@@ -525,7 +525,7 @@
     {
       "position": 27,
       "name": "Harpstedt",
-      "country": "DE",
+      "country": "germany",
       "slug": "harpstedt",
       "description": null,
       "accommodations": []
@@ -533,7 +533,7 @@
     {
       "position": 28,
       "name": "Wildeshausen",
-      "country": "DE",
+      "country": "germany",
       "slug": "wildeshausen",
       "description": null,
       "accommodations": []
@@ -541,7 +541,7 @@
     {
       "position": 29,
       "name": "Visbek",
-      "country": "DE",
+      "country": "germany",
       "slug": "visbek",
       "description": "Wallfahrtsort im Oldenburger Land. Pilgerstation auf dem Jakobsweg nach Osnabrück.",
       "accommodations": [
@@ -552,7 +552,7 @@
           "addressStreet": "Endel 28",
           "addressZip": "49429",
           "addressCity": "Visbek",
-          "addressCountry": "DE",
+          "addressCountry": "Deutschland",
           "website": null,
           "email": "marienstein-endel-visbek@ewetel.net",
           "priceRange": "budget",
@@ -565,7 +565,7 @@
           "addressStreet": "Inseldamm 2",
           "addressZip": "49429",
           "addressCity": "Visbek",
-          "addressCountry": "DE",
+          "addressCountry": "Deutschland",
           "website": null,
           "email": null,
           "priceRange": "budget",
@@ -578,7 +578,7 @@
           "addressStreet": "Hubertusmühle 4",
           "addressZip": "49429",
           "addressCity": "Visbek",
-          "addressCountry": "DE",
+          "addressCountry": "Deutschland",
           "website": null,
           "email": "info@hof-hubbermann.de",
           "priceRange": "budget",
@@ -591,7 +591,7 @@
           "addressStreet": "Overbergstraße 4",
           "addressZip": "49429",
           "addressCity": "Visbek",
-          "addressCountry": "DE",
+          "addressCountry": "Deutschland",
           "website": null,
           "email": "info@landgasthof-wigger.de",
           "priceRange": "budget",
@@ -602,7 +602,7 @@
     {
       "position": 30,
       "name": "Lohne-Kroge",
-      "country": "DE",
+      "country": "germany",
       "slug": "lohne-kroge",
       "description": null,
       "accommodations": [
@@ -613,7 +613,7 @@
           "addressStreet": "Diepholzer Straße 21",
           "addressZip": "49393",
           "addressCity": "Lohne-Kroge",
-          "addressCountry": "DE",
+          "addressCountry": "Deutschland",
           "website": null,
           "email": "j.goettke-krogmann@t-online.de",
           "priceRange": "budget",
@@ -624,7 +624,7 @@
     {
       "position": 31,
       "name": "Neuenkirchen",
-      "country": "DE",
+      "country": "germany",
       "slug": "neuenkirchen",
       "description": null,
       "accommodations": []
@@ -632,7 +632,7 @@
     {
       "position": 32,
       "name": "Steinfeld",
-      "country": "DE",
+      "country": "germany",
       "slug": "steinfeld",
       "description": null,
       "accommodations": []
@@ -640,7 +640,7 @@
     {
       "position": 33,
       "name": "Damme",
-      "country": "DE",
+      "country": "germany",
       "slug": "damme",
       "description": "Marktstadt in den Dammer Bergen. Das Benediktinerkloster Damme stellt keinen Schlafplatz mehr zur Verfügung, gibt aber noch Pilgerstempel aus.",
       "accommodations": [
@@ -651,7 +651,7 @@
           "addressStreet": null,
           "addressZip": "49401",
           "addressCity": "Damme",
-          "addressCountry": "DE",
+          "addressCountry": "Deutschland",
           "website": "https://www.jugendherberge.de",
           "email": null,
           "priceRange": "budget",
@@ -662,7 +662,7 @@
     {
       "position": 34,
       "name": "Vörden",
-      "country": "DE",
+      "country": "germany",
       "slug": "voerden",
       "description": null,
       "accommodations": [
@@ -673,7 +673,7 @@
           "addressStreet": null,
           "addressZip": "49434",
           "addressCity": "Vörden",
-          "addressCountry": "DE",
+          "addressCountry": "Deutschland",
           "website": null,
           "email": null,
           "priceRange": "budget",
@@ -684,7 +684,7 @@
     {
       "position": 35,
       "name": "Engter",
-      "country": "DE",
+      "country": "germany",
       "slug": "engter",
       "description": null,
       "accommodations": []
@@ -692,7 +692,7 @@
     {
       "position": 36,
       "name": "Rulle",
-      "country": "DE",
+      "country": "germany",
       "slug": "rulle",
       "description": "Kleines Dorf mit Wallfahrtskirche kurz vor Osnabrück.",
       "accommodations": []
@@ -700,7 +700,7 @@
     {
       "position": 37,
       "name": "Osnabrück",
-      "country": "DE",
+      "country": "germany",
       "slug": "osnabrueck",
       "description": "Bischofstadt und Zielort der Via Baltica in Deutschland. Am Dom St. Peter endet die Route und geht als Westfälischer Jakobsweg weiter in Richtung Köln.",
       "accommodations": [
@@ -711,7 +711,7 @@
           "addressStreet": "Kleine Domsfreiheit 5",
           "addressZip": "49074",
           "addressCity": "Osnabrück",
-          "addressCountry": "DE",
+          "addressCountry": "Deutschland",
           "website": null,
           "email": null,
           "priceRange": "comfortable",
