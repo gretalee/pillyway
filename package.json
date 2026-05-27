@@ -18,6 +18,7 @@
     "prettier:frontend": "yarn --cwd apps/frontend prettier --write .",
     "ts:backend": "yarn --cwd apps/backend tsc",
     "ts:frontend": "yarn --cwd apps/frontend tsc",
+    "ts": "yarn ts:backend && yarn ts:frontend",
     "db:migrate": "yarn --cwd apps/backend prisma:migrate:deploy",
     "seed:camino": "yarn --cwd apps/backend seed:camino",
     "seed:camino:prod": "yarn --cwd apps/backend seed:camino:prod",

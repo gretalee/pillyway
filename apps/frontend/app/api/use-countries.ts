@@ -9,6 +9,7 @@ export async function fetchCountries(): Promise<string[]> {
   if (!response.ok) throw new Error('Failed to fetch countries');
   return response.json() as Promise<string[]>;
 }
+
 export function useCountries() {
   return useQuery({
     queryKey: ['countries'],

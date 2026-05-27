@@ -30,6 +30,7 @@ export async function AccommodationCard({
   isOwner,
 }: Props) {
   const t = await getTranslations('waypoint_detail');
+  const tCountries = await getTranslations('countries');
 
   const firstImage =
     accommodation.imageUrls.length > 0 ? accommodation.imageUrls[0] : null;
@@ -84,7 +85,7 @@ export async function AccommodationCard({
                 </span>
               )}
               {accommodation.addressCountry && (
-                <span>, {accommodation.addressCountry}</span>
+                <span>, {tCountries(accommodation.addressCountry.toLowerCase() as Parameters<typeof tCountries>[0])}</span>
               )}
             </address>
           )}

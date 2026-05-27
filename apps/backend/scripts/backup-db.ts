@@ -27,7 +27,7 @@ console.log('This may take a moment...\n');
 
 const result = spawnSync(
   'pg_dump',
-  ['--format=plain', `--file=${filename}`, connectionUrl],
+  ['--format=plain', '--schema=public', `--file=${filename}`, connectionUrl],
   { stdio: 'inherit' },
 );
 

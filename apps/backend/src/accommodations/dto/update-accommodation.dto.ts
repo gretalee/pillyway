@@ -5,6 +5,7 @@ import {
   IsArray,
   IsEmail,
   IsEnum,
+  IsIn,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -13,6 +14,7 @@ import {
 } from 'class-validator';
 
 import { AccommodationType, PriceRange } from '@prisma/client';
+import { COUNTRIES } from '../../countries/countries.constants';
 
 export class UpdateAccommodationDto {
   @IsOptional()
@@ -75,8 +77,8 @@ export class UpdateAccommodationDto {
   addressCity?: string;
 
   @IsOptional()
-  @IsString()
-  @ApiPropertyOptional()
+  @IsIn([...COUNTRIES])
+  @ApiPropertyOptional({ enum: COUNTRIES })
   addressCountry?: string;
 
   @IsOptional()

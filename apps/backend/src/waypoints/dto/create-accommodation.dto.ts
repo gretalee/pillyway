@@ -3,6 +3,7 @@ import {
   IsArray,
   IsEmail,
   IsEnum,
+  IsIn,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -11,6 +12,7 @@ import {
 } from 'class-validator';
 
 import { AccommodationType, PriceRange } from '@prisma/client';
+import { COUNTRIES } from '../../countries/countries.constants';
 
 export class CreateAccommodationDto {
   @IsString()
@@ -53,7 +55,7 @@ export class CreateAccommodationDto {
   addressCity?: string;
 
   @IsOptional()
-  @IsString()
+  @IsIn([...COUNTRIES])
   addressCountry?: string;
 
   @IsOptional()
