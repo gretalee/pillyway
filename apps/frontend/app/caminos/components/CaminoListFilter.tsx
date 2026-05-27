@@ -55,14 +55,16 @@ export function CaminoListFilter({ caminos, isPilgrim }: CaminoListFilterProps) 
             <li
               key={camino.id}
               className="rounded-xl border border-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md">
-              <div className="flex items-center justify-between gap-2 ">
-                <div className="flex itms-center gap-2">
+              <div className="flex items-start justify-between gap-2">
+                <div className="">
                   <Link href={`/caminos/${camino.id}`}>
-                    <h2 className="text-lg font-semibold text-foreground">
+                    <h2 className="text-lg font-semibold text-foreground inline">
                       {camino.name}
                     </h2>
                   </Link>
-                  {camino.verified && <VerifiedBadge />}
+                  {camino.verified && (
+                    <VerifiedBadge className="inline-block pl-2 translate-y-0.5" />
+                  )}
                 </div>
                 {isPilgrim && <CaminoActionsMenu camino={camino} />}
               </div>

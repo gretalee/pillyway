@@ -53,7 +53,7 @@ export function VerificationSection({ caminoId }: VerificationSectionProps) {
             {t('camino_detail.vote_no')}
           </Button>
 
-          <div className="flex max-md:gap-2 lg:flex-col items-start text-sm pl-2 lg:pl-6 max-md:mt-2 text-muted-foreground pr-2">
+          <div className="flex max-md:gap-4 lg:flex-col items-start text-sm pl-2 lg:pl-6 max-md:mt-2 text-muted-foreground pr-2">
             <p>{t('camino_detail.vote_yes_count', { count: yesVotes })}</p>
             <p>{t('camino_detail.vote_no_count', { count: noVotes })}</p>
           </div>
@@ -70,7 +70,7 @@ export function VerificationSection({ caminoId }: VerificationSectionProps) {
             </Link>
           )}
 
-          <label className="absolute truncate -top-2 left-4 right-4 bg-white px-1 text-sm text-pillyGreen-700 whitespace-nowrap">
+          <label className="absolute truncate -top-2 left-4 max-w-[90%] bg-white px-1 text-sm text-pillyGreen-700 whitespace-nowrap">
             {t('camino_detail.verification_label')}
           </label>
         </div>

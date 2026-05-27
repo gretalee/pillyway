@@ -174,11 +174,11 @@ export function CaminoDetail({
           <div
             className={cn(
               'flex items-center justify-between gap-4 w-full',
-              canEdit && 'hover:bg-accent/50 rounded-md pr-1',
+              canEdit && 'hover:bg-accent/50 rounded-md pr-1 ',
             )}>
-            <div className="flex items-center gap-2">
-              <h1 className="text-3xl font-bold tracking-tight">{camino.name}</h1>
-              {camino.verified && <VerifiedBadge />}
+            <div className="">
+              <h1 className="text-3xl font-bold tracking-tight inline">{camino.name}</h1>
+              {camino.verified && <VerifiedBadge className="inline-block pl-2 lg:pl-3" />}
             </div>
             {canEdit && (
               <Button
