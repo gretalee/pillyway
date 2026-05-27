@@ -42,10 +42,11 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function AccommodationDetailPage({ params }: Props) {
   const { id } = await params;
-  const [user, t, tType] = await Promise.all([
+  const [user, t, tType, tCountries] = await Promise.all([
     getAuthUser(),
     getTranslations('accommodation_detail'),
     getTranslations('waypoint_detail'),
+    getTranslations('countries'),
   ]);
 
   const canContribute = user?.roles.some((r) => r.key === 'pilgrim') ?? false;
@@ -160,7 +161,9 @@ export default async function AccommodationDetailPage({ params }: Props) {
                 .join(' ')}
             </span>
           )}
-          {accommodation.addressCountry && <span>, {accommodation.addressCountry}</span>}
+          {accommodation.addressCountry && (
+            <span>, {tCountries(accommodation.addressCountry.toLowerCase() as Parameters<typeof tCountries>[0])}</span>
+          )}
         </address>
       )}
 

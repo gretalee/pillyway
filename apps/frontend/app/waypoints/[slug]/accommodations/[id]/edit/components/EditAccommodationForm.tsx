@@ -17,6 +17,7 @@ import { Input } from '@/app/components/ui/input';
 import { Textarea } from '@/app/components/ui/textarea';
 import { Label } from '@/app/components/ui/label';
 import { Select } from '@/app/components/ui/select';
+import { useCountries } from '@/app/api/use-countries';
 
 interface EditAccommodationFormProps {
   slug: string;
@@ -59,6 +60,8 @@ export function EditAccommodationForm({
   const tEdit = useTranslations('accommodation_edit');
   const tNew = useTranslations('accommodation_new');
   const tWaypoint = useTranslations('waypoint_detail');
+  const tCountries = useTranslations('countries');
+  const { data: countries = [] } = useCountries();
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -332,7 +335,25 @@ export function EditAccommodationForm({
         <div>
           <Label htmlFor={addressCountryId}>{tNew('field_address_country')}</Label>
           <div className="mt-1">
-            <Input id={addressCountryId} type="text" {...register('addressCountry')} />
+            <Controller
+              name="addressCountry"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  id={addressCountryId}
+                  value={field.value}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  ref={field.ref}>
+                  <option value="">—</option>
+                  {countries.map((c) => (
+                    <option key={c} value={c}>
+                      {tCountries(c.toLowerCase() as Parameters<typeof tCountries>[0])}
+                    </option>
+                  ))}
+                </Select>
+              )}
+            />
           </div>
         </div>
       </fieldset>

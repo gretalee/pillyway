@@ -37,7 +37,7 @@ export function VerificationSection({ caminoId }: VerificationSectionProps) {
       </h2>
 
       <div className="flex flex-wrap items-center gap-3 mt-6">
-        <div className="flex items-center gap-2 relative border border-pillyGreen-500 rounded-md pt-6 pb-4 px-3">
+        <div className="flex flex-1 flex-wrap items-center gap-2 relative border border-pillyGreen-500 rounded-md pt-6 pb-4 px-3">
           <Button
             variant={isAuthenticated && activeVote === true ? 'default' : 'outline'}
             disabled={!isAuthenticated || mutation.isPending}
@@ -53,25 +53,28 @@ export function VerificationSection({ caminoId }: VerificationSectionProps) {
             {t('camino_detail.vote_no')}
           </Button>
 
-          <div className="flex flex-col items-start text-sm pl-6 text-muted-foreground pr-2">
+          <div className="flex max-md:gap-4 lg:flex-col items-start text-sm pl-2 lg:pl-6 max-md:mt-2 text-muted-foreground pr-2">
             <p>{t('camino_detail.vote_yes_count', { count: yesVotes })}</p>
             <p>{t('camino_detail.vote_no_count', { count: noVotes })}</p>
           </div>
 
-          <label className="absolute -top-2 left-4 bg-white px-1 text-sm text-pillyGreen-700">
+          {!isAuthenticated && (
+            <Link
+              href="/api/auth/login"
+              aria-label={t('header.aria_login')}
+              className={cn(
+                buttonVariants({ variant: 'tertiary', size: 'lg' }),
+                'mt-4 whitespace-normal max-w-full overflow-hidden h-auto',
+              )}>
+              {t('camino_detail.vote_login_hint')}
+            </Link>
+          )}
+
+          <label className="absolute truncate -top-2 left-4 max-w-[90%] bg-white px-1 text-sm text-pillyGreen-700 whitespace-nowrap">
             {t('camino_detail.verification_label')}
           </label>
         </div>
       </div>
-
-      {!isAuthenticated && (
-        <Link
-          href="/api/auth/login"
-          aria-label={t('header.aria_login')}
-          className={cn(buttonVariants({ variant: 'secondary', size: 'lg' }), 'mt-4')}>
-          {t('camino_detail.vote_login_hint')}
-        </Link>
-      )}
 
       {mutation.isError && (
         <p role="alert" className="mt-2 text-sm text-destructive">

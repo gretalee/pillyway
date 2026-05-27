@@ -41,7 +41,7 @@ function makeTx() {
       upsert: vi.fn().mockResolvedValue({
         id: 'b2c3d4e5-f6a7-8901-bcde-f12345678901',
         name: 'Saint-Jean-Pied-de-Port',
-        country: 'France',
+        country: 'france',
         description: null,
       }),
     },
@@ -86,7 +86,7 @@ function buildModule(prismaMock: object): Promise<TestingModule> {
 const newPointDto: CreateCaminoDto = {
   name: 'Camino Francés',
   description: 'The most popular route.',
-  caminoPoints: [{ name: 'Saint-Jean-Pied-de-Port', country: 'France' }],
+  caminoPoints: [{ name: 'Saint-Jean-Pied-de-Port', country: 'france' }],
 };
 
 const existingPointDto: CreateCaminoDto = {
@@ -98,16 +98,16 @@ const mixedDto: CreateCaminoDto = {
   name: 'Camino Mixto',
   caminoPoints: [
     { caminoPointId: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890' },
-    { name: 'Roncesvalles', country: 'Spain' },
+    { name: 'Roncesvalles', country: 'spain' },
   ],
 };
 
 const threeNewPointsDto: CreateCaminoDto = {
   name: 'Camino Triple',
   caminoPoints: [
-    { name: 'Irún', country: 'Spain' },
-    { name: 'San Sebastián', country: 'Spain' },
-    { name: 'Zarautz', country: 'Spain' },
+    { name: 'Irún', country: 'spain' },
+    { name: 'San Sebastián', country: 'spain' },
+    { name: 'Zarautz', country: 'spain' },
   ],
 };
 
@@ -120,7 +120,9 @@ describe('CaminosService.create()', () => {
     const prismaMock = {
       $transaction: vi
         .fn()
-        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) => cb(tx)),
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) =>
+          cb(tx),
+        ),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
@@ -149,13 +151,15 @@ describe('CaminosService.create()', () => {
     tx.caminoPoint.findUnique = vi.fn().mockResolvedValue({
       id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
       name: 'Irún',
-      country: 'Spain',
+      country: 'spain',
       description: null,
     });
     const prismaMock = {
       $transaction: vi
         .fn()
-        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) => cb(tx)),
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) =>
+          cb(tx),
+        ),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
@@ -185,7 +189,7 @@ describe('CaminosService.create()', () => {
         return Promise.resolve({
           id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
           name: 'Irún',
-          country: 'Spain',
+          country: 'spain',
           slug: 'irun',
           description: null,
         });
@@ -196,14 +200,16 @@ describe('CaminosService.create()', () => {
     tx.caminoPoint.upsert = vi.fn().mockResolvedValue({
       id: 'c3d4e5f6-a7b8-9012-cdef-123456789012',
       name: 'Roncesvalles',
-      country: 'Spain',
+      country: 'spain',
       slug: 'roncesvalles',
       description: null,
     });
     const prismaMock = {
       $transaction: vi
         .fn()
-        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) => cb(tx)),
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) =>
+          cb(tx),
+        ),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
@@ -227,14 +233,14 @@ describe('CaminosService.create()', () => {
     });
     let upsertCallCount = 0;
     const upsertResults = [
-      { id: 'id-1', name: 'Irún', country: 'Spain', description: null },
+      { id: 'id-1', name: 'Irún', country: 'spain', description: null },
       {
         id: 'id-2',
         name: 'San Sebastián',
-        country: 'Spain',
+        country: 'spain',
         description: null,
       },
-      { id: 'id-3', name: 'Zarautz', country: 'Spain', description: null },
+      { id: 'id-3', name: 'Zarautz', country: 'spain', description: null },
     ];
     tx.caminoPoint.upsert = vi
       .fn()
@@ -244,7 +250,9 @@ describe('CaminosService.create()', () => {
     const prismaMock = {
       $transaction: vi
         .fn()
-        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) => cb(tx)),
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) =>
+          cb(tx),
+        ),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
@@ -266,7 +274,9 @@ describe('CaminosService.create() — error mapping', () => {
     const prismaMock = {
       $transaction: vi
         .fn()
-        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) => cb(tx)),
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) =>
+          cb(tx),
+        ),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
@@ -284,7 +294,9 @@ describe('CaminosService.create() — error mapping', () => {
     const prismaMock = {
       $transaction: vi
         .fn()
-        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) => cb(tx)),
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) =>
+          cb(tx),
+        ),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
@@ -304,7 +316,9 @@ describe('CaminosService.create() — error mapping', () => {
     const prismaMock = {
       $transaction: vi
         .fn()
-        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) => cb(tx)),
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) =>
+          cb(tx),
+        ),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
@@ -320,7 +334,9 @@ describe('CaminosService.create() — error mapping', () => {
     const prismaMock = {
       $transaction: vi
         .fn()
-        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) => cb(tx)),
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) =>
+          cb(tx),
+        ),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
@@ -328,7 +344,7 @@ describe('CaminosService.create() — error mapping', () => {
     const duplicateDto: CreateCaminoDto = {
       name: 'Camino Duplicado',
       caminoPoints: [
-        { name: 'Irún', country: 'Spain' },
+        { name: 'Irún', country: 'spain' },
         { name: 'irún', country: 'spain' }, // same point, different casing
       ],
     };
@@ -433,7 +449,7 @@ const caminoWithOrder = {
       caminoPoint: {
         id: 'pt-1',
         name: 'Saint-Jean',
-        country: 'France',
+        country: 'france',
         description: null,
       },
     },
@@ -487,7 +503,7 @@ describe('CaminosService.update()', () => {
 
   // DTO whose only point is a brand-new one — existing pt-1 is absent → triggers removal check
   const removalDto: UpdateCaminoDto = {
-    caminoPoints: [{ name: 'New Point', country: 'Spain' }],
+    caminoPoints: [{ name: 'New Point', country: 'spain' }],
   } as UpdateCaminoDto;
 
   // Builds a Prisma mock suitable for update() tests.
@@ -498,7 +514,8 @@ describe('CaminosService.update()', () => {
     secondResult: object = caminoWithOrder,
   ) {
     const caminoMock = {
-      findUnique: vi.fn()
+      findUnique: vi
+        .fn()
         .mockResolvedValueOnce(firstResult)
         .mockResolvedValueOnce(secondResult),
       findFirst: vi.fn().mockResolvedValue(null),
@@ -516,7 +533,7 @@ describe('CaminosService.update()', () => {
         upsert: vi.fn().mockResolvedValue({
           id: 'new-pt-id',
           name: 'New Point',
-          country: 'Spain',
+          country: 'spain',
           slug: 'new-point',
           description: null,
         }),
@@ -527,7 +544,9 @@ describe('CaminosService.update()', () => {
       camino: caminoMock,
       $transaction: vi
         .fn()
-        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) => cb(tx as unknown as ReturnType<typeof makeTx>)),
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) =>
+          cb(tx as unknown as ReturnType<typeof makeTx>),
+        ),
     };
   }
 
@@ -538,7 +557,12 @@ describe('CaminosService.update()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
-    const result = await service.update(CAMINO_ID, nameDto, OTHER_ID, PILGRIM_ROLES);
+    const result = await service.update(
+      CAMINO_ID,
+      nameDto,
+      OTHER_ID,
+      PILGRIM_ROLES,
+    );
     expect(result.id).toBe(CAMINO_ID);
   });
 
@@ -559,18 +583,36 @@ describe('CaminosService.update()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
-    const result = await service.update(CAMINO_ID, removalDto, OTHER_ID, OWNER_AND_PILGRIM_ROLES);
+    const result = await service.update(
+      CAMINO_ID,
+      removalDto,
+      OTHER_ID,
+      OWNER_AND_PILGRIM_ROLES,
+    );
     expect(result.id).toBe(CAMINO_ID);
   });
 
   it('allows the creator to remove waypoints within the time window', async () => {
-    const recentWithIds = { ...caminoWithPointIds, createdBy: OWNER_ID, createdAt: new Date(Date.now() - 60 * 1000) };
-    const recentWithOrder = { ...caminoWithOrder, createdBy: OWNER_ID, createdAt: recentWithIds.createdAt };
+    const recentWithIds = {
+      ...caminoWithPointIds,
+      createdBy: OWNER_ID,
+      createdAt: new Date(Date.now() - 60 * 1000),
+    };
+    const recentWithOrder = {
+      ...caminoWithOrder,
+      createdBy: OWNER_ID,
+      createdAt: recentWithIds.createdAt,
+    };
     const prismaMock = makeUpdatePrismaMock(recentWithIds, recentWithOrder);
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
-    const result = await service.update(CAMINO_ID, removalDto, OWNER_ID, PILGRIM_ROLES);
+    const result = await service.update(
+      CAMINO_ID,
+      removalDto,
+      OWNER_ID,
+      PILGRIM_ROLES,
+    );
     expect(result.id).toBe(CAMINO_ID);
   });
 
@@ -645,7 +687,11 @@ describe('CaminosService.delete()', () => {
 
   // Creator within the 2-hour window is allowed.
   it('allows the creator to delete their own camino within the time window', async () => {
-    const recentCamino = { ...baseCamino, createdBy: OWNER_ID, createdAt: new Date(Date.now() - 60 * 1000) };
+    const recentCamino = {
+      ...baseCamino,
+      createdBy: OWNER_ID,
+      createdAt: new Date(Date.now() - 60 * 1000),
+    };
     const prismaMock = {
       camino: {
         findUnique: vi.fn().mockResolvedValue(recentCamino),
@@ -681,7 +727,11 @@ describe('CaminosService.delete()', () => {
 
   // Non-creator, non-owner is always forbidden.
   it('throws ForbiddenException when user is neither creator nor owner', async () => {
-    const recentCamino = { ...baseCamino, createdBy: OWNER_ID, createdAt: new Date(Date.now() - 60 * 1000) };
+    const recentCamino = {
+      ...baseCamino,
+      createdBy: OWNER_ID,
+      createdAt: new Date(Date.now() - 60 * 1000),
+    };
     const prismaMock = {
       camino: {
         findUnique: vi.fn().mockResolvedValue(recentCamino),
@@ -755,7 +805,9 @@ describe('CaminosService — generateSlug() slug generation', () => {
         findUnique: vi.fn().mockImplementation(({ where }) => {
           // When called with { slug } it's the uniqueness check inside generateSlug
           if (where.slug !== undefined) {
-            return Promise.resolve(slugExists(where.slug) ? { id: 'existing' } : null);
+            return Promise.resolve(
+              slugExists(where.slug) ? { id: 'existing' } : null,
+            );
           }
           // When called with { id } or other keys return null (point doesn't pre-exist)
           return Promise.resolve(null);
@@ -783,14 +835,16 @@ describe('CaminosService — generateSlug() slug generation', () => {
     const prismaMock = {
       $transaction: vi
         .fn()
-        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) => cb(tx)),
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) =>
+          cb(tx),
+        ),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
     const dto: CreateCaminoDto = {
       name: 'Test Camino',
-      caminoPoints: [{ name: 'Saint-Jean-Pied-de-Port', country: 'France' }],
+      caminoPoints: [{ name: 'Saint-Jean-Pied-de-Port', country: 'france' }],
     };
     const result = await service.create(dto, 'kinde-user-001');
 
@@ -802,14 +856,16 @@ describe('CaminosService — generateSlug() slug generation', () => {
     const prismaMock = {
       $transaction: vi
         .fn()
-        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) => cb(tx)),
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) =>
+          cb(tx),
+        ),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
     const dto: CreateCaminoDto = {
       name: 'Test Camino',
-      caminoPoints: [{ name: 'Los Arcos', country: 'Spain' }],
+      caminoPoints: [{ name: 'Los Arcos', country: 'spain' }],
     };
     const result = await service.create(dto, 'kinde-user-001');
 
@@ -822,14 +878,16 @@ describe('CaminosService — generateSlug() slug generation', () => {
     const prismaMock = {
       $transaction: vi
         .fn()
-        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) => cb(tx)),
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) =>
+          cb(tx),
+        ),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
     const dto: CreateCaminoDto = {
       name: 'Test Camino',
-      caminoPoints: [{ name: 'Burgos', country: 'Spain' }],
+      caminoPoints: [{ name: 'Burgos', country: 'spain' }],
     };
     const result = await service.create(dto, 'kinde-user-001');
 
@@ -844,14 +902,16 @@ describe('CaminosService — generateSlug() slug generation', () => {
     const prismaMock = {
       $transaction: vi
         .fn()
-        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) => cb(tx)),
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) =>
+          cb(tx),
+        ),
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
     const dto: CreateCaminoDto = {
       name: 'Test Camino',
-      caminoPoints: [{ name: 'Burgos', country: 'Spain' }],
+      caminoPoints: [{ name: 'Burgos', country: 'spain' }],
     };
     const result = await service.create(dto, 'kinde-user-001');
 

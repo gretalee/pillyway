@@ -203,6 +203,17 @@
     "spain": "Spanien",
     "sweden": "Schweden"
   },
+  "country_codes": {
+    "denmark": "DK",
+    "france": "FR",
+    "germany": "DE",
+    "italy": "IT",
+    "netherlands": "NL",
+    "poland": "PL",
+    "portugal": "PT",
+    "spain": "ES",
+    "sweden": "SE"
+  },
   "auth_error": {
     "meta_title": "Anmeldung fehlgeschlagen | Pillyway",
     "heading": "Anmeldesitzung abgelaufen",

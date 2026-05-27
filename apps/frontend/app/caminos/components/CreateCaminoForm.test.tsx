@@ -52,7 +52,7 @@ beforeEach(() => {
     if (typeof url === 'string' && url.includes('/countries')) {
       return Promise.resolve({
         ok: true,
-        json: () => Promise.resolve(['France', 'Germany', 'Portugal', 'Spain']),
+        json: () => Promise.resolve(['france', 'germany', 'portugal', 'spain']),
       });
     }
     if (typeof url === 'string' && url.includes('/camino-points/search')) {
@@ -255,7 +255,7 @@ describe('Validation and submission blocking', () => {
     await user.type(pointNameInput, 'Paris');
 
     const countrySelect = screen.getByLabelText('point_country');
-    await user.selectOptions(countrySelect, 'France');
+    await user.selectOptions(countrySelect, 'france');
 
     // Touch camino name field then clear it to trigger the required error
     const caminoNameInput = screen.getByLabelText('field_name');
@@ -292,7 +292,7 @@ describe('Validation and submission blocking', () => {
 
     // Select country so only the point name is missing
     const countrySelect = screen.getByLabelText('point_country');
-    await user.selectOptions(countrySelect, 'Spain');
+    await user.selectOptions(countrySelect, 'spain');
 
     // const submitButton = screen.getByRole('button', { name: 'submit' });
     // await user.click(submitButton);
@@ -309,7 +309,7 @@ describe('Validation and submission blocking', () => {
 
     await user.type(screen.getByLabelText('field_name'), 'Camino Test');
     await user.type(screen.getByLabelText('point_name'), 'Paris');
-    await user.selectOptions(screen.getByLabelText('point_country'), 'France');
+    await user.selectOptions(screen.getByLabelText('point_country'), 'france');
 
     const submitButton = screen.getByRole('button', { name: 'submit' });
     await user.click(submitButton);
@@ -329,7 +329,7 @@ describe('Validation and submission blocking', () => {
         caminoPoints: Array<{ name: string; country: string }>;
       };
       expect(body.name).toBe('Camino Test');
-      expect(body.caminoPoints[0]).toMatchObject({ name: 'Paris', country: 'France' });
+      expect(body.caminoPoints[0]).toMatchObject({ name: 'Paris', country: 'france' });
     });
   });
 
@@ -382,7 +382,7 @@ describe('Debounced search and suggestion UI', () => {
       if (url.includes('/countries')) {
         return Promise.resolve({
           ok: true,
-          json: () => Promise.resolve(['France', 'Spain']),
+          json: () => Promise.resolve(['france', 'spain']),
         });
       }
       if (url.includes('camino-points/search')) {
@@ -396,7 +396,7 @@ describe('Debounced search and suggestion UI', () => {
     await waitForCountries();
 
     await user.type(screen.getByLabelText('point_name'), 'Saint');
-    await user.selectOptions(screen.getByLabelText('point_country'), 'France');
+    await user.selectOptions(screen.getByLabelText('point_country'), 'france');
 
     vi.advanceTimersByTime(401);
 
@@ -413,7 +413,7 @@ describe('Debounced search and suggestion UI', () => {
     renderForm();
     await waitForCountries();
 
-    await user.selectOptions(screen.getByLabelText('point_country'), 'Spain');
+    await user.selectOptions(screen.getByLabelText('point_country'), 'spain');
 
     // Type quickly
     const nameInput = screen.getByLabelText('point_name');
@@ -444,7 +444,7 @@ describe('Debounced search and suggestion UI', () => {
       if (url.includes('/countries')) {
         return Promise.resolve({
           ok: true,
-          json: () => Promise.resolve(['France', 'Spain']),
+          json: () => Promise.resolve(['france', 'spain']),
         });
       }
       if (url.includes('camino-points/search')) {
@@ -455,7 +455,7 @@ describe('Debounced search and suggestion UI', () => {
               {
                 id: 'existing-uuid',
                 name: 'Saint-Jean-Pied-de-Port',
-                country: 'France',
+                country: 'france',
                 description: 'Traditional starting point.',
               },
             ]),
@@ -469,7 +469,7 @@ describe('Debounced search and suggestion UI', () => {
     await waitForCountries();
 
     await user.type(screen.getByLabelText('point_name'), 'Saint');
-    await user.selectOptions(screen.getByLabelText('point_country'), 'France');
+    await user.selectOptions(screen.getByLabelText('point_country'), 'france');
     vi.advanceTimersByTime(401);
 
     await waitFor(() => {
@@ -487,7 +487,7 @@ describe('Debounced search and suggestion UI', () => {
     await waitForCountries();
 
     await user.type(screen.getByLabelText('point_name'), 'xyz123');
-    await user.selectOptions(screen.getByLabelText('point_country'), 'Spain');
+    await user.selectOptions(screen.getByLabelText('point_country'), 'spain');
     vi.advanceTimersByTime(401);
 
     await waitFor(() => {
@@ -498,7 +498,7 @@ describe('Debounced search and suggestion UI', () => {
   it('CAM-FE-19: search API failure suppresses suggestion and does not crash', async () => {
     mockFetch.mockImplementation((url: string) => {
       if (url.includes('/countries')) {
-        return Promise.resolve({ ok: true, json: () => Promise.resolve(['France']) });
+        return Promise.resolve({ ok: true, json: () => Promise.resolve(['france']) });
       }
       if (url.includes('camino-points/search')) {
         return Promise.resolve({
@@ -515,7 +515,7 @@ describe('Debounced search and suggestion UI', () => {
     await waitForCountries();
 
     await user.type(screen.getByLabelText('point_name'), 'Saint');
-    await user.selectOptions(screen.getByLabelText('point_country'), 'France');
+    await user.selectOptions(screen.getByLabelText('point_country'), 'france');
     vi.advanceTimersByTime(401);
 
     // Form should still be functional
@@ -528,7 +528,7 @@ describe('Debounced search and suggestion UI', () => {
   it('CAM-FE-20: clicking Yes links the row, makes fields read-only', async () => {
     mockFetch.mockImplementation((url: string) => {
       if (url.includes('/countries')) {
-        return Promise.resolve({ ok: true, json: () => Promise.resolve(['France']) });
+        return Promise.resolve({ ok: true, json: () => Promise.resolve(['france']) });
       }
       if (url.includes('camino-points/search')) {
         return Promise.resolve({
@@ -538,7 +538,7 @@ describe('Debounced search and suggestion UI', () => {
               {
                 id: 'existing-uuid',
                 name: 'Saint-Jean-Pied-de-Port',
-                country: 'France',
+                country: 'france',
                 description: 'Traditional starting point.',
               },
             ]),
@@ -552,7 +552,7 @@ describe('Debounced search and suggestion UI', () => {
     await waitForCountries();
 
     await user.type(screen.getByLabelText('point_name'), 'Saint');
-    await user.selectOptions(screen.getByLabelText('point_country'), 'France');
+    await user.selectOptions(screen.getByLabelText('point_country'), 'france');
     vi.advanceTimersByTime(401);
 
     await waitFor(() => {
@@ -576,7 +576,7 @@ describe('Debounced search and suggestion UI', () => {
   it('CAM-FE-21: clicking No dismisses suggestion card, fields remain editable', async () => {
     mockFetch.mockImplementation((url: string) => {
       if (url.includes('/countries')) {
-        return Promise.resolve({ ok: true, json: () => Promise.resolve(['France']) });
+        return Promise.resolve({ ok: true, json: () => Promise.resolve(['france']) });
       }
       if (url.includes('camino-points/search')) {
         return Promise.resolve({
@@ -586,7 +586,7 @@ describe('Debounced search and suggestion UI', () => {
               {
                 id: 'existing-uuid',
                 name: 'Saint-Jean-Pied-de-Port',
-                country: 'France',
+                country: 'france',
                 description: 'Traditional starting point.',
               },
             ]),
@@ -600,7 +600,7 @@ describe('Debounced search and suggestion UI', () => {
     await waitForCountries();
 
     await user.type(screen.getByLabelText('point_name'), 'Saint');
-    await user.selectOptions(screen.getByLabelText('point_country'), 'France');
+    await user.selectOptions(screen.getByLabelText('point_country'), 'france');
     vi.advanceTimersByTime(401);
 
     await waitFor(() => expect(screen.getByRole('status')).toBeInTheDocument());
@@ -617,7 +617,7 @@ describe('Debounced search and suggestion UI', () => {
   it('CAM-FE-22: changing name after linking breaks the link', async () => {
     mockFetch.mockImplementation((url: string) => {
       if (url.includes('/countries')) {
-        return Promise.resolve({ ok: true, json: () => Promise.resolve(['France']) });
+        return Promise.resolve({ ok: true, json: () => Promise.resolve(['france']) });
       }
       if (url.includes('camino-points/search')) {
         return Promise.resolve({
@@ -627,7 +627,7 @@ describe('Debounced search and suggestion UI', () => {
               {
                 id: 'existing-uuid',
                 name: 'Saint-Jean-Pied-de-Port',
-                country: 'France',
+                country: 'france',
                 description: 'Traditional starting point.',
               },
             ]),
@@ -641,7 +641,7 @@ describe('Debounced search and suggestion UI', () => {
     await waitForCountries();
 
     await user.type(screen.getByLabelText('point_name'), 'Saint');
-    await user.selectOptions(screen.getByLabelText('point_country'), 'France');
+    await user.selectOptions(screen.getByLabelText('point_country'), 'france');
     vi.advanceTimersByTime(401);
 
     await waitFor(() => expect(screen.getByRole('status')).toBeInTheDocument());
@@ -678,7 +678,7 @@ describe('Submission outcomes', () => {
     await waitForCountries();
     await user.type(screen.getByLabelText('field_name'), 'Camino Francés');
     await user.type(screen.getByLabelText('point_name'), 'Saint-Jean-Pied-de-Port');
-    await user.selectOptions(screen.getByLabelText('point_country'), 'France');
+    await user.selectOptions(screen.getByLabelText('point_country'), 'france');
   }
 
   it('CAM-FE-23: 201 response causes router.push to /caminos', async () => {
@@ -696,7 +696,7 @@ describe('Submission outcomes', () => {
   it('CAM-FE-24: 400 response shows generic error, retains form values', async () => {
     mockFetch.mockImplementation((url: string) => {
       if (url.includes('/countries')) {
-        return Promise.resolve({ ok: true, json: () => Promise.resolve(['France']) });
+        return Promise.resolve({ ok: true, json: () => Promise.resolve(['france']) });
       }
       if (url.includes('/auth/token')) {
         return Promise.resolve({
@@ -739,7 +739,7 @@ describe('Submission outcomes', () => {
   it('CAM-FE-25: 409 response shows conflict error message', async () => {
     mockFetch.mockImplementation((url: string) => {
       if (url.includes('/countries')) {
-        return Promise.resolve({ ok: true, json: () => Promise.resolve(['France']) });
+        return Promise.resolve({ ok: true, json: () => Promise.resolve(['france']) });
       }
       if (url.includes('/auth/token')) {
         return Promise.resolve({
@@ -773,7 +773,7 @@ describe('Submission outcomes', () => {
   it('CAM-FE-26: 500 response shows generic error', async () => {
     mockFetch.mockImplementation((url: string) => {
       if (url.includes('/countries')) {
-        return Promise.resolve({ ok: true, json: () => Promise.resolve(['France']) });
+        return Promise.resolve({ ok: true, json: () => Promise.resolve(['france']) });
       }
       if (url.includes('/auth/token')) {
         return Promise.resolve({
@@ -838,14 +838,14 @@ describe('Accessibility assertions', () => {
   it('CAM-FE-29: Yes button has descriptive aria-label including waypoint name', async () => {
     mockFetch.mockImplementation((url: string) => {
       if (url.includes('/countries')) {
-        return Promise.resolve({ ok: true, json: () => Promise.resolve(['France']) });
+        return Promise.resolve({ ok: true, json: () => Promise.resolve(['france']) });
       }
       if (url.includes('camino-points/search')) {
         return Promise.resolve({
           ok: true,
           json: () =>
             Promise.resolve([
-              { id: 'x', name: 'Pamplona', country: 'Spain', description: null },
+              { id: 'x', name: 'Pamplona', country: 'spain', description: null },
             ]),
         });
       }
@@ -857,7 +857,7 @@ describe('Accessibility assertions', () => {
     await waitForCountries();
 
     await user.type(screen.getByLabelText('point_name'), 'Pampl');
-    await user.selectOptions(screen.getByLabelText('point_country'), 'France');
+    await user.selectOptions(screen.getByLabelText('point_country'), 'france');
     vi.advanceTimersByTime(401);
 
     await waitFor(() => expect(screen.getByRole('status')).toBeInTheDocument());
@@ -872,14 +872,14 @@ describe('Accessibility assertions', () => {
   it('CAM-FE-30: No button has descriptive accessible name', async () => {
     mockFetch.mockImplementation((url: string) => {
       if (url.includes('/countries')) {
-        return Promise.resolve({ ok: true, json: () => Promise.resolve(['France']) });
+        return Promise.resolve({ ok: true, json: () => Promise.resolve(['france']) });
       }
       if (url.includes('camino-points/search')) {
         return Promise.resolve({
           ok: true,
           json: () =>
             Promise.resolve([
-              { id: 'x', name: 'Pamplona', country: 'Spain', description: null },
+              { id: 'x', name: 'Pamplona', country: 'spain', description: null },
             ]),
         });
       }
@@ -891,7 +891,7 @@ describe('Accessibility assertions', () => {
     await waitForCountries();
 
     await user.type(screen.getByLabelText('point_name'), 'Pampl');
-    await user.selectOptions(screen.getByLabelText('point_country'), 'France');
+    await user.selectOptions(screen.getByLabelText('point_country'), 'france');
     vi.advanceTimersByTime(401);
 
     const noButton = await screen.findByRole('button', { name: 'suggestion.no' });

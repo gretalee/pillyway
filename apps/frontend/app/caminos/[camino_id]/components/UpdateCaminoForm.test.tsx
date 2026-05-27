@@ -49,7 +49,11 @@ beforeEach(() => {
   mockFetch.mockReset();
   mockPush.mockReset();
   // Default: unauthenticated (user === null → canRemoveWaypoints = true → remove button visible)
-  mockUseKindeBrowserClient.mockReturnValue({ user: null, accessToken: null, accessTokenEncoded: 'test-token' });
+  mockUseKindeBrowserClient.mockReturnValue({
+    user: null,
+    accessToken: null,
+    accessTokenEncoded: 'test-token',
+  });
 
   // Default: fetch dispatcher — routes by URL pattern.
   mockFetch.mockImplementation((url: string, opts?: RequestInit) => {
@@ -58,7 +62,7 @@ beforeEach(() => {
     if (url.includes('/countries')) {
       return Promise.resolve({
         ok: true,
-        json: () => Promise.resolve(['France', 'Germany', 'Portugal', 'Spain']),
+        json: () => Promise.resolve(['france', 'Germany', 'Portugal', 'spain']),
       });
     }
     if (url.includes('/camino-points/search')) {
@@ -84,7 +88,7 @@ beforeEach(() => {
               {
                 id: 'pt-1',
                 name: 'Saint-Jean-Pied-de-Port',
-                country: 'France',
+                country: 'france',
                 description: null,
                 position: 1,
               },
@@ -125,7 +129,7 @@ const CAMINO_FIXTURE = {
     {
       id: 'pt-1',
       name: 'Saint-Jean-Pied-de-Port',
-      country: 'France',
+      country: 'france',
       description: null,
       position: 1,
     },
@@ -280,16 +284,15 @@ describe('UpdateCaminoForm — submission', () => {
   it('shows a conflict error (409) from the server', async () => {
     mockFetch.mockImplementation((url: string, opts?: RequestInit) => {
       if (typeof url !== 'string') return Promise.resolve({ ok: false, status: 400 });
-      // Must include 'France' so the <select> for country has a valid option
+      // Must include 'france' so the <select> for country has a valid option
       // and react-hook-form reads a non-empty DOM value, allowing form submit.
       if (url.includes('/countries'))
-        return Promise.resolve({ ok: true, json: () => Promise.resolve(['France']) });
+        return Promise.resolve({ ok: true, json: () => Promise.resolve(['france']) });
       if (url.includes('/stages'))
         return Promise.resolve({ ok: true, json: () => Promise.resolve([]) });
       if (url.includes('/camino-points/search'))
         return Promise.resolve({ ok: true, json: () => Promise.resolve([]) });
-      if (opts?.method === 'PATCH')
-        return Promise.resolve({ ok: false, status: 409 });
+      if (opts?.method === 'PATCH') return Promise.resolve({ ok: false, status: 409 });
       if (url.includes('/caminos/'))
         return Promise.resolve({ ok: true, json: () => Promise.resolve(CAMINO_FIXTURE) });
       return Promise.resolve({ ok: false, status: 404 });
@@ -308,13 +311,12 @@ describe('UpdateCaminoForm — submission', () => {
     mockFetch.mockImplementation((url: string, opts?: RequestInit) => {
       if (typeof url !== 'string') return Promise.resolve({ ok: false, status: 400 });
       if (url.includes('/countries'))
-        return Promise.resolve({ ok: true, json: () => Promise.resolve(['France']) });
+        return Promise.resolve({ ok: true, json: () => Promise.resolve(['france']) });
       if (url.includes('/stages'))
         return Promise.resolve({ ok: true, json: () => Promise.resolve([]) });
       if (url.includes('/camino-points/search'))
         return Promise.resolve({ ok: true, json: () => Promise.resolve([]) });
-      if (opts?.method === 'PATCH')
-        return Promise.resolve({ ok: false, status: 403 });
+      if (opts?.method === 'PATCH') return Promise.resolve({ ok: false, status: 403 });
       if (url.includes('/caminos/'))
         return Promise.resolve({ ok: true, json: () => Promise.resolve(CAMINO_FIXTURE) });
       return Promise.resolve({ ok: false, status: 404 });
@@ -357,7 +359,9 @@ describe('UpdateCaminoForm — remove waypoint authorisation', () => {
     await waitForForm();
 
     // The remove button must not be present for an unauthorised pilgrim.
-    expect(screen.queryByRole('button', { name: 'remove_point' })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'remove_point' }),
+    ).not.toBeInTheDocument();
   });
 
   it('shows the remove button for the camino creator within the 2-hour window', async () => {
@@ -366,7 +370,7 @@ describe('UpdateCaminoForm — remove waypoint authorisation', () => {
     mockFetch.mockImplementation((url: string, opts?: RequestInit) => {
       if (typeof url !== 'string') return Promise.resolve({ ok: false, status: 400 });
       if (url.includes('/countries'))
-        return Promise.resolve({ ok: true, json: () => Promise.resolve(['France']) });
+        return Promise.resolve({ ok: true, json: () => Promise.resolve(['france']) });
       if (url.includes('/camino-points/search'))
         return Promise.resolve({ ok: true, json: () => Promise.resolve([]) });
       if (url.includes('/stages') && !url.includes('stages/') && opts?.method !== 'PATCH')
@@ -399,10 +403,17 @@ describe('UpdateCaminoForm — reorder warning', () => {
     mockFetch.mockImplementation((url: string, opts?: RequestInit) => {
       if (typeof url !== 'string') return Promise.resolve({ ok: false, status: 400 });
       if (url.includes('/countries'))
-        return Promise.resolve({ ok: true, json: () => Promise.resolve(['France', 'Spain']) });
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(['france', 'spain']),
+        });
       if (url.includes('/camino-points/search'))
         return Promise.resolve({ ok: true, json: () => Promise.resolve([]) });
-      if (url.includes('/stages') && !url.includes('stages/') && opts?.method !== 'PATCH') {
+      if (
+        url.includes('/stages') &&
+        !url.includes('stages/') &&
+        opts?.method !== 'PATCH'
+      ) {
         return Promise.resolve({
           ok: true,
           json: () =>
@@ -410,9 +421,9 @@ describe('UpdateCaminoForm — reorder warning', () => {
               {
                 id: 'stage-1',
                 stageNumber: 1,
-                startPoint: { id: 'pt-1', name: 'A', country: 'France', slug: 'a' },
-                endPoint: { id: 'pt-2', name: 'B', country: 'Spain', slug: 'b' },
-                distance: 25,   // has enriched data
+                startPoint: { id: 'pt-1', name: 'A', country: 'france', slug: 'a' },
+                endPoint: { id: 'pt-2', name: 'B', country: 'spain', slug: 'b' },
+                distance: 25, // has enriched data
                 description: null,
                 createdAt: '2026-01-01T00:00:00Z',
                 updatedAt: '2026-01-01T00:00:00Z',
@@ -420,7 +431,8 @@ describe('UpdateCaminoForm — reorder warning', () => {
             ]),
         });
       }
-      if (opts?.method === 'PATCH') return Promise.resolve({ ok: true, json: () => Promise.resolve({}) });
+      if (opts?.method === 'PATCH')
+        return Promise.resolve({ ok: true, json: () => Promise.resolve({}) });
       if (url.includes('/caminos/')) {
         return Promise.resolve({
           ok: true,
@@ -428,8 +440,20 @@ describe('UpdateCaminoForm — reorder warning', () => {
             Promise.resolve({
               ...CAMINO_FIXTURE,
               caminoPoints: [
-                { id: 'pt-1', name: 'A', country: 'France', description: null, position: 1 },
-                { id: 'pt-2', name: 'B', country: 'Spain', description: null, position: 2 },
+                {
+                  id: 'pt-1',
+                  name: 'A',
+                  country: 'france',
+                  description: null,
+                  position: 1,
+                },
+                {
+                  id: 'pt-2',
+                  name: 'B',
+                  country: 'spain',
+                  description: null,
+                  position: 2,
+                },
               ],
             }),
         });

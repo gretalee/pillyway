@@ -203,6 +203,17 @@
     "spain": "Spain",
     "sweden": "Sweden"
   },
+  "country_codes": {
+    "denmark": "DK",
+    "france": "FR",
+    "germany": "DE",
+    "italy": "IT",
+    "netherlands": "NL",
+    "poland": "PL",
+    "portugal": "PT",
+    "spain": "ES",
+    "sweden": "SE"
+  },
   "auth_error": {
     "meta_title": "Login failed | Pillyway",
     "heading": "Login session expired",

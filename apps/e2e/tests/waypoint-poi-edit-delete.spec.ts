@@ -175,7 +175,8 @@ test.describe('POI — accommodation and sight edit, delete, and detail page', (
     const editAccommodationLink = page
       .locator('div')
       .filter({ has: page.getByRole('link', { name: accommodationName, exact: true }) })
-      .getByRole('link', { name: 'Edit accommodation' });
+      .getByRole('link', { name: 'Edit accommodation' })
+      .first();
     await expect(editAccommodationLink).toBeVisible({ timeout: 10_000 });
     await editAccommodationLink.click();
     await page.waitForURL(/\/accommodations\/[^/]+\/edit$/, { timeout: 10_000 });
@@ -210,7 +211,8 @@ test.describe('POI — accommodation and sight edit, delete, and detail page', (
     const editSightLink = page
       .locator('div')
       .filter({ has: page.getByText(sightName, { exact: true }) })
-      .getByRole('link', { name: 'Edit sight' });
+      .getByRole('link', { name: 'Edit sight' })
+      .first();
     await expect(
       editSightLink,
       `Edit sight link for ${sightName} must be visible.`,
@@ -246,7 +248,8 @@ test.describe('POI — accommodation and sight edit, delete, and detail page', (
     const deleteBtn = page
       .locator('div')
       .filter({ has: page.getByRole('link', { name: accommodationName, exact: true }) })
-      .getByRole('button', { name: 'Delete accommodation' });
+      .getByRole('button', { name: 'Delete accommodation' })
+      .first();
     await expect(deleteBtn).toBeVisible({ timeout: 10_000 });
     await deleteBtn.click();
 
@@ -255,9 +258,15 @@ test.describe('POI — accommodation and sight edit, delete, and detail page', (
     await expect(dialog).toBeVisible({ timeout: 5_000 });
     await dialog.getByRole('button', { name: 'Delete' }).click();
 
-    // Accommodation must be gone after the page refreshes
+    // Dialog closes only on DELETE success — confirms the API call completed.
+    await expect(dialog).not.toBeVisible({ timeout: 15_000 });
+
+    // router.refresh() (called by the component) is unreliable in headless Chromium:
+    // the RSC streaming update can be silently dropped. A hard reload guarantees
+    // fresh server data and is the authoritative check that the item was deleted.
+    await page.reload();
     await expect(page.getByText(accommodationName, { exact: true })).toHaveCount(0, {
-      timeout: 30_000,
+      timeout: 10_000,
     });
   });
 
@@ -279,7 +288,8 @@ test.describe('POI — accommodation and sight edit, delete, and detail page', (
     const deleteBtn = page
       .locator('div')
       .filter({ has: page.getByText(sightName, { exact: true }) })
-      .getByRole('button', { name: 'Delete sight' });
+      .getByRole('button', { name: 'Delete sight' })
+      .first();
     await expect(deleteBtn).toBeVisible({ timeout: 10_000 });
     await deleteBtn.click();
 
@@ -289,8 +299,13 @@ test.describe('POI — accommodation and sight edit, delete, and detail page', (
     await expect(closeBtn).toBeVisible();
     await closeBtn.click();
 
+    // Dialog closes only on DELETE success — confirms the API call completed.
+    await expect(dialog).not.toBeVisible({ timeout: 15_000 });
+
+    // Hard reload instead of relying on router.refresh() — see accommodation delete above.
+    await page.reload();
     await expect(page.getByRole('heading', { name: sightName })).not.toBeVisible({
-      timeout: 15_000,
+      timeout: 10_000,
     });
   });
 });

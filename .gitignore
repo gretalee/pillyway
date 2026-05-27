@@ -28,6 +28,7 @@ build/
 
 # NestJS
 apps/backend/dist/
+apps/backend/backups/
 
 # Playwright
 apps/e2e/test-results/

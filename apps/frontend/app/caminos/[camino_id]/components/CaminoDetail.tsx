@@ -174,11 +174,11 @@ export function CaminoDetail({
           <div
             className={cn(
               'flex items-center justify-between gap-4 w-full',
-              canEdit && 'hover:bg-accent/50 rounded-md pr-1',
+              canEdit && 'hover:bg-accent/50 rounded-md pr-1 ',
             )}>
-            <div className="flex items-center gap-2">
-              <h1 className="text-3xl font-bold tracking-tight">{camino.name}</h1>
-              {camino.verified && <VerifiedBadge />}
+            <div className="">
+              <h1 className="text-3xl font-bold tracking-tight inline">{camino.name}</h1>
+              {camino.verified && <VerifiedBadge className="inline-block pl-2 lg:pl-3" />}
             </div>
             {canEdit && (
               <Button
@@ -215,25 +215,22 @@ export function CaminoDetail({
             />
           </div>
         ) : (
-          <div
-            className={cn(
-              'mt-4 flex items-start justify-between gap-2',
-              canEdit && 'hover:bg-accent/50 rounded-md pr-1',
-            )}>
-            <p className="flex-1 whitespace-pre-wrap text-muted-foreground">
-              {camino.description ?? tCaminos('no_description')}
-            </p>
+          <div className={cn('mt-4', canEdit && 'hover:bg-accent/50 rounded-md pr-1')}>
             {canEdit && (
               <Button
                 variant={'ghost'}
                 aria-label={tCaminos('edit_description_aria')}
-                onClick={() => startEdit('description')}>
+                onClick={() => startEdit('description')}
+                className="float-right ml-2">
                 <i
                   className="icon-pencil text-xl text-muted-foreground hover:text-accent-foreground"
                   aria-hidden="true"
                 />
               </Button>
             )}
+            <p className="whitespace-pre-wrap text-muted-foreground">
+              {camino.description ?? tCaminos('no_description')}
+            </p>
           </div>
         )}
       </div>

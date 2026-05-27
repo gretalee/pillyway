@@ -16,7 +16,7 @@ const USER_ID = 'kinde-user-001';
 const basePoint = {
   id: 'pt-1111-0000-0000-0000',
   name: 'Saint-Jean-Pied-de-Port',
-  country: 'France',
+  country: 'france',
   slug: WAYPOINT_SLUG,
   description: 'Starting point of the Camino Francés.',
   createdAt: new Date('2026-01-01'),
@@ -176,7 +176,9 @@ describe('WaypointsService.createAccommodation()', () => {
     await service.createAccommodation(WAYPOINT_SLUG, dtoWithoutUrls, USER_ID);
 
     expect(prismaMock.accommodation.create).toHaveBeenCalledWith(
-      expect.objectContaining({ data: expect.objectContaining({ imageUrls: [] }) }),
+      expect.objectContaining({
+        data: expect.objectContaining({ imageUrls: [] }),
+      }),
     );
   });
 
@@ -246,9 +248,7 @@ describe('WaypointsService.createSight()', () => {
         findUnique: vi.fn().mockResolvedValue(basePoint),
       },
       sight: {
-        create: vi
-          .fn()
-          .mockResolvedValue({ ...baseSight, imageUrls: [] }),
+        create: vi.fn().mockResolvedValue({ ...baseSight, imageUrls: [] }),
       },
     };
     const module = await buildModule(prismaMock);
@@ -257,7 +257,9 @@ describe('WaypointsService.createSight()', () => {
     await service.createSight(WAYPOINT_SLUG, dtoWithoutUrls, USER_ID);
 
     expect(prismaMock.sight.create).toHaveBeenCalledWith(
-      expect.objectContaining({ data: expect.objectContaining({ imageUrls: [] }) }),
+      expect.objectContaining({
+        data: expect.objectContaining({ imageUrls: [] }),
+      }),
     );
   });
 
