@@ -1,4 +1,8 @@
-import { InternalServerErrorException, Logger, LoggerService } from '@nestjs/common';
+import {
+  InternalServerErrorException,
+  Logger,
+  LoggerService,
+} from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -62,7 +66,7 @@ describe('CaminoPointsService.search()', () => {
     const findManyMock = vi.fn().mockResolvedValue([]);
     const service = await buildModule(findManyMock);
 
-    const result = await service.search('xyz', 'Spain');
+    const result = await service.search('xyz', 'spain');
 
     expect(result).toEqual([]);
   });
@@ -73,26 +77,26 @@ describe('CaminoPointsService.search()', () => {
       {
         id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
         name: 'Santiago',
-        country: 'Spain',
+        country: 'spain',
         description: null,
       },
       {
         id: 'b2c3d4e5-f6a7-8901-bcde-f12345678901',
         name: 'Santillana',
-        country: 'Spain',
+        country: 'spain',
         description: null,
       },
       {
         id: 'c3d4e5f6-a7b8-9012-cdef-123456789012',
         name: 'Santoña',
-        country: 'Spain',
+        country: 'spain',
         description: null,
       },
     ];
     const findManyMock = vi.fn().mockResolvedValue(records);
     const service = await buildModule(findManyMock);
 
-    const result = await service.search('santi', 'Spain');
+    const result = await service.search('santi', 'spain');
 
     expect(result).toHaveLength(3);
     expect(result[0].name).toBe('Santiago');
@@ -103,13 +107,13 @@ describe('CaminoPointsService.search()', () => {
     const fiveRecords = Array.from({ length: 5 }, (_, i) => ({
       id: `id-${i}`,
       name: `Point ${i}`,
-      country: 'Spain',
+      country: 'spain',
       description: null,
     }));
     const findManyMock = vi.fn().mockResolvedValue(fiveRecords);
     const service = await buildModule(findManyMock);
 
-    const result = await service.search('point', 'Spain');
+    const result = await service.search('point', 'spain');
 
     expect(result).toHaveLength(5);
   });
@@ -117,7 +121,7 @@ describe('CaminoPointsService.search()', () => {
   // name-only search (no country)
   it('returns results when only name is provided', async () => {
     const records = [
-      { id: 'id-1', name: 'Saint-Jean', country: 'France', description: null },
+      { id: 'id-1', name: 'Saint-Jean', country: 'france', description: null },
     ];
     const findManyMock = vi.fn().mockResolvedValue(records);
     const service = await buildModule(findManyMock);
@@ -130,22 +134,24 @@ describe('CaminoPointsService.search()', () => {
   // country-only search
   it('returns results when only country is provided', async () => {
     const records = [
-      { id: 'id-1', name: 'Pamplona', country: 'Spain', description: null },
+      { id: 'id-1', name: 'Pamplona', country: 'spain', description: null },
     ];
     const findManyMock = vi.fn().mockResolvedValue(records);
     const service = await buildModule(findManyMock);
 
-    const result = await service.search(undefined, 'Spain');
+    const result = await service.search(undefined, 'spain');
 
     expect(result).toHaveLength(1);
   });
 
   // DB error → InternalServerErrorException
   it('throws InternalServerErrorException when DB query fails', async () => {
-    const findManyMock = vi.fn().mockRejectedValue(new Error('connection timeout'));
+    const findManyMock = vi
+      .fn()
+      .mockRejectedValue(new Error('connection timeout'));
     const service = await buildModule(findManyMock);
 
-    await expect(service.search('saint', 'France')).rejects.toBeInstanceOf(
+    await expect(service.search('saint', 'france')).rejects.toBeInstanceOf(
       InternalServerErrorException,
     );
   });

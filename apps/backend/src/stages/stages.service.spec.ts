@@ -28,9 +28,24 @@ const CAMINO_ID_B = '4fa85f64-5717-4562-b3fc-2c963f66afb7';
 const STAGE_ID_1 = 'a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1';
 const STAGE_ID_2 = 'b2b2b2b2-b2b2-b2b2-b2b2-b2b2b2b2b2b2';
 
-const PT_A = { id: 'pt-a', name: 'Start Town', country: 'France', description: null };
-const PT_B = { id: 'pt-b', name: 'Middle Town', country: 'Spain', description: null };
-const PT_C = { id: 'pt-c', name: 'End Town', country: 'Spain', description: null };
+const PT_A = {
+  id: 'pt-a',
+  name: 'Start Town',
+  country: 'france',
+  description: null,
+};
+const PT_B = {
+  id: 'pt-b',
+  name: 'Middle Town',
+  country: 'spain',
+  description: null,
+};
+const PT_C = {
+  id: 'pt-c',
+  name: 'End Town',
+  country: 'spain',
+  description: null,
+};
 
 const NOW = new Date('2026-05-11T10:00:00.000Z');
 const LATER = new Date('2026-05-11T14:00:00.000Z');
@@ -59,7 +74,7 @@ const stageRow2 = {
  * Builds a CaminoPointOrder rows array for use in mocks.
  * Each element mirrors what Prisma returns from findMany with include: { caminoPoint: true }.
  */
-function makeOrderRows(points: typeof PT_A[]) {
+function makeOrderRows(points: (typeof PT_A)[]) {
   return points.map((pt, i) => ({
     caminoId: CAMINO_ID_A,
     caminoPointId: pt.id,
@@ -182,10 +197,7 @@ describe('StagesService.findByCamino()', () => {
 // ─── StagesService.findOne() ──────────────────────────────────────────────────
 
 describe('StagesService.findOne()', () => {
-  function makeOrderRowsForCamino(
-    caminoId: string,
-    points: typeof PT_A[],
-  ) {
+  function makeOrderRowsForCamino(caminoId: string, points: (typeof PT_A)[]) {
     return points.map((pt, i) => ({
       caminoId,
       caminoPointId: pt.id,
@@ -199,7 +211,9 @@ describe('StagesService.findOne()', () => {
       caminoPointOrder: {
         findMany: vi
           .fn()
-          .mockResolvedValue(makeOrderRowsForCamino(CAMINO_ID_A, [PT_A, PT_B, PT_C])),
+          .mockResolvedValue(
+            makeOrderRowsForCamino(CAMINO_ID_A, [PT_A, PT_B, PT_C]),
+          ),
       },
       stage: {
         findUnique: vi.fn().mockResolvedValue(stageRow1),
@@ -223,7 +237,9 @@ describe('StagesService.findOne()', () => {
       caminoPointOrder: {
         findMany: vi
           .fn()
-          .mockResolvedValue(makeOrderRowsForCamino(CAMINO_ID_A, [PT_A, PT_B, PT_C])),
+          .mockResolvedValue(
+            makeOrderRowsForCamino(CAMINO_ID_A, [PT_A, PT_B, PT_C]),
+          ),
       },
       stage: {
         findUnique: vi.fn().mockResolvedValue(stageRow2),
@@ -243,7 +259,12 @@ describe('StagesService.findOne()', () => {
   });
 
   it('returns both adjacent summaries for a middle stage (4 points, stage 2)', async () => {
-    const PT_D = { id: 'pt-d', name: 'Far Town', country: 'Portugal', description: null };
+    const PT_D = {
+      id: 'pt-d',
+      name: 'Far Town',
+      country: 'Portugal',
+      description: null,
+    };
     const stageRow3 = {
       id: 'c3c3c3c3-c3c3-c3c3-c3c3-c3c3c3c3c3c3',
       startPointId: PT_B.id,
@@ -318,7 +339,9 @@ describe('StagesService.findOne()', () => {
       caminoPointOrder: {
         findMany: vi
           .fn()
-          .mockResolvedValue(makeOrderRowsForCamino(CAMINO_ID_A, [PT_A, PT_B, PT_C])),
+          .mockResolvedValue(
+            makeOrderRowsForCamino(CAMINO_ID_A, [PT_A, PT_B, PT_C]),
+          ),
       },
       stage: { findUnique: vi.fn() },
     };
@@ -354,9 +377,7 @@ describe('StagesService.update()', () => {
   function makeUpdatePrismaMock(stageForFindUnique = stageRow1) {
     return {
       caminoPointOrder: {
-        findMany: vi
-          .fn()
-          .mockResolvedValue(makeOrderRows([PT_A, PT_B, PT_C])),
+        findMany: vi.fn().mockResolvedValue(makeOrderRows([PT_A, PT_B, PT_C])),
       },
       camino: {
         findUnique: vi.fn().mockResolvedValue({ id: CAMINO_ID_A }),
@@ -384,7 +405,9 @@ describe('StagesService.update()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(StagesService);
 
-    const result = await service.update(CAMINO_ID_A, 1, distanceDto, ['pilgrim']);
+    const result = await service.update(CAMINO_ID_A, 1, distanceDto, [
+      'pilgrim',
+    ]);
 
     expect(prismaMock.stage.upsert).toHaveBeenCalledOnce();
     expect(result.distance).toBe(30.5);
@@ -406,11 +429,17 @@ describe('StagesService.update()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(StagesService);
 
-    const result = await service.update(CAMINO_ID_A, 1, distanceDto, ['pilgrim']);
+    const result = await service.update(CAMINO_ID_A, 1, distanceDto, [
+      'pilgrim',
+    ]);
 
     expect(prismaMock.stage.upsert).toHaveBeenCalledOnce();
     const call = prismaMock.stage.upsert.mock.calls[0][0];
-    expect(call.create).toMatchObject({ startPointId: PT_A.id, endPointId: PT_B.id, distance: 30.5 });
+    expect(call.create).toMatchObject({
+      startPointId: PT_A.id,
+      endPointId: PT_B.id,
+      distance: 30.5,
+    });
     expect(result.distance).toBe(30.5);
   });
 

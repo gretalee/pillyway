@@ -20,8 +20,18 @@ const CAMINO_ID = '3fa85f64-5717-4562-b3fc-2c963f66afa6';
 const STAGE_ID = 'a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1';
 const NOW = new Date('2026-05-11T10:00:00.000Z');
 
-const startPoint = { id: 'pt-a', name: 'Start Town', country: 'France', slug: 'start-town' };
-const endPoint = { id: 'pt-b', name: 'End Town', country: 'Spain', slug: 'end-town' };
+const startPoint = {
+  id: 'pt-a',
+  name: 'Start Town',
+  country: 'france',
+  slug: 'start-town',
+};
+const endPoint = {
+  id: 'pt-b',
+  name: 'End Town',
+  country: 'spain',
+  slug: 'end-town',
+};
 
 const mockListItem: StageListItem = {
   id: STAGE_ID,
@@ -44,7 +54,9 @@ const mockDetail: StageDetail = {
   },
 };
 
-function buildModule(serviceMock: Partial<StagesService>): Promise<TestingModule> {
+function buildModule(
+  serviceMock: Partial<StagesService>,
+): Promise<TestingModule> {
   return Test.createTestingModule({
     controllers: [StagesController],
     providers: [{ provide: StagesService, useValue: serviceMock }],
@@ -71,7 +83,9 @@ describe('StagesController.findByCamino()', () => {
 
   it('propagates NotFoundException from service', async () => {
     const serviceMock = {
-      findByCamino: vi.fn().mockRejectedValue(new NotFoundException('Camino not found.')),
+      findByCamino: vi
+        .fn()
+        .mockRejectedValue(new NotFoundException('Camino not found.')),
     };
     const module = await buildModule(serviceMock);
     const controller = module.get(StagesController);
@@ -100,7 +114,9 @@ describe('StagesController.findOne()', () => {
 
   it('propagates NotFoundException for out-of-range stageNumber', async () => {
     const serviceMock = {
-      findOne: vi.fn().mockRejectedValue(new NotFoundException('Stage not found.')),
+      findOne: vi
+        .fn()
+        .mockRejectedValue(new NotFoundException('Stage not found.')),
     };
     const module = await buildModule(serviceMock);
     const controller = module.get(StagesController);
@@ -141,7 +157,9 @@ describe('StagesController.update()', () => {
       mockRequest as never,
     );
 
-    expect(serviceMock.update).toHaveBeenCalledWith(CAMINO_ID, 1, dto, ['pilgrim']);
+    expect(serviceMock.update).toHaveBeenCalledWith(CAMINO_ID, 1, dto, [
+      'pilgrim',
+    ]);
     expect(result.distance).toBe(30.5);
   });
 
@@ -150,7 +168,9 @@ describe('StagesController.update()', () => {
       update: vi
         .fn()
         .mockRejectedValue(
-          new ForbiddenException('You do not have permission to edit this stage.'),
+          new ForbiddenException(
+            'You do not have permission to edit this stage.',
+          ),
         ),
     };
     const module = await buildModule(serviceMock);
@@ -164,7 +184,9 @@ describe('StagesController.update()', () => {
 
   it('propagates NotFoundException when service throws', async () => {
     const serviceMock = {
-      update: vi.fn().mockRejectedValue(new NotFoundException('Camino not found.')),
+      update: vi
+        .fn()
+        .mockRejectedValue(new NotFoundException('Camino not found.')),
     };
     const module = await buildModule(serviceMock);
     const controller = module.get(StagesController);

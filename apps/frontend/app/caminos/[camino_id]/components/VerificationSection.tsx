@@ -58,18 +58,17 @@ export function VerificationSection({ caminoId }: VerificationSectionProps) {
             <p>{t('camino_detail.vote_no_count', { count: noVotes })}</p>
           </div>
 
-          {!isAuthenticated ||
-            (true && (
-              <Link
-                href="/api/auth/login"
-                aria-label={t('header.aria_login')}
-                className={cn(
-                  buttonVariants({ variant: 'tertiary', size: 'lg' }),
-                  'mt-4 whitespace-normal max-w-full overflow-hidden h-auto',
-                )}>
-                {t('camino_detail.vote_login_hint')}
-              </Link>
-            ))}
+          {!isAuthenticated && (
+            <Link
+              href="/api/auth/login"
+              aria-label={t('header.aria_login')}
+              className={cn(
+                buttonVariants({ variant: 'tertiary', size: 'lg' }),
+                'mt-4 whitespace-normal max-w-full overflow-hidden h-auto',
+              )}>
+              {t('camino_detail.vote_login_hint')}
+            </Link>
+          )}
 
           <label className="absolute truncate -top-2 left-4 right-4 bg-white px-1 text-sm text-pillyGreen-700 whitespace-nowrap">
             {t('camino_detail.verification_label')}

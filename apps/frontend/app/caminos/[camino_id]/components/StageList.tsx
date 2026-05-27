@@ -48,7 +48,7 @@ export async function StageList({ caminoId }: StageListProps) {
                 {stage.startPoint.name}
                 {stage.startPoint.country && (
                   <span className="ml-1 text-muted-foreground">
-                    ({tCodes(stage.startPoint.country as Parameters<typeof tCodes>[0])})
+                    ({tCodes(stage.startPoint.country.toLowerCase() as Parameters<typeof tCodes>[0])})
                   </span>
                 )}
               </span>
@@ -63,7 +63,7 @@ export async function StageList({ caminoId }: StageListProps) {
                 {stage.endPoint.name}
                 {stage.endPoint.country && (
                   <span className="ml-1 text-muted-foreground">
-                    ({tCodes(stage.endPoint.country as Parameters<typeof tCodes>[0])})
+                    ({tCodes(stage.endPoint.country.toLowerCase() as Parameters<typeof tCodes>[0])})
                   </span>
                 )}
               </span>
