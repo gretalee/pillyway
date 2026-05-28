@@ -22,6 +22,8 @@
     "db:migrate": "yarn --cwd apps/backend prisma:migrate:deploy",
     "seed:camino": "yarn --cwd apps/backend seed:camino",
     "seed:camino:prod": "yarn --cwd apps/backend seed:camino:prod",
+    "seed:via-baltica": "yarn --cwd apps/backend seed:via-baltica",
+    "seed:via-baltica:prod": "yarn --cwd apps/backend seed:via-baltica:prod",
     "seed:franziskusweg": "yarn --cwd apps/backend seed:franziskusweg",
     "seed:franziskusweg:prod": "yarn --cwd apps/backend seed:franziskusweg:prod",
     "seed:via-regia": "yarn --cwd apps/backend seed:via-regia",
