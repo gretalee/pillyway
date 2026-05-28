@@ -158,17 +158,17 @@ async function seed(
     }
 
     const point = await prisma.caminoPoint.upsert({
-      where: { slug: pd.slug },
+      where: { name_country: { name: pd.name, country: pd.country } },
       create: { name: pd.name, country: pd.country, slug: pd.slug, description: pd.description },
-      update: { name: pd.name, country: pd.country, description: pd.description },
+      update: { slug: pd.slug, description: pd.description },
     });
     pointIdByName.set(pd.name, point.id);
     counts.points++;
 
     await prisma.caminoPointOrder.upsert({
-      where: { caminoId_caminoPointId: { caminoId, caminoPointId: point.id } },
+      where: { caminoId_position: { caminoId, position: pd.position } },
       create: { caminoId, caminoPointId: point.id, position: pd.position },
-      update: { position: pd.position },
+      update: { caminoPointId: point.id },
     });
 
     for (const acc of pd.accommodations) {
