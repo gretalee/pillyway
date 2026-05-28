@@ -16,7 +16,7 @@ interface VerificationSectionProps {
 
 export function VerificationSection({ caminoId }: VerificationSectionProps) {
   const t = useTranslations();
-  const { isAuthenticated } = useKindeBrowserClient();
+  const { isAuthenticated, isLoading: authenticationLoading } = useKindeBrowserClient();
 
   const summaryQuery = useCaminoVoteSummary(caminoId);
   const myVoteQuery = useCaminoVoteMe(caminoId);
@@ -61,7 +61,7 @@ export function VerificationSection({ caminoId }: VerificationSectionProps) {
             </div>
           </div>
 
-          {!isAuthenticated && (
+          {!isAuthenticated && !authenticationLoading && (
             <Link
               href="/api/auth/login"
               aria-label={t('header.aria_login')}
