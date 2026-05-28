@@ -26,6 +26,8 @@ interface StagePair {
   endCountry: string;
   startSlug: string;
   endSlug: string;
+  startHasAccommodation: boolean;
+  endHasAccommodation: boolean;
 }
 
 // ─── Service ─────────────────────────────────────────────────────────────────
@@ -48,7 +50,7 @@ export class StagesService {
     const orderedPoints = await this.prisma.caminoPointOrder.findMany({
       where: { caminoId },
       orderBy: { position: 'asc' },
-      include: { caminoPoint: true },
+      include: { caminoPoint: { include: { _count: { select: { accommodations: true } } } } },
     });
 
     if (orderedPoints.length === 0) {
@@ -80,6 +82,8 @@ export class StagesService {
         endCountry: end.country,
         startSlug: start.slug,
         endSlug: end.slug,
+        startHasAccommodation: start._count.accommodations > 0,
+        endHasAccommodation: end._count.accommodations > 0,
       });
     }
 
@@ -112,12 +116,14 @@ export class StagesService {
           name: pair.startName,
           country: pair.startCountry,
           slug: pair.startSlug,
+          hasAccommodation: pair.startHasAccommodation,
         },
         endPoint: {
           id: pair.endId,
           name: pair.endName,
           country: pair.endCountry,
           slug: pair.endSlug,
+          hasAccommodation: pair.endHasAccommodation,
         },
         distance: row!.distance,
         description: row!.description,
@@ -141,7 +147,7 @@ export class StagesService {
     const orderedPoints = await this.prisma.caminoPointOrder.findMany({
       where: { caminoId },
       orderBy: { position: 'asc' },
-      include: { caminoPoint: true },
+      include: { caminoPoint: { include: { _count: { select: { accommodations: true } } } } },
     });
 
     if (orderedPoints.length === 0) {
@@ -210,12 +216,14 @@ export class StagesService {
         name: startPoint.name,
         country: startPoint.country,
         slug: startPoint.slug,
+        hasAccommodation: startPoint._count.accommodations > 0,
       },
       endPoint: {
         id: endPoint.id,
         name: endPoint.name,
         country: endPoint.country,
         slug: endPoint.slug,
+        hasAccommodation: endPoint._count.accommodations > 0,
       },
       distance: row.distance,
       description: row.description,

@@ -3,9 +3,26 @@ import { getTranslations } from 'next-intl/server';
 import type { StageListItem } from '@/app/api/stages/stage-types';
 import { fetchStages } from '@/app/api/stages/fetch-stages';
 import { cn } from '@/lib/utils';
+import { Tooltip } from '@/app/components/ui/tooltip';
 
 interface StageListProps {
   caminoId: string;
+}
+
+interface AccommodationIconProps {
+  hasAccommodation: boolean;
+  label: string;
+}
+
+function AccommodationIcon({ hasAccommodation, label }: AccommodationIconProps) {
+  if (hasAccommodation) {
+    return (
+      <Tooltip content={label} triggerClassName="shrink-0">
+        <i className="icon-home pl-2 text-primary" aria-hidden="true" />
+      </Tooltip>
+    );
+  }
+  return <i className="icon-home pl-2 text-gray-300" aria-hidden="true" />;
 }
 
 export async function StageList({ caminoId }: StageListProps) {
@@ -48,9 +65,19 @@ export async function StageList({ caminoId }: StageListProps) {
                 {stage.startPoint.name}
                 {stage.startPoint.country && (
                   <span className="ml-1 text-muted-foreground">
-                    ({tCodes(stage.startPoint.country.toLowerCase() as Parameters<typeof tCodes>[0])})
+                    (
+                    {tCodes(
+                      stage.startPoint.country.toLowerCase() as Parameters<
+                        typeof tCodes
+                      >[0],
+                    )}
+                    )
                   </span>
                 )}
+                <AccommodationIcon
+                  hasAccommodation={stage.startPoint.hasAccommodation}
+                  label={t('accommodation_available')}
+                />
               </span>
             </div>
 
@@ -63,9 +90,19 @@ export async function StageList({ caminoId }: StageListProps) {
                 {stage.endPoint.name}
                 {stage.endPoint.country && (
                   <span className="ml-1 text-muted-foreground">
-                    ({tCodes(stage.endPoint.country.toLowerCase() as Parameters<typeof tCodes>[0])})
+                    (
+                    {tCodes(
+                      stage.endPoint.country.toLowerCase() as Parameters<
+                        typeof tCodes
+                      >[0],
+                    )}
+                    )
                   </span>
                 )}
+                <AccommodationIcon
+                  hasAccommodation={stage.endPoint.hasAccommodation}
+                  label={t('accommodation_available')}
+                />
               </span>
             </div>
 

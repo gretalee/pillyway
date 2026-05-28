@@ -128,6 +128,7 @@
     "stages_heading": "Etappen",
     "no_stages": "Dieser Camino hat noch keine Etappen. Füge mindestens zwei Wegpunkte hinzu, um Etappen zu erzeugen.",
     "error_loading_stages": "Etappen konnten nicht geladen werden. Bitte versuche es erneut.",
+    "accommodation_available": "Unterkunft vorhanden",
     "verification_heading": "Verifizierter Weg",
     "verification_label": "Stimme ab: bist du diesen Weg schon gegangen?",
     "vote_yes": "Ja, der Weg ist aktuell",
