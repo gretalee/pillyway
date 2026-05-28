@@ -8,6 +8,7 @@ import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 
 import { useCaminoPictures } from '@/app/api/camino-pictures/use-camino-pictures';
 import { useUploadCaminoPicture } from '@/app/api/camino-pictures/use-upload-camino-picture';
+import { useUploadCaminoPictures } from '@/app/api/camino-pictures/use-upload-camino-pictures';
 import { useDeleteCaminoPicture } from '@/app/api/camino-pictures/use-delete-camino-picture';
 import { Lightbox, type LightboxImage } from './Lightbox';
 import {
@@ -23,8 +24,10 @@ import {
 
 interface CaminoPicturesProps {
   caminoId: string;
-  caminoName: string;
-  /** 'hero' renders only the main picture slot; 'gallery' renders gallery + upload + dialogs */
+  /** Required when section="hero" for the image alt text. */
+  caminoName?: string;
+  /** "hero" renders the main picture slot above the description.
+   *  "gallery" renders the gallery grid, upload controls, and delete dialogs. */
   section: 'hero' | 'gallery';
 }
 
@@ -36,7 +39,13 @@ interface LightboxState {
 
 function uploadErrorMessage(
   status: number | undefined,
-  t: (key: 'upload_error_too_large' | 'upload_error_wrong_type' | 'upload_error_primary_exists' | 'upload_error_generic') => string,
+  t: (
+    key:
+      | 'upload_error_too_large'
+      | 'upload_error_wrong_type'
+      | 'upload_error_primary_exists'
+      | 'upload_error_generic',
+  ) => string,
 ): string {
   if (status === 413) return t('upload_error_too_large');
   if (status === 415) return t('upload_error_wrong_type');
@@ -54,7 +63,8 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
   const isOwner = roleKeys.includes('owner');
 
   const { data } = useCaminoPictures(caminoId);
-  const uploadMutation = useUploadCaminoPicture(caminoId);
+  const primaryUploadMutation = useUploadCaminoPicture(caminoId);
+  const galleryUploadMutation = useUploadCaminoPictures(caminoId);
   const deleteMutation = useDeleteCaminoPicture(caminoId);
 
   const primaryFileInputRef = useRef<HTMLInputElement>(null);
@@ -90,11 +100,7 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
   const openLightboxFromGallery = useCallback(
     (index: number, e: React.MouseEvent<HTMLButtonElement>) => {
       triggerElementRef.current = e.currentTarget;
-      setLightbox({
-        images: galleryImages,
-        currentIndex: index,
-        isGalleryMode: true,
-      });
+      setLightbox({ images: galleryImages, currentIndex: index, isGalleryMode: true });
     },
     [galleryImages],
   );
@@ -115,30 +121,30 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
     const file = e.target.files?.[0];
     if (!file) return;
     setPrimaryUploadError(null);
-    uploadMutation.mutate(
+    primaryUploadMutation.mutate(
       { file, isPrimary: true },
       {
         onError: (err) => {
-          setPrimaryUploadError(uploadErrorMessage((err as Error & { status?: number }).status, t));
+          setPrimaryUploadError(
+            uploadErrorMessage((err as Error & { status?: number }).status, t),
+          );
         },
       },
     );
-    // Reset input so the same file can be selected again after an error
     e.target.value = '';
   }
 
   function handleGalleryFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const files = Array.from(e.target.files ?? []);
+    if (files.length === 0) return;
     setGalleryUploadError(null);
-    uploadMutation.mutate(
-      { file, isPrimary: false },
-      {
-        onError: (err) => {
-          setGalleryUploadError(uploadErrorMessage((err as Error & { status?: number }).status, t));
-        },
+    galleryUploadMutation.mutate(files, {
+      onError: (err) => {
+        setGalleryUploadError(
+          uploadErrorMessage((err as Error & { status?: number }).status, t),
+        );
       },
-    );
+    });
     e.target.value = '';
   }
 
@@ -158,23 +164,61 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
     const id = deleteDialogPictureId;
     setDeleteDialogPictureId(null);
     deleteMutation.mutate(id, {
-      onError: () => {
-        setDeleteError(t('delete_error'));
-      },
+      onError: () => setDeleteError(t('delete_error')),
     });
   }
 
-  const isPrimaryUploading = uploadMutation.isPending && uploadMutation.variables?.isPrimary === true;
-  const isGalleryUploading = uploadMutation.isPending && uploadMutation.variables?.isPrimary === false;
+  // ── Hero section ─────────────────────────────────────────────────────────────
 
   if (section === 'hero') {
-    // Render only the hero image slot (above description)
-    if (!primary) return null;
+    const isPrimaryUploading = primaryUploadMutation.isPending;
+
+    // No primary picture: show upload placeholder for pilgrims, nothing for guests
+    if (!primary) {
+      if (!isPilgrim) return null;
+
+      return (
+        <div className="mt-6">
+          <input
+            ref={primaryFileInputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            className="sr-only"
+            aria-hidden="true"
+            onChange={handlePrimaryFileChange}
+          />
+          <button
+            type="button"
+            disabled={isPrimaryUploading}
+            aria-disabled={isPrimaryUploading}
+            onClick={() => primaryFileInputRef.current?.click()}
+            className="flex aspect-video w-full items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border text-sm font-medium text-muted-foreground transition-colors hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
+            {isPrimaryUploading ? (
+              <>
+                <i className="icon-spinner animate-spin text-base" aria-hidden="true" />
+                {t('uploading')}
+              </>
+            ) : (
+              t('upload_main')
+            )}
+          </button>
+          {primaryUploadError && (
+            <p role="alert" className="mt-1 text-xs text-destructive">
+              {primaryUploadError}
+            </p>
+          )}
+        </div>
+      );
+    }
+
+    // Primary picture exists: show image with optional delete button
+    const canDelete = canDeletePicture(primary.uploadedBy);
 
     return (
       <>
         <div className="mt-6">
           <div className="relative aspect-video w-full overflow-hidden rounded-lg">
+            {/* Fullscreen button covers the whole image */}
             <button
               type="button"
               aria-label={t('open_fullscreen')}
@@ -182,16 +226,58 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
               className="absolute inset-0 z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
               <span className="sr-only">{t('open_fullscreen')}</span>
             </button>
+
             <Image
               src={primary.url}
-              alt={caminoName}
+              alt={caminoName ?? ''}
               fill
               className="object-cover"
               priority
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
+              unoptimized
             />
+
+            {/* Delete button — always visible for eligible users */}
+            {canDelete && (
+              <button
+                type="button"
+                aria-label={t('delete')}
+                onClick={() => handleDeleteIconClick(primary.id)}
+                className="absolute right-2 top-2 z-20 flex size-8 items-center justify-center rounded-md bg-black/60 text-white transition-colors hover:bg-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                <Trash2 size={15} aria-hidden="true" />
+              </button>
+            )}
           </div>
         </div>
+
+        {/* Delete confirmation dialog */}
+        <AlertDialog
+          open={deleteDialogPictureId !== null}
+          onOpenChange={(isOpen) => {
+            if (!isOpen) setDeleteDialogPictureId(null);
+          }}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>{t('delete_confirm.title')}</AlertDialogTitle>
+              <AlertDialogDescription>{t('delete_confirm.body')}</AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel onClick={() => setDeleteDialogPictureId(null)}>
+                {tCommon('cancel')}
+              </AlertDialogCancel>
+              <AlertDialogAction variant="destructive" onClick={handleDeleteConfirm}>
+                {tCommon('delete')}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        {deleteError && (
+          <p role="alert" className="mt-1 text-xs text-destructive">
+            {deleteError}
+          </p>
+        )}
+
         {lightbox && (
           <Lightbox
             images={lightbox.images}
@@ -206,15 +292,20 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
     );
   }
 
-  // section === 'gallery': render gallery, upload controls, delete dialog, lightbox
+  // ── Gallery section ───────────────────────────────────────────────────────────
+
+  const isGalleryUploading = galleryUploadMutation.isPending;
+
   return (
     <>
-      {/* Gallery section — only when gallery has items */}
+      {/* Gallery grid */}
       {gallery.length > 0 && (
         <section className="mt-8">
           <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4">
             {gallery.map((picture, index) => (
-              <div key={picture.id} className="group relative aspect-[4/3] overflow-hidden rounded-lg">
+              <div
+                key={picture.id}
+                className="relative aspect-[4/3] overflow-hidden rounded-lg">
                 <button
                   type="button"
                   aria-label={t('open_fullscreen')}
@@ -228,13 +319,15 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                  unoptimized
                 />
+                {/* Delete button — always visible for eligible users */}
                 {canDeletePicture(picture.uploadedBy) && (
                   <button
                     type="button"
                     aria-label={t('delete')}
                     onClick={() => handleDeleteIconClick(picture.id)}
-                    className="absolute bottom-2 right-2 z-20 flex size-7 items-center justify-center rounded-md bg-black/60 text-white opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                    className="absolute bottom-2 right-2 z-20 flex size-7 items-center justify-center rounded-md bg-black/60 text-white transition-colors hover:bg-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
                     <Trash2 size={14} aria-hidden="true" />
                   </button>
                 )}
@@ -244,81 +337,43 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
         </section>
       )}
 
-      {/* Upload controls — pilgrims only */}
-      {isPilgrim && (
-        <div className="mt-6 space-y-2">
-          {limitReached ? (
-            <p className="text-sm text-muted-foreground">{t('limit_reached')}</p>
-          ) : (
-            <>
-              {/* Upload main picture — only when no primary exists */}
-              {!primary && (
-                <div>
-                  <input
-                    ref={primaryFileInputRef}
-                    type="file"
-                    accept="image/jpeg,image/png,image/webp"
-                    className="sr-only"
-                    aria-hidden="true"
-                    onChange={handlePrimaryFileChange}
-                  />
-                  <button
-                    type="button"
-                    disabled={isPrimaryUploading}
-                    aria-disabled={isPrimaryUploading}
-                    onClick={() => primaryFileInputRef.current?.click()}
-                    className="inline-flex items-center gap-2 rounded-lg border border-dashed border-border px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
-                    {isPrimaryUploading ? (
-                      <>
-                        <i className="icon-spinner animate-spin text-base" aria-hidden="true" />
-                        {t('uploading')}
-                      </>
-                    ) : (
-                      t('upload_main')
-                    )}
-                  </button>
-                  {primaryUploadError && (
-                    <p role="alert" className="mt-1 text-xs text-destructive">
-                      {primaryUploadError}
-                    </p>
-                  )}
-                </div>
-              )}
-
-              {/* Upload gallery picture */}
-              <div>
-                <input
-                  ref={galleryFileInputRef}
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp"
-                  className="sr-only"
-                  aria-hidden="true"
-                  onChange={handleGalleryFileChange}
-                />
-                <button
-                  type="button"
-                  disabled={isGalleryUploading}
-                  aria-disabled={isGalleryUploading}
-                  onClick={() => galleryFileInputRef.current?.click()}
-                  className="inline-flex items-center gap-2 rounded-lg border border-dashed border-border px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
-                  {isGalleryUploading ? (
-                    <>
-                      <i className="icon-spinner animate-spin text-base" aria-hidden="true" />
-                      {t('uploading')}
-                    </>
-                  ) : (
-                    t('upload_gallery')
-                  )}
-                </button>
-                {galleryUploadError && (
-                  <p role="alert" className="mt-1 text-xs text-destructive">
-                    {galleryUploadError}
-                  </p>
-                )}
-              </div>
-            </>
+      {/* Gallery upload — pilgrims only */}
+      {isPilgrim && !limitReached && (
+        <div className="mt-6">
+          <input
+            ref={galleryFileInputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            multiple
+            className="sr-only"
+            aria-hidden="true"
+            onChange={handleGalleryFileChange}
+          />
+          <button
+            type="button"
+            disabled={isGalleryUploading}
+            aria-disabled={isGalleryUploading}
+            onClick={() => galleryFileInputRef.current?.click()}
+            className="inline-flex items-center gap-2 rounded-lg border border-dashed border-border px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
+            {isGalleryUploading ? (
+              <>
+                <i className="icon-spinner animate-spin text-base" aria-hidden="true" />
+                {t('uploading')}
+              </>
+            ) : (
+              t('upload_gallery')
+            )}
+          </button>
+          {galleryUploadError && (
+            <p role="alert" className="mt-1 text-xs text-destructive">
+              {galleryUploadError}
+            </p>
           )}
         </div>
+      )}
+
+      {isPilgrim && limitReached && (
+        <p className="mt-4 text-sm text-muted-foreground">{t('limit_reached')}</p>
       )}
 
       {/* Delete error */}
