@@ -45,6 +45,7 @@ function makeBasePicture(overrides: Partial<{
   url: string;
   isPrimary: boolean;
   position: number | null;
+  label: string | null;
   createdAt: Date;
   updatedAt: Date;
 }> = {}) {
@@ -55,6 +56,7 @@ function makeBasePicture(overrides: Partial<{
     url: PICTURE_URL,
     isPrimary: false,
     position: 1,
+    label: null,
     createdAt: new Date('2026-01-01'),
     updatedAt: new Date('2026-01-01'),
     ...overrides,
@@ -80,6 +82,7 @@ function makePrismaMock(overrides: {
   pictureCount?: ReturnType<typeof vi.fn>;
   pictureAggregate?: ReturnType<typeof vi.fn>;
   pictureCreate?: ReturnType<typeof vi.fn>;
+  pictureUpdate?: ReturnType<typeof vi.fn>;
   pictureDelete?: ReturnType<typeof vi.fn>;
   transaction?: ReturnType<typeof vi.fn>;
 } = {}) {
@@ -91,6 +94,7 @@ function makePrismaMock(overrides: {
     count: overrides.pictureCount ?? vi.fn().mockResolvedValue(0),
     aggregate: overrides.pictureAggregate ?? vi.fn().mockResolvedValue({ _max: { position: null } }),
     create: overrides.pictureCreate ?? vi.fn().mockResolvedValue(defaultPicture),
+    update: overrides.pictureUpdate ?? vi.fn().mockResolvedValue(defaultPicture),
     delete: overrides.pictureDelete ?? vi.fn().mockResolvedValue(defaultPicture),
   };
 
@@ -479,6 +483,93 @@ describe('CaminoPicturesService.deletePicture()', () => {
     await service.deletePicture(CAMINO_ID, PICTURE_ID, USER_ID, PILGRIM_ROLES);
 
     expect(callOrder).toEqual(['s3-delete', 'db-delete']);
+  });
+});
+
+// ─── CaminoPicturesService.updateLabel() ─────────────────────────────────────
+
+describe('CaminoPicturesService.updateLabel()', () => {
+  it('returns 404 when pictureId does not exist under the given caminoId', async () => {
+    const prismaMock = makePrismaMock({
+      pictureFindFirst: vi.fn().mockResolvedValue(null),
+    });
+    const module = await buildModule(prismaMock, makeUploadsServiceMock());
+    const service = module.get(CaminoPicturesService);
+
+    await expect(
+      service.updateLabel(CAMINO_ID, PICTURE_ID, 'hello', USER_ID, PILGRIM_ROLES),
+    ).rejects.toBeInstanceOf(NotFoundException);
+  });
+
+  it('returns 403 when user is neither the uploader nor an owner', async () => {
+    const picture = makeBasePicture({ uploadedBy: USER_ID });
+    const prismaMock = makePrismaMock({
+      pictureFindFirst: vi.fn().mockResolvedValue(picture),
+    });
+    const module = await buildModule(prismaMock, makeUploadsServiceMock());
+    const service = module.get(CaminoPicturesService);
+
+    await expect(
+      service.updateLabel(CAMINO_ID, PICTURE_ID, 'hello', OTHER_USER_ID, PILGRIM_ROLES),
+    ).rejects.toBeInstanceOf(ForbiddenException);
+  });
+
+  it('updates the label when called by the uploader', async () => {
+    const picture = makeBasePicture({ uploadedBy: USER_ID });
+    const updated = makeBasePicture({ uploadedBy: USER_ID, label: 'My caption' });
+    const prismaMock = makePrismaMock({
+      pictureFindFirst: vi.fn().mockResolvedValue(picture),
+      pictureUpdate: vi.fn().mockResolvedValue(updated),
+    });
+    const module = await buildModule(prismaMock, makeUploadsServiceMock());
+    const service = module.get(CaminoPicturesService);
+
+    const result = await service.updateLabel(CAMINO_ID, PICTURE_ID, 'My caption', USER_ID, PILGRIM_ROLES);
+
+    expect(result.label).toBe('My caption');
+    expect(prismaMock.caminoPicture.update).toHaveBeenCalledWith(
+      expect.objectContaining({ data: { label: 'My caption' } }),
+    );
+  });
+
+  it('clears the label when null is passed', async () => {
+    const picture = makeBasePicture({ uploadedBy: USER_ID, label: 'old caption' });
+    const cleared = makeBasePicture({ uploadedBy: USER_ID, label: null });
+    const prismaMock = makePrismaMock({
+      pictureFindFirst: vi.fn().mockResolvedValue(picture),
+      pictureUpdate: vi.fn().mockResolvedValue(cleared),
+    });
+    const module = await buildModule(prismaMock, makeUploadsServiceMock());
+    const service = module.get(CaminoPicturesService);
+
+    const result = await service.updateLabel(CAMINO_ID, PICTURE_ID, null, USER_ID, PILGRIM_ROLES);
+
+    expect(result.label).toBeNull();
+    expect(prismaMock.caminoPicture.update).toHaveBeenCalledWith(
+      expect.objectContaining({ data: { label: null } }),
+    );
+  });
+
+  it('allows an owner to update the label of a picture uploaded by someone else', async () => {
+    const picture = makeBasePicture({ uploadedBy: USER_ID });
+    const updated = makeBasePicture({ uploadedBy: USER_ID, label: 'owner caption' });
+    const prismaMock = makePrismaMock({
+      pictureFindFirst: vi.fn().mockResolvedValue(picture),
+      pictureUpdate: vi.fn().mockResolvedValue(updated),
+    });
+    const module = await buildModule(prismaMock, makeUploadsServiceMock());
+    const service = module.get(CaminoPicturesService);
+
+    const result = await service.updateLabel(
+      CAMINO_ID,
+      PICTURE_ID,
+      'owner caption',
+      OWNER_USER_ID,
+      OWNER_ROLES,
+    );
+
+    expect(result.label).toBe('owner caption');
+    expect(prismaMock.caminoPicture.update).toHaveBeenCalledOnce();
   });
 });
 

@@ -155,6 +155,9 @@
       "upload_error_wrong_type": "Ungültiger Dateityp. Erlaubt sind JPEG, PNG und WebP.",
       "upload_error_primary_exists": "Es ist bereits ein Hauptbild vorhanden.",
       "delete_error": "Bild konnte nicht gelöscht werden. Bitte versuche es erneut.",
+      "label_placeholder": "Bildbeschriftung hinzufügen…",
+      "edit_label": "Beschriftung bearbeiten",
+      "label_error": "Beschriftung konnte nicht gespeichert werden. Bitte versuche es erneut.",
       "delete_confirm": {
         "title": "Bild löschen?",
         "body": "Dieses Bild wird dauerhaft gelöscht und kann nicht wiederhergestellt werden."

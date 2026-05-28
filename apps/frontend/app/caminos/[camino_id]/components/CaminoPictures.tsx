@@ -2,7 +2,7 @@
 
 import { useRef, useState, useCallback } from 'react';
 import Image from 'next/image';
-import { Trash2 } from 'lucide-react';
+import { Pencil, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 
@@ -10,6 +10,7 @@ import { useCaminoPictures } from '@/app/api/camino-pictures/use-camino-pictures
 import { useUploadCaminoPicture } from '@/app/api/camino-pictures/use-upload-camino-picture';
 import { useUploadCaminoPictures } from '@/app/api/camino-pictures/use-upload-camino-pictures';
 import { useDeleteCaminoPicture } from '@/app/api/camino-pictures/use-delete-camino-picture';
+import { useUpdateCaminoPicture } from '@/app/api/camino-pictures/use-update-camino-picture';
 import { Lightbox, type LightboxImage } from './Lightbox';
 import {
   AlertDialog,
@@ -66,6 +67,7 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
   const primaryUploadMutation = useUploadCaminoPicture(caminoId);
   const galleryUploadMutation = useUploadCaminoPictures(caminoId);
   const deleteMutation = useDeleteCaminoPicture(caminoId);
+  const updateLabelMutation = useUpdateCaminoPicture(caminoId);
 
   const primaryFileInputRef = useRef<HTMLInputElement>(null);
   const galleryFileInputRef = useRef<HTMLInputElement>(null);
@@ -77,12 +79,17 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
   const [deleteDialogPictureId, setDeleteDialogPictureId] = useState<string | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
 
+  // Label editing state
+  const [editingLabelId, setEditingLabelId] = useState<string | null>(null);
+  const [labelDraft, setLabelDraft] = useState('');
+  const [labelError, setLabelError] = useState<string | null>(null);
+
   const primary = data?.primary ?? null;
   const gallery = data?.gallery ?? [];
   const totalCount = (primary ? 1 : 0) + gallery.length;
   const limitReached = totalCount >= 50;
 
-  const galleryImages: LightboxImage[] = gallery.map((p) => ({ id: p.id, url: p.url }));
+  const galleryImages: LightboxImage[] = gallery.map((p) => ({ id: p.id, url: p.url, label: p.label }));
 
   const openLightboxFromHero = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -148,7 +155,7 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
     e.target.value = '';
   }
 
-  function canDeletePicture(uploadedBy: string): boolean {
+  function canEditPicture(uploadedBy: string): boolean {
     if (!isPilgrim) return false;
     if (isOwner) return true;
     return user?.id === uploadedBy;
@@ -166,6 +173,42 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
     deleteMutation.mutate(id, {
       onError: () => setDeleteError(t('delete_error')),
     });
+  }
+
+  function startLabelEdit(pictureId: string, currentLabel: string | null) {
+    setLabelError(null);
+    setLabelDraft(currentLabel ?? '');
+    setEditingLabelId(pictureId);
+  }
+
+  function cancelLabelEdit() {
+    setEditingLabelId(null);
+    setLabelDraft('');
+    setLabelError(null);
+  }
+
+  function commitLabelEdit(pictureId: string) {
+    const trimmed = labelDraft.trim();
+    const newLabel = trimmed === '' ? null : trimmed;
+    setEditingLabelId(null);
+    setLabelError(null);
+    updateLabelMutation.mutate(
+      { pictureId, label: newLabel },
+      {
+        onError: () => setLabelError(t('label_error')),
+      },
+    );
+  }
+
+  function handleLabelKeyDown(e: React.KeyboardEvent<HTMLInputElement>, pictureId: string) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      commitLabelEdit(pictureId);
+    }
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      cancelLabelEdit();
+    }
   }
 
   // ── Hero section ─────────────────────────────────────────────────────────────
@@ -212,7 +255,7 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
     }
 
     // Primary picture exists: show image with optional delete button
-    const canDelete = canDeletePicture(primary.uploadedBy);
+    const canDelete = canEditPicture(primary.uploadedBy);
 
     return (
       <>
@@ -301,39 +344,78 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
       {/* Gallery grid */}
       {gallery.length > 0 && (
         <section className="mt-8">
-          <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4">
-            {gallery.map((picture, index) => (
-              <div
-                key={picture.id}
-                className="relative aspect-[4/3] overflow-hidden rounded-lg">
-                <button
-                  type="button"
-                  aria-label={t('open_fullscreen')}
-                  onClick={(e) => openLightboxFromGallery(index, e)}
-                  className="absolute inset-0 z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-                  <span className="sr-only">{t('open_fullscreen')}</span>
-                </button>
-                <Image
-                  src={picture.url}
-                  alt=""
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                  unoptimized
-                />
-                {/* Delete button — always visible for eligible users */}
-                {canDeletePicture(picture.uploadedBy) && (
-                  <button
-                    type="button"
-                    aria-label={t('delete')}
-                    onClick={() => handleDeleteIconClick(picture.id)}
-                    className="absolute bottom-2 right-2 z-20 flex size-7 items-center justify-center rounded-md bg-black/60 text-white transition-colors hover:bg-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
-                    <Trash2 size={14} aria-hidden="true" />
-                  </button>
-                )}
-              </div>
-            ))}
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+            {gallery.map((picture, index) => {
+              const canEdit = canEditPicture(picture.uploadedBy);
+              const isEditingThisLabel = editingLabelId === picture.id;
+
+              return (
+                <div key={picture.id} className="flex flex-col gap-1">
+                  {/* Thumbnail */}
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
+                    <button
+                      type="button"
+                      aria-label={t('open_fullscreen')}
+                      onClick={(e) => openLightboxFromGallery(index, e)}
+                      className="absolute inset-0 z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                      <span className="sr-only">{t('open_fullscreen')}</span>
+                    </button>
+                    <Image
+                      src={picture.url}
+                      alt={picture.label ?? ''}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                      unoptimized
+                    />
+                    {/* Action buttons — always visible for eligible users */}
+                    {canEdit && (
+                      <div className="absolute bottom-2 right-2 z-20 flex gap-1">
+                        <button
+                          type="button"
+                          aria-label={t('edit_label')}
+                          onClick={() => startLabelEdit(picture.id, picture.label)}
+                          className="flex size-7 items-center justify-center rounded-md bg-black/60 text-white transition-colors hover:bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                          <Pencil size={13} aria-hidden="true" />
+                        </button>
+                        <button
+                          type="button"
+                          aria-label={t('delete')}
+                          onClick={() => handleDeleteIconClick(picture.id)}
+                          className="flex size-7 items-center justify-center rounded-md bg-black/60 text-white transition-colors hover:bg-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                          <Trash2 size={13} aria-hidden="true" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Label area */}
+                  {isEditingThisLabel ? (
+                    <input
+                      autoFocus
+                      type="text"
+                      value={labelDraft}
+                      onChange={(e) => setLabelDraft(e.target.value)}
+                      onBlur={() => commitLabelEdit(picture.id)}
+                      onKeyDown={(e) => handleLabelKeyDown(e, picture.id)}
+                      maxLength={200}
+                      placeholder={t('label_placeholder')}
+                      className="w-full rounded border border-border bg-background px-2 py-1 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+                    />
+                  ) : picture.label ? (
+                    <p className="truncate px-0.5 text-xs text-muted-foreground">
+                      {picture.label}
+                    </p>
+                  ) : null}
+                </div>
+              );
+            })}
           </div>
+          {labelError && (
+            <p role="alert" className="mt-2 text-xs text-destructive">
+              {labelError}
+            </p>
+          )}
         </section>
       )}
 

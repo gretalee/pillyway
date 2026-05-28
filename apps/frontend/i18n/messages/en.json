@@ -155,6 +155,9 @@
       "upload_error_wrong_type": "Invalid file type. Allowed: JPEG, PNG and WebP.",
       "upload_error_primary_exists": "A main picture already exists.",
       "delete_error": "Failed to delete picture. Please try again.",
+      "label_placeholder": "Add a caption…",
+      "edit_label": "Edit caption",
+      "label_error": "Failed to save caption. Please try again.",
       "delete_confirm": {
         "title": "Delete picture?",
         "body": "This picture will be permanently deleted and cannot be restored."

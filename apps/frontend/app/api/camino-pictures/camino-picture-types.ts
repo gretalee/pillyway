@@ -10,6 +10,7 @@ export interface CaminoGalleryPicture {
   url: string;
   uploadedBy: string;
   position: number;
+  label: string | null;
   createdAt: string;
 }
 
@@ -24,6 +25,7 @@ export interface UploadCaminoPictureResult {
   url: string;
   isPrimary: boolean;
   position: number | null;
+  label: string | null;
   uploadedBy: string;
   createdAt: string;
 }

@@ -27,6 +27,13 @@ export class CaminoPictureResponseDto {
   position: number | null;
 
   @Expose()
+  @ApiProperty({
+    description: 'Optional caption for the picture.',
+    nullable: true,
+  })
+  label: string | null;
+
+  @Expose()
   @ApiProperty({ description: 'Kinde user ID of the uploader.' })
   uploadedBy: string;
 

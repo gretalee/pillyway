@@ -192,6 +192,40 @@ export class CaminoPicturesService {
     });
   }
 
+  // ── updateLabel ─────────────────────────────────────────────────────────────
+
+  async updateLabel(
+    caminoId: string,
+    pictureId: string,
+    label: string | null | undefined,
+    userId: string,
+    userRoles: KindeRole[],
+  ): Promise<CaminoPictureResponseDto> {
+    const picture = await this.prisma.caminoPicture.findFirst({
+      where: { id: pictureId, caminoId },
+    });
+    if (!picture) {
+      throw new NotFoundException('Picture not found.');
+    }
+
+    const isUploader = picture.uploadedBy === userId;
+    const isOwner = userRoles.some((r) => r.key === 'owner');
+    if (!isUploader && !isOwner) {
+      throw new ForbiddenException(
+        'You do not have permission to edit this picture.',
+      );
+    }
+
+    const updated = await this.prisma.caminoPicture.update({
+      where: { id: pictureId },
+      data: { label: label ?? null },
+    });
+
+    return plainToInstance(CaminoPictureResponseDto, updated, {
+      excludeExtraneousValues: true,
+    });
+  }
+
   // ── deletePicture ───────────────────────────────────────────────────────────
 
   async deletePicture(

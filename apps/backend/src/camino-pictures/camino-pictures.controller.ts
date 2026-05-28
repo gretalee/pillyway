@@ -10,6 +10,7 @@ import {
   Param,
   ParseFilePipe,
   ParseUUIDPipe,
+  Patch,
   Post,
   Req,
   UploadedFile,
@@ -45,6 +46,7 @@ import {
   CaminoPicturesResponseDto,
 } from './dto/camino-picture-response.dto';
 import { UploadCaminoPictureDto } from './dto/upload-camino-picture.dto';
+import { UpdateCaminoPictureDto } from './dto/update-camino-picture.dto';
 
 const TEN_MB = 10 * 1024 * 1024;
 
@@ -147,6 +149,42 @@ export class CaminoPicturesController {
       file,
       dto.isPrimary,
       req.user.sub,
+    );
+  }
+
+  // ── PATCH /caminos/:caminoId/pictures/:pictureId ────────────────────────────
+
+  @Patch(':pictureId')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('pilgrim')
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Update a picture caption (pilgrim role required)',
+    description:
+      'Updates the label (caption) of a picture. ' +
+      'A pilgrim may only update captions of pictures they uploaded. An owner may update any caption. ' +
+      'Pass null to clear the caption.',
+  })
+  @ApiOkResponse({ description: 'Caption updated.', type: CaminoPictureResponseDto })
+  @ApiUnauthorizedResponse({ description: 'Missing or invalid JWT.' })
+  @ApiForbiddenResponse({
+    description: 'Requires pilgrim role, or pilgrim is not the uploader and does not hold owner role.',
+  })
+  @ApiNotFoundResponse({
+    description: 'No picture with the given pictureId exists under the given caminoId.',
+  })
+  async updateLabel(
+    @Param('caminoId', ParseUUIDPipe) caminoId: string,
+    @Param('pictureId', ParseUUIDPipe) pictureId: string,
+    @Body() dto: UpdateCaminoPictureDto,
+    @Req() req: Request & { user: KindeJwtPayload },
+  ): Promise<CaminoPictureResponseDto> {
+    return this.caminoPicturesService.updateLabel(
+      caminoId,
+      pictureId,
+      dto.label,
+      req.user.sub,
+      req.user.roles ?? [],
     );
   }
 
