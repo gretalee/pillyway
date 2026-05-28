@@ -681,12 +681,19 @@ describe('Submission outcomes', () => {
     await user.selectOptions(screen.getByLabelText('point_country'), 'france');
   }
 
-  it('CAM-FE-23: 201 response causes router.push to /caminos', async () => {
+  it('CAM-FE-23: 201 response causes router.push to /caminos after skipping pictures step', async () => {
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     renderForm();
     await fillValidForm(user);
 
     await user.click(screen.getByRole('button', { name: 'submit' }));
+
+    // After a 201 the form transitions to the pictures step; dismiss it via cancel
+    await waitFor(() => {
+      expect(screen.getByRole('heading', { name: 'pictures_step_heading' })).toBeInTheDocument();
+    });
+
+    await user.click(screen.getByRole('button', { name: 'cancel' }));
 
     await waitFor(() => {
       expect(mockPush).toHaveBeenCalledWith('/caminos');
