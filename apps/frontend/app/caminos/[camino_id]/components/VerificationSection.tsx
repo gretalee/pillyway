@@ -53,9 +53,12 @@ export function VerificationSection({ caminoId }: VerificationSectionProps) {
             {t('camino_detail.vote_no')}
           </Button>
 
-          <div className="flex max-md:gap-4 lg:flex-col items-start text-sm pl-2 lg:pl-6 max-md:mt-2 text-muted-foreground pr-2">
-            <p>{t('camino_detail.vote_yes_count', { count: yesVotes })}</p>
-            <p>{t('camino_detail.vote_no_count', { count: noVotes })}</p>
+          <div className="flex flex-1 items-center gap-2 ml-auto">
+            <i className="icon-award1 text-3xl md:text-4xl text-gray-300 md:order-3" />
+            <div className="flex max-md:gap-4 md:flex-col items-start text-sm pl-2 lg:pl-6 max-md:mt-2 text-muted-foreground pr-2 whitespace-nowrap">
+              <p>{t('camino_detail.vote_yes_count', { count: yesVotes })}</p>
+              <p>{t('camino_detail.vote_no_count', { count: noVotes })}</p>
+            </div>
           </div>
 
           {!isAuthenticated && (
