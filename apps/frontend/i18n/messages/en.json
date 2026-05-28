@@ -128,6 +128,7 @@
     "stages_heading": "Stages",
     "no_stages": "This camino has no stages yet. Add at least two waypoints to generate stages.",
     "error_loading_stages": "Failed to load stages. Please try again.",
+    "accommodation_available": "Accommodation available",
     "verification_heading": "Verified Route",
     "verification_label": "Vote: Have you walked this route?",
     "vote_yes": "Yes, the route is current",

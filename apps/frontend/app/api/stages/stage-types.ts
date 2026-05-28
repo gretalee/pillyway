@@ -3,6 +3,7 @@ export interface StagePointSummary {
   name: string;
   country: string;
   slug: string;
+  hasAccommodation: boolean;
 }
 
 export interface AdjacentStageSummary {

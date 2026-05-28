@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import type { StageListItem } from '@/app/api/stages/stage-types';
 import { fetchStages } from '@/app/api/stages/fetch-stages';
 import { cn } from '@/lib/utils';
+import { AccommodationIcon } from '../../components/AccommodationIcon';
 
 interface StageListProps {
   caminoId: string;
@@ -43,14 +44,23 @@ export async function StageList({ caminoId }: StageListProps) {
             <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
               {stage.stageNumber}
             </span>
-            <div className="flex-1 flex overflow-hidden min-w-0 font-medium truncate">
-              <span className="flex-1 font-medium truncate">
-                {stage.startPoint.name}
-                {stage.startPoint.country && (
-                  <span className="ml-1 text-muted-foreground">
-                    ({tCodes(stage.startPoint.country.toLowerCase() as Parameters<typeof tCodes>[0])})
-                  </span>
-                )}
+            <div className="flex-1 flex min-w-0 font-medium gap-2">
+              <span className="flex-1 overflow-hidden font-medium flex items-center gap-2">
+                <span className="font-medium truncate pt-[1px] max-md:flex-1">
+                  {stage.startPoint.name}
+                  {stage.startPoint.country && (
+                    <span className="ml-1 ">
+                      (
+                      {tCodes(
+                        stage.startPoint.country.toLowerCase() as Parameters<
+                          typeof tCodes
+                        >[0],
+                      )}
+                      )
+                    </span>
+                  )}
+                </span>
+                <AccommodationIcon hasAccommodation={stage.startPoint.hasAccommodation} />
               </span>
             </div>
 
@@ -58,14 +68,23 @@ export async function StageList({ caminoId }: StageListProps) {
               →
             </span>
 
-            <div className="flex-1 flex overflow-hidden min-w-0 font-medium truncate">
-              <span className="flex-1 font-medium truncate">
-                {stage.endPoint.name}
-                {stage.endPoint.country && (
-                  <span className="ml-1 text-muted-foreground">
-                    ({tCodes(stage.endPoint.country.toLowerCase() as Parameters<typeof tCodes>[0])})
-                  </span>
-                )}
+            <div className="flex-1 flex min-w-0 font-medium gap-2">
+              <span className="flex-1 overflow-hidden font-medium flex items-center gap-2">
+                <span className="font-medium truncate pt-[1px] max-md:flex-1">
+                  {stage.endPoint.name}
+                  {stage.endPoint.country && (
+                    <span className="ml-1">
+                      (
+                      {tCodes(
+                        stage.endPoint.country.toLowerCase() as Parameters<
+                          typeof tCodes
+                        >[0],
+                      )}
+                      )
+                    </span>
+                  )}
+                </span>
+                <AccommodationIcon hasAccommodation={stage.endPoint.hasAccommodation} />
               </span>
             </div>
 

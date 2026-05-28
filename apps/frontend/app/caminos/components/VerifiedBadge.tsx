@@ -11,10 +11,7 @@ export function VerifiedBadge({ className }: { className?: string }) {
   return (
     <Tooltip content={t('verified_tooltip')} aria-label={t('verified_icon_aria')}>
       <i
-        className={cn(
-          'icon-certificate text-2xl text-pillyGreen-500 cursor-help',
-          className,
-        )}
+        className={cn('icon-award1 text-2xl text-pillyGreen-500 cursor-help', className)}
         aria-hidden="true"
       />
     </Tooltip>
