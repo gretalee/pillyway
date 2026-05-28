@@ -35,6 +35,7 @@ import {
 import { useStages } from '@/app/api/stages/use-stages';
 import { CaminoPointRow } from '../../components/CaminoPointRow';
 import { useCamino } from '@/app/api/caminos/use-camino';
+import { CaminoPictureUploadSection } from '../../components/CaminoPictureUploadSection';
 
 interface CaminoPointFormItem {
   caminoPointId: string | null;
@@ -379,6 +380,14 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
             )}>
             {tNew('add_point')}
           </button>
+        </div>
+
+        {/* Pictures section */}
+        <div>
+          <h2 className="mb-3 text-sm font-semibold text-foreground">
+            {t('pictures_section_heading')}
+          </h2>
+          <CaminoPictureUploadSection caminoId={caminoId} />
         </div>
 
         <div className="flex flex-wrap items-center gap-3">

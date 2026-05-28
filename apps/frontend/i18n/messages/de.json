@@ -90,6 +90,8 @@
     "title": "Neuen Camino erstellen",
     "meta_title": "Neuen Camino erstellen | Pillyway",
     "meta_description": "Erstelle einen neuen Camino und trage zur Pilgergemeinschaft bei.",
+    "pictures_step_heading": "Bilder hinzufügen (optional)",
+    "view_camino": "Camino ansehen",
     "field_name": "Name",
     "field_description": "Beschreibung (optional)",
     "title_points": "Orte (Wegpunkte)",
@@ -117,6 +119,10 @@
       "no": "Nein, neuen Ort erstellen"
     }
   },
+  "common": {
+    "cancel": "Abbrechen",
+    "delete": "Löschen"
+  },
   "camino_detail": {
     "meta_title": "Camino-Detail | Pillyway",
     "meta_description": "Sieh dir alle Details dieser Pilgerroute an.",
@@ -136,7 +142,30 @@
     "vote_login_hint": "Melde dich an, um den Weg verifizieren zu können.",
     "vote_yes_count": "Ja: {count}",
     "vote_no_count": "Nein: {count}",
-    "vote_error": "Deine Stimme konnte nicht gespeichert werden. Bitte versuche es erneut."
+    "vote_error": "Deine Stimme konnte nicht gespeichert werden. Bitte versuche es erneut.",
+    "pictures": {
+      "upload_main": "Hauptbild hinzufügen",
+      "upload_gallery": "Bild zur Galerie hinzufügen",
+      "limit_reached": "Maximale Bildanzahl (50) erreicht.",
+      "open_fullscreen": "Bild im Vollbild öffnen",
+      "delete": "Bild löschen",
+      "uploading": "Wird hochgeladen…",
+      "upload_error_generic": "Bild konnte nicht hochgeladen werden. Bitte versuche es erneut.",
+      "upload_error_too_large": "Die Datei ist zu groß. Maximal 10 MB erlaubt.",
+      "upload_error_wrong_type": "Ungültiger Dateityp. Erlaubt sind JPEG, PNG und WebP.",
+      "upload_error_primary_exists": "Es ist bereits ein Hauptbild vorhanden.",
+      "delete_error": "Bild konnte nicht gelöscht werden. Bitte versuche es erneut.",
+      "delete_confirm": {
+        "title": "Bild löschen?",
+        "body": "Dieses Bild wird dauerhaft gelöscht und kann nicht wiederhergestellt werden."
+      },
+      "lightbox": {
+        "title": "Bildansicht",
+        "close": "Schließen",
+        "prev": "Vorheriges Bild",
+        "next": "Nächstes Bild"
+      }
+    }
   },
   "caminos_update": {
     "title": "Camino bearbeiten",
@@ -145,6 +174,7 @@
     "submit": "Änderungen speichern",
     "submitting": "Wird gespeichert…",
     "cancel": "Abbrechen",
+    "pictures_section_heading": "Bilder",
     "error_generic": "Camino konnte nicht aktualisiert werden. Bitte versuche es erneut.",
     "error_conflict": "Ein Camino mit diesem Namen existiert bereits. Bitte wähle einen anderen Namen.",
     "error_forbidden": "Du bist nicht berechtigt, diesen Camino zu bearbeiten. Nur der Ersteller (innerhalb von 2 Stunden nach der Erstellung) oder ein Administrator kann ihn bearbeiten.",

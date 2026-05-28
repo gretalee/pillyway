@@ -139,7 +139,10 @@
       "WebFetch(domain:schloss-frankleben.de)",
       "WebFetch(domain:kirche-grossenhainerland.de)",
       "WebFetch(domain:www.kirche-strehla.de)",
-      "WebFetch(domain:www.kirche-eisenach.de)"
+      "WebFetch(domain:www.kirche-eisenach.de)",
+      "Bash(yarn *)",
+      "Bash(PGPASSWORD=postgres psql *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://127.0.0.1:54321/storage/v1/object/public/pilly_images/camino-pictures/d0261f3b-2c8c-48f6-a46b-d83edc57692b/dc3335a8-9ee2-420a-a86f-8fc19ca38399.png\")"
     ]
   }
 }

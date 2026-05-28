@@ -15,10 +15,15 @@ export interface CreateCaminoPayload {
   caminoPoints: CaminoPointPayload[];
 }
 
+export interface CreatedCamino {
+  id: string;
+  name: string;
+}
+
 export async function createCamino(
   payload: CreateCaminoPayload,
   token: string,
-): Promise<void> {
+): Promise<CreatedCamino> {
   const response = await fetch(`${API_URL}/caminos`, {
     method: 'POST',
     headers: {
@@ -31,6 +36,8 @@ export async function createCamino(
   if (!response.ok) {
     throw Object.assign(new Error('Create failed'), { status: response.status });
   }
+
+  return response.json() as Promise<CreatedCamino>;
 }
 
 export function useCreateCamino() {

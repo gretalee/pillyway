@@ -5,3 +5,4 @@
 - [Camino update and delete feature decisions](feature_camino_update_delete.md) — PILLY-CAM-002: detail page, inline edit, update form, delete flow, new API endpoints, test scope
 - [Stages feature decisions](feature_stages.md) — PILLY-STG-001: Stage entity, lazy creation, shared-stage reuse, stageNumber URL, pilgrim-only edit, new endpoints, open questions
 - [Waypoint POI edit/delete feature decisions](feature_waypoint_poi_edit_delete.md) — PILLY-POI-001: Accommodation/Sight new fields, edit+delete flows, API contract, pilgrim permission, test scope
+- [Camino pictures feature decisions](feature_camino_pictures.md) — PILLY-CAM-003: CaminoPicture entity, S3 upload, primary vs. gallery, owner-override delete, lightbox UX, open questions

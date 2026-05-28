@@ -11,7 +11,7 @@ The Waypoints POI feature (branch `feature/waypoints-poi`, extended in `feature/
 - `WaypointsModule`: `GET /waypoints/:slug` (public, no longer includes accommodations/sights inline), `POST /waypoints/:slug/accommodations|sights` (pilgrim role)
 - `AccommodationsModule` (new, `src/accommodations/`): `GET /accommodations?caminoPointId=:id`, `GET /accommodations/:id`, `PATCH /accommodations/:id`, `DELETE /accommodations/:id`
 - `SightsModule` (new, `src/sights/`): `GET /sights?caminoPointId=:id`, `GET /sights/:id`, `PATCH /sights/:id`, `DELETE /sights/:id`
-- `UploadsModule`: `POST /uploads/images` (pilgrim role, multer, Supabase Storage, 10 MB × 10 files)
+- `UploadsModule`: `POST /uploads/images` (pilgrim role, multer, Supabase Storage, 10 MB × 10 files). Additional methods added in PILLY-CAM-003: `uploadImage(key, file)` (caller-controlled key, no filename appended), `deleteImageStrict(url)` (throws BadGatewayException on S3 failure — used where S3 failure must block DB delete). `deleteImages` now logs a warning when URL prefix mismatch causes keys to be skipped.
 
 **Accommodation new fields (PILLY-POI-001):** `type` (AccommodationType enum, required, DEFAULT hostel), `email`, `website`, `addressStreet`, `addressZip`, `addressCity`, `addressCountry`, `priceRange` (PriceRange enum, optional)
 

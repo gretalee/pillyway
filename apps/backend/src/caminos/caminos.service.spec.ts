@@ -14,6 +14,7 @@ import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { DeleteAuthorizationService } from '../common/delete-authorization.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { StagesService } from '../stages/stages.service';
+import { UploadsService } from '../uploads/uploads.service';
 import { CaminosService } from './caminos.service';
 import { CreateCaminoDto } from './dto/create-camino.dto';
 import { UpdateCaminoDto } from './dto/update-camino.dto';
@@ -58,10 +59,18 @@ const stagesServiceMock = {
   upsertStagePairs: vi.fn().mockResolvedValue(undefined),
 };
 
+// Minimal UploadsService mock. CaminosService only calls deleteImages in delete(),
+// which is tested separately in the camino-pictures spec. For all other tests,
+// the mock just needs to satisfy DI.
+const uploadsServiceMock = {
+  deleteImages: vi.fn().mockResolvedValue(undefined),
+};
+
 // Suppress NestJS Logger output for error-path tests — the errors are expected.
 beforeEach(() => {
   vi.spyOn(Logger.prototype, 'error').mockImplementation(() => {});
   stagesServiceMock.upsertStagePairs.mockClear();
+  uploadsServiceMock.deleteImages.mockClear();
 });
 
 afterEach(() => {
@@ -75,6 +84,7 @@ function buildModule(prismaMock: object): Promise<TestingModule> {
       { provide: PrismaService, useValue: prismaMock },
       { provide: StagesService, useValue: stagesServiceMock },
       DeleteAuthorizationService,
+      { provide: UploadsService, useValue: uploadsServiceMock },
     ],
   })
     .setLogger(false as unknown as LoggerService)
@@ -667,15 +677,26 @@ describe('CaminosService.update()', () => {
 
 // ─── CaminosService.delete() ─────────────────────────────────────────────────
 
+// Helper: adds the caminoPicture.findMany stub required by CaminosService.delete
+// after the S3 picture cleanup was added.
+function makeDeletePrismaMock(caminoRecord: object | null, options: { deleteSpy?: ReturnType<typeof vi.fn> } = {}) {
+  const deleteSpy = options.deleteSpy ?? vi.fn().mockResolvedValue(caminoRecord);
+  return {
+    camino: {
+      findUnique: vi.fn().mockResolvedValue(caminoRecord),
+      delete: deleteSpy,
+    },
+    caminoPicture: {
+      findMany: vi.fn().mockResolvedValue([]),
+    },
+    _deleteSpy: deleteSpy,
+  };
+}
+
 describe('CaminosService.delete()', () => {
   // Owner role is always allowed regardless of who created the camino or when.
   it('allows a user with owner role to delete any camino', async () => {
-    const prismaMock = {
-      camino: {
-        findUnique: vi.fn().mockResolvedValue(baseCamino),
-        delete: vi.fn().mockResolvedValue(baseCamino),
-      },
-    };
+    const prismaMock = makeDeletePrismaMock(baseCamino);
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
@@ -692,12 +713,7 @@ describe('CaminosService.delete()', () => {
       createdBy: OWNER_ID,
       createdAt: new Date(Date.now() - 60 * 1000),
     };
-    const prismaMock = {
-      camino: {
-        findUnique: vi.fn().mockResolvedValue(recentCamino),
-        delete: vi.fn().mockResolvedValue(recentCamino),
-      },
-    };
+    const prismaMock = makeDeletePrismaMock(recentCamino);
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
@@ -710,19 +726,15 @@ describe('CaminosService.delete()', () => {
   // Creator after the 2-hour window is forbidden.
   it('throws ForbiddenException when creator is outside the time window', async () => {
     // baseCamino.createdAt is 2026-01-01 — well outside the 2-hour window
-    const prismaMock = {
-      camino: {
-        findUnique: vi.fn().mockResolvedValue(baseCamino),
-        delete: vi.fn(),
-      },
-    };
+    const deleteSpy = vi.fn();
+    const prismaMock = makeDeletePrismaMock(baseCamino, { deleteSpy });
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
     await expect(
       service.delete(CAMINO_ID, OWNER_ID, PILGRIM_ROLES),
     ).rejects.toBeInstanceOf(ForbiddenException);
-    expect(prismaMock.camino.delete).not.toHaveBeenCalled();
+    expect(deleteSpy).not.toHaveBeenCalled();
   });
 
   // Non-creator, non-owner is always forbidden.
@@ -732,12 +744,8 @@ describe('CaminosService.delete()', () => {
       createdBy: OWNER_ID,
       createdAt: new Date(Date.now() - 60 * 1000),
     };
-    const prismaMock = {
-      camino: {
-        findUnique: vi.fn().mockResolvedValue(recentCamino),
-        delete: vi.fn(),
-      },
-    };
+    const deleteSpy = vi.fn();
+    const prismaMock = makeDeletePrismaMock(recentCamino, { deleteSpy });
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
@@ -745,40 +753,32 @@ describe('CaminosService.delete()', () => {
     await expect(
       service.delete(CAMINO_ID, OTHER_ID, PILGRIM_ROLES),
     ).rejects.toBeInstanceOf(ForbiddenException);
-    expect(prismaMock.camino.delete).not.toHaveBeenCalled();
+    expect(deleteSpy).not.toHaveBeenCalled();
   });
 
   // User with no roles and not the creator is forbidden.
   it('throws ForbiddenException when user has no roles and is not the creator', async () => {
-    const prismaMock = {
-      camino: {
-        findUnique: vi.fn().mockResolvedValue(baseCamino),
-        delete: vi.fn(),
-      },
-    };
+    const deleteSpy = vi.fn();
+    const prismaMock = makeDeletePrismaMock(baseCamino, { deleteSpy });
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
     await expect(
       service.delete(CAMINO_ID, OTHER_ID, NO_ROLES),
     ).rejects.toBeInstanceOf(ForbiddenException);
-    expect(prismaMock.camino.delete).not.toHaveBeenCalled();
+    expect(deleteSpy).not.toHaveBeenCalled();
   });
 
   it('throws NotFoundException when camino does not exist', async () => {
-    const prismaMock = {
-      camino: {
-        findUnique: vi.fn().mockResolvedValue(null),
-        delete: vi.fn(),
-      },
-    };
+    const deleteSpy = vi.fn();
+    const prismaMock = makeDeletePrismaMock(null, { deleteSpy });
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
     await expect(
       service.delete(CAMINO_ID, OTHER_ID, NO_ROLES),
     ).rejects.toBeInstanceOf(NotFoundException);
-    expect(prismaMock.camino.delete).not.toHaveBeenCalled();
+    expect(deleteSpy).not.toHaveBeenCalled();
   });
 });
 

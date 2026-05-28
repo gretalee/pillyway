@@ -157,16 +157,13 @@ Copy the `.env.example` files in each app directory and fill in the values.
 
 ```bash
 # Apply all pending migrations
-yarn workspace @pillyway/backend prisma:migrate:deploy
-
-# Or, during development, create and apply a new migration
-yarn workspace @pillyway/backend prisma:migrate:dev --name <description>
+db:migrate:dev
 
 # Generate Prisma client types (runs automatically via postinstall)
-yarn workspace @pillyway/backend prisma:generate
+yarn prisma:generat
 
 # Open Prisma Studio (visual DB browser)
-yarn workspace @pillyway/backend prisma:studio
+yarn --cwd apps/backend prisma:studio
 ```
 
 ### Running Locally
