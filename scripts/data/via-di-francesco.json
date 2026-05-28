@@ -1,0 +1,1125 @@
+{
+  "_meta": {
+    "sources": [
+      "https://www.viadifrancesco.it/en/via-di-francesco-st-francis-way-pilgrimage-route/northern-way-stages-from-la-verna-to-assisi",
+      "https://www.pilgrimagetraveler.com/way-of-st-francis.html",
+      "https://www.diquipassofrancesco.it/IT/ElencoAccoglienzeStampaNew-01.asp",
+      "https://www.viadifrancescofirenzelaverna.it/accommodations/",
+      "https://vieromee.forwalk.org/en-us/guide/4-the-way-of-st-francis/21-from-assisi-to-rome/",
+      "https://www.francescosways.com/en/northern-route-from-la-verna-to-assisi/",
+      "https://www.onestepthenanother.com/global-pilgrimages/beginners-guide-to-the-way-of-st-francis-via-di-francesco/",
+      "https://dormireincammino.it/en/accoglienze/via-di-francesco-del-sud/",
+      "https://www.accoglienzasanfrancesco.it/en/",
+      "https://www.suipassidifrancesco.it/",
+      "https://www.locandafrancescana.com/",
+      "https://www.ostelloassisi.com/",
+      "https://www.cittadelladiassisi.it/en/",
+      "https://www.sanponziano.it/"
+    ],
+    "notes": [
+      "The Via di Francesco (Way of St Francis / Franziskusweg) runs ~436 km from the Sanctuary of La Verna to St Peter's Basilica in Rome through Tuscany, Umbria and Lazio.",
+      "The northern route (La Verna → Assisi, ~189 km) and southern route (Assisi → Rome, ~247 km) are managed separately by two associations but form one continuous itinerary.",
+      "La Montagna (Montagna di Sansepolcro) is an intermediate overnight stop splitting the otherwise 36 km La Verna–Sansepolcro stage; virtually all pilgrim guides recommend it.",
+      "Eremo di San Pietro in Vigneto requires advance reservation through the Confraternity of St James (confraternitadisanjacopo.it).",
+      "Spello is included as an intermediate waypoint between Assisi and Foligno; most pilgrims spend the first night of the southern route there (12 km from Assisi).",
+      "Poreta is an intermediate overnight stop splitting the otherwise 28 km Trevi–Spoleto stage.",
+      "The Convento di San Francesco in Gubbio was expected to reopen in April 2026 after renovation.",
+      "Ponticelli Sabino has very limited dedicated pilgrim accommodation; some pilgrims use nearby Nerola as an alternative.",
+      "Distances are based on official viadifrancesco.it data cross-referenced with pilgrimagetraveler.com and forwalk.org.",
+      "createdBy: 'seed' is a placeholder — replace with actual user ID before running the import script."
+    ]
+  },
+  "camino": {
+    "name": "Via di Francesco",
+    "description": "Die Via di Francesco (Franziskusweg) ist ein 436 km langer Pilgerweg in Italien, der auf den Spuren des Heiligen Franziskus von Assisi vom Heiligtum La Verna durch die Toskana und Umbrien bis zur Vatikanstadt in Rom führt. Die nördliche Route (La Verna → Assisi, ca. 189 km) durchquert die Apenninen und die obere Tiberebene; die südliche Route (Assisi → Rom, ca. 247 km) führt durch die Vallerina-Schlucht, das Heilige Tal von Rieti und die Sabiner Hügel. Der Weg verbindet bedeutende franziskanische Heiligtümer und mittelalterliche Städte und bietet ein dichtes Netz an Klosterhospizen, Pfarrunterkünften und Pilgerhäusern.",
+    "verified": true,
+    "createdBy": "seed"
+  },
+  "points": [
+    {
+      "position": 1,
+      "name": "La Verna",
+      "country": "italy",
+      "slug": "la-verna",
+      "description": "Das Heiligtum La Verna (Chiusi della Verna, 1283 m ü. M.) ist der traditionelle Ausgangspunkt der Via di Francesco. Im Jahr 1224 empfing der Heilige Franziskus hier die Stigmata. Der Franziskanerkonvent thront auf einem bewaldeten Felsplateau in den toskanischen Apenninen.",
+      "accommodations": [
+        {
+          "name": "Foresteria del Santuario della Verna",
+          "type": "monastery",
+          "description": "Die Foresteria des Franziskanerheiligtums La Verna bietet Pilgern einfache Zimmer direkt am Sanktuarium. Reservierung erforderlich.",
+          "addressStreet": null,
+          "addressZip": "52010",
+          "addressCity": "Chiusi della Verna",
+          "addressCountry": "italy",
+          "website": null,
+          "email": "santuarioverna@gmail.com",
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Pastor Angelicus",
+          "type": "b_and_b",
+          "description": "Gästehaus ca. 2 km vom Heiligtum entfernt mit Pilgerrabatt. Frühstück inklusive.",
+          "addressStreet": null,
+          "addressZip": "52010",
+          "addressCity": "Chiusi della Verna",
+          "addressCountry": "italy",
+          "website": null,
+          "email": "pastor.laverna@gmail.com",
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Albergo Ristorante Bellavista",
+          "type": "hotel",
+          "description": "Hotel mit Restaurant in Chiusi della Verna, 15 Zimmer und 30 Betten. Pilgerrabatt auf Anfrage.",
+          "addressStreet": null,
+          "addressZip": "52010",
+          "addressCity": "Chiusi della Verna",
+          "addressCountry": "italy",
+          "website": null,
+          "email": "albergoristorantebellavista@gmail.com",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 2,
+      "name": "Pieve Santo Stefano",
+      "country": "italy",
+      "slug": "pieve-santo-stefano",
+      "description": "Kleinstädtchen in der Toskana am oberen Tiber, bekannt als 'Stadt der Tagebücher' (Archivio Diaristico Nazionale). Erster Übernachtungsstopp nach La Verna nach einem mittelschweren Abschnitt durch die Apenninen.",
+      "accommodations": [
+        {
+          "name": "B&B Il Castellare",
+          "type": "b_and_b",
+          "description": "Kleines B&B im Ortszentrum mit Pilgerpreisen.",
+          "addressStreet": null,
+          "addressZip": "52036",
+          "addressCity": "Pieve Santo Stefano",
+          "addressCountry": "italy",
+          "website": "https://www.ilcastellare.eu",
+          "email": "info@ilcastellare.eu",
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hotel Santo Stefano",
+          "type": "hotel",
+          "description": "3-Sterne-Hotel in Pieve Santo Stefano mit Pilgerpreisen.",
+          "addressStreet": null,
+          "addressZip": "52036",
+          "addressCity": "Pieve Santo Stefano",
+          "addressCountry": "italy",
+          "website": null,
+          "email": "info@hotelsantostefanoarezzo.it",
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 3,
+      "name": "La Montagna",
+      "country": "italy",
+      "slug": "la-montagna",
+      "description": "Der Weiler Montagna di Sansepolcro im Naturschutzgebiet Alpe della Luna ist die natürliche Zwischenübernachtung auf dem langen Abschnitt von Pieve Santo Stefano nach Sansepolcro. Das nahegelegene Cappucciner-Eremitage Montecasale ist ein bedeutender franziskanischer Ort.",
+      "accommodations": [
+        {
+          "name": "B&B Alla Battuta",
+          "type": "b_and_b",
+          "description": "Kleines B&B mit 4 Betten in Montagna di Sansepolcro. Frühstück inklusive.",
+          "addressStreet": null,
+          "addressZip": null,
+          "addressCity": "Montagna di Sansepolcro",
+          "addressCountry": "italy",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Eremo di Montecasale (Frati Cappuccini)",
+          "type": "monastery",
+          "description": "Franziskanische Einsiedelei auf einem Hügel über Sansepolcro. Wenige Schlafplätze für Pilger (Spende), Voranmeldung erforderlich.",
+          "addressStreet": null,
+          "addressZip": null,
+          "addressCity": "Montecasale, Sansepolcro",
+          "addressCountry": "italy",
+          "website": null,
+          "email": "cappuccini.montecasale@gmail.com",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 4,
+      "name": "Sansepolcro",
+      "country": "italy",
+      "slug": "sansepolcro",
+      "description": "Kunststadt im östlichen Toskana, Geburtsort des Malers Piero della Francesca. Markiert den Übergang ins obere Tibertal. Sehenswert: Museo Civico mit der Auferstehung Christi von Piero della Francesca.",
+      "accommodations": [
+        {
+          "name": "Foresteria di Santa Maria dei Servi",
+          "type": "monastery",
+          "description": "Religiöse Unterkunft mit 25 Betten im historischen Zentrum von Sansepolcro. Reservierung erforderlich.",
+          "addressStreet": null,
+          "addressZip": "52037",
+          "addressCity": "Sansepolcro",
+          "addressCountry": "italy",
+          "website": "https://www.santamariadeiservi.it",
+          "email": "info@santamariadeiservi.it",
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "B&B Dolce Rosa",
+          "type": "b_and_b",
+          "description": "B&B nahe dem Dom von Sansepolcro mit Pilgerrabatt.",
+          "addressStreet": null,
+          "addressZip": "52037",
+          "addressCity": "Sansepolcro",
+          "addressCountry": "italy",
+          "website": null,
+          "email": "dolcerosacamere@gmail.com",
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Relais Oroscopo",
+          "type": "b_and_b",
+          "description": "Angenehmes Gästehaus in Sansepolcro mit Pilgerrabatt bei Vorlage des Pilgerpasses.",
+          "addressStreet": null,
+          "addressZip": "52037",
+          "addressCity": "Sansepolcro",
+          "addressCountry": "italy",
+          "website": "https://www.relaisoroscopo.com",
+          "email": "info@relaisoroscopo.com",
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 5,
+      "name": "Citerna",
+      "country": "italy",
+      "slug": "citerna",
+      "description": "Wunderschön erhaltenes mittelalterliches Bergstädtchen in Umbrien auf dem Weg über die Toskana-Umbrien-Grenze. Panoramablick über das obere Tibertal. Kloster der Benediktinerinnen und ein eigenes Pilgerquartier.",
+      "accommodations": [
+        {
+          "name": "Monastero SS. Crocifisso e Santa Maria (Benedettine di Citerna)",
+          "type": "monastery",
+          "description": "Benediktinerinnenkloster in Citerna mit 5–15 Schlafplätzen für Pilger. Spende erbeten.",
+          "addressStreet": null,
+          "addressZip": "06010",
+          "addressCity": "Citerna",
+          "addressCountry": "italy",
+          "website": null,
+          "email": "benedettineciterna@gmail.com",
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "La fonte degna dei pellegrini",
+          "type": "hostel",
+          "description": "Pilgerherberge in Citerna mit ca. 10 Betten, Mai bis Oktober geöffnet.",
+          "addressStreet": null,
+          "addressZip": "06010",
+          "addressCity": "Citerna",
+          "addressCountry": "italy",
+          "website": null,
+          "email": "fontedegna@gmail.com",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 6,
+      "name": "Città di Castello",
+      "country": "italy",
+      "slug": "citta-di-castello",
+      "description": "Wohlhabende umbrische Stadt im oberen Tibertal mit mittelalterlichem Kern, dem Palazzo Vitelli und der Sammlung des Künstlers Alberto Burri. Bedeutendes kulturelles und religiöses Zentrum der Region.",
+      "accommodations": [
+        {
+          "name": "Ex Monastero di Santa Cecilia",
+          "type": "monastery",
+          "description": "Ehemaliges Kloster mit ca. 24 Betten für Pilger. Spendenbasierte Unterkunft.",
+          "addressStreet": null,
+          "addressZip": "06012",
+          "addressCity": "Città di Castello",
+          "addressCountry": "italy",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hotel Umbria",
+          "type": "hotel",
+          "description": "Hotel mit 40 Betten im Zentrum von Città di Castello. Mahlzeiten inklusive verfügbar.",
+          "addressStreet": null,
+          "addressZip": "06012",
+          "addressCity": "Città di Castello",
+          "addressCountry": "italy",
+          "website": "https://www.hotelumbria.net",
+          "email": "umbria@hotelumbria.net",
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "Residenza Antica Canonica",
+          "type": "b_and_b",
+          "description": "Historisches Gästehaus in einer ehemaligen Sakristei mit Pilgerpreisen.",
+          "addressStreet": null,
+          "addressZip": "06012",
+          "addressCity": "Città di Castello",
+          "addressCountry": "italy",
+          "website": "https://www.anticacanonica.it",
+          "email": "info@anticacanonica.it",
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 7,
+      "name": "Pietralunga",
+      "country": "italy",
+      "slug": "pietralunga",
+      "description": "Kleines mittelalterliches Bergdorf in den Apenninen nördlich von Gubbio. Das Ende des langen und anspruchsvollen Tagesabschnitts von Città di Castello (31 km) belohnt Pilger mit einer ruhigen Atmosphäre.",
+      "accommodations": [
+        {
+          "name": "Parrocchia di Pietralunga",
+          "type": "hostel",
+          "description": "Gemeindliche Pilgerherberge mit 18 Betten. Spende erbeten. Voranmeldung bei Don Franci.",
+          "addressStreet": null,
+          "addressZip": "06015",
+          "addressCity": "Pietralunga",
+          "addressCountry": "italy",
+          "website": null,
+          "email": "donfranci@inwind.it",
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hotel Tinca",
+          "type": "hotel",
+          "description": "Hotel mit 21 Betten und Pilgerangeboten in Pietralunga.",
+          "addressStreet": "Via Marconi 7",
+          "addressZip": "06015",
+          "addressCity": "Pietralunga",
+          "addressCountry": "italy",
+          "website": "https://www.hotel-tinca.com",
+          "email": "info@hotel-tinca.com",
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "La Locanda del Borgo",
+          "type": "b_and_b",
+          "description": "Gemütliche Locanda im Dorfkern mit exklusivem Pilgerpreis.",
+          "addressStreet": null,
+          "addressZip": "06015",
+          "addressCity": "Pietralunga",
+          "addressCountry": "italy",
+          "website": "https://www.locandadelborgo.com",
+          "email": "info@locandadelborgo.com",
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 8,
+      "name": "Gubbio",
+      "country": "italy",
+      "slug": "gubbio",
+      "description": "Eines der besterhaltenen mittelalterlichen Städtchen Italiens, tief mit dem Heiligen Franziskus verbunden — der Legende nach zähmte er hier den Wolf von Gubbio. Sehenswert: Piazza della Signoria, Palazzo dei Consoli und die Basilika Sant'Ubaldo. Klösterliche Pilgerhospitalität.",
+      "accommodations": [
+        {
+          "name": "Convento di San Francesco (Frati Minori Conventuali)",
+          "type": "monastery",
+          "description": "Franziskanerkonvent am Hauptplatz von Gubbio mit Pilgerherberge. Voranmeldung per E-Mail erforderlich. Stand 2026: nach Renovierung wiedereröffnet.",
+          "addressStreet": "Piazza 40 Martiri 2",
+          "addressZip": "06024",
+          "addressCity": "Gubbio",
+          "addressCountry": "italy",
+          "website": "https://www.accoglienzasanfrancesco.it",
+          "email": "accoglienzasanfrancescogubbio@gmail.com",
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Convento di San Secondo",
+          "type": "monastery",
+          "description": "Franziskanerkloster in Gubbio mit ca. 40 Schlafplätzen für Pilger. Spendenbasiert.",
+          "addressStreet": null,
+          "addressZip": "06024",
+          "addressCity": "Gubbio",
+          "addressCountry": "italy",
+          "website": null,
+          "email": "gabrielepauletto@libero.it",
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hotel Grotta dell'Angelo",
+          "type": "hotel",
+          "description": "Hotel mit Pilgermenü in Gubbio, 20 Betten. Gepflegte Unterkunft im historischen Zentrum.",
+          "addressStreet": null,
+          "addressZip": "06024",
+          "addressCity": "Gubbio",
+          "addressCountry": "italy",
+          "website": "https://www.grottadellangelo.it",
+          "email": "info@grottadellangelo.it",
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 9,
+      "name": "Eremo di San Pietro in Vigneto",
+      "country": "italy",
+      "slug": "eremo-di-san-pietro-in-vigneto",
+      "description": "Abgelegene Walderemitage in den Hügeln zwischen Gubbio und Valfabbrica, verwaltet von der Confraternita di San Jacopo. Ein Ort tiefer Stille und franziskanischer Spiritualität auf der Route.",
+      "accommodations": [
+        {
+          "name": "Eremo di San Pietro in Vigneto",
+          "type": "monastery",
+          "description": "Einsiedelei mit 14 Schlafplätzen für Pilger. Spende erbeten. Reservierung über die Confraternita di San Jacopo zwingend erforderlich.",
+          "addressStreet": null,
+          "addressZip": null,
+          "addressCity": "San Pietro in Vigneto, Gubbio",
+          "addressCountry": "italy",
+          "website": null,
+          "email": "sanpietroinvigneto@confraternitadisanjacopo.it",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 10,
+      "name": "Valfabbrica",
+      "country": "italy",
+      "slug": "valfabbrica",
+      "description": "Kleines umbrisches Dorf auf dem Friedensweg zwischen Gubbio und Assisi. Letzter Stopp vor dem Abstieg zur Basilika des Heiligen Franziskus. Mehrere Pilgerunterkünfte.",
+      "accommodations": [
+        {
+          "name": "Ostello Locanda Francescana",
+          "type": "hostel",
+          "description": "Pilgerhostell mit über 20 Betten inklusive Abendessen. Sehr beliebt bei Via-di-Francesco-Pilgern.",
+          "addressStreet": null,
+          "addressZip": "06029",
+          "addressCity": "Valfabbrica",
+          "addressCountry": "italy",
+          "website": "https://www.locandafrancescana.it",
+          "email": "info@locandafrancescana.it",
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Terra Media",
+          "type": "hostel",
+          "description": "Kleines Pilgerhostel mit 9 Betten im Dormitoriumsstil in Valfabbrica.",
+          "addressStreet": null,
+          "addressZip": "06029",
+          "addressCity": "Valfabbrica",
+          "addressCountry": "italy",
+          "website": null,
+          "email": "terra.media20@gmail.com",
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Casa Betania",
+          "type": "monastery",
+          "description": "Religiöses Gästehaus mit 16 Betten in Valfabbrica. Spende erbeten.",
+          "addressStreet": null,
+          "addressZip": "06029",
+          "addressCity": "Valfabbrica",
+          "addressCountry": "italy",
+          "website": null,
+          "email": "betaniavalfabrica@gmail.com",
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Sui Passi di Francesco",
+          "type": "b_and_b",
+          "description": "Agriturismo mit 12 Betten direkt an der Route. Frühstück inklusive, Abendessen verfügbar.",
+          "addressStreet": "Via Castellana 21-27",
+          "addressZip": "06029",
+          "addressCity": "Valfabbrica",
+          "addressCountry": "italy",
+          "website": "https://www.suipassidifrancesco.it",
+          "email": "suipassidifrancesco@tiscali.it",
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 11,
+      "name": "Assisi",
+      "country": "italy",
+      "slug": "assisi",
+      "description": "Das spirituelle Herz der Via di Francesco und Geburtsort des Heiligen Franziskus. Die Basilika di San Francesco mit dem Grab des Heiligen und den Fresken von Cimabue und Giotto ist UNESCO-Weltkulturerbe. Treffpunkt der nördlichen und südlichen Route.",
+      "accommodations": [
+        {
+          "name": "Hospitale Laudato Si",
+          "type": "hostel",
+          "description": "Kleines Pilgerhospiz beim nördlichen Stadttor von Assisi. Voranmeldung erforderlich, Pilgerpass obligatorisch. Spendenbasiert, ca. 10 Betten.",
+          "addressStreet": null,
+          "addressZip": "06081",
+          "addressCity": "Assisi",
+          "addressCountry": "italy",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Cittadella Ospitalità della Pro Civitate Christiana",
+          "type": "hostel",
+          "description": "Großes Pilger- und Kulturzentrum mit günstigen Übernachtungspreisen in Assisi.",
+          "addressStreet": "Via degli Ancajani 3",
+          "addressZip": "06081",
+          "addressCity": "Assisi",
+          "addressCountry": "italy",
+          "website": "https://www.cittadelladiassisi.it",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Ostello della Pace (HI Assisi)",
+          "type": "hostel",
+          "description": "HI-Jugendherberge in Assisi mit günstigem Mehrbettzimmer-Angebot. Pilgerfreundlich.",
+          "addressStreet": "Via di Valecchie 4",
+          "addressZip": "06081",
+          "addressCity": "Assisi",
+          "addressCountry": "italy",
+          "website": "https://www.ostelloassisi.com",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Casa Religiosa Abbazia San Pietro",
+          "type": "monastery",
+          "description": "Religiöses Gästehaus der Benediktinerabtei mit 48 Betten und Frühstück. Ruhige Lage unterhalb der Basilika.",
+          "addressStreet": null,
+          "addressZip": "06081",
+          "addressCity": "Assisi",
+          "addressCountry": "italy",
+          "website": null,
+          "email": "info@abbaziaassisi.it",
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Camping Fontemaggio",
+          "type": "hostel",
+          "description": "Campingplatz mit Hostelbereich (49 Betten) östlich von Assisi. Weiteres 50-Betten-Hostel auf dem Gelände.",
+          "addressStreet": null,
+          "addressZip": "06081",
+          "addressCity": "Assisi",
+          "addressCountry": "italy",
+          "website": "https://www.fontemaggio.it",
+          "email": "info@fontemaggio.it",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 12,
+      "name": "Spello",
+      "country": "italy",
+      "slug": "spello",
+      "description": "Blumengeschmücktes Bergstädtchen an den Hängen des Monte Subasio, bekannt für seine römischen Mauern und die Pinturicchio-Fresken in Santa Maria Maggiore. Beliebter erster Übernachtungsstopp (12 km von Assisi) auf der Südroute.",
+      "accommodations": [
+        {
+          "name": "Monastero delle Agostiniane di Santa Maria Maddalena",
+          "type": "monastery",
+          "description": "Kloster der Augustinerinnen in Spello mit Pilgerzimmern. Voranmeldung empfohlen.",
+          "addressStreet": "Via Cavour 3",
+          "addressZip": "06038",
+          "addressCity": "Spello",
+          "addressCountry": "italy",
+          "website": "https://www.agostinianespello.it",
+          "email": "spello@agostiniane.it",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 13,
+      "name": "Foligno",
+      "country": "italy",
+      "slug": "foligno",
+      "description": "Lebhafte umbrische Stadt in der Valle Umbra-Ebene am Fuß der Apenninen. Palazzo Trinci mit bedeutenden Fresken. Regionaler Verkehrsknotenpunkt und Etappenort auf der Südroute.",
+      "accommodations": [
+        {
+          "name": "Casa della Gioventù (Diocesi di Foligno)",
+          "type": "hostel",
+          "description": "Diözesane Jugend- und Pilgerherberge in Foligno. Kontakt über die Diözese Foligno.",
+          "addressStreet": null,
+          "addressZip": "06034",
+          "addressCity": "Foligno",
+          "addressCountry": "italy",
+          "website": "https://www.diocesidifoligno.it",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 14,
+      "name": "Trevi",
+      "country": "italy",
+      "slug": "trevi",
+      "description": "Spektakuläres Bergstädtchen über den Olivenhainen der Valle Umbra, bekannt für sein außergewöhnliches Olivenöl und die Silbersammlung im Museo dell'Olivo. Zwei Klöster nehmen Pilger auf.",
+      "accommodations": [
+        {
+          "name": "Monastero di Santa Chiara (Monache Clarisse)",
+          "type": "monastery",
+          "description": "Klarissinnenkloster in Trevi mit Pilgerzimmern. Geöffnet von März bis Oktober. Spendenbasiert.",
+          "addressStreet": "Via dei Monasteri 4",
+          "addressZip": "06039",
+          "addressCity": "Trevi",
+          "addressCountry": "italy",
+          "website": null,
+          "email": "santachiara.ccn@gmail.com",
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Convento di San Martino",
+          "type": "monastery",
+          "description": "Franziskanerkloster in Trevi, ganzjährig geöffnet für Pilger.",
+          "addressStreet": "Viale Augusto Ciuffelli 14",
+          "addressZip": "06039",
+          "addressCity": "Trevi",
+          "addressCountry": "italy",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hotel Trevi Palazzo Natalini",
+          "type": "hotel",
+          "description": "Komfortables Boutique-Hotel im historischen Stadtpalast von Trevi.",
+          "addressStreet": null,
+          "addressZip": "06039",
+          "addressCity": "Trevi",
+          "addressCountry": "italy",
+          "website": "https://www.hoteltrevipalazzonatalini.it",
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 15,
+      "name": "Poreta",
+      "country": "italy",
+      "slug": "poreta",
+      "description": "Kleines Gehöft zwischen Trevi und Spoleto, natürliche Hälfte des langen Abschnitts durch die Valle Umbra. Ruhiger Zwischenstopp auf der Südroute.",
+      "accommodations": [
+        {
+          "name": "Borgo della Marmotta",
+          "type": "b_and_b",
+          "description": "Historischer Agriturismo aus dem 17. Jh. in der Nähe von Poreta. Ruhige Lage mit Panoramablick.",
+          "addressStreet": null,
+          "addressZip": null,
+          "addressCity": "Poreta, Spoleto",
+          "addressCountry": "italy",
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 16,
+      "name": "Spoleto",
+      "country": "italy",
+      "slug": "spoleto",
+      "description": "Eine der eindrucksvollsten Städte Umbriens mit dem Ponte delle Torri-Aquädukt, der Rocca Albornoziana und der Kathedrale Santa Maria Assunta. Wichtige Franziskus-Station: Der Heilige bestieg hier die Rocca als Jugendlicher.",
+      "accommodations": [
+        {
+          "name": "Casa Religiosa di Ospitalità San Ponziano",
+          "type": "monastery",
+          "description": "Klosterunterkunft an der Basilika San Salvatore mit professioneller Gastfreundschaft. Frühstück inklusive.",
+          "addressStreet": "Via della Basilica di San Salvatore 2",
+          "addressZip": "06049",
+          "addressCity": "Spoleto",
+          "addressCountry": "italy",
+          "website": "https://www.sanponziano.it",
+          "email": "info@sanponziano.it",
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "Centro di Pastorale Giovanile Giovanni Paolo II",
+          "type": "hostel",
+          "description": "Diözesane Pilgerherberge im Nordwesten der Stadt. Spendenbasiert. Voranmeldung erforderlich.",
+          "addressStreet": null,
+          "addressZip": "06049",
+          "addressCity": "Spoleto",
+          "addressCountry": "italy",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 17,
+      "name": "Ceselli",
+      "country": "italy",
+      "slug": "ceselli",
+      "description": "Winziges Dorf in der Valnerina-Schlucht am Eingang zu einem dramatischen Abschnitt durch bewaldete Hügel entlang des Flusses Nera.",
+      "accommodations": [
+        {
+          "name": "Casa del Pellegrino di Ceselli",
+          "type": "hostel",
+          "description": "Pilgerhospiz oberhalb des Dorfes Ceselli. Kontakt über die Gemeinde (Lina: +39 339 242 8928 / Catia: +39 333 843 0385).",
+          "addressStreet": null,
+          "addressZip": null,
+          "addressCity": "Ceselli, Scheggino",
+          "addressCountry": "italy",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 18,
+      "name": "Arrone",
+      "country": "italy",
+      "slug": "arrone",
+      "description": "Mittelalterliches Dorf auf einem Felsen über dem Nera-Fluss in der Valnerina. Die Route folgt dem Fluss durch wilde Schluchtlandschaft. Kirche mit Pilgeraufnahme am Hauptplatz.",
+      "accommodations": [
+        {
+          "name": "Casa del Pellegrino (Arrone)",
+          "type": "hostel",
+          "description": "Pfarrliche Pilgerunterkunft am Hauptplatz von Arrone. Klingel am Kirchenportal. Spendenbasiert.",
+          "addressStreet": null,
+          "addressZip": "05031",
+          "addressCity": "Arrone",
+          "addressCountry": "italy",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 19,
+      "name": "Piediluco",
+      "country": "italy",
+      "slug": "piediluco",
+      "description": "Malerisches Dorf am Ufer des Lago di Piediluco an der Grenze zwischen Umbrien und Latium. Die Cascata delle Marmore, einer der höchsten Wasserfälle Europas, ist in der Nähe. Pilgerhospiz direkt am See.",
+      "accommodations": [
+        {
+          "name": "Casa del Pellegrino di Piediluco",
+          "type": "hostel",
+          "description": "Pilgerhospiz in Piediluco am Seeufer. Voranmeldung empfohlen.",
+          "addressStreet": "Corso Salvati R. 63",
+          "addressZip": "05100",
+          "addressCity": "Piediluco",
+          "addressCountry": "italy",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hotel Ristorante Miralago",
+          "type": "hotel",
+          "description": "Hotel mit Restaurant direkt am Lago di Piediluco mit Seeblick.",
+          "addressStreet": null,
+          "addressZip": "05100",
+          "addressCity": "Piediluco",
+          "addressCountry": "italy",
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 20,
+      "name": "Poggio Bustone",
+      "country": "italy",
+      "slug": "poggio-bustone",
+      "description": "Franziskanisches Heiligtumsdorf im Heiligen Tal von Rieti. Der Heilige Franziskus begrüßte hier die Dorfbewohner mit 'Buon giorno, buona gente!' — die erste überlieferte Verwendung dieser italienischen Grußformel. Oberhalb liegt das Santuario di San Giacomo.",
+      "accommodations": [
+        {
+          "name": "La Locanda Francescana di Poggio Bustone",
+          "type": "hostel",
+          "description": "Pilgerherberge und Restaurant mit 25 Betten. Halbpension ab €45, Übernachtung mit Frühstück ab €25.",
+          "addressStreet": "Via Francescana 13",
+          "addressZip": "02040",
+          "addressCity": "Poggio Bustone",
+          "addressCountry": "italy",
+          "website": "https://www.locandafrancescana.com",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Casa Pellegrino Francesco",
+          "type": "hostel",
+          "description": "Kleines Pilgerquartier mit 6 Betten in Poggio Bustone.",
+          "addressStreet": "Via Roma 8",
+          "addressZip": "02018",
+          "addressCity": "Poggio Bustone",
+          "addressCountry": "italy",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Ospitalità da Dina",
+          "type": "b_and_b",
+          "description": "Private Zimmer mit 4 Betten bei Dina in Poggio Bustone. Herzliche Aufnahme.",
+          "addressStreet": "Via Roma 25",
+          "addressZip": "02018",
+          "addressCity": "Poggio Bustone",
+          "addressCountry": "italy",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 21,
+      "name": "Rieti",
+      "country": "italy",
+      "slug": "rieti",
+      "description": "Hauptstadt der Provinz Rieti und Tor zum Heiligen Tal von Rieti. Der Heilige Franziskus war regelmäßig hier; seine vier Hauptheiligtümer — Greccio, Fonte Colombo, La Foresta und Poggio Bustone — liegen alle in der Nähe. Rieti gilt als geografischer Mittelpunkt Italiens.",
+      "accommodations": [
+        {
+          "name": "Santuario di Fonte Colombo (Frati Minori)",
+          "type": "monastery",
+          "description": "Franziskanerheiligtum außerhalb von Rieti, wo der Heilige Franziskus 1223 die Ordensregel verfasste. Unterkunft für Pilgergruppen, Voranmeldung erforderlich.",
+          "addressStreet": "Via Fonte Colombo 40",
+          "addressZip": "02100",
+          "addressCity": "Rieti",
+          "addressCountry": "italy",
+          "website": "https://www.santuarivallesanta.com",
+          "email": "fontecolombo@santuarivallesanta.it",
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Ostello Cammino di Francesco",
+          "type": "hostel",
+          "description": "Pilgerhostel in Rivodutri nahe Rieti mit Garten und WLAN.",
+          "addressStreet": null,
+          "addressZip": "02010",
+          "addressCity": "Rivodutri",
+          "addressCountry": "italy",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Guest House Porta Romana",
+          "type": "b_and_b",
+          "description": "Kleines Gästehaus nahe der historischen Porta Romana in Rieti.",
+          "addressStreet": null,
+          "addressZip": "02100",
+          "addressCity": "Rieti",
+          "addressCountry": "italy",
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 22,
+      "name": "Poggio San Lorenzo",
+      "country": "italy",
+      "slug": "poggio-san-lorenzo",
+      "description": "Sabinisches Bergdorf mit Panoramablick und dem Heiligtum der Santa Vittoria entlang des Abstiegs. Die Route durchquert klassische Sabina-Landschaft mit Olivenhainen.",
+      "accommodations": [
+        {
+          "name": "Casa del Pellegrino di Poggio San Lorenzo",
+          "type": "hostel",
+          "description": "Pilgerhospiz am zentralen Platz des Dorfes mit 14 Betten. Gelistet auf dormireincammino.it.",
+          "addressStreet": "Piazza Guglielmo Marconi",
+          "addressZip": null,
+          "addressCity": "Poggio San Lorenzo",
+          "addressCountry": "italy",
+          "website": "https://www.dormireincammino.it",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 23,
+      "name": "Ponticelli Sabino",
+      "country": "italy",
+      "slug": "ponticelli-sabino",
+      "description": "Kleines Sabina-Dorf nahe Scandriglia in den Latium-Hügeln. Die Route führt durch sanfte Hügellandschaft vor dem langen Abstieg ins Tibertal. Begrenzte Pilgerunterkünfte vor Ort.",
+      "accommodations": []
+    },
+    {
+      "position": 24,
+      "name": "Monterotondo",
+      "country": "italy",
+      "slug": "monterotondo",
+      "description": "Stadt am Rand der Römischen Campagna im Tibertal, letzter Stopp vor Rom. Die Route führt durch das Naturschutzgebiet Marcigliana. Zwei klösterliche Pilgerunterkünfte.",
+      "accommodations": [
+        {
+          "name": "Convento Frati Cappuccini di Monterotondo",
+          "type": "monastery",
+          "description": "Kapuzinerkloster in Monterotondo mit Pilgeraufnahme. Spende erbeten.",
+          "addressStreet": "Piazza San Francesco d'Assisi",
+          "addressZip": "00015",
+          "addressCity": "Monterotondo",
+          "addressCountry": "italy",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Parrocchia Santa Maria Maddalena (Duomo)",
+          "type": "hostel",
+          "description": "Pfarrliche Pilgerherberge im Duomo von Monterotondo mit 5–6 Betten. Spende erbeten.",
+          "addressStreet": "Piazza Giovanni Paolo II",
+          "addressZip": "00015",
+          "addressCity": "Monterotondo",
+          "addressCountry": "italy",
+          "website": null,
+          "email": "parrocchia@duomosantamariamaddalena.it",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 25,
+      "name": "Rom",
+      "country": "italy",
+      "slug": "rom",
+      "description": "Die Via di Francesco endet am Petersplatz im Vatikan. Die Route tritt durch den Stadtbezirk Monte Sacro (Kirche Santi Angeli Custodi) in Rom ein und folgt der Via Nomentana bis in die Innenstadt und zum Vatikan. Ziel ist die Petersbasilika mit der Confessio — dem Grab des Apostelfürsten Petrus.",
+      "accommodations": [
+        {
+          "name": "Suore del Cuore Immacolato di Maria (Monte Sacro)",
+          "type": "monastery",
+          "description": "Ordenshaus im Stadtteil Monte Sacro, Roms erste Unterkunft auf der Route. Ca. €35 pro Person.",
+          "addressStreet": null,
+          "addressZip": "00141",
+          "addressCity": "Rom",
+          "addressCountry": "italy",
+          "website": null,
+          "email": "casadiprocura@gmail.com",
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Casa Per Ferie Santa Rita (Monte Sacro)",
+          "type": "monastery",
+          "description": "Religiöse Casa per ferie nahe der Kirche Santi Angeli Custodi in Monte Sacro.",
+          "addressStreet": null,
+          "addressZip": "00141",
+          "addressCity": "Rom",
+          "addressCountry": "italy",
+          "website": "https://www.ospitalitareligiosa.it",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Domus Australia",
+          "type": "b_and_b",
+          "description": "Pilgergästehaus nahe dem Vatikan. Beliebte Endunterkunft für Via-di-Francesco-Pilger.",
+          "addressStreet": "Via Cernaia 14/B",
+          "addressZip": "00185",
+          "addressCity": "Rom",
+          "addressCountry": "italy",
+          "website": "https://www.domusaustralia.org",
+          "email": "info@domusaustralia.org",
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    }
+  ],
+  "stages": [
+    {
+      "from": "La Verna",
+      "to": "Pieve Santo Stefano",
+      "distance": 15,
+      "description": "Mittelschwerer Abstieg durch Apenninen-Wälder über Monte Calvano und Monte Modina. Gut markierter Weg mit Schildern der Confraternita di San Jacopo."
+    },
+    {
+      "from": "Pieve Santo Stefano",
+      "to": "La Montagna",
+      "distance": 23,
+      "description": "Anspruchsvoller Anstieg durch das Naturschutzgebiet Alpe della Luna über den Passo di Viamaggio (985 m). Einsame Berglandschaft."
+    },
+    {
+      "from": "La Montagna",
+      "to": "Sansepolcro",
+      "distance": 13,
+      "description": "Abstieg nach Sansepolcro; das Kapuzinereremitage Montecasale ist ein bedeutender franziskanischer Abstecher auf dem Weg."
+    },
+    {
+      "from": "Sansepolcro",
+      "to": "Citerna",
+      "distance": 12,
+      "description": "Leichte Etappe durch kultivierte Felder des oberen Tibers mit Übergang von der Toskana nach Umbrien."
+    },
+    {
+      "from": "Citerna",
+      "to": "Città di Castello",
+      "distance": 19,
+      "description": "Angenehmer Weg durch das obere Tibertal mit wechselnder Hügel- und Ebenenlandschaft."
+    },
+    {
+      "from": "Città di Castello",
+      "to": "Pietralunga",
+      "distance": 31,
+      "description": "Anspruchsvolle Etappe durch kontinuierliche Apenninen-Hügel. Spirituell bedeutsame Pieve de Saddi auf halbem Weg."
+    },
+    {
+      "from": "Pietralunga",
+      "to": "Gubbio",
+      "distance": 26,
+      "description": "Bergpfade und Nebenstraßen durch Bergwälder und Täler; erste Hälfte anspruchsvoll, zweite Hälfte entspannter."
+    },
+    {
+      "from": "Gubbio",
+      "to": "Eremo di San Pietro in Vigneto",
+      "distance": 16,
+      "description": "Spurensuche auf einem der Wege des Heiligen Franziskus durch Waldberge in umgekehrter Richtung."
+    },
+    {
+      "from": "Eremo di San Pietro in Vigneto",
+      "to": "Valfabbrica",
+      "distance": 22,
+      "description": "Schwieriger Anstieg und langer Abstieg über die Biscina-Agriturismo nach Valfabbrica."
+    },
+    {
+      "from": "Valfabbrica",
+      "to": "Assisi",
+      "distance": 13,
+      "description": "Letzte Etappe der Nordroute entlang des Friedenswegs mit Auf- und Abstiegen bis zur Basilika des Heiligen Franziskus."
+    },
+    {
+      "from": "Assisi",
+      "to": "Spello",
+      "distance": 12,
+      "description": "Leichter Abstieg durch Olivenhaine entlang des Monte Subasio zum blumengeschmückten Städtchen Spello."
+    },
+    {
+      "from": "Spello",
+      "to": "Foligno",
+      "distance": 6,
+      "description": "Flache Etappe durch die Valle Umbra zur Stadt Foligno."
+    },
+    {
+      "from": "Foligno",
+      "to": "Trevi",
+      "distance": 13,
+      "description": "Leichter Weg durch Oliventerrassen mit Anstieg zum Bergstädtchen Trevi."
+    },
+    {
+      "from": "Trevi",
+      "to": "Poreta",
+      "distance": 12,
+      "description": "Hang-Wanderung durch Olivenhaine und kleine Gehöfte mit mehreren Auf- und Abstiegen."
+    },
+    {
+      "from": "Poreta",
+      "to": "Spoleto",
+      "distance": 16,
+      "description": "Anstieg durch Wälder oberhalb der Valle Umbra bis zur Stadtmauer von Spoleto."
+    },
+    {
+      "from": "Spoleto",
+      "to": "Ceselli",
+      "distance": 16,
+      "description": "Anspruchsvolle Etappe durch die dramatische Valnerina-Schlucht in dichtem Wald."
+    },
+    {
+      "from": "Ceselli",
+      "to": "Arrone",
+      "distance": 15,
+      "description": "Entspannter Flusswanderweg entlang des Fiume Nera durch die Valnerina."
+    },
+    {
+      "from": "Arrone",
+      "to": "Piediluco",
+      "distance": 13,
+      "description": "Leichte Seetapete mit Ankunft am ruhigen Lago di Piediluco."
+    },
+    {
+      "from": "Piediluco",
+      "to": "Poggio Bustone",
+      "distance": 21,
+      "description": "Anspruchsvoller Anstieg zum Faggio di San Francesco; Überquerung der Latium-Grenze ins Heilige Tal von Rieti."
+    },
+    {
+      "from": "Poggio Bustone",
+      "to": "Rieti",
+      "distance": 17,
+      "description": "Abstieg durch das Heilige Tal von Rieti, vorbei an franziskanischen Heiligtümern."
+    },
+    {
+      "from": "Rieti",
+      "to": "Poggio San Lorenzo",
+      "distance": 22,
+      "description": "Sabina-Hügel mit Olivenbäumen; Santuario della Santa Vittoria liegt auf dem Weg."
+    },
+    {
+      "from": "Poggio San Lorenzo",
+      "to": "Ponticelli Sabino",
+      "distance": 21,
+      "description": "Hügelige Sabina-Landschaft durch Monteleone Sabino und Scandriglia."
+    },
+    {
+      "from": "Ponticelli Sabino",
+      "to": "Monterotondo",
+      "distance": 29,
+      "description": "Längste Etappe der Südroute; führt durch das Naturschutzgebiet Marcigliana bis ins Tibertal."
+    },
+    {
+      "from": "Monterotondo",
+      "to": "Rom",
+      "distance": 34,
+      "description": "Anspruchsvolle Schlussetappe mit Einzug in Rom über den Stadtteil Monte Sacro und die Via Nomentana bis zum Petersplatz."
+    }
+  ]
+}

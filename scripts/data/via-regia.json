@@ -1,0 +1,766 @@
+{
+  "_meta": {
+    "sources": [
+      "https://www.oekumenischer-pilgerweg.de/stationen.html",
+      "https://www.oekumenischer-pilgerweg.de/gehen/pilgerf%C3%BChrer-bestellen.html",
+      "https://www.oekumenischer-pilgerweg.de/vereinsadressen.html",
+      "https://www.viaregia-sachsen.de/pilgerherbergen/",
+      "https://www.viaregia-sachsen.de/pilgerherbergen-mit-pilgerausweis-nebelschuetz-bis-skassa/",
+      "https://archive.via-regia.org/pilgern/verlauf.php",
+      "https://www.wildganz.com/pilgerweg/oekumenischer-pilgerweg",
+      "https://the-camino-history.com/oekumenischer-pilgerweg-via-regia-von-goerlitz-nach-vacha/",
+      "https://dreamtravelstories.com/2018/10/04/auf-dem-deutschen-jakobsweg-von-ost-nach-west-pilgern-etappen-und-unterkunfte/",
+      "https://www.hello-world.net/via-regia/",
+      "https://www.caminodesantiago.me/community/threads/live-updates-via-regia-ecumenical-pilgrims-way-germany.41092/",
+      "https://www.jakobsweg.de/okumenischer-pilgerweg-via-regia/",
+      "https://www.pfarreebg.de/pilgerweg/",
+      "https://www.kirchenkreis-naumburg-zeitz.de/kirchenkreis/gemeinden-und-kirchen/pfarrbereich-bad-koesen/pilgerherberge/",
+      "https://schloss-frankleben.de/ubernachtungen/",
+      "https://kirche-grossenhainerland.de/pilgerherberge-grossenhain/",
+      "https://www.kirche-strehla.de/pilgerhaus.html",
+      "https://www.augustinerkloster.de/uebernachten-erfurt/",
+      "https://www.augustinerkloster-gotha.de/startseite.html",
+      "https://www.stadt-vacha.de/Tourismus-Freizeit/Wandern-Pilgern",
+      "https://abtei.marienstern.de/pilger",
+      "https://www.kirche-eisenach.de/nikolaikirche--syltenhaus",
+      "https://www.kulturpilger.de/pilgern/refugium/"
+    ],
+    "notes": [
+      "This is the Ökumenischer Pilgerweg (Ecumenical Pilgrimage Path), Germany's revived medieval Via Regia, running 466 km from Görlitz to Vacha. Operated since 2003 by Ökumenischer Pilgerweg e.V., Tiefurter Allee 2c, 99425 Weimar (pilgerweg@gmail.com).",
+      "PILGRIM PASSPORT (Pilgerausweis): Issued by Ökumenischer Pilgerweg e.V. Cost: €2 standalone, or included with the Pilgerführer guide (€12 + €2.50 shipping). Order at https://www.oekumenischer-pilgerweg.de or via pilgerweg@gmail.com. The guide includes hand-drawn 1:50,000 maps and all current hostel addresses (12th edition, 2025). Supplementary update sheets downloadable from the website.",
+      "Stage structure: 22 canonical stages between Görlitz and Vacha (total ~466 km). Stage waypoints vary slightly across sources; the canonical overnight stops used here are from the official Pilgerführer as reflected in oekumenischer-pilgerweg.de/stationen.html and wildganz.com stage pages.",
+      "Hostel network: ~120 volunteer-run Christian hostels, spaced 15–27 km apart. Minimum suggested donation: €8/night unless a fixed price is listed. Most require advance telephone booking 2–3 days ahead. Guests must bring their own sleeping bag/mat for hygiene reasons. Beds cannot be booked online at most church hostels.",
+      "Seasonal closures: Some hostels close Nov–Mar/Apr. Elbe ferry at Strehla (Lorenzkirch) operates March–October until 8 PM.",
+      "The route ends at Vacha on the former inner-German border, where it merges with the Rhönjakobsweg toward Fulda and ultimately Santiago de Compostela.",
+      "Accommodation status may have changed since sources were published (2018–2025). Always call ahead.",
+      "createdBy: 'seed' is a placeholder — replace with actual user ID before running the import script.",
+      "Waypoint slugs use German umlaut normalization: ä→ae, ö→oe, ü→ue, ß→ss."
+    ]
+  },
+  "camino": {
+    "name": "Via Regia - Ökumenischer Pilgerweg",
+    "description": "Der Ökumenische Pilgerweg Via Regia führt über 466 km von Görlitz an der deutsch-polnischen Grenze durch Sachsen, Sachsen-Anhalt und Thüringen nach Vacha an der ehemaligen innerdeutschen Grenze. Er folgt der historischen mittelalterlichen Handelsstraße Via Regia (Königliche Straße), die schon im Frühmittelalter Görlitz, Leipzig, Erfurt und Eisenach verband. Seit seiner Eröffnung im Jahr 2003 bietet der Weg ein einzigartiges Netz von rund 120 ehrenamtlich betriebenen christlichen Pilgerherbergen in Kirchengemeinden, Klöstern und Privatfamilien. Der Weg ist mit einer gelben Jakobsmuschel auf blauem Grund markiert und verbindet den Osten Deutschlands mit dem Jakobswegenetz in Richtung Santiago de Compostela.\n\nDen Pilgerausweis (Credencial) gibt der Ökumenischer Pilgerweg e.V. heraus. Er kostet 2 € als Einzeldokument oder ist im offiziellen Pilgerführer enthalten (12. Auflage 2025, 12 € zzgl. 2,50 € Versand). Der Führer enthält handgezeichnete Karten im Maßstab 1:50.000 sowie alle aktuellen Herbergsadressen. Bestellen unter www.oekumenischer-pilgerweg.de oder per E-Mail an pilgerweg@gmail.com (Ökumenischer Pilgerweg e.V., Tiefurter Allee 2c, 99425 Weimar).",
+    "verified": true,
+    "createdBy": "seed"
+  },
+  "points": [
+    {
+      "position": 1,
+      "name": "Görlitz",
+      "country": "germany",
+      "slug": "goerlitz",
+      "description": "Die östlichste Stadt Deutschlands liegt direkt an der Neiße, die hier die deutsch-polnische Grenze bildet. Startpunkt des Ökumenischen Pilgerwegs an der neuen Altstadtbrücke. Görlitz ist reich an spätgotischer und Barockarchitektur und besitzt ein einzigartiges Heiliges-Grab-Ensemble. Vier Pilgerherbergen stehen zur Verfügung.",
+      "accommodations": [
+        {
+          "name": "CVJM Peregrinus Herberge",
+          "type": "hostel",
+          "description": "Pilgerherberge des CVJM (YMCA) direkt in der Altstadt. Bis zu 41 Plätze in kleinen Schlafsälen, getrenntes Duschen/WC, Frühstück. Voranmeldung erforderlich.",
+          "addressStreet": "Langenstraße 37",
+          "addressZip": "02826",
+          "addressCity": "Görlitz",
+          "addressCountry": "germany",
+          "website": "http://www.cvjm-schlesien.de/content/peregrinus",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Herberge am Heiligen Grab",
+          "type": "hostel",
+          "description": "Pilgerherberge der VIA REGIA Sachsen e.V. direkt am historischen Heiligen Grab. Einzelzimmer spartanisch eingerichtet, Küche, Aufenthaltsraum. Derzeit teilrenoviert; Anmeldung bei Eveline Krug.",
+          "addressStreet": "Obersteinweg 7",
+          "addressZip": "02826",
+          "addressCity": "Görlitz",
+          "addressCountry": "germany",
+          "website": "http://www.viajacob.de",
+          "email": "info@viajacob.de",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 2,
+      "name": "Buchholz",
+      "country": "germany",
+      "slug": "buchholz",
+      "description": "Erstes Etappenziel nach Görlitz. Die Herberge befindet sich in der alten Dorfschule neben der Kirche.",
+      "accommodations": [
+        {
+          "name": "Pilgerherberge in der alten Schule",
+          "type": "hostel",
+          "description": "Neueingerichtete Pilgerherberge in der alten Dorfschule neben der Kirche. Einfache Ausstattung, Spende erbeten.",
+          "addressStreet": "Buchholz 72",
+          "addressZip": "02894",
+          "addressCity": "Buchholz",
+          "addressCountry": "germany",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 3,
+      "name": "Bautzen",
+      "country": "germany",
+      "slug": "bautzen",
+      "description": "Historische Hauptstadt der Sorben; die Stadt begleitet die Via Regia seit dem Mittelalter. Der Weg führt auf der alten Trasse um das Stadtzentrum. Dom zu Bautzen, Ortenburg und sorbische Kultureinrichtungen prägen das Bild.",
+      "accommodations": [
+        {
+          "name": "Jacobszimmer in der Ev.-Luth. Kirchgemeinde St. Petri",
+          "type": "church",
+          "description": "Pilgerunterkunft im Kirchgemeindehaus St. Petri für bis zu 6 Personen. Spende erbeten. Schlüssel bei Bäckerei Richter, Töpferstraße 5, oder an Wochenenden beim Domwächter.",
+          "addressStreet": "Am Stadtwall 12",
+          "addressZip": "02625",
+          "addressCity": "Bautzen",
+          "addressCountry": "germany",
+          "website": "http://www.st-petri-bautzen.de",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 4,
+      "name": "Kloster Marienstern",
+      "country": "germany",
+      "slug": "kloster-marienstern",
+      "description": "Zisterzienserinnen-Abtei St. Marienstern, 1248 gegründet und seitdem ununterbrochen bewohnt. Das Kloster im sorbischen Panschwitz-Kuckau ist eine der bedeutendsten klösterlichen Stationen des Weges. Ankunft bis 18 Uhr, Anmeldung am Klostertor.",
+      "accommodations": [
+        {
+          "name": "Pilgerherberge Kloster St. Marienstern",
+          "type": "monastery",
+          "description": "Zwei Zimmer mit je 3 Betten (Doppelstockbett + Feldbett) und Waschbecken plus 2 Zusatzbetten, max. 8 Betten gesamt. Vollküche, 2 Duschen, 2 WCs. Keine Mahlzeiten. Voranmeldung erforderlich, Ankunft bis 18 Uhr. Spende erbeten.",
+          "addressStreet": "Ćišinskistr. 35",
+          "addressZip": "01920",
+          "addressCity": "Panschwitz-Kuckau",
+          "addressCountry": "germany",
+          "website": "https://www.marienstern.de",
+          "email": "gaestehaus@marienstern.de",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 5,
+      "name": "Königsbrück",
+      "country": "germany",
+      "slug": "koenigsbrueck",
+      "description": "Ehemaliger Zollplatz an der Via Regia. Das Armenhaus Stenz gilt als eine der ursprünglichsten Herbergen des Weges — ein historisches Armenhaus aus dem 18. Jahrhundert mit 3 Schlafplätzen im Dachboden. Übergang von der Lausitz in die Großenhainer Pflege.",
+      "accommodations": [
+        {
+          "name": "Armenhaus Stenz",
+          "type": "hostel",
+          "description": "Historisches Armenhaus, eines der ursprünglichsten Quartiere auf dem Ökumenischen Pilgerweg. Küche/Wohnraum mit Holzofen, 3 Matratzen im Dachboden, Plumpsklo hinter dem Haus, Eimer Wasser zum Waschen. Ausschließlich für Pilger. Spende erbeten.",
+          "addressStreet": "Großenhainer Straße 51",
+          "addressZip": "01936",
+          "addressCity": "Königsbrück",
+          "addressCountry": "germany",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 6,
+      "name": "Großenhain",
+      "country": "germany",
+      "slug": "grossenhain",
+      "description": "Kleinstadt in der Großenhainer Pflege. Die evangelische Kirchengemeinde betreibt die Pilgerherberge im Kirchplatz hinter der Marienkirche. Naturreibad in der Stadt.",
+      "accommodations": [
+        {
+          "name": "Pilgerherberge Großenhain",
+          "type": "church",
+          "description": "Zwei Zimmer mit max. 10 Schlafplätzen, Gemeinschaftsraum, Küche, WC, Dusche, Fahrradstellplatz. Bettwäsche inklusive. Saison: Ostern bis Reformationstag (31. Oktober). Preis: 12 € pro Person (mit Pilgerausweis).",
+          "addressStreet": "Kirchplatz 3",
+          "addressZip": "01558",
+          "addressCity": "Großenhain",
+          "addressCountry": "germany",
+          "website": "https://kirche-grossenhainerland.de",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 7,
+      "name": "Strehla",
+      "country": "germany",
+      "slug": "strehla",
+      "description": "Elbübergang mit historischer Fähre nach Lorenzkirch (Saisonbetrieb März–Oktober bis 20 Uhr). Der Weg verlässt hier die Sächsische Schweiz und folgt der alten Salzstraße.",
+      "accommodations": [
+        {
+          "name": "Pilgerhaus Strehla (Ev. Pfarrhof)",
+          "type": "church",
+          "description": "Pilgerhaus im evangelischen Pfarrhof Strehla. Waschmaschine, 2 Duschen, Küche, Gästebuch. Fahrradverleih für Ausflüge verfügbar. Keine Hunde. Telefonische Anmeldung erforderlich.",
+          "addressStreet": "Pfarrweg 3",
+          "addressZip": "01616",
+          "addressCity": "Strehla",
+          "addressCountry": "germany",
+          "website": "https://www.kirche-strehla.de",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 8,
+      "name": "Dahlen",
+      "country": "germany",
+      "slug": "dahlen",
+      "description": "Marktflecken zwischen Strehla und Wurzen. Übergangsstation auf dem Weg durch die Nordsächsische Tieflandsbucht.",
+      "accommodations": [
+        {
+          "name": "Kreativ Jugendherberge Dahlen",
+          "type": "hostel",
+          "description": "Jugendherberge in Dahlen als Pilgerstation auf der Via Regia. Mehrbettzimmer, Gemeinschaftsküche, Frühstücksmöglichkeit. Voranmeldung empfohlen.",
+          "addressStreet": null,
+          "addressZip": "04774",
+          "addressCity": "Dahlen",
+          "addressCountry": "germany",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 9,
+      "name": "Wurzen",
+      "country": "germany",
+      "slug": "wurzen",
+      "description": "Bischofstadt an der Mulde mit romanischem Dom. Der Jakobsplatz und die Jakobsgasse zeugen von der mittelalterlichen Pilgergeschichte. Herberge im katholischen Pfarramt Herz Jesu (Roitzsch) oder bei der evangelischen Domgemeinde.",
+      "accommodations": [
+        {
+          "name": "Pilgerherberge Kath. Pfarramt Herz Jesu",
+          "type": "church",
+          "description": "Einfache Pilgerunterkunft im katholischen Pfarramt, Ortsteil Roitzsch. Spendenbasiert, Voranmeldung erforderlich.",
+          "addressStreet": null,
+          "addressZip": "04808",
+          "addressCity": "Wurzen",
+          "addressCountry": "germany",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 10,
+      "name": "Leipzig",
+      "country": "germany",
+      "slug": "leipzig",
+      "description": "Bedeutende Messestadt und Musikhauptstadt, historisch wichtiger Knotenpunkt der Via Regia. Der Weg führt durch die Innenstadt über die Eisenbahnstraße und die Rosa-Luxemburg-Straße und verlässt die Stadt durch das Rosental in Richtung Sachsen-Anhalt. Thomaskirche und Nikolaikirche als historische Wegmarken.",
+      "accommodations": [
+        {
+          "name": "Hostel Central Globetrotter",
+          "type": "hostel",
+          "description": "Zentrales Hostel in Leipzig-Mitte. Günstigste Möglichkeit für Pilger in der Großstadt, ab ca. 13 € pro Person.",
+          "addressStreet": "Kurt-Schumacher-Straße 41",
+          "addressZip": "04105",
+          "addressCity": "Leipzig",
+          "addressCountry": "germany",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 11,
+      "name": "Kleinliebenau",
+      "country": "germany",
+      "slug": "kleinliebenau",
+      "description": "Kleines Dorf nahe Schkeuditz mit der historischen Rittergutskirche. Letzte Station in Sachsen vor dem Übergang nach Sachsen-Anhalt. Der Kultur- und Pilgerverein Kleinliebenau e.V. betreibt eine Pilgerherberge im Nebengebäude der Kirche.",
+      "accommodations": [
+        {
+          "name": "Refugium Rittergutskirche Kleinliebenau",
+          "type": "hostel",
+          "description": "Pilgerherberge des Kultur- und Pilgervereins Kleinliebenau e.V. im Anbau der Rittergutskirche. Eröffnet Mai 2009. Spende erbeten. Schlüssel laut Aushang am Kirchentor.",
+          "addressStreet": "Gutshofstraße 15",
+          "addressZip": "04435",
+          "addressCity": "Schkeuditz OT Kleinliebenau",
+          "addressCountry": "germany",
+          "website": "https://www.kulturpilger.de",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 12,
+      "name": "Merseburg",
+      "country": "germany",
+      "slug": "merseburg",
+      "description": "Ehemalige Bischofsstadt an der Saale mit mächtigem Dom und Schloss. Die Neumarktkirche St. Thomae — älteste Kirche der Stadt — dient als Pilgerherberge. Historisch einer der wichtigsten Bischofssitze des Reiches.",
+      "accommodations": [
+        {
+          "name": "Pilgerherberge Neumarktkirche St. Thomae",
+          "type": "church",
+          "description": "Älteste Kirche Merseburgs als Pilgerquartier. Schlüssel bis 18 Uhr bei Bäckerei Rathaus (Neumarkt 21) oder Dompfarramt (Dompropstei 2). Spendenbasiert.",
+          "addressStreet": "Neumarkt",
+          "addressZip": "06217",
+          "addressCity": "Merseburg",
+          "addressCountry": "germany",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 13,
+      "name": "Frankleben",
+      "country": "germany",
+      "slug": "frankleben",
+      "description": "Kleines Dorf bei Braunsbedra mit Schloss Frankleben. Pilgerherberge im Kulturgut Schloss Frankleben, betrieben seit 2011. Winterpause 30. Nov. bis 26. März.",
+      "accommodations": [
+        {
+          "name": "Pilgerherberge Kulturgut Schloss Frankleben",
+          "type": "hostel",
+          "description": "Pilgerherberge im historischen Kulturgut Schloss Frankleben seit 2011. Ca. 10 Schlafplätze. Preis: 10 € Herberge; optional Gabis exquisites Pilgerfrühstück 8 €. Winterpause 30.11.–26.03.",
+          "addressStreet": "Unterhof 1",
+          "addressZip": "06259",
+          "addressCity": "Frankleben",
+          "addressCountry": "germany",
+          "website": "https://schloss-frankleben.de",
+          "email": "pt@span-it.de",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 14,
+      "name": "Freyburg",
+      "country": "germany",
+      "slug": "freyburg",
+      "description": "Idyllische Weinstadt an der Unstrut mit Neuenburg-Burg. Die Stadt lädt zum Verweilen ein. Pilgerquartier bei christlicher Familie am Bahnhof (Familie Fiedelak).",
+      "accommodations": [
+        {
+          "name": "Pilgerquartier Familie Fiedelak",
+          "type": "private_room",
+          "description": "Einzige Pilgerunterkunft in Freyburg, betrieben von der Familie Fiedelak (Karosseriebauerei) nahe dem Bahnhof. Einfaches Zimmer mit Doppelstockbetten. Preis: ca. 14,40 € pro Person.",
+          "addressStreet": "Bahnhofstraße 8",
+          "addressZip": "06632",
+          "addressCity": "Freyburg (Unstrut)",
+          "addressCountry": "germany",
+          "website": null,
+          "email": "buchungen@ferien-freyburg.de",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 15,
+      "name": "Roßbach",
+      "country": "germany",
+      "slug": "rossbach",
+      "description": "Kleines Dorf bei Naumburg/Saale. Pilgerherberge im Kath. Jugendbildungszentrum St. Michael, das auch als Alternativquartier zu Naumburg dient.",
+      "accommodations": [
+        {
+          "name": "Kath. Jugendbildungszentrum St. Michael",
+          "type": "hostel",
+          "description": "Pilgerherberge im Kath. Jugendbildungszentrum Roßbach für bis zu 4 Pilger. Preis: 15 € pro Person. Voranmeldung erforderlich.",
+          "addressStreet": "Am Leihdenberg 1",
+          "addressZip": "06618",
+          "addressCity": "Roßbach",
+          "addressCountry": "germany",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 16,
+      "name": "Naumburg",
+      "country": "germany",
+      "slug": "naumburg",
+      "description": "UNESCO-Welterbe-Stadt mit dem berühmten Naumburger Dom und seinen mittelalterlichen Stifterfiguren. Zugang über die Fähre an der Unstrutmündung oder über den Marientor. Bedeutende Station an der Via Regia.",
+      "accommodations": [
+        {
+          "name": "Haus der Kirche Naumburg",
+          "type": "hostel",
+          "description": "Pilgerherberge im Haus der Kirche der Evangelischen Kirchengemeinde Naumburg. Pilgerraum für Gruppen. Preis: 12 € pro Person. Schlüssel bis 18 Uhr am Domeingang (Pilgerstempel vorhanden).",
+          "addressStreet": "Domplatz 8",
+          "addressZip": "06618",
+          "addressCity": "Naumburg (Saale)",
+          "addressCountry": "germany",
+          "website": "https://www.evangelische-kirche-naumburg.de",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 17,
+      "name": "Eckartsberga",
+      "country": "germany",
+      "slug": "eckartsberga",
+      "description": "Kleine Stadt in Sachsen-Anhalt mit der Eckartsburg. Der Weg führt durch das Naturschutzgebiet Göttersitz. Pilgerherberge in Lißdorf mit Glockengeläut zur Begrüßung. Panoramablick vom Eckartsburg-Turm.",
+      "accommodations": [
+        {
+          "name": "Pilgerherberge Pfarrhaus Eckartsberga",
+          "type": "hostel",
+          "description": "Pfarrhaus mit Pilgerherberge. Ca. 15 Matratzen in 2 Räumen, Decken, Dusche, WC, Küche. Im Sommer auch Schlafen im Kirchenschiff möglich. Familie Röder in Lißdorf bietet zusätzliche Unterstützung an.",
+          "addressStreet": "Kirchberg 176",
+          "addressZip": "06648",
+          "addressCity": "Eckartsberga",
+          "addressCountry": "germany",
+          "website": "https://www.pfarreebg.de",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 18,
+      "name": "Erfurt",
+      "country": "germany",
+      "slug": "erfurt",
+      "description": "Landeshauptstadt Thüringens und im Mittelalter als 'Rom des Nordens' bezeichnet. Krämerbrücke, Dom und Severikirche, Augustinerkloster (Martin Luthers Wirkungsstätte) und das historische Stadtzentrum prägen die Stadt. Wichtige Station auf der Via Regia seit dem Frühmittelalter.",
+      "accommodations": [
+        {
+          "name": "Ev. Augustinerkloster zu Erfurt",
+          "type": "monastery",
+          "description": "Evangelisches Augustinerkloster und Luthergedenkstätte. Pilgerquartier im Kloster, im Waidhaus (Stille und Kontemplation) und im Gästehaus Nikolai (ca. 100 m entfernt, renoviertes Stadthaus). Online-Buchung möglich.",
+          "addressStreet": "Augustinerstraße 10",
+          "addressZip": "99084",
+          "addressCity": "Erfurt",
+          "addressCountry": "germany",
+          "website": "https://www.augustinerkloster.de",
+          "email": "info@augustinerkloster.de",
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "Pilgerherberge Georgenburse",
+          "type": "hostel",
+          "description": "Ökumenische Pilgerherberge im Dachgeschoss des Bildungs- und Begegnungszentrums Georgenburse (Augustinerkloster), eröffnet 31.10.2010. Kein Kochen wegen historischer Holzbalkendecke. Kontakt über Augustinerkloster. Ca. 14 € pro Nacht.",
+          "addressStreet": "Augustinerstraße 10",
+          "addressZip": "99084",
+          "addressCity": "Erfurt",
+          "addressCountry": "germany",
+          "website": "https://www.augustinerkloster.de",
+          "email": "info@augustinerkloster.de",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 19,
+      "name": "Gotha",
+      "country": "germany",
+      "slug": "gotha",
+      "description": "Residenzstadt mit Schloss Friedenstein, dem größten frühbarocken Schloss Deutschlands. Drei Pilgerunterkünfte vorhanden. Im Fürstenhof gibt es günstige Mahlzeiten. Gotha liegt an der historischen Via Regia und ist Etappenziel ca. 25 km von Erfurt entfernt.",
+      "accommodations": [
+        {
+          "name": "Augustinerkloster Gotha Herberge",
+          "type": "monastery",
+          "description": "Historisches Augustinerkloster in Gotha mit einfachen, modernen Zimmern, Café und historischer Bibliothek. Rezeption Mo–Fr bis 17 Uhr. Preis: ca. 41 € pro Person (13+), Kinder 4–12 Jahre 20 €.",
+          "addressStreet": "Jüdenstraße 27",
+          "addressZip": "99867",
+          "addressCity": "Gotha",
+          "addressCountry": "germany",
+          "website": "https://www.augustinerkloster-gotha.de",
+          "email": "info@augustinerkloster-gotha.de",
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "Pilgerquartier Fam. Beutler",
+          "type": "private_room",
+          "description": "Privates Pilgerquartier in Gotha-Siebleben. Preis: 25 € pro Person. Voranmeldung erforderlich.",
+          "addressStreet": "Mönchallee 5",
+          "addressZip": "99867",
+          "addressCity": "Gotha-Siebleben",
+          "addressCountry": "germany",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Ev.-Luth. Versöhnungskirche Gotha-West",
+          "type": "church",
+          "description": "Pilgerquartier in der evangelisch-lutherischen Versöhnungskirchengemeinde Gotha-West. Einfache Unterkunft, Spende erbeten.",
+          "addressStreet": "Werner-Sylten-Straße 1",
+          "addressZip": "99867",
+          "addressCity": "Gotha-West",
+          "addressCountry": "germany",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 20,
+      "name": "Wutha-Farnroda",
+      "country": "germany",
+      "slug": "wutha-farnroda",
+      "description": "Gemeinde im Wartburgkreis am Fuß des Hörselberges, westlich von Eisenach. Der Weg führt durch die historischen Hohlwege des Hörselberges mit mittelalterlichen Wagenspuren. Pilgerquartier bei Familie Klinger.",
+      "accommodations": [
+        {
+          "name": "Pilgerquartier Familie Klinger",
+          "type": "private_room",
+          "description": "Privates Pilgerquartier bei Familie Klinger in Wutha-Farnroda. Einfache Zimmer nahe dem Wanderweg, Voranmeldung erforderlich. Spende erbeten.",
+          "addressStreet": null,
+          "addressZip": "99848",
+          "addressCity": "Wutha-Farnroda",
+          "addressCountry": "germany",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 21,
+      "name": "Eisenach",
+      "country": "germany",
+      "slug": "eisenach",
+      "description": "Historische Stadt am Thüringer Wald mit der überragenden Wartburg (UNESCO-Welterbe). Luther übersetzte hier das Neue Testament; Elisabeth von Thüringen lebte hier; Johann Sebastian Bach wurde hier geboren. Der Weg steigt zur Wartburg auf, bevor er in Richtung Vacha weitergeht. Drei Pilgerherbergen vorhanden.",
+      "accommodations": [
+        {
+          "name": "Nikolaikirche & Werner-Sylten-Haus (Nikolaizentrum)",
+          "type": "church",
+          "description": "Die Nikolaikirche (12. Jh.) dient als Pilgerstation auf dem Jakobsweg und der Via Regia. Das angeschlossene Nikolaizentrum bietet Pilgerübernachtungen, Einzel- und Abschlussgottesdienste sowie Pilgersegen an. Voranmeldung erforderlich.",
+          "addressStreet": "Ludwigstraße 38",
+          "addressZip": "99817",
+          "addressCity": "Eisenach",
+          "addressCountry": "germany",
+          "website": "https://www.kirche-eisenach.de",
+          "email": "armin.poehlmann@kirchenkreis-eisenach.de",
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Diakonissenmutterhaus Eisenach",
+          "type": "hostel",
+          "description": "Christliche Pilgerunterkunft im Diakonissenmutterhaus Eisenach. Einfache Zimmer in ruhiger Lage, Gemeinschaftsräume. Voranmeldung erforderlich.",
+          "addressStreet": null,
+          "addressZip": "99817",
+          "addressCity": "Eisenach",
+          "addressCountry": "germany",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 22,
+      "name": "Oberellen",
+      "country": "germany",
+      "slug": "oberellen",
+      "description": "Kleines Dorf im Wartburgkreis. Der Weg führt über den Rennsteig und den Napoleonweg nach Oberellen. Pilgerquartier in der alten Schule neben der Kirche.",
+      "accommodations": [
+        {
+          "name": "Pilgerquartier Alte Schule Oberellen",
+          "type": "hostel",
+          "description": "Einfache Pilgerunterkunft in der alten Dorfschule neben der Kirche. Ankunft: Friedensteinstraße 42. Voranmeldung erforderlich.",
+          "addressStreet": "Friedensteinstraße 42",
+          "addressZip": "36433",
+          "addressCity": "Oberellen",
+          "addressCountry": "germany",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 23,
+      "name": "Vacha",
+      "country": "germany",
+      "slug": "vacha",
+      "description": "Endpunkt des Ökumenischen Pilgerwegs an der Werra, an der ehemaligen innerdeutschen Grenze. Die Stadt verbindet den Weg mit dem Rhönjakobsweg in Richtung Fulda. Die Pilgerherberge befindet sich in der Kemenate am Kirchplatz, einem der ältesten Gebäude der Stadt.",
+      "accommodations": [
+        {
+          "name": "Pilgerherberge Kemenate Vacha",
+          "type": "hostel",
+          "description": "Pilgerherberge für 12 Pilger in der historischen Kemenate (eines der ältesten Gebäude Vachas). Dusche/Bad, Küche, Gemeinschaftsraum, 2 Schlafzimmer. Preis: 15 € (Spende). Erreichbar Mo–Fr 9–18 Uhr im Rhönbuchhaus Vacha, Widemarkter Straße; Wochenende/Feiertag: 0151 25804584.",
+          "addressStreet": "Kirchplatz 8",
+          "addressZip": "36404",
+          "addressCity": "Vacha",
+          "addressCountry": "germany",
+          "website": "https://www.stadt-vacha.de",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Vierständerhaus Vacha",
+          "type": "hostel",
+          "description": "Historisches Vierständerhaus in Vacha als Pilgerunterkunft. Einfache Schlafplätze in historischem Fachwerkgebäude. Voranmeldung erforderlich.",
+          "addressStreet": null,
+          "addressZip": "36404",
+          "addressCity": "Vacha",
+          "addressCountry": "germany",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    }
+  ],
+  "stages": [
+    {
+      "from": "Görlitz",
+      "to": "Buchholz",
+      "distance": 28,
+      "description": "Der Weg verlässt Görlitz über die Altstadtbrücke und führt durch Felder und die Königshainer Berge (Deutschlands kleinstes Mittelgebirge) nach Buchholz. Hochsteinbaude bietet einfache Mahlzeiten."
+    },
+    {
+      "from": "Buchholz",
+      "to": "Bautzen",
+      "distance": 26,
+      "description": "Der Weg führt über Weißenberg, Gröditz und die romantische Gröditzer Skala sowie durch sorbische Dörfer nach Bautzen."
+    },
+    {
+      "from": "Bautzen",
+      "to": "Kloster Marienstern",
+      "distance": 20,
+      "description": "Vom Dom zu Bautzen führt der Weg durch sorbische Kulturlandschaft nach Panschwitz-Kuckau zum Zisterzienserkloster Marienstern."
+    },
+    {
+      "from": "Kloster Marienstern",
+      "to": "Königsbrück",
+      "distance": 26,
+      "description": "Der Weg führt über Dürrwicknitz, Kamenz (mit Türmerhaus am Hutberg als Zwischenstation) und Schwosdorf nach Königsbrück."
+    },
+    {
+      "from": "Königsbrück",
+      "to": "Großenhain",
+      "distance": 32,
+      "description": "Langer Übergang durch die Großenhainer Pflege. Historischer Waldweg aus dem Jahr 2003 rekonstruiert. Passiert Schönfeld mit Zauberschloss als Zwischenstation."
+    },
+    {
+      "from": "Großenhain",
+      "to": "Strehla",
+      "distance": 27,
+      "description": "Der Weg führt über die Großenhainer Ebene nach Strehla an der Elbe. Historische Fähre nach Lorenzkirch (März–Oktober, bis 20 Uhr)."
+    },
+    {
+      "from": "Strehla",
+      "to": "Dahlen",
+      "distance": 17,
+      "description": "Nach der Elbüberquerung folgt der Weg der alten Salzstraße über die Liebschützberge nach Dahlen."
+    },
+    {
+      "from": "Dahlen",
+      "to": "Wurzen",
+      "distance": 20,
+      "description": "Der Weg führt durch nordsächsisches Tiefland nach Wurzen an der Mulde mit seinem romanischen Dom."
+    },
+    {
+      "from": "Wurzen",
+      "to": "Leipzig",
+      "distance": 30,
+      "description": "Langer Etappenmarsch nach Leipzig. Der Weg verläuft über Gerichshain und folgt dem Luppetal durch das Rosental in die Innenstadt. An der Thomaskirche und Nikolaikirche vorbei."
+    },
+    {
+      "from": "Leipzig",
+      "to": "Kleinliebenau",
+      "distance": 16,
+      "description": "Kurze Etappe aus der Großstadt. Der Weg führt durch die nördlichen Vororte Leipzigs nach Kleinliebenau bei Schkeuditz an der sächsisch-sachsen-anhaltinischen Grenze."
+    },
+    {
+      "from": "Kleinliebenau",
+      "to": "Merseburg",
+      "distance": 18,
+      "description": "Der Weg überquert die Landesgrenze nach Sachsen-Anhalt und führt über Horburg (romanische Kirche, ehemaliger Marienwall) und das Sumpfland nach Merseburg an der Saale."
+    },
+    {
+      "from": "Merseburg",
+      "to": "Frankleben",
+      "distance": 8,
+      "description": "Kurze Etappe von Merseburg nach Frankleben bei Braunsbedra. Wegführung durch die saaleländische Kulturlandschaft."
+    },
+    {
+      "from": "Frankleben",
+      "to": "Freyburg",
+      "distance": 20,
+      "description": "Der Weg führt über Lunstädt (Hassesee mit Campingmöglichkeit) nach Freyburg an der Unstrut mit Neuenburg-Burg und Weinterrassen."
+    },
+    {
+      "from": "Freyburg",
+      "to": "Roßbach",
+      "distance": 12,
+      "description": "Kurze Etappe von Freyburg nach Roßbach entlang der Unstrut. Kath. Jugendbildungszentrum St. Michael als Quartier."
+    },
+    {
+      "from": "Roßbach",
+      "to": "Naumburg",
+      "distance": 6,
+      "description": "Kurze Etappe nach Naumburg. Zugang zum Dom über den Marientor. Fähre über die Unstrut-Saale-Mündung."
+    },
+    {
+      "from": "Naumburg",
+      "to": "Eckartsberga",
+      "distance": 24,
+      "description": "Der Weg führt über Punschrau (Pilgerherberge) und durch das Naturschutzgebiet Göttersitz nach Eckartsberga. Weite Aussichten über die thüringische Hügellandschaft."
+    },
+    {
+      "from": "Eckartsberga",
+      "to": "Erfurt",
+      "distance": 48,
+      "description": "Langer Abschnitt über Buttelstedt, Stedten (Turmzimmer der Dorfkirche als Quartier) und Ollendorf/Frienstedt nach Erfurt. Etappe kann auf zwei Tagesetappen aufgeteilt werden."
+    },
+    {
+      "from": "Erfurt",
+      "to": "Gotha",
+      "distance": 25,
+      "description": "Der Weg verlässt Erfurt über den Brühler Hohlweg, passiert Schmira und Kleinrettbach nach Gotha-Siebleben. Ein Meilenkreuz mit Wappen von 1494 markiert die historische Trasse."
+    },
+    {
+      "from": "Gotha",
+      "to": "Wutha-Farnroda",
+      "distance": 22,
+      "description": "Der Weg führt durch die Vorberge des Thüringer Waldes. Am Hörselberg historische Hohlwege mit mittelalterlichen Wagenspuren. Etappenziel in Wutha-Farnroda am Fuß des Hörselberges."
+    },
+    {
+      "from": "Wutha-Farnroda",
+      "to": "Eisenach",
+      "distance": 12,
+      "description": "Kurze Etappe nach Eisenach mit Aufstieg zur Wartburg. Der Weg führt durch das Hörseltal und mündet in die Lutherstadt Eisenach."
+    },
+    {
+      "from": "Eisenach",
+      "to": "Oberellen",
+      "distance": 14,
+      "description": "Der Weg steigt über den Schlossberg zur Wartburg auf, folgt dann dem Rennsteig und dem Napoleonweg bis Grenzlinde mit historischen Wagenspuren, und steigt nach Oberellen ab."
+    },
+    {
+      "from": "Oberellen",
+      "to": "Vacha",
+      "distance": 25,
+      "description": "Letzte Etappe des Ökumenischen Pilgerwegs. Der Weg führt über Sallmannshausen nach Vacha an der Werra, wo er in den Rhönjakobsweg in Richtung Fulda übergeht."
+    }
+  ]
+}

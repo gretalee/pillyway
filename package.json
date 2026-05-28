@@ -22,6 +22,10 @@
     "db:migrate": "yarn --cwd apps/backend prisma:migrate:deploy",
     "seed:camino": "yarn --cwd apps/backend seed:camino",
     "seed:camino:prod": "yarn --cwd apps/backend seed:camino:prod",
+    "seed:franziskusweg": "yarn --cwd apps/backend seed:franziskusweg",
+    "seed:franziskusweg:prod": "yarn --cwd apps/backend seed:franziskusweg:prod",
+    "seed:via-regia": "yarn --cwd apps/backend seed:via-regia",
+    "seed:via-regia:prod": "yarn --cwd apps/backend seed:via-regia:prod",
     "db:backup:dev": "yarn --cwd apps/backend db:backup:dev",
     "db:backup:prod": "yarn --cwd apps/backend db:backup:prod",
     "db:restore:dev": "yarn --cwd apps/backend db:restore:dev"
