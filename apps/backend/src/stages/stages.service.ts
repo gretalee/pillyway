@@ -50,7 +50,11 @@ export class StagesService {
     const orderedPoints = await this.prisma.caminoPointOrder.findMany({
       where: { caminoId },
       orderBy: { position: 'asc' },
-      include: { caminoPoint: { include: { _count: { select: { accommodations: true } } } } },
+      include: {
+        caminoPoint: {
+          include: { _count: { select: { accommodations: true } } },
+        },
+      },
     });
 
     if (orderedPoints.length === 0) {
@@ -147,7 +151,11 @@ export class StagesService {
     const orderedPoints = await this.prisma.caminoPointOrder.findMany({
       where: { caminoId },
       orderBy: { position: 'asc' },
-      include: { caminoPoint: { include: { _count: { select: { accommodations: true } } } } },
+      include: {
+        caminoPoint: {
+          include: { _count: { select: { accommodations: true } } },
+        },
+      },
     });
 
     if (orderedPoints.length === 0) {

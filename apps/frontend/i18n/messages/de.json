@@ -243,7 +243,7 @@
     "error_loading_accommodations": "Unterkünfte konnten nicht geladen werden. Bitte versuche es erneut.",
     "error_loading_sights": "Sehenswürdigkeiten konnten nicht geladen werden. Bitte versuche es erneut.",
     "accommodation_type": {
-      "hostel": "Hostel",
+      "hostel": "Herberge",
       "monastery": "Kloster",
       "b_and_b": "Bed & Breakfast",
       "hotel": "Hotel",
