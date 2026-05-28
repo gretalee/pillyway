@@ -79,7 +79,7 @@ function makeOrderRows(points: (typeof PT_A)[]) {
     caminoId: CAMINO_ID_A,
     caminoPointId: pt.id,
     position: i + 1,
-    caminoPoint: pt,
+    caminoPoint: { ...pt, _count: { accommodations: 0 } },
   }));
 }
 
@@ -202,7 +202,7 @@ describe('StagesService.findOne()', () => {
       caminoId,
       caminoPointId: pt.id,
       position: i + 1,
-      caminoPoint: pt,
+      caminoPoint: { ...pt, _count: { accommodations: 0 } },
     }));
   }
 
@@ -491,7 +491,7 @@ describe('StagesService.update()', () => {
       caminoId: CAMINO_ID_B,
       caminoPointId: pt.id,
       position: i + 1,
-      caminoPoint: pt,
+      caminoPoint: { ...pt, _count: { accommodations: 0 } },
     }));
 
     let findManyCalls = 0;
