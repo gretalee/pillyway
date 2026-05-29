@@ -233,9 +233,16 @@ export class CaminoPicturesService {
       );
     }
 
+    // If label is omitted, treat this as a no-op (clients must send null to clear).
+    if (label === undefined) {
+      return plainToInstance(CaminoPictureResponseDto, picture, {
+        excludeExtraneousValues: true,
+      });
+    }
+
     const updated = await this.prisma.caminoPicture.update({
       where: { id: pictureId },
-      data: { label: label ?? null },
+      data: { label },
     });
 
     return plainToInstance(CaminoPictureResponseDto, updated, {
