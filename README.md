@@ -157,16 +157,13 @@ Copy the `.env.example` files in each app directory and fill in the values.
 
 ```bash
 # Apply all pending migrations
-yarn workspace @pillyway/backend prisma:migrate:deploy
-
-# Or, during development, create and apply a new migration
-yarn workspace @pillyway/backend prisma:migrate:dev --name <description>
+yarn db:migrate
 
 # Generate Prisma client types (runs automatically via postinstall)
-yarn workspace @pillyway/backend prisma:generate
+yarn prisma:generate
 
 # Open Prisma Studio (visual DB browser)
-yarn workspace @pillyway/backend prisma:studio
+yarn prisma:studio
 ```
 
 ### Running Locally
@@ -179,24 +176,6 @@ yarn dev:backend      # http://localhost:3033
 # Start the Next.js frontend
 yarn dev:frontend     # http://localhost:3000
 ```
-
----
-
-## Available Scripts
-
-| Command               | Description                               |
-| --------------------- | ----------------------------------------- |
-| `yarn dev:backend`    | Start backend with hot-reload             |
-| `yarn dev:frontend`   | Start frontend dev server                 |
-| `yarn build:backend`  | Production build (backend)                |
-| `yarn build:frontend` | Production build (frontend)               |
-| `yarn test:backend`   | Run backend unit tests (Vitest)           |
-| `yarn test:frontend`  | Run frontend unit tests (Vitest)          |
-| `yarn test:e2e`       | Build frontend + run Playwright E2E tests |
-| `yarn test:e2e:ui`    | Run Playwright tests with interactive UI  |
-| `yarn lint`           | Lint backend and frontend                 |
-| `yarn ts:backend`     | TypeScript type-check (backend)           |
-| `yarn ts:frontend`    | TypeScript type-check (frontend)          |
 
 ---
 
@@ -270,6 +249,7 @@ Both backend and frontend use **Vitest**.
 ```bash
 yarn test:backend    # runs apps/backend unit tests
 yarn test:frontend   # runs apps/frontend unit tests
+yarn test            # runs both
 ```
 
 ### E2E Tests (Playwright)

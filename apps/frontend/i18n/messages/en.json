@@ -90,6 +90,8 @@
     "title": "Create New Camino",
     "meta_title": "Create New Camino | Pillyway",
     "meta_description": "Create a new camino and contribute to the pilgrimage community.",
+    "pictures_step_heading": "Add pictures (optional)",
+    "view_camino": "View camino",
     "field_name": "Camino Name",
     "field_description": "Description (optional)",
     "title_points": "Waypoints",
@@ -117,6 +119,10 @@
       "no": "No, create a new waypoint"
     }
   },
+  "common": {
+    "cancel": "Cancel",
+    "delete": "Delete"
+  },
   "camino_detail": {
     "meta_title": "Camino Detail | Pillyway",
     "meta_description": "View the full details of this pilgrimage route.",
@@ -136,7 +142,33 @@
     "vote_login_hint": "Log in to verify this route.",
     "vote_yes_count": "{count} Yes",
     "vote_no_count": "{count} No",
-    "vote_error": "Your vote could not be saved. Please try again."
+    "vote_error": "Your vote could not be saved. Please try again.",
+    "pictures": {
+      "upload_main": "Add main picture",
+      "upload_gallery": "Add picture to gallery",
+      "limit_reached": "Maximum number of pictures (50) reached.",
+      "open_fullscreen": "Open image fullscreen",
+      "delete": "Delete picture",
+      "uploading": "Uploading…",
+      "upload_error_generic": "Failed to upload picture. Please try again.",
+      "upload_error_too_large": "File is too large. Maximum 10 MB allowed.",
+      "upload_error_wrong_type": "Invalid file type. Allowed: JPEG, PNG and WebP.",
+      "upload_error_primary_exists": "A main picture already exists.",
+      "delete_error": "Failed to delete picture. Please try again.",
+      "label_placeholder": "Add a caption…",
+      "edit_label": "Edit caption",
+      "label_error": "Failed to save caption. Please try again.",
+      "delete_confirm": {
+        "title": "Delete picture?",
+        "body": "This picture will be permanently deleted and cannot be restored."
+      },
+      "lightbox": {
+        "title": "Image view",
+        "close": "Close",
+        "prev": "Previous image",
+        "next": "Next image"
+      }
+    }
   },
   "caminos_update": {
     "title": "Update Camino",
@@ -145,6 +177,7 @@
     "submit": "Save changes",
     "submitting": "Saving…",
     "cancel": "Cancel",
+    "pictures_section_heading": "Pictures",
     "error_generic": "Failed to update camino. Please try again.",
     "error_conflict": "A camino with this name already exists. Please choose a different name.",
     "error_forbidden": "You are not authorized to edit this camino. Only the creator (within 2 hours of creation) or an administrator can edit it.",

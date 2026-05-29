@@ -16,6 +16,7 @@ Pillyway is a pilgrimage route planning app. Users discover routes, stages, and 
 - **CaminoPointOrder** — join table: camino_id + camino_point_id + position (1-based). Composite PK (camino_id, camino_point_id). Unique (camino_id, position).
 - **Stage** — the path between two consecutive CaminoPoints. Table: `stages`. Unique on (start_point_id, end_point_id). Globally shared — one row for a point pair, reused by all Caminos that traverse it. Fields: id, startPointId, endPointId, distance (Float?), description (String?), createdAt, updatedAt (@updatedAt).
 - **Accommodation** — lodging linked to a stage or location (future)
+- **CaminoPicture** — image attached to a camino. Table: `camino_pictures`. Fields: id, caminoId (FK cascade), uploadedBy (Kinde user ID, not FK), url (S3 public URL), isPrimary (bool), position (nullable int), createdAt, updatedAt. Partial unique index on (camino_id) WHERE is_primary=true. Max 50 pictures per camino.
 - **Review** — user-authored rating + text, polymorphic (future)
 
 ## User Roles
@@ -30,14 +31,16 @@ Authorization pattern: service-layer check via `userRoles.includes('pilgrim')` �
 ## Stage creation model (eager, not lazy)
 Stage rows are created/upserted eagerly inside `CaminosService.create()` and `CaminosService.update()` transactions, by calling `stagesService.upsertStagePairs(pointIds, tx)`. `upsertStagePairs` MUST receive the outer `tx` client — never opens its own `$transaction` (Prisma does not support nested interactive transactions). Old stage pairs that leave a Camino's sequence are NOT deleted (rows are shared globally).
 
-## Module structure (as of PILLY-STG-001)
+## Module structure (as of PILLY-CAM-003)
 - `AppModule` — root; imports all feature modules
-- `CaminosModule` — GET/POST/PATCH/DELETE /api/caminos; imports AuthModule + StagesModule
+- `CaminosModule` — GET/POST/PATCH/DELETE /api/caminos; imports AuthModule + StagesModule + UploadsModule (S3 cleanup on delete)
+- `CaminoPicturesModule` — GET/POST/DELETE /api/caminos/:caminoId/pictures; imports UploadsModule + AuthModule
 - `CaminoPointsModule` — GET /api/camino-points/search
 - `CountriesModule` — GET /api/countries (static, no DB)
 - `StagesModule` — GET /api/caminos/:id/stages, GET .../stages/:n, PATCH .../stages/:n; imports AuthModule; exports StagesService
 - `PrismaModule` — @Global(), exports PrismaService
 - `AuthModule` — KindeJwtStrategy, JwtAuthGuard, RolesGuard
+- `UploadsModule` — UploadsService (S3 via Supabase Storage); exports UploadsService; importable by any module needing S3
 
 ## Transaction strategy (Prisma 7)
 `prisma.$transaction(async (tx) => { ... })` is used in CaminosService.create() and CaminosService.update(). Stage upserts happen inside the same tx. Never nest `$transaction` calls.

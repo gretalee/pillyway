@@ -6,6 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { BackofficeModule } from './backoffice/backoffice.module';
+import { CaminoPicturesModule } from './camino-pictures/camino-pictures.module';
 import { CaminoPointsModule } from './camino-points/camino-points.module';
 import { CaminoVotesModule } from './camino-votes/camino-votes.module';
 import { CaminosModule } from './caminos/caminos.module';
@@ -22,6 +23,7 @@ import { WaypointsModule } from './waypoints/waypoints.module';
     PrismaModule,
     AuthModule,
     CaminosModule,
+    CaminoPicturesModule,
     CaminoPointsModule,
     CaminoVotesModule,
     CountriesModule,

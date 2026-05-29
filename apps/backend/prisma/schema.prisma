@@ -17,6 +17,7 @@ model Camino {
 
   caminoPointOrder CaminoPointOrder[]
   votes            CaminoVote[]
+  pictures         CaminoPicture[]
 
   @@unique([name])
   @@map("caminos")
@@ -122,6 +123,24 @@ model Accommodation {
   caminoPoint CaminoPoint @relation(fields: [caminoPointId], references: [id], onDelete: Cascade)
 
   @@map("accommodations")
+}
+
+model CaminoPicture {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  caminoId   String   @map("camino_id") @db.Uuid
+  uploadedBy String   @map("uploaded_by")
+  url        String
+  isPrimary  Boolean  @default(false) @map("is_primary")
+  position   Int?
+  label      String?
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  camino Camino @relation(fields: [caminoId], references: [id], onDelete: Cascade)
+
+  @@index([caminoId, position, createdAt])
+  @@index([uploadedBy])
+  @@map("camino_pictures")
 }
 
 model Sight {

@@ -25,12 +25,14 @@ const startPoint = {
   name: 'Start Town',
   country: 'france',
   slug: 'start-town',
+  hasAccommodation: false,
 };
 const endPoint = {
   id: 'pt-b',
   name: 'End Town',
   country: 'spain',
   slug: 'end-town',
+  hasAccommodation: false,
 };
 
 const mockListItem: StageListItem = {

@@ -6,6 +6,7 @@ import Link from 'next/link';
 
 import { VerifiedBadge } from '@/app/caminos/components/VerifiedBadge';
 import { VerificationSection } from './VerificationSection';
+import { CaminoPictures } from './CaminoPictures';
 
 import { Input } from '@/app/components/ui/input';
 import { Textarea } from '@/app/components/ui/textarea';
@@ -202,6 +203,9 @@ export function CaminoDetail({
         </p>
       )}
 
+      {/* Hero picture — above description */}
+      <CaminoPictures caminoId={caminoId} caminoName={camino.name} section="hero" />
+
       {/* Description */}
       <div className="mt-4">
         {editingField === 'description' ? (
@@ -235,14 +239,17 @@ export function CaminoDetail({
         )}
       </div>
 
-      {/* Verification voting */}
-      {camino.caminoPoints.length >= 3 && <VerificationSection caminoId={caminoId} />}
-
       {/* Stages */}
       <section className="mt-8">
         <h2 className="mb-4 text-xl font-semibold">{t('stages_heading')}</h2>
         {children}
       </section>
+
+      {/* Verification voting */}
+      {camino.caminoPoints.length >= 3 && <VerificationSection caminoId={caminoId} />}
+
+      {/* Gallery and upload controls — below verification */}
+      <CaminoPictures caminoId={caminoId} section="gallery" />
 
       {/* Edit waypoints link */}
       {canEdit && (

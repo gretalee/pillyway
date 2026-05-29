@@ -1,10 +1,11 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
+import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 
 import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
@@ -19,6 +20,8 @@ import {
   useCreateCamino,
 } from '@/app/api/caminos/use-create-camino';
 import { CaminoPointSearchResult } from '@/app/api/caminos/use-camino-points-search';
+import { deleteCaminoPicture } from '@/app/api/camino-pictures/use-delete-camino-picture';
+import { CaminoPictureUploadSection } from './CaminoPictureUploadSection';
 import { CaminoPointRow } from './CaminoPointRow';
 
 interface CaminoPointFormItem {
@@ -41,6 +44,13 @@ export function CreateCaminoForm() {
   const { data: countries = [], isError: countriesError } = useCountries();
   const mutation = useCreateCamino();
   const isPending = mutation.isPending;
+  const { accessTokenEncoded } = useKindeBrowserClient();
+
+  // After the camino is saved, we track its id for the pictures step
+  const [createdCaminoId, setCreatedCaminoId] = useState<string | null>(null);
+  // Track ids of pictures uploaded in the pictures step, for cancel cleanup
+  const uploadedPictureIdsRef = useRef<string[]>([]);
+  const [isCancellingCleanup, setIsCancellingCleanup] = useState(false);
 
   const {
     register,
@@ -113,9 +123,10 @@ export function CreateCaminoForm() {
     };
 
     mutation.mutate(payload, {
-      onSuccess: () => {
+      onSuccess: (created) => {
         void queryClient.invalidateQueries({ queryKey: ['caminos'] });
-        router.push('/caminos');
+        // Move to the pictures step — user can now add pictures or go straight to the camino
+        setCreatedCaminoId(created.id);
       },
       onError: (err: Error & { status?: number }) => {
         if (err.status === 409) {
@@ -130,11 +141,94 @@ export function CreateCaminoForm() {
   const nameId = 'camino-name';
   const descriptionId = 'camino-description';
 
+  async function handleCancelAfterCreation() {
+    if (!createdCaminoId) {
+      router.push('/caminos');
+      return;
+    }
+
+    const pictureIds = uploadedPictureIdsRef.current;
+    if (pictureIds.length === 0) {
+      router.push('/caminos');
+      return;
+    }
+
+    setIsCancellingCleanup(true);
+
+    const token = accessTokenEncoded ?? '';
+    const TIMEOUT_MS = 10_000;
+
+    await Promise.allSettled(
+      pictureIds.map((pictureId) => {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+        return deleteCaminoPicture(
+          createdCaminoId,
+          pictureId,
+          token,
+          controller.signal,
+        ).finally(() => clearTimeout(timer));
+      }),
+    );
+
+    // Navigate away regardless of outcome
+    router.push('/caminos');
+  }
+
   if (countriesError) {
     return (
       <p role="alert" className="text-destructive">
         {t('error_generic')}
       </p>
+    );
+  }
+
+  // Pictures step — shown after the camino is successfully created
+  if (createdCaminoId !== null) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h2 className="mb-2 text-sm font-semibold text-foreground">
+            {t('pictures_step_heading')}
+          </h2>
+          <CaminoPictureUploadSection
+            caminoId={createdCaminoId}
+            onUploadSuccess={(result) => {
+              uploadedPictureIdsRef.current = [
+                ...uploadedPictureIdsRef.current,
+                result.id,
+              ];
+            }}
+          />
+        </div>
+        <div className="flex flex-wrap items-center gap-3">
+          <Button
+            type="button"
+            onClick={() => router.push(`/caminos/${createdCaminoId}`)}
+            className="w-full sm:w-auto">
+            {t('view_camino')}
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            disabled={isCancellingCleanup}
+            aria-disabled={isCancellingCleanup}
+            onClick={() => void handleCancelAfterCreation()}
+            className="w-full sm:w-auto">
+            {isCancellingCleanup ? (
+              <>
+                <i
+                  className="icon-spinner mr-2 text-xl animate-spin"
+                  aria-hidden="true"
+                />
+                {t('submitting')}
+              </>
+            ) : (
+              t('cancel')
+            )}
+          </Button>
+        </div>
+      </div>
     );
   }
 

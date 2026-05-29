@@ -5,10 +5,7 @@ import { getTranslations } from 'next-intl/server';
 import { getAuthUser } from '@/lib/getAuthUser';
 import { fetchAccommodation } from '@/app/api/accommodations/fetch-accommodation';
 import { buttonVariants } from '@/app/components/ui/button';
-import type {
-  AccommodationType,
-  PriceRange,
-} from '@/app/api/accommodations/accommodation-types';
+import type { PriceRange } from '@/app/api/accommodations/accommodation-types';
 import { cn } from '@/lib/utils';
 
 interface Props {
@@ -162,7 +159,14 @@ export default async function AccommodationDetailPage({ params }: Props) {
             </span>
           )}
           {accommodation.addressCountry && (
-            <span>, {tCountries(accommodation.addressCountry.toLowerCase() as Parameters<typeof tCountries>[0])}</span>
+            <span>
+              ,{' '}
+              {tCountries(
+                accommodation.addressCountry.toLowerCase() as Parameters<
+                  typeof tCountries
+                >[0],
+              )}
+            </span>
           )}
         </address>
       )}

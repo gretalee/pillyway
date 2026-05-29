@@ -132,7 +132,7 @@ export default async function WaypointDetailPage({ params }: Props) {
             {t('sights_heading')}
           </h2>
           {canContribute && (
-            <div className="overflow-hidden flex justify-end">
+            <div className="flex-1 overflow-hidden flex justify-end">
               <Link
                 href={`/waypoints/${slug}/sights/new`}
                 className={cn(

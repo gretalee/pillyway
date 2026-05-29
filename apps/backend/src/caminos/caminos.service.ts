@@ -14,6 +14,7 @@ import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { DeleteAuthorizationService } from '../common/delete-authorization.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { StagesService } from '../stages/stages.service';
+import { UploadsService } from '../uploads/uploads.service';
 import { CreateCaminoDto } from './dto/create-camino.dto';
 import { UpdateCaminoDto } from './dto/update-camino.dto';
 
@@ -85,6 +86,7 @@ export class CaminosService {
     private readonly prisma: PrismaService,
     private readonly stagesService: StagesService,
     private readonly deleteAuthorizationService: DeleteAuthorizationService,
+    private readonly uploadsService: UploadsService,
   ) {}
 
   // ── generateSlug ────────────────────────────────────────────────────────────
@@ -592,7 +594,26 @@ export class CaminosService {
       CAMINO_DELETE_WINDOW_MS,
     );
 
-    // 3. Delete the camino; DB cascade removes camino_point_order rows.
+    // 3. Fetch all picture URLs for S3 cleanup before the DB delete.
+    //    Best-effort: log failures but do not abort the delete.
+    const pictureUrls = await this.prisma.caminoPicture
+      .findMany({
+        where: { caminoId: id },
+        select: { url: true },
+      })
+      .then((pics) => pics.map((p) => p.url));
+
+    if (pictureUrls.length > 0) {
+      try {
+        await this.uploadsService.deleteImages(pictureUrls);
+      } catch (err) {
+        this.logger.error(
+          `S3 cleanup failed for camino ${id} pictures (continuing with DB delete): ${String(err)}`,
+        );
+      }
+    }
+
+    // 4. Delete the camino; DB cascade removes camino_point_order and camino_pictures rows.
     //    camino_points rows are intentionally left untouched.
     await this.prisma.camino.delete({ where: { id } });
     this.logger.debug(`Camino ${id} deleted successfully`);

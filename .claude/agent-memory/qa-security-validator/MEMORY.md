@@ -2,3 +2,4 @@
 - [i18n / locale-switch feature patterns](project_i18n_patterns.md) — security risks, test stubs, and mocking conventions for the language-switch feature
 - [Camino creation feature (PILLY-CAM-001)](project_camino_creation.md) — critical security risks, test file locations, open questions for camino creation
 - [Stage entity feature (PILLY-STG-001)](project_stages_feature.md) — @IsNumber NaN bypass, cross-Camino test gap, E2E serial-mode requirement, broken Waypoints heading assertion
+- [Camino pictures feature (PILLY-CAM-003)](project_camino_pictures.md) — MIME spoofing, isPrimary coercion, S3 key injection, caminoId cross-picture IDOR, orphan S3 objects
