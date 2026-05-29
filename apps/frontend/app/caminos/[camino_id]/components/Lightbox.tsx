@@ -119,7 +119,7 @@ export function Lightbox({
         onClick={(e) => e.stopPropagation()}>
         <Image
           src={currentImage.url}
-          alt=""
+          alt={currentImage.label ?? t('title')}
           width={1200}
           height={900}
           className="max-h-[90vh] max-w-[90vw] object-contain"
@@ -138,7 +138,8 @@ export function Lightbox({
 
       {/* Position indicator — offset upward when label is also shown */}
       {isGalleryMode && images.length > 1 && (
-        <div className={`absolute z-10 left-1/2 -translate-x-1/2 rounded-full bg-black/50 px-3 py-1 text-sm text-white ${currentImage.label ? 'bottom-14' : 'bottom-4'}`}>
+        <div
+          className={`absolute z-10 left-1/2 -translate-x-1/2 rounded-full bg-black/50 px-3 py-1 text-sm text-white ${currentImage.label ? 'bottom-14' : 'bottom-4'}`}>
           {currentIndex + 1} / {images.length}
         </div>
       )}
