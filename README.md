@@ -157,7 +157,7 @@ Copy the `.env.example` files in each app directory and fill in the values.
 
 ```bash
 # Apply all pending migrations
-yarn db:migrate:dev
+yarn db:migrate:prod
 
 # Generate Prisma client types (runs automatically via postinstall)
 yarn prisma:generate
