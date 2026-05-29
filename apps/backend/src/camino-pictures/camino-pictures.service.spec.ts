@@ -11,6 +11,7 @@ import {
 import { Test, TestingModule } from '@nestjs/testing';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { Prisma } from '@prisma/client';
 import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { PrismaService } from '../prisma/prisma.service';
 import { UploadsService } from '../uploads/uploads.service';
@@ -153,6 +154,11 @@ function jpegBuffer(): Buffer {
 /** Buffer that does not match any known image magic bytes. */
 function binaryGarbageBuffer(): Buffer {
   return Buffer.from([0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07]);
+}
+
+/** Minimal valid PNG buffer (8-byte PNG magic signature). */
+function pngBuffer(): Buffer {
+  return Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
 }
 
 function makeFile(overrides: Partial<Express.Multer.File> = {}): Express.Multer.File {
@@ -367,6 +373,67 @@ describe('CaminoPicturesService.uploadPicture()', () => {
     ).rejects.toThrow();
 
     expect(prismaMock.caminoPicture.create).not.toHaveBeenCalled();
+  });
+
+  it('returns 415 when magic bytes indicate PNG but declared mimetype is image/jpeg', async () => {
+    const prismaMock = makePrismaMock();
+    const module = await buildModule(prismaMock, makeUploadsServiceMock());
+    const service = module.get(CaminoPicturesService);
+
+    const mismatchedFile = makeFile({ buffer: pngBuffer(), mimetype: 'image/jpeg' });
+
+    await expect(
+      service.uploadPicture(CAMINO_ID, mismatchedFile, false, USER_ID),
+    ).rejects.toBeInstanceOf(UnsupportedMediaTypeException);
+  });
+
+  it('maps Prisma P2002 on primary insert to ConflictException and cleans up S3', async () => {
+    const p2002 = new Prisma.PrismaClientKnownRequestError(
+      'Unique constraint failed on camino_pictures_primary_unique',
+      { code: 'P2002', clientVersion: '7.0.0', meta: { target: ['camino_id'] } },
+    );
+
+    const prismaMock = makePrismaMock({
+      // No existing primary so the early-exit check (findFirst) passes
+      pictureFindFirst: vi.fn().mockResolvedValue(null),
+      transaction: vi.fn()
+        .mockResolvedValueOnce({ maxPosition: 0 })
+        .mockRejectedValueOnce(p2002),
+    });
+    const uploadsServiceMock = makeUploadsServiceMock();
+    const module = await buildModule(prismaMock, uploadsServiceMock);
+    const service = module.get(CaminoPicturesService);
+
+    await expect(
+      service.uploadPicture(CAMINO_ID, makeFile(), true, USER_ID),
+    ).rejects.toBeInstanceOf(ConflictException);
+
+    expect(uploadsServiceMock.deleteImages).toHaveBeenCalledOnce();
+  });
+
+  it('does not map P2002 to ConflictException when isPrimary is false', async () => {
+    const p2002 = new Prisma.PrismaClientKnownRequestError(
+      'Unique constraint failed on camino_pictures_primary_unique',
+      { code: 'P2002', clientVersion: '7.0.0', meta: { target: ['camino_id'] } },
+    );
+
+    const prismaMock = makePrismaMock({
+      transaction: vi.fn()
+        .mockResolvedValueOnce({ maxPosition: 0 })
+        .mockRejectedValueOnce(p2002),
+    });
+    const uploadsServiceMock = makeUploadsServiceMock();
+    const module = await buildModule(prismaMock, uploadsServiceMock);
+    const service = module.get(CaminoPicturesService);
+
+    // The error must propagate as-is (not wrapped in ConflictException)
+    const rejection = await service
+      .uploadPicture(CAMINO_ID, makeFile(), false, USER_ID)
+      .catch((e: unknown) => e);
+
+    expect(rejection).toBeInstanceOf(Prisma.PrismaClientKnownRequestError);
+    expect(rejection).not.toBeInstanceOf(ConflictException);
+    expect(uploadsServiceMock.deleteImages).toHaveBeenCalledOnce();
   });
 });
 
