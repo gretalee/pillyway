@@ -21,7 +21,6 @@ import {
 } from '@/app/api/caminos/use-create-camino';
 import { CaminoPointSearchResult } from '@/app/api/caminos/use-camino-points-search';
 import { deleteCaminoPicture } from '@/app/api/camino-pictures/use-delete-camino-picture';
-import type { UploadCaminoPictureResult } from '@/app/api/camino-pictures/camino-picture-types';
 import { CaminoPictureUploadSection } from './CaminoPictureUploadSection';
 import { CaminoPointRow } from './CaminoPointRow';
 
@@ -163,9 +162,12 @@ export function CreateCaminoForm() {
       pictureIds.map((pictureId) => {
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
-        return deleteCaminoPicture(createdCaminoId, pictureId, token, controller.signal).finally(
-          () => clearTimeout(timer),
-        );
+        return deleteCaminoPicture(
+          createdCaminoId,
+          pictureId,
+          token,
+          controller.signal,
+        ).finally(() => clearTimeout(timer));
       }),
     );
 
@@ -192,7 +194,10 @@ export function CreateCaminoForm() {
           <CaminoPictureUploadSection
             caminoId={createdCaminoId}
             onUploadSuccess={(result) => {
-              uploadedPictureIdsRef.current = [...uploadedPictureIdsRef.current, result.id];
+              uploadedPictureIdsRef.current = [
+                ...uploadedPictureIdsRef.current,
+                result.id,
+              ];
             }}
           />
         </div>
@@ -212,7 +217,10 @@ export function CreateCaminoForm() {
             className="w-full sm:w-auto">
             {isCancellingCleanup ? (
               <>
-                <i className="icon-spinner mr-2 text-xl animate-spin" aria-hidden="true" />
+                <i
+                  className="icon-spinner mr-2 text-xl animate-spin"
+                  aria-hidden="true"
+                />
                 {t('submitting')}
               </>
             ) : (

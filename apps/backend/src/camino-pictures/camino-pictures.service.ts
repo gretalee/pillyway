@@ -7,6 +7,7 @@ import {
   UnprocessableEntityException,
   UnsupportedMediaTypeException,
 } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { plainToInstance } from 'class-transformer';
 import { randomUUID } from 'crypto';
 
@@ -91,7 +92,11 @@ export class CaminoPicturesService {
     // 2. Magic-byte check using file-type (dynamic import — file-type is ESM-only)
     const { fileTypeFromBuffer } = await import('file-type');
     const detected = await fileTypeFromBuffer(file.buffer);
-    if (!detected || !ALLOWED_MIME.has(detected.mime)) {
+    if (
+      !detected ||
+      !ALLOWED_MIME.has(detected.mime) ||
+      detected.mime !== file.mimetype
+    ) {
       throw new UnsupportedMediaTypeException(
         'File type not supported. Accepted types: image/jpeg, image/png, image/webp',
       );
@@ -184,6 +189,18 @@ export class CaminoPicturesService {
           `Failed to clean up orphaned S3 object after DB insert failure. key="${key}" err=${String(cleanupErr)}`,
         );
       });
+
+      // Concurrent primary upload: partial unique index violation → 409 instead of 500
+      if (
+        isPrimary &&
+        err instanceof Prisma.PrismaClientKnownRequestError &&
+        err.code === 'P2002'
+      ) {
+        throw new ConflictException(
+          'A primary picture already exists for this camino.',
+        );
+      }
+
       throw err;
     }
 

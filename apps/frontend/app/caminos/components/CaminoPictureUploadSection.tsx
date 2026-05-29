@@ -30,11 +30,12 @@ interface CaminoPictureUploadSectionProps {
 
 function resolveUploadError(
   status: number | undefined,
-  t: (key: 'upload_error_too_large' | 'upload_error_wrong_type' | 'upload_error_primary_exists' | 'upload_error_generic') => string,
+  t: (key: 'upload_error_too_large' | 'upload_error_wrong_type' | 'upload_error_primary_exists' | 'limit_reached' | 'upload_error_generic') => string,
 ): string {
   if (status === 413) return t('upload_error_too_large');
   if (status === 415) return t('upload_error_wrong_type');
   if (status === 409) return t('upload_error_primary_exists');
+  if (status === 422) return t('limit_reached');
   return t('upload_error_generic');
 }
 
@@ -47,6 +48,7 @@ export function CaminoPictureUploadSection({
 
   const { user, accessToken } = useKindeBrowserClient();
   const roleKeys = accessToken?.roles?.map((r) => r.key) ?? [];
+  const isPilgrim = roleKeys.includes('pilgrim');
   const isOwner = roleKeys.includes('owner');
 
   const { data } = useCaminoPictures(caminoId);
@@ -103,6 +105,7 @@ export function CaminoPictureUploadSection({
   }
 
   function canDeletePicture(uploadedBy: string): boolean {
+    if (!isPilgrim) return false;
     if (isOwner) return true;
     return user?.id === uploadedBy;
   }
@@ -180,10 +183,10 @@ export function CaminoPictureUploadSection({
         </div>
       )}
 
-      {/* Upload controls */}
-      {limitReached ? (
+      {/* Upload controls — pilgrims only */}
+      {isPilgrim && limitReached ? (
         <p className="text-sm text-muted-foreground">{t('limit_reached')}</p>
-      ) : (
+      ) : isPilgrim ? (
         <div className="space-y-2">
           {/* Upload main picture — only when no primary exists */}
           {!primary && (
@@ -251,7 +254,7 @@ export function CaminoPictureUploadSection({
             )}
           </div>
         </div>
-      )}
+      ) : null}
 
       {/* Delete error */}
       {deleteError && (
