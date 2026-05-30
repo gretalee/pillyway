@@ -60,12 +60,12 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
       </h1>
 
       {/* Start and end points */}
-      <dl className="mt-6 grid gap-4 sm:grid-cols-2">
-        <div>
+      <dl className="mt-6 grid gap-4 sm:grid-cols-2 max-w-full ">
+        <div className="max-w-full overflow-hidden">
           <dt className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             {t('start_label')}
           </dt>
-          <dd className="mt-1 font-medium">
+          <dd className="mt-1 font-medium whitespace-normal">
             <Link
               href={`/waypoints/${stage.startPoint.slug}`}
               className="underline text-pillyGreen-600 font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
@@ -76,11 +76,11 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
             </span>
           </dd>
         </div>
-        <div>
+        <div className="max-w-full overflow-hidden">
           <dt className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             {t('end_label')}
           </dt>
-          <dd className="mt-1 font-medium">
+          <dd className="mt-1 font-medium whitespace-normal">
             <Link
               href={`/waypoints/${stage.endPoint.slug}`}
               className="underline text-pillyGreen-600 font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">

@@ -18,7 +18,7 @@ export default async function Home() {
 
   return (
     <div className="w-full">
-      <section className="relative bg-slate-100 py-16 h-[500px] max-h-[60dvh]">
+      <section className="relative bg-slate-100 py-6 lg:py-16 h-[500px] max-h-[60dvh]">
         <Image src={heroBg} alt="" fill className="object-cover object-center" priority />
       </section>
 

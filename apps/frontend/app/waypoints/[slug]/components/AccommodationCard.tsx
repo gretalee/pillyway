@@ -41,7 +41,7 @@ export async function AccommodationCard({
     accommodation.addressCountry;
 
   return (
-    <li className="rounded-lg border border-border p-4">
+    <li className="rounded-lg border border-border p-4 overflow-hidden">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
@@ -85,7 +85,14 @@ export async function AccommodationCard({
                 </span>
               )}
               {accommodation.addressCountry && (
-                <span>, {tCountries(accommodation.addressCountry.toLowerCase() as Parameters<typeof tCountries>[0])}</span>
+                <span>
+                  ,{' '}
+                  {tCountries(
+                    accommodation.addressCountry.toLowerCase() as Parameters<
+                      typeof tCountries
+                    >[0],
+                  )}
+                </span>
               )}
             </address>
           )}

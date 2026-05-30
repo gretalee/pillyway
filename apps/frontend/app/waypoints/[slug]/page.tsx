@@ -48,7 +48,7 @@ export default async function WaypointDetailPage({ params }: Props) {
       notFound();
     }
     return (
-      <div className="mx-auto w-full max-w-3xl flex-1 px-4 py-16 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-3xl flex-1 px-4 py-6 lg:py-16 sm:px-6 lg:px-8">
         <p role="alert" className="text-destructive">
           {t('error_loading')}
         </p>
@@ -73,7 +73,7 @@ export default async function WaypointDetailPage({ params }: Props) {
   );
 
   return (
-    <div className="mx-auto w-full max-w-3xl flex-1 px-4 py-16 sm:px-6 lg:px-8">
+    <div className="mx-auto w-full max-w-3xl flex-1 px-4 py-6 lg:py-16 sm:px-6 lg:px-8">
       <div className="mb-6">
         <BackButton />
       </div>
