@@ -33,7 +33,10 @@ export default async function Imprint() {
           </p>
 
           <p>
-            E-Mail: <a href="mailto:hello@pillyway.de">hello@pillyway.de</a>
+            E-Mail:{' '}
+            <a href="mailto:hello@pillyway.de" target="_blank" rel="noopener noreferrer">
+              hello@pillyway.de
+            </a>
           </p>
         </div>
 

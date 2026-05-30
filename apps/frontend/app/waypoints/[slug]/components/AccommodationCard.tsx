@@ -101,6 +101,8 @@ export async function AccommodationCard({
             {accommodation.email && (
               <a
                 href={`mailto:${accommodation.email}`}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-sm text-primary underline-offset-4 hover:underline">
                 {accommodation.email}
               </a>
