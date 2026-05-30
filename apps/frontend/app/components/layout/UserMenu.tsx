@@ -38,10 +38,10 @@ export function UserMenu({ firstName }: UserMenuProps) {
               <div
                 aria-label={t('aria_greeting', { name: firstName })}
                 className={cn(
-                  'px-2 py-1.5 text-sm font-medium text-foreground',
+                  'px-2 py-4 text-sm font-medium text-foreground',
                   'border-b border-border mb-1',
                 )}>
-                {firstName}
+                {t('greeting', { name: firstName })}
               </div>
             )}
             <Menu.LinkItem

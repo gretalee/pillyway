@@ -10,6 +10,7 @@
     "aria_language_switcher": "Select language"
   },
   "user_menu": {
+    "greeting": "Hi, {name}!",
     "logout": "Log out",
     "aria_greeting": "Signed in as {name}"
   },
@@ -60,7 +61,8 @@
   },
   "caminos": {
     "title": "Caminos",
-    "browse": "Browse pilgrimage routes.",
+    "browse": "Explore all caminos shared by the community here. Filter by verified caminos if you want to ensure the information is reliable.",
+    "loginInInfo": "You can create your own caminos or improve existing ones by <link>logging in</link>.",
     "empty": "No caminos yet. Be the first to create one!",
     "create_link": "Create New Camino",
     "meta_title": "Caminos | Pillyway",
@@ -145,7 +147,7 @@
     "vote_error": "Your vote could not be saved. Please try again.",
     "pictures": {
       "upload_main": "Add main picture",
-      "upload_gallery": "Add picture to gallery",
+      "upload_gallery": "Add pictures",
       "limit_reached": "Maximum number of pictures (50) reached.",
       "open_fullscreen": "Open image fullscreen",
       "delete": "Delete picture",

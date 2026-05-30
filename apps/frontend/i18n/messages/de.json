@@ -10,6 +10,7 @@
     "aria_language_switcher": "Sprache auswählen"
   },
   "user_menu": {
+    "greeting": "Hallo, {name}!",
     "logout": "Abmelden",
     "aria_greeting": "Angemeldet als {name}"
   },
@@ -60,7 +61,8 @@
   },
   "caminos": {
     "title": "Caminos",
-    "browse": "Pilgerrouten erkunden.",
+    "browse": "Erkunde hier alle Caminos, die von der Gemeinschaft geteilt wurden. Filtere nach verifizierten Caminos, wenn du sicher gehen willst, dass die Informationen zuverlässig sind.",
+    "loginInInfo": "Du kannst eigene Caminos erstellen oder bestehende verbessern. Dafür muss du dich <link>anmelden</link>.",
     "empty": "Noch keine Caminos vorhanden. Sei der Erste und erstelle einen!",
     "create_link": "Neuen Camino erstellen",
     "meta_title": "Caminos | Pillyway",
@@ -145,7 +147,7 @@
     "vote_error": "Deine Stimme konnte nicht gespeichert werden. Bitte versuche es erneut.",
     "pictures": {
       "upload_main": "Hauptbild hinzufügen",
-      "upload_gallery": "Bild zur Galerie hinzufügen",
+      "upload_gallery": "Bilder hinzufügen",
       "limit_reached": "Maximale Bildanzahl (50) erreicht.",
       "open_fullscreen": "Bild im Vollbild öffnen",
       "delete": "Bild löschen",

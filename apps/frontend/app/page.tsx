@@ -18,7 +18,7 @@ export default async function Home() {
 
   return (
     <div className="w-full">
-      <section className="relative bg-slate-100 py-16 h-[500px]">
+      <section className="relative bg-slate-100 py-16 h-[500px] max-h-[60dvh]">
         <Image src={heroBg} alt="" fill className="object-cover object-center" priority />
       </section>
 
@@ -26,8 +26,8 @@ export default async function Home() {
         <div
           className={cn(
             'relative z-10 max-w-[96dvw] 2xl:max-w-7xl w-full mx-auto',
-            'px-4 sm:px-6 lg:px-8 pb-6  pt-10',
-            'bg-white/80 rounded-lg shadow-lg',
+            'px-4 sm:px-6 lg:px-8 pb-6 pt-2 lg:pt-10',
+            'bg-white/80 rounded-lg shadow-lg ',
           )}>
           <h1>{t('hero_title')}</h1>
           <p>
@@ -47,7 +47,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="mt-16 bg-gray-100">
+      <section className="mt-4 sm:mt-8 lg:mt-16 bg-gray-100">
         <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pb-16 pt-10 ">
           <h2>{t('community_title')}</h2>
           <p>
@@ -85,7 +85,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="mt-16 bg-pillyGreen-100">
+      <section className="mt-4 sm:mt-8 lg:mt-16 bg-pillyGreen-100">
         <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pb-16 pt-10">
           <h2>{t('by_pilgrims_title')}</h2>
           <p>
@@ -98,7 +98,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="mt-16 flex justify-center">
+      <section className="mt-4 sm:mt-8 lg:mt-16 flex justify-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 pt-10 border rounded-lg border-slate-200 shadow-lg">
           <h2>{t('planned_title')}</h2>
           <p>{t('planned_intro')}</p>
@@ -113,7 +113,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="mt-16 bg-gray-100">
+      <section className="mt-4 sm:mt-8 lg:mt-16 bg-gray-100">
         <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pb-16 pt-10 text-center">
           <h2>{t('join_title')}</h2>
           <p>{t('join_body')}</p>
