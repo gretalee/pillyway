@@ -124,8 +124,8 @@
     "delete": "Löschen"
   },
   "camino_detail": {
-    "meta_title": "Camino-Detail | Pillyway",
-    "meta_description": "Sieh dir alle Details dieser Pilgerroute an.",
+    "meta_title": "{name} | Pillyway",
+    "meta_description": "Hier findest du alle Stationen und Unterkünfte dieses Caminos.",
     "waypoints_heading": "Wegpunkte",
     "edit_waypoints": "Wegpunkte bearbeiten",
     "back_to_list": "Alle Caminos anzeigen",

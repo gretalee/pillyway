@@ -124,8 +124,8 @@
     "delete": "Delete"
   },
   "camino_detail": {
-    "meta_title": "Camino Detail | Pillyway",
-    "meta_description": "View the full details of this pilgrimage route.",
+    "meta_title": "{name} | Pillyway",
+    "meta_description": "Explore all stages and accommodations of {name}.",
     "waypoints_heading": "Waypoints",
     "edit_waypoints": "Edit waypoints",
     "back_to_list": "Show all caminos",
@@ -172,8 +172,8 @@
   },
   "caminos_update": {
     "title": "Update Camino",
-    "meta_title": "Update Camino | Pillyway",
-    "meta_description": "Edit this pilgrimage route.",
+    "meta_title": "{name} | Pillyway",
+    "meta_description": "Here you can see and edit all stages and accommodations of this camino.",
     "submit": "Save changes",
     "submitting": "Saving…",
     "cancel": "Cancel",
