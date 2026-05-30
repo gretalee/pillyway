@@ -22,6 +22,7 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
 } from '@/app/components/ui/alert-dialog';
+import { cn } from '@/lib/utils';
 
 interface CaminoPicturesProps {
   caminoId: string;
@@ -91,7 +92,11 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
   const totalCount = (primary ? 1 : 0) + gallery.length;
   const limitReached = totalCount >= 50;
 
-  const galleryImages: LightboxImage[] = gallery.map((p) => ({ id: p.id, url: p.url, label: p.label }));
+  const galleryImages: LightboxImage[] = gallery.map((p) => ({
+    id: p.id,
+    url: p.url,
+    label: p.label,
+  }));
 
   const openLightboxFromHero = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -202,7 +207,10 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
     );
   }
 
-  function handleLabelKeyDown(e: React.KeyboardEvent<HTMLInputElement>, pictureId: string) {
+  function handleLabelKeyDown(
+    e: React.KeyboardEvent<HTMLInputElement>,
+    pictureId: string,
+  ) {
     if (e.key === 'Enter') {
       e.preventDefault();
       commitLabelEdit(pictureId);
@@ -268,7 +276,10 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
               type="button"
               aria-label={t('open_fullscreen')}
               onClick={openLightboxFromHero}
-              className="absolute inset-0 z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+              className={cn(
+                'absolute inset-0 z-10 cursor-zoom-in',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+              )}>
               <span className="sr-only">{t('open_fullscreen')}</span>
             </button>
 
@@ -276,7 +287,7 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
               src={primary.url}
               alt={caminoName ?? ''}
               fill
-              className="object-cover"
+              className="object-cover cursor-zoom-in"
               priority
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
               unoptimized
@@ -288,7 +299,11 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
                 type="button"
                 aria-label={t('delete')}
                 onClick={() => handleDeleteIconClick(primary.id)}
-                className="absolute right-2 top-2 z-20 flex size-8 items-center justify-center rounded-md bg-black/60 text-white transition-colors hover:bg-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                className={cn(
+                  'absolute right-2 top-2 z-20 flex size-8 items-center justify-center rounded-md',
+                  'bg-black/60 text-white transition-colors',
+                  'hover:bg-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white',
+                )}>
                 <Trash2 size={15} aria-hidden="true" />
               </button>
             )}
@@ -359,14 +374,17 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
                       type="button"
                       aria-label={t('open_fullscreen')}
                       onClick={(e) => openLightboxFromGallery(index, e)}
-                      className="absolute inset-0 z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                      className={cn(
+                        'absolute inset-0 z-10 cursor-zoom-in',
+                        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+                      )}>
                       <span className="sr-only">{t('open_fullscreen')}</span>
                     </button>
                     <Image
                       src={picture.url}
                       alt={picture.label ?? ''}
                       fill
-                      className="object-cover"
+                      className="object-cover cursor-zoom-in"
                       sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                       unoptimized
                     />
@@ -377,14 +395,18 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
                           type="button"
                           aria-label={t('edit_label')}
                           onClick={() => startLabelEdit(picture.id, picture.label)}
-                          className="flex size-7 items-center justify-center rounded-md bg-black/60 text-white transition-colors hover:bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                          className={cn(
+                            'flex size-7 items-center justify-center rounded-md bg-black/60 text-white transition-colors hover:bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white',
+                          )}>
                           <Pencil size={13} aria-hidden="true" />
                         </button>
                         <button
                           type="button"
                           aria-label={t('delete')}
                           onClick={() => handleDeleteIconClick(picture.id)}
-                          className="flex size-7 items-center justify-center rounded-md bg-black/60 text-white transition-colors hover:bg-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                          className={cn(
+                            'flex size-7 items-center justify-center rounded-md bg-black/60 text-white transition-colors hover:bg-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white',
+                          )}>
                           <Trash2 size={13} aria-hidden="true" />
                         </button>
                       </div>

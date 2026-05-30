@@ -97,7 +97,7 @@ export default async function TermsAndConditions() {
         <p>{t('contact_body')}</p>
 
         <p>
-          <a href="mailto:mail@gretalee.de">mail@gretalee.de</a>
+          <a href="mailto:hello@pillyway.de">hello@pillyway.de</a>
         </p>
       </section>
     </div>

@@ -30,7 +30,7 @@ export default async function Privacy() {
         </p>
 
         <p>
-          E-Mail: <a href="mailto:mail@gretalee.de">mail@gretalee.de</a>
+          E-Mail: <a href="mailto:hello@pillyway.de">hello@pillyway.de</a>
         </p>
 
         <h2 className="mt-4">{t('general_heading')}</h2>
@@ -143,7 +143,7 @@ export default async function Privacy() {
         <p>{t('contact_body')}</p>
 
         <p>
-          <a href="mailto:mail@gretalee.de">mail@gretalee.de</a>
+          <a href="mailto:hello@pillyway.de">hello@pillyway.de</a>
         </p>
       </section>
     </div>

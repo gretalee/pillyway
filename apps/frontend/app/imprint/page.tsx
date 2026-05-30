@@ -33,7 +33,7 @@ export default async function Imprint() {
           </p>
 
           <p>
-            E-Mail: <a href="mailto:mail@gretalee.de">mail@gretalee.de</a>
+            E-Mail: <a href="mailto:hello@pillyway.de">hello@pillyway.de</a>
           </p>
         </div>
 
@@ -91,7 +91,7 @@ export default async function Imprint() {
         <p>{t('contact_body')}</p>
 
         <p>
-          <a href="mailto:mail@gretalee.de">mail@gretalee.de</a>
+          <a href="mailto:hello@pillyway.de">hello@pillyway.de</a>
         </p>
       </section>
     </div>
