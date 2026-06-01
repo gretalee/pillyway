@@ -87,7 +87,7 @@ pillyway/
 
 | Component         | Technology                       |
 | ----------------- | -------------------------------- |
-| Hosting           | Hetzner (via Coolify)            |
+| Hosting           | Hetzner                          |
 | Reverse proxy     | Nginx                            |
 | Container runtime | Docker / Docker Compose          |
 | Auth provider     | Kinde                            |
@@ -267,7 +267,7 @@ yarn test:e2e:ui       # interactive Playwright UI
 
 ## Deployment
 
-The application is deployed on **Hetzner** via **Coolify** using Docker containers. Environment variables are injected by the GitHub Actions deploy job — no manual `.env` file setup is required on the server.
+The application is deployed on **Hetzner** using Docker containers. Environment variables are injected by the GitHub Actions deploy job — no manual `.env` file setup is required on the server.
 
 ```
 Backend container  → port 3033 (internal)
