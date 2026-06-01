@@ -142,6 +142,7 @@ export function CaminoPictureUploadSection({
             fill
             className="object-cover"
             sizes="(max-width: 768px) 100vw, 50vw"
+            unoptimized
           />
           {canDeletePicture(primary.uploadedBy) && (
             <button
@@ -168,6 +169,7 @@ export function CaminoPictureUploadSection({
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 33vw, 25vw"
+                unoptimized
               />
               {canDeletePicture(picture.uploadedBy) && (
                 <button

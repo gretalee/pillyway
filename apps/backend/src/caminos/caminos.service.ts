@@ -508,7 +508,7 @@ export class CaminosService {
           updateData.description = dto.description;
         }
         await tx.camino.update({ where: { id }, data: updateData });
-      });
+      }, { timeout: 15000 });
 
       // 6. Return the fresh full representation
       return this.findById(id);
