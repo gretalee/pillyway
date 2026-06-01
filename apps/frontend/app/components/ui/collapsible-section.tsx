@@ -39,10 +39,13 @@ export function CollapsibleSection({
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
           buttonClassName,
         )}>
-        <h2 id={headingId} className="text-xl font-semibold">
+        <span id={headingId} className="text-xl font-semibold block">
           {heading}
-        </h2>
-        <div className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>
+        </span>
+        <span
+          role="heading"
+          aria-level={2}
+          className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>
           <i
             className={cn(
               'icon-chevron-down text-sm font-normal transition-transform duration-200 -translate-y-[2px]',
@@ -52,13 +55,15 @@ export function CollapsibleSection({
             )}
             aria-hidden="true"
           />
-        </div>
+        </span>
       </button>
-      {open && (
-        <div id={contentId} role="region" aria-labelledby={headingId}>
-          {children}
-        </div>
-      )}
+      <div
+        id={contentId}
+        role="region"
+        aria-labelledby={headingId}
+        className={cn({ hidden: !open })}>
+        {children}
+      </div>
     </section>
   );
 }

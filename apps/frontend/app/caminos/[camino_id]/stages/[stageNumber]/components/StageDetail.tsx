@@ -8,7 +8,7 @@ import { fetchAccommodationsByWaypoint } from '@/app/api/accommodations/fetch-ac
 import { AccommodationCard } from '@/app/waypoints/[slug]/components/AccommodationCard';
 import { cn } from '@/lib/utils';
 import { Button, buttonVariants } from '@/app/components/ui/button';
-import { CollapsibleSection } from '@/app/components/ui/CollapsibleSection';
+import { CollapsibleSection } from '@/app/components/ui/collapsible-section';
 
 interface StageDetailProps {
   caminoId: string;
