@@ -8,6 +8,7 @@ import { fetchAccommodationsByWaypoint } from '@/app/api/accommodations/fetch-ac
 import { AccommodationCard } from '@/app/waypoints/[slug]/components/AccommodationCard';
 import { cn } from '@/lib/utils';
 import { Button, buttonVariants } from '@/app/components/ui/button';
+import { CollapsibleSection } from '@/app/components/ui/CollapsibleSection';
 
 interface StageDetailProps {
   caminoId: string;
@@ -206,12 +207,12 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
       </nav>
 
       {/* Accommodations at start point */}
-      <section className="mt-12" aria-labelledby="start-accommodations-heading">
-        <h2
-          id="start-accommodations-heading"
-          className="text-xl font-semibold border-b-2 border-pillyGreen-400 drop-shadow-sm">
-          {t('accommodations_at', { name: stage.startPoint.name })}
-        </h2>
+      <CollapsibleSection
+        className="mt-12"
+        buttonClassName="border-b-2 border-pillyGreen-400 drop-shadow-sm"
+        id="start-accommodations"
+        heading={t('accommodations_at', { name: stage.startPoint.name })}
+        defaultOpen={false}>
         {startAccommodations.length > 0 ? (
           <ul className="mt-4 space-y-4">
             {startAccommodations.map((accommodation) => (
@@ -227,15 +228,15 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
         ) : (
           <p className="mt-4 text-sm text-muted-foreground">{t('no_accommodations')}</p>
         )}
-      </section>
+      </CollapsibleSection>
 
       {/* Accommodations at end point */}
-      <section className="my-16" aria-labelledby="end-accommodations-heading">
-        <h2
-          id="end-accommodations-heading"
-          className="text-xl font-semibold border-b-2 border-pillyGreen-400 drop-shadow-sm">
-          {t('accommodations_at', { name: stage.endPoint.name })}
-        </h2>
+      <CollapsibleSection
+        className="my-16"
+        buttonClassName="border-b-2 border-pillyGreen-400 drop-shadow-sm"
+        id="end-accommodations"
+        heading={t('accommodations_at', { name: stage.endPoint.name })}
+        defaultOpen={true}>
         {endAccommodations.length > 0 ? (
           <ul className="mt-4 space-y-4">
             {endAccommodations.map((accommodation) => (
@@ -251,7 +252,7 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
         ) : (
           <p className="mt-4 text-sm text-muted-foreground">{t('no_accommodations')}</p>
         )}
-      </section>
+      </CollapsibleSection>
     </article>
   );
 }
