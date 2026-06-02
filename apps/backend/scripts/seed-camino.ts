@@ -143,6 +143,12 @@ async function seed(
   }
 
   // 2. Upsert CaminoPoints, CaminoPointOrder, Accommodations
+  //    Delete all existing point orders first so stale positions from a previous
+  //    import (e.g. an old run with more waypoints) don't survive the re-seed.
+  if (!dryRun) {
+    await prisma.caminoPointOrder.deleteMany({ where: { caminoId } });
+  }
+
   const pointIdByName = new Map<string, string>();
   console.log(`\nPoints (${points.length}):`);
 

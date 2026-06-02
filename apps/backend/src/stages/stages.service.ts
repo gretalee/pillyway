@@ -108,13 +108,13 @@ export class StagesService {
     }
 
     const result: StageListItem[] = [];
-    for (let i = 0; i < pairs.length; i++) {
-      const pair = pairs[i];
+    for (const pair of pairs) {
       const row = stageByPair.get(`${pair.startId}|${pair.endId}`);
+      if (!row) continue; // waypoint exists in route order but has no Stage record — skip silently
 
       result.push({
-        id: row!.id,
-        stageNumber: i + 1,
+        id: row.id,
+        stageNumber: result.length + 1,
         startPoint: {
           id: pair.startId,
           name: pair.startName,
@@ -129,10 +129,10 @@ export class StagesService {
           slug: pair.endSlug,
           hasAccommodation: pair.endHasAccommodation,
         },
-        distance: row!.distance,
-        description: row!.description,
-        createdAt: row!.createdAt,
-        updatedAt: row!.updatedAt,
+        distance: row.distance,
+        description: row.description,
+        createdAt: row.createdAt,
+        updatedAt: row.updatedAt,
       });
     }
 
