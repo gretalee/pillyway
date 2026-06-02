@@ -231,8 +231,9 @@ async function seed(
       const endId = pointIdByName.get(sd.to);
 
       if (!startId || !endId) {
-        console.warn(`  ⚠ Unknown point in stage "${sd.from}" → "${sd.to}" — skipped`);
-        continue;
+        throw new Error(
+          `Unknown point in stage "${sd.from}" → "${sd.to}". Ensure points[] includes both names and they match exactly.`,
+        );
       }
 
       console.log(`  ${sd.from} → ${sd.to}${sd.distance ? ` (${sd.distance} km)` : ''}`);
