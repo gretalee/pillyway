@@ -1,6 +1,7 @@
 import {
   ForbiddenException,
   Injectable,
+  InternalServerErrorException,
   Logger,
   NotFoundException,
 } from '@nestjs/common';
@@ -118,7 +119,7 @@ export class StagesService {
             `"${pair.startName}" → "${pair.endName}" (camino ${caminoId}, pair index ${i}). ` +
             `Re-seed the camino or create the missing Stage record.`,
         );
-        throw new NotFoundException(
+        throw new InternalServerErrorException(
           `Stage ${i + 1} is missing a Stage record. The camino data is inconsistent.`,
         );
       }
