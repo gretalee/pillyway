@@ -1,6 +1,7 @@
 import {
   ForbiddenException,
   Injectable,
+  InternalServerErrorException,
   Logger,
   NotFoundException,
 } from '@nestjs/common';
@@ -112,8 +113,19 @@ export class StagesService {
       const pair = pairs[i];
       const row = stageByPair.get(`${pair.startId}|${pair.endId}`);
 
+      if (!row) {
+        this.logger.error(
+          `Data integrity violation: no Stage row for consecutive pair ` +
+            `"${pair.startName}" → "${pair.endName}" (camino ${caminoId}, pair index ${i}). ` +
+            `Re-seed the camino or create the missing Stage record.`,
+        );
+        throw new InternalServerErrorException(
+          `Stage ${i + 1} is missing a Stage record. The camino data is inconsistent.`,
+        );
+      }
+
       result.push({
-        id: row!.id,
+        id: row.id,
         stageNumber: i + 1,
         startPoint: {
           id: pair.startId,
@@ -129,10 +141,10 @@ export class StagesService {
           slug: pair.endSlug,
           hasAccommodation: pair.endHasAccommodation,
         },
-        distance: row!.distance,
-        description: row!.description,
-        createdAt: row!.createdAt,
-        updatedAt: row!.updatedAt,
+        distance: row.distance,
+        description: row.description,
+        createdAt: row.createdAt,
+        updatedAt: row.updatedAt,
       });
     }
 
