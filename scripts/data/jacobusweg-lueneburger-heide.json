@@ -91,7 +91,7 @@
       "name": "Hanstedt",
       "country": "germany",
       "slug": "hanstedt-nordheide",
-      "description": "Hanstedt (Nordheide) liegt im Landkreis Harburg auf der zweiten Etappe zwischen Hittfeld und Undeloh, ca. 20 km von Hittfeld. Der Weg passiert zuvor das historische Klosterdorf Ramelsloh (Damenstift ca. 950 n. Chr., Stempelstelle) — für Pilger, die den Abschnitt teilen möchten, liegt dort das Hotel Pharos zur Seeve (Tel. +49 41 852975, ab €89, ca. 2 km abseits der Route). Hanstedt bietet mit dem Missionarischen Zentrum und der Pension Ehrhorn die günstigsten Unterkünfte im Nordabschnitt.",
+      "description": "Hanstedt (Nordheide) liegt im Landkreis Harburg auf der zweiten Etappe zwischen Hittfeld und Undeloh, ca. 20 km von Hittfeld. Der Weg passiert zuvor das historische Klosterdorf Ramelsloh (Damenstift ca. 950 n. Chr., Stempelstelle) — für Pilger, die den Abschnitt teilen möchten, liegt dort das Hotel Pharos zur Seeve (Tel. +49 41 852975, ab €89, ca. 2 km abseits der Route). Pension Ehrhorn in Hanstedt-Ollsen bietet die günstigste Unterkunft in diesem Abschnitt.",
       "accommodations": [
         {
           "name": "Pension Ehrhorn",
@@ -106,19 +106,6 @@
           "priceRange": "moderate",
           "verified": false
         },
-        {
-          "name": "Missionarisches Zentrum Hanstedt",
-          "type": "hostel",
-          "description": "Christliches Missions- und Tagungszentrum mit Pilgerherberge. 103 Betten in 33 Zimmern (26 Zweibett-, 1 Vierbett-, 6 Sechsbettzimmer sowie Gruppenräume in 4 Gebäuden). Frühstück, kontemplative Wanderwege auf dem Gelände, tägliche Andachten. Ab €25/Person. Einzelbuchungen möglich. Tel. 05822/94108-10.",
-          "addressStreet": "Wriedeler Straße 14",
-          "addressZip": "29582",
-          "addressCity": "Hanstedt",
-          "addressCountry": "germany",
-          "website": "https://www.mz-hanstedt.de",
-          "email": "info@mz-hanstedt.de",
-          "priceRange": "budget",
-          "verified": false
-        }
       ]
     },
     {

@@ -108,13 +108,24 @@ export class StagesService {
     }
 
     const result: StageListItem[] = [];
-    for (const pair of pairs) {
+    for (let i = 0; i < pairs.length; i++) {
+      const pair = pairs[i];
       const row = stageByPair.get(`${pair.startId}|${pair.endId}`);
-      if (!row) continue; // waypoint exists in route order but has no Stage record — skip silently
+
+      if (!row) {
+        this.logger.error(
+          `Data integrity violation: no Stage row for consecutive pair ` +
+            `"${pair.startName}" → "${pair.endName}" (camino ${caminoId}, pair index ${i}). ` +
+            `Re-seed the camino or create the missing Stage record.`,
+        );
+        throw new NotFoundException(
+          `Stage ${i + 1} is missing a Stage record. The camino data is inconsistent.`,
+        );
+      }
 
       result.push({
         id: row.id,
-        stageNumber: result.length + 1,
+        stageNumber: i + 1,
         startPoint: {
           id: pair.startId,
           name: pair.startName,

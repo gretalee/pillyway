@@ -117,12 +117,36 @@ async function seed(
 ): Promise<void> {
   const { camino: caminoData, points, stages } = data;
   const createdBy = caminoData.createdBy;
+
+  // ── Dry-run: log without touching the database ─────────────────────────────
+  if (dryRun) {
+    console.log(`\n[dry run] Camino "${caminoData.name}"`);
+    console.log(`\nPoints (${points.length}):`);
+    for (const pd of points) {
+      console.log(
+        `  [${String(pd.position).padStart(2)}] ${pd.name} (${pd.country})` +
+          (pd.accommodations.length ? ` — ${pd.accommodations.length} accommodation(s)` : ''),
+      );
+    }
+    console.log(`\nStages (${stages.length}):`);
+    for (const sd of stages) {
+      console.log(`  ${sd.from} → ${sd.to}${sd.distance ? ` (${sd.distance} km)` : ''}`);
+    }
+    console.log('\n─────────────────────────────────────────');
+    console.log('Dry run complete — no data was written.');
+    console.log('─────────────────────────────────────────\n');
+    return;
+  }
+
+  // ── Real run: all DB operations inside a single transaction ────────────────
+  //    This ensures the camino is never left in a partially-rebuilt state if
+  //    the script errors mid-import (e.g. after the deleteMany but before all
+  //    point orders are recreated).
   const counts = { points: 0, accommodations: 0, stages: 0 };
 
-  // 1. Upsert Camino
-  let caminoId: string;
-  if (!dryRun) {
-    const camino = await prisma.camino.upsert({
+  await prisma.$transaction(async (tx) => {
+    // 1. Upsert Camino
+    const camino = await tx.camino.upsert({
       where: { name: caminoData.name },
       create: {
         name: caminoData.name,
@@ -135,116 +159,99 @@ async function seed(
         verified: caminoData.verified,
       },
     });
-    caminoId = camino.id;
+    const caminoId = camino.id;
     console.log(`\nCamino "${camino.name}" — id: ${camino.id}`);
-  } else {
-    caminoId = 'dry-run';
-    console.log(`\n[dry run] Camino "${caminoData.name}"`);
-  }
 
-  // 2. Upsert CaminoPoints, CaminoPointOrder, Accommodations
-  //    Delete all existing point orders first so stale positions from a previous
-  //    import (e.g. an old run with more waypoints) don't survive the re-seed.
-  if (!dryRun) {
-    await prisma.caminoPointOrder.deleteMany({ where: { caminoId } });
-  }
+    // 2. Replace point orders atomically: delete all existing rows first so
+    //    stale positions from a previous import don't survive the re-seed.
+    await tx.caminoPointOrder.deleteMany({ where: { caminoId } });
 
-  const pointIdByName = new Map<string, string>();
-  console.log(`\nPoints (${points.length}):`);
+    // 3. Upsert CaminoPoints, recreate CaminoPointOrder, create Accommodations
+    const pointIdByName = new Map<string, string>();
+    console.log(`\nPoints (${points.length}):`);
 
-  for (const pd of points) {
-    const label =
-      `  [${String(pd.position).padStart(2)}] ${pd.name} (${pd.country})` +
-      (pd.accommodations.length ? ` — ${pd.accommodations.length} accommodation(s)` : '');
-    console.log(label);
+    for (const pd of points) {
+      console.log(
+        `  [${String(pd.position).padStart(2)}] ${pd.name} (${pd.country})` +
+          (pd.accommodations.length ? ` — ${pd.accommodations.length} accommodation(s)` : ''),
+      );
 
-    if (dryRun) {
-      pointIdByName.set(pd.name, `dry-${pd.position}`);
-      continue;
+      const point = await tx.caminoPoint.upsert({
+        where: { name_country: { name: pd.name, country: pd.country } },
+        create: { name: pd.name, country: pd.country, slug: pd.slug, description: pd.description },
+        update: { slug: pd.slug, description: pd.description },
+      });
+      pointIdByName.set(pd.name, point.id);
+      counts.points++;
+
+      // deleteMany cleared all rows for this camino above, so create is safe here
+      await tx.caminoPointOrder.create({
+        data: { caminoId, caminoPointId: point.id, position: pd.position },
+      });
+
+      for (const acc of pd.accommodations) {
+        if (!VALID_ACC_TYPES.has(acc.type)) {
+          console.warn(`    ⚠ Unknown type "${acc.type}" for "${acc.name}" — skipped`);
+          continue;
+        }
+        const exists = await tx.accommodation.findFirst({
+          where: { caminoPointId: point.id, name: acc.name },
+          select: { id: true },
+        });
+        if (!exists) {
+          await tx.accommodation.create({
+            data: {
+              caminoPointId: point.id,
+              name: acc.name,
+              type: acc.type as AccommodationType,
+              description: acc.description,
+              addressStreet: acc.addressStreet,
+              addressZip: acc.addressZip,
+              addressCity: acc.addressCity,
+              addressCountry: acc.addressCountry,
+              website: acc.website,
+              email: acc.email,
+              priceRange:
+                acc.priceRange && VALID_PRICE_RANGES.has(acc.priceRange)
+                  ? (acc.priceRange as PriceRange)
+                  : null,
+              verified: acc.verified,
+              createdBy,
+            },
+          });
+          counts.accommodations++;
+        }
+      }
     }
 
-    const point = await prisma.caminoPoint.upsert({
-      where: { name_country: { name: pd.name, country: pd.country } },
-      create: { name: pd.name, country: pd.country, slug: pd.slug, description: pd.description },
-      update: { slug: pd.slug, description: pd.description },
-    });
-    pointIdByName.set(pd.name, point.id);
-    counts.points++;
+    // 4. Upsert Stages
+    console.log(`\nStages (${stages.length}):`);
+    for (const sd of stages) {
+      const startId = pointIdByName.get(sd.from);
+      const endId = pointIdByName.get(sd.to);
 
-    await prisma.caminoPointOrder.upsert({
-      where: { caminoId_position: { caminoId, position: pd.position } },
-      create: { caminoId, caminoPointId: point.id, position: pd.position },
-      update: { caminoPointId: point.id },
-    });
-
-    for (const acc of pd.accommodations) {
-      if (!VALID_ACC_TYPES.has(acc.type)) {
-        console.warn(`    ⚠ Unknown type "${acc.type}" for "${acc.name}" — skipped`);
+      if (!startId || !endId) {
+        console.warn(`  ⚠ Unknown point in stage "${sd.from}" → "${sd.to}" — skipped`);
         continue;
       }
-      const exists = await prisma.accommodation.findFirst({
-        where: { caminoPointId: point.id, name: acc.name },
-        select: { id: true },
+
+      console.log(`  ${sd.from} → ${sd.to}${sd.distance ? ` (${sd.distance} km)` : ''}`);
+
+      await tx.stage.upsert({
+        where: { startPointId_endPointId: { startPointId: startId, endPointId: endId } },
+        create: { startPointId: startId, endPointId: endId, distance: sd.distance, description: sd.description },
+        update: { distance: sd.distance, description: sd.description },
       });
-      if (!exists) {
-        await prisma.accommodation.create({
-          data: {
-            caminoPointId: point.id,
-            name: acc.name,
-            type: acc.type as AccommodationType,
-            description: acc.description,
-            addressStreet: acc.addressStreet,
-            addressZip: acc.addressZip,
-            addressCity: acc.addressCity,
-            addressCountry: acc.addressCountry,
-            website: acc.website,
-            email: acc.email,
-            priceRange:
-              acc.priceRange && VALID_PRICE_RANGES.has(acc.priceRange)
-                ? (acc.priceRange as PriceRange)
-                : null,
-            verified: acc.verified,
-            createdBy,
-          },
-        });
-        counts.accommodations++;
-      }
+      counts.stages++;
     }
-  }
+  }, { timeout: 60000 });
 
-  // 3. Upsert Stages
-  console.log(`\nStages (${stages.length}):`);
-  for (const sd of stages) {
-    const startId = pointIdByName.get(sd.from);
-    const endId = pointIdByName.get(sd.to);
-
-    if (!startId || !endId) {
-      console.warn(`  ⚠ Unknown point in stage "${sd.from}" → "${sd.to}" — skipped`);
-      continue;
-    }
-
-    console.log(`  ${sd.from} → ${sd.to}${sd.distance ? ` (${sd.distance} km)` : ''}`);
-
-    if (dryRun) continue;
-
-    await prisma.stage.upsert({
-      where: { startPointId_endPointId: { startPointId: startId, endPointId: endId } },
-      create: { startPointId: startId, endPointId: endId, distance: sd.distance, description: sd.description },
-      update: { distance: sd.distance, description: sd.description },
-    });
-    counts.stages++;
-  }
-
-  // 4. Summary
+  // 5. Summary (printed after successful commit)
   console.log('\n─────────────────────────────────────────');
-  if (dryRun) {
-    console.log('Dry run complete — no data was written.');
-  } else {
-    console.log('Import complete.');
-    console.log(`  Points upserted:        ${counts.points}`);
-    console.log(`  Accommodations created: ${counts.accommodations}`);
-    console.log(`  Stages upserted:        ${counts.stages}`);
-  }
+  console.log('Import complete.');
+  console.log(`  Points upserted:        ${counts.points}`);
+  console.log(`  Accommodations created: ${counts.accommodations}`);
+  console.log(`  Stages upserted:        ${counts.stages}`);
   console.log('─────────────────────────────────────────\n');
 }
 

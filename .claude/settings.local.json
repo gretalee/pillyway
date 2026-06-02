@@ -43,8 +43,7 @@
       "Bash(npx prettier *)",
       "Bash(yarn --cwd apps/backend build)",
       "Bash(git add *)",
-      "Bash(node_modules/.bin/playwright test *)",
-      "Bash(/Users/hendrike/Documents/projects/PillyWay/DEV/pillyway/apps/frontend/node_modules/.bin/tsc --noEmit --project /Users/hendrike/Documents/projects/PillyWay/DEV/pillyway/apps/frontend/tsconfig.json)"
+      "Bash(node_modules/.bin/playwright test *)"
     ]
   }
 }
