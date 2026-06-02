@@ -12,6 +12,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **Pillyway** is a pilgrimage route planning app. It helps users discover and plan personal pilgrimages.
 
 ### Core Features
+
 - Browse pilgrimage routes, individual stages, and logistics (travel connections, food, accommodation)
 - Any visitor (unauthenticated) can view routes and accommodations
 - Authenticated users with the **pilgrim** role can create, edit, and delete any camino, stage, accommodation, and sight
@@ -19,15 +20,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Planned (later phase): authenticated users can compose a personal custom route from existing stages
 
 ### User Roles
-| Role key | Capabilities |
-|---|---|
-| (none) | View all public content (caminos, stages, accommodations, sights) |
-| `pilgrim` | + Create, edit, and delete any camino; edit any stage, accommodation, sight |
-| `owner` | Backoffice access only — in Kinde, every `owner` user is also assigned the `pilgrim` role |
+
+| Role key  | Capabilities                                                                              |
+| --------- | ----------------------------------------------------------------------------------------- |
+| (none)    | View all public content (caminos, stages, accommodations, sights)                         |
+| `pilgrim` | + Create, edit, and delete any camino; edit any stage, accommodation, sight               |
+| `owner`   | Backoffice access only — in Kinde, every `owner` user is also assigned the `pilgrim` role |
 
 > **Permission rule**: all content write operations (camino create/edit/delete, stage edit, accommodation edit, sight edit) require the `pilgrim` role. Check **only** `pilgrim` — never check for `owner` on content routes. The `owner` role is reserved exclusively for backoffice features. There is no per-entity ownership check — role alone determines access.
 
 ### Domain Entities (initial)
+
 - **Route** — a named pilgrimage route with metadata
 - **Stage** — an individual leg of a route (ordered, with distance / duration)
 - **Accommodation** — lodging option linked to a stage or location
@@ -84,7 +87,7 @@ pillyway/
 Pure web application. The source code is open-source.
 
 - **Frontend**: Next.js 16 (App Router), Tailwind CSS v4, shadcn/ui 4, CVA (class-variance-authority), TanStack Query, Zustand — **Next.js 16 is beyond the Claude training cutoff; read `node_modules/next/dist/docs/` or the official docs before assuming API behaviour**
-- **Backend & API**: NestJS + TypeScript, hosted on Hetzner via Coolify
+- **Backend & API**: NestJS + TypeScript, hosted on Hetzner
 - **Database**: Supabase (PostgreSQL)
 - **Auth**: Kinde or Clerk
 - **State**: TanStack Query for server state; Zustand for client-side state
@@ -107,6 +110,7 @@ Each agent maintains persistent memory under `.claude/agent-memory/<agent-name>/
 All agents must follow this workflow for every iteration.
 
 ### 0. Precondition — Feature Branch
+
 Before any work begins, create a dedicated branch from `main`:
 
 ```bash
@@ -120,27 +124,32 @@ git checkout -b feature/<short-description>
 - All subsequent steps happen on this branch.
 
 ### 1. Requirements & Contextual Preparation
+
 - The `product-owner` agent defines functional requirements for the iteration.
 - The `software-architect-lead` reviews for technical feasibility and enriches the task with contextual anchors (API endpoints, data models, architectural patterns).
 - Output: a detailed technical ticket with a **Definition of Done (DoD)** before any code is written.
 
 ### 2. Agentic Task Distribution
+
 - The `software-architect-lead` triggers the `nestjs-backend-developer` and `senior-frontend-dev` agents.
 - `senior-frontend-dev` and `nestjs-backend-developer` work in parallel on a shared feature branch.
 - Synchronization contract: an **OpenAPI/Swagger spec** is agreed upon first and must not be broken unilaterally. All changes to the contract require both agents to update their implementations.
 
 ### 3. Continuous Validation (AIQE Loop)
+
 - The `qa-security-validator` agent defines test criteria **before** implementation begins (TDD).
 - `nestjs-backend-developer` and `senior-frontend-dev` generate unit and integration tests alongside the feature code — not after.
 - The `qa-security-validator` runs automated security scans and logic checks continuously and feeds findings back to `nestjs-backend-developer` and `senior-frontend-dev` for immediate correction.
 
 ### 4. Automated & Human Review
+
 - On completion, a Pull Request is opened targeting `main`.
 - **Stage 1 — Automated**: CI/CD runs linting, SAST security scans, and the full test suite. All checks must pass.
 - **Stage 2 — Human review**: A human Software Architect or Senior Developer reviews AI-generated logic for long-term maintainability. Review comments (`ReviewHints`) are addressed by the agent before re-review.
 - The PR is merged **only after a formal human Approve**.
 
 ### 5. Documentation & Learning
+
 - After merge, `nestjs-backend-developer` updates API docs and `senior-frontend-dev` updates frontend documentation to reflect the changes.
 - Agent memory files under `.claude/agent-memory/` are updated with any new patterns, conventions, or decisions discovered during the iteration.
 
@@ -165,14 +174,15 @@ Prisma 7 is the ORM. The schema lives at `apps/backend/prisma/schema.prisma`; th
 
 **When to run migrations:**
 
-| Situation | Command | Who runs it |
-|---|---|---|
-| Schema change during development | `yarn prisma:migrate:dev --name <description>` | Developer locally — creates a migration file and applies it to the local DB |
-| After pulling a branch with new migrations | `yarn prisma:migrate:deploy` | Developer locally, or CI/CD pipeline |
-| Production deploy (CI/CD) | `yarn prisma:migrate:deploy` | CI pipeline, before the app process starts |
-| Regenerate TypeScript types after schema edit | `yarn prisma:generate` | Automatically via `postinstall`; also run manually after editing the schema |
+| Situation                                     | Command                                        | Who runs it                                                                 |
+| --------------------------------------------- | ---------------------------------------------- | --------------------------------------------------------------------------- |
+| Schema change during development              | `yarn prisma:migrate:dev --name <description>` | Developer locally — creates a migration file and applies it to the local DB |
+| After pulling a branch with new migrations    | `yarn prisma:migrate:deploy`                   | Developer locally, or CI/CD pipeline                                        |
+| Production deploy (CI/CD)                     | `yarn prisma:migrate:deploy`                   | CI pipeline, before the app process starts                                  |
+| Regenerate TypeScript types after schema edit | `yarn prisma:generate`                         | Automatically via `postinstall`; also run manually after editing the schema |
 
 **Rules:**
+
 - Schema changes → always go through `prisma migrate dev` (never hand-edit the database)
 - Custom SQL (expression indexes, RLS policies, stored procedures) → add manually to the generated migration file before committing
 - Never run `prisma migrate reset` in production — it drops the entire database
@@ -182,12 +192,12 @@ Prisma 7 is the ORM. The schema lives at `apps/backend/prisma/schema.prisma`; th
 
 The following actions corrupt the migration history and must never happen:
 
-| Forbidden action | Why it breaks things |
-|---|---|
-| `prisma db push` on a local dev DB | Applies schema changes without creating or recording a migration |
-| `prisma db execute` for DDL (CREATE TABLE, ALTER TABLE, CREATE INDEX, …) | Applies SQL to the DB without recording it in `_prisma_migrations` |
-| Editing a migration file after `prisma migrate dev` has applied it | Changes the file checksum; Prisma detects the file was tampered with |
-| Applying SQL via `psql` or a GUI client for schema changes | Same as `db execute` — leaves no migration record |
+| Forbidden action                                                         | Why it breaks things                                                 |
+| ------------------------------------------------------------------------ | -------------------------------------------------------------------- |
+| `prisma db push` on a local dev DB                                       | Applies schema changes without creating or recording a migration     |
+| `prisma db execute` for DDL (CREATE TABLE, ALTER TABLE, CREATE INDEX, …) | Applies SQL to the DB without recording it in `_prisma_migrations`   |
+| Editing a migration file after `prisma migrate dev` has applied it       | Changes the file checksum; Prisma detects the file was tampered with |
+| Applying SQL via `psql` or a GUI client for schema changes               | Same as `db execute` — leaves no migration record                    |
 
 **Correct workflow for every schema change:**
 
@@ -196,12 +206,13 @@ The following actions corrupt the migration history and must never happen:
 3. Commit `schema.prisma` and the new migration file together in the same commit
 4. Before opening a PR, run `yarn prisma:migrate:dev` once more and confirm the output is `Already in sync, no schema change or pending migration was found.`
 
-**Iteration during development:**  
+**Iteration during development:**
 If you need to tweak the schema while still on a feature branch (before committing the migration), do **not** run `prisma migrate dev` multiple times on a partially-changed schema. Instead, delete the draft migration directory, revert `schema.prisma` to its last committed state, make all schema changes at once, then run `prisma migrate dev --name <description>` a single time.
 
 ## Frontend Conventions (Next.js)
 
 ### Code Style
+
 - TypeScript strict mode; no `any`
 - Next.js App Router — use the `app/` directory; there is no `pages/` directory
 - Write **explicit, readable code** — prefer clear conditional logic over clever one-liners
@@ -211,19 +222,23 @@ If you need to tweak the schema while still on a feature branch (before committi
 - Components go into the shared library if used in more than one place
 
 ### Styling & Components
+
 - Tailwind CSS classes are always preferred over custom CSS
 - Use **shadcn/ui** for all base UI components; add new components with `npx shadcn@latest add <component>` run from `app/frontend/`
 - Use **CVA** (class-variance-authority) for custom component variants alongside shadcn
 - The `Providers` component wraps `QueryClientProvider` and is mounted in the root layout
 
 ### State Management
+
 - Use **TanStack Query** for all server state and data fetching — no ad-hoc `fetch` calls outside of query functions
 - Use **Zustand** for client-side state (UI state, user preferences, cross-component state not tied to server data)
 
 ### Data Access Architecture
+
 The frontend **never contacts Supabase directly**. All data retrieval and mutation goes through the NestJS backend API. The `@supabase/supabase-js` package is not a frontend dependency; there are no Supabase env vars in the frontend. Any PR that adds a Supabase client, `NEXT_PUBLIC_SUPABASE_*` env vars, or direct PostgREST calls to the frontend must be rejected.
 
 ### API Request Rules
+
 Follow this checklist whenever a component needs to call the backend:
 
 1. **Check first** — look for an existing hook in `apps/frontend/app/api/`. If one covers the endpoint, use it directly; do not duplicate.
@@ -233,11 +248,13 @@ Follow this checklist whenever a component needs to call the backend:
 5. **Auth token injection belongs in `app/api/`** — hooks that call authenticated endpoints must retrieve the Kinde token internally (`useKindeBrowserClient`). Components must never access `accessTokenEncoded` directly.
 
 ### Layout & Interaction
+
 - Every page scrolls by default — do not set `overflow: hidden` on page roots
 - No interactive elements (buttons, tappable areas) placed at the outermost horizontal edges — always apply safe horizontal padding
 - Font sizes must respect browser accessibility settings — use relative units (`rem`); never hardcode font sizes in absolute `px`
 
 ### Accessibility & SEO
+
 - Web output must meet WCAG accessibility standards: semantic HTML, ARIA labels on interactive elements, sufficient color contrast, keyboard navigability
 - Every page must include SEO-relevant meta tags: `<title>`, `<meta name="description">`, Open Graph tags (`og:title`, `og:description`, `og:image`)
 
@@ -246,16 +263,19 @@ Follow this checklist whenever a component needs to call the backend:
 The Playwright config uses `fullyParallel: true`. All spec files that touch the database must be written to avoid concurrent session conflicts with the shared Kinde pilgrim account.
 
 ### Structure rules
+
 - **One `test.describe` per spec file.** Multiple describe blocks in one file run concurrently and cause Kinde session collisions.
 - **Serial mode for any test that mutates data.** Add `test.describe.configure({ mode: 'serial' })` at the top of the describe block whenever tests create, update, or delete caminos or stages.
 - **One shared test camino per describe.** Create it in `beforeAll`, reuse it across all tests in the describe, delete it in `afterAll`. Never rely on seeded data that may change between runs.
 - **Full-flow tests over micro-tests.** Combine related assertions into one test that walks a complete user journey. One test per tiny scenario multiplies Kinde logins and slows the suite.
 
 ### Hook timeout rules
+
 - `test.setTimeout(60_000)` — set on the describe block when `beforeEach` performs a Kinde login (~15–20 s), so the test body still has budget.
 - `testInfo.setTimeout(90_000)` — set as the **first line** of every `beforeAll` and `afterAll` that performs a login + UI operation, because `test.setTimeout` does not extend hook timeouts.
 - `testInfo.setTimeout(120_000)` — use for `beforeAll` hooks that additionally navigate and fill forms after creating the camino (e.g. enriching a stage).
 
 ### Cleanup rules
+
 - Cleanup in `afterAll` is best-effort — use `isVisible({ timeout: 5_000 }).catch(() => false)` (soft check) for every menu item click. A failed cleanup must never fail a test.
 - Hard `expect(...).toBeVisible()` assertions belong only in test bodies, never in `beforeAll`/`afterAll` cleanup blocks.
