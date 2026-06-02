@@ -118,9 +118,19 @@ async function seed(
   const { camino: caminoData, points, stages } = data;
   const createdBy = caminoData.createdBy;
 
-  // ── Dry-run: log without touching the database ─────────────────────────────
+  // ── Dry-run: log + validate without touching the database ───────────────────
   if (dryRun) {
     console.log(`\n[dry run] Camino "${caminoData.name}"`);
+
+    const pointNames = new Set(points.map((p) => p.name));
+    for (const sd of stages) {
+      if (!pointNames.has(sd.from) || !pointNames.has(sd.to)) {
+        throw new Error(
+          `Unknown point in stage "${sd.from}" → "${sd.to}" (dry run). Ensure points[] includes both names and they match exactly.`,
+        );
+      }
+    }
+
     console.log(`\nPoints (${points.length}):`);
     for (const pd of points) {
       console.log(
