@@ -1,0 +1,451 @@
+{
+  "_meta": {
+    "sources": [
+      "https://www.lueneburger-heide.de/natur/wandern/11234/jacobusweg-pilgern-lueneburger-heide.html",
+      "https://pilger-im-norden.de/jacobusweg-lueneburger-heide/",
+      "https://www.wildganz.com/pilgerweg/jacobusweg-lueneburger-heide",
+      "https://www.jakobsweg.de/jakobsweg-lueneburger-heide-pilgern-durch-nord-deutschland/",
+      "https://jacobus.de/pilgern/das-pilgern",
+      "https://klosterwalsrode.de/unsere-angebote/",
+      "https://grz-krelingen.de/uebernachten",
+      "https://www.kloster-mariensee.de/",
+      "https://www.ludwig-harms-haus.de/",
+      "https://www.himmlische-herbergen.de/unterkunft/missionarisches-zentrum-hanstedt-i/",
+      "https://www.jugendherberge.de/jugendherbergen/bad-fallingbostel/",
+      "https://www.soltau-touristik.de/service/uebernachten/pilgerunterkuenfte",
+      "https://www.soltau-touristik.de/detail/id=60002aad833e135bfca6f432",
+      "https://pilger-im-norden.de/pilgerausweis/",
+      "https://www.unterwegs-nach-santiago.eu/index.php/uebersichten/pilgerstempel?view=article&id=567:jakobsweg-lueneburger-heide-von-hamburg-zum-kloster-mariensee",
+      "https://daspilgerforum.de/viewtopic.php?t=3492"
+    ],
+    "notes": [
+      "Die abgebildeten 10 Etappen entsprechen der westlichen Hauptvariante (Aller-Leine-Tal) von Hamburg nach Mariensee (~205 km).",
+      "Östliche Alternativroute (Naturpark Südheide) zweigt in Soltau ab: Wietzendorf → Bergen → Hermannsburg → Eschede → Wienhausen → Celle → Lindwedel → Mariensee. Wichtige Unterkünfte: Ludwig-Harms-Haus Hermannsburg (Tel. 05052/6574), Communität Koinonia Hermannsburg (Tel. +49 5052/3273), Hotel Am Kloster Wienhausen (Tel. 05149/18555-0), Heidehotel Zum Stillen Winkel Lindwedel (Tel. 05073/96020).",
+      "Zubringer Lüneburg: Verbindungsweg von Lüneburg über Egestorf nach Wilsede, dort Anschluss an die Hauptroute.",
+      "Telefonnummern sind in den Beschreibungsfeldern der Unterkünfte angegeben.",
+      "Unterkunftsstatus kann sich ändern — immer vorab telefonisch anfragen.",
+      "createdBy: 'seed' ist ein Platzhalter — vor dem Import durch die echte Benutzer-ID ersetzen.",
+      "Vollständiges offizielles Unterkunftsverzeichnis beim Heidekreis: Dörthe Müller, Tel. 05191/970-684, d.mueller@heidekreis.de."
+    ]
+  },
+  "camino": {
+    "name": "Jacobusweg Lüneburger Heide",
+    "description": "Der Jacobusweg durch die Lüneburger Heide führt von der Hauptkirche St. Jacobi in Hamburg durch das größte Heidelandschaftsgebiet Deutschlands bis zum Kloster Mariensee bei Neustadt am Rübenberge, nördlich von Hannover. Der Weg ist durchgehend mit der gelben Jakobsmuschel auf blauem Untergrund ausgeschildert — die Nasenspitze der Muschel zeigt die Laufrichtung an.\n\nDer Weg verläuft überwiegend flach durch Heidelandschaft, Kiefernwälder und stille Heidedörfer. Besondere Höhepunkte sind das autofreie Dorf Wilsede mit dem Wilseder Berg (169 m, höchste Erhebung der Nordheide), der Naturschutzbereich Lüneburger Heide sowie die jahrhundertealten Klöster Walsrode und Mariensee.\n\nAb Soltau teilt sich der Weg in zwei Varianten: Die westliche Route (Aller-Leine-Tal, hier beschrieben) führt über Bad Fallingbostel, Kloster Walsrode und Krelingen nach Schwarmstedt (~205 km gesamt, 10 Etappen). Die östliche Alternativroute (Naturpark Südheide) verläuft über Wietzendorf, Bergen, Hermannsburg, Kloster Wienhausen und Celle. Beide Varianten vereinen sich in Mandelsloh und enden gemeinsam am Kloster Mariensee.\n\nDen Pilgerausweis (Credencial del Peregrino) erhält man im Pilgerbüro der Hauptkirche St. Jacobi Hamburg, Jakobikirchhof 22, 20095 Hamburg (Tel. 040/30 37 37 23, dienstags 15:00–17:00 Uhr und donnerstags 14:00–16:00 Uhr, Eingang Südschiff). Preis: 8 €. Alternativ ist eine kostenlose PDF-Version des Pilgerpasses beim Naturpark Lüneburger Heide erhältlich (naturpark-lueneburger-heide.de). Stempel gibt es an zahlreichen Kirchen, Klöstern, Tourismusbüros und Pilgerherbergen entlang der gesamten Route.",
+    "verified": true,
+    "createdBy": "seed"
+  },
+  "points": [
+    {
+      "position": 1,
+      "name": "Hamburg",
+      "country": "germany",
+      "slug": "hamburg",
+      "description": "Ausgangspunkt des Jacobuswegs ist die Hauptkirche St. Jacobi, Jakobikirchhof 22, 20095 Hamburg — eine der fünf Hamburger Hauptkirchen und seit dem Mittelalter Patronatskirche der Jakobspilger. Hier befindet sich das Pilgerbüro (Tel. 040/30 37 37 23), wo der Pilgerausweis erworben und der erste Stempel geholt werden kann. Der Weg verlässt die Hamburger Innenstadt durch HafenCity, Veddel und Wilhelmsburg nach Harburg.",
+      "accommodations": []
+    },
+    {
+      "position": 2,
+      "name": "Sinstorf",
+      "country": "germany",
+      "slug": "sinstorf",
+      "description": "Ruhiger Vorort im Süden Hamburgs (Stadtteil Harburg). Ende der ersten Etappe. Der Weg führt von hier weiter durch die sanfte Hügellandschaft des Harburger Umlands nach Ramelsloh.",
+      "accommodations": []
+    },
+    {
+      "position": 3,
+      "name": "Ramelsloh",
+      "country": "germany",
+      "slug": "ramelsloh",
+      "description": "Kleines Dorf im Landkreis Harburg mit historischem Damenstift (Kloster Ramelsloh, um 950 gegründet). Der Weg passiert die Stiftskirche. Stempelstelle vorhanden.",
+      "accommodations": []
+    },
+    {
+      "position": 4,
+      "name": "Hanstedt",
+      "country": "germany",
+      "slug": "hanstedt-nordheide",
+      "description": "Hanstedt I (Nordheide) liegt auf der dritten Etappe zwischen Ramelsloh und Undeloh. Das Missionarische Zentrum bietet eine der günstigsten Pilgerunterkünfte auf dem gesamten Weg.",
+      "accommodations": [
+        {
+          "name": "Missionarisches Zentrum Hanstedt",
+          "type": "hostel",
+          "description": "Christliches Missions- und Tagungszentrum mit Pilgerherberge in vier Gebäuden. 103 Betten in 33 Zimmern (26 Zweibett-, 1 Vierbett-, 6 Sechsbettzimmer sowie 11 Gruppenräume). Kontemplative Wanderwege auf dem Gelände, tägliche Andachten. Tel. 05822/94108-10.",
+          "addressStreet": "Wriedeler Straße 14",
+          "addressZip": "29582",
+          "addressCity": "Hanstedt",
+          "addressCountry": "germany",
+          "website": "https://www.mz-hanstedt.de",
+          "email": "info@mz-hanstedt.de",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 5,
+      "name": "Undeloh",
+      "country": "germany",
+      "slug": "undeloh",
+      "description": "Kleines Heidedorf am Rand des Naturschutzgebiets Lüneburger Heide — das 'Tor zur Heide'. Ende der dritten Etappe. Von hier führt der Weg in das weitgehend unberührte Kerngebiet des Naturparks, vorbei am autofreien Dorf Wilsede. Stempelstelle in der Kirche.",
+      "accommodations": [
+        {
+          "name": "Kirchengemeinde St. Magdalenen Undeloh",
+          "type": "hostel",
+          "description": "Pilgerherberge der evangelisch-lutherischen Kirchengemeinde. Einfache Unterkunft im Gemeindehaus am Ortsrand des Naturschutzgebiets. Tel. 04189/282.",
+          "addressStreet": "Wilseder Straße 2",
+          "addressZip": "21274",
+          "addressCity": "Undeloh",
+          "addressCountry": "germany",
+          "website": "https://www.kirche-undeloh.de",
+          "email": "kg.undeloh@evlka.de",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 6,
+      "name": "Wilsede",
+      "country": "germany",
+      "slug": "wilsede",
+      "description": "Autofreies Heidedorf auf 145 m ü. NN, eines der schönsten Dörfer Niedersachsens. Wahrzeichen ist der Wilseder Berg (169 m), die höchste Erhebung der Nordheide. Das Dorf liegt mitten im Naturschutzgebiet und ist nur zu Fuß oder per Pferd erreichbar. Stempelstelle im kleinen Betsaal des Ehmhoff-Museums.",
+      "accommodations": [
+        {
+          "name": "Pilgerherberge Wilsede",
+          "type": "hostel",
+          "description": "Informelle Pilgerherberge in einer umgebauten Scheune im autofreien Dorf Wilsede. Platz für ca. 30 Personen. Schlüssel erhältlich im Ehmhoff-Museum (Museum des Dorfes). Keine Voranmeldung erforderlich. Einfachste Ausstattung — eigener Schlafsack empfohlen.",
+          "addressStreet": null,
+          "addressZip": "21274",
+          "addressCity": "Wilsede",
+          "addressCountry": "germany",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 7,
+      "name": "Niederhaverbeck",
+      "country": "germany",
+      "slug": "niederhaverbeck",
+      "description": "Kleines Weiler am Haverbeck-Bach im Kern des Naturschutzgebiets. Ende der vierten Etappe. Der Ort liegt im geschützten Wildpferdgebiet; auf dem berühmten Gut Neumühlen werden freilaufende Heidschnucken gehalten.",
+      "accommodations": []
+    },
+    {
+      "position": 8,
+      "name": "Schneverdingen",
+      "country": "germany",
+      "slug": "schneverdingen",
+      "description": "Größte Stadt im Heidekreis, bekannt als 'Tor zur Lüneburger Heide'. Ende der fünften Etappe. Gute Versorgungsinfrastruktur (Supermarkt, Apotheke, Bäcker). Stempelstelle in der Peter-und-Paul-Kirche.",
+      "accommodations": [
+        {
+          "name": "Kirchengemeinde Peter und Paul Schneverdingen",
+          "type": "hostel",
+          "description": "Pilgerherberge der evangelischen Peter-und-Paul-Kirchengemeinde. Übernachtung im beheizten Gemeindehaus mit Dusche. Gut für Pilger geeignet. Tel. 05193/1249.",
+          "addressStreet": "Friedenstr. 3",
+          "addressZip": "29640",
+          "addressCity": "Schneverdingen",
+          "addressCountry": "germany",
+          "website": null,
+          "email": "kg.peter-paul.schneverdingen@evlka.de",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 9,
+      "name": "Soltau",
+      "country": "germany",
+      "slug": "soltau",
+      "description": "Kreisstadt des Heidekreises, Ende der sechsten Etappe. Ab Soltau teilen sich die beiden Routenvarianten (Aller-Leine-Tal westwärts und Naturpark Südheide ostwärts). Soltau bietet die dichteste Unterkunftsauswahl auf dem gesamten Weg. Stempelstellen in der Pilgerherberge und in der St.-Johannis-Kirche.",
+      "accommodations": [
+        {
+          "name": "Pilgerherberge Soltau (Salzmuseum)",
+          "type": "hostel",
+          "description": "Das 'kleinste Pilgerhaus Deutschlands', betrieben vom Salzmuseum Soltau. Direkt am Jacobusweg, der Via Romea und dem Heidschnuckenweg. Einfache Schlafmöglichkeit für Pilger. Tel. 05191/938237.",
+          "addressStreet": "Bahnhofsstraße 17",
+          "addressZip": "29614",
+          "addressCity": "Soltau",
+          "addressCountry": "germany",
+          "website": "https://www.salzmuseum-soltau.de",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Pilgerhaus Zum Föhreneck",
+          "type": "private_room",
+          "description": "Privates Pilgerzimmer mit 4 Betten, eigene Dusche, Frühstück inklusive. Check-in 14:00–19:00 Uhr, Check-out bis 10:00 Uhr. Lage: 5 km vom Soltauer Zentrum im Kiefernwald direkt am Jacobusweg. Die Gastgeberin hat selbst auf dem Jacobusweg gepilgert. Tel. +49 5191 13313.",
+          "addressStreet": "Marbostel 5",
+          "addressZip": "29614",
+          "addressCity": "Soltau",
+          "addressCountry": "germany",
+          "website": null,
+          "email": "weiss.solvik@gmail.com",
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Dat Greune Eck",
+          "type": "b_and_b",
+          "description": "Kleines, familiäres Bed & Breakfast in Soltau. Tel. +49 5191 16357.",
+          "addressStreet": "Alter Badeweg 2",
+          "addressZip": "29614",
+          "addressCity": "Soltau",
+          "addressCountry": "germany",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hotel Am Böhmepark",
+          "type": "hotel",
+          "description": "Gut geführtes Hotel direkt am Böhmepark in Soltau, komfortabler Ausgangspunkt für Pilger mit mehr Komfortwunsch. Tel. 05191/98020.",
+          "addressStreet": "Bornemannstraße 3",
+          "addressZip": "29614",
+          "addressCity": "Soltau",
+          "addressCountry": "germany",
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 10,
+      "name": "Dorfmark",
+      "country": "germany",
+      "slug": "dorfmark",
+      "description": "Dorfmark (Stadtteil von Bad Fallingbostel) liegt auf der siebten Etappe zwischen Soltau und Bad Fallingbostel. Zwischenstempelstellen vorhanden. Am Ortsrand verläuft der Weg an der Böhmeschlucht entlang.",
+      "accommodations": [
+        {
+          "name": "Campingplatz & Restaurant Böhmeschlucht",
+          "type": "b_and_b",
+          "description": "Campingplatz und Restaurant an der naturschönen Böhmeschlucht; für Pilger auch einfache Übernachtungsmöglichkeiten vorhanden. Tel. 05163/902000.",
+          "addressStreet": null,
+          "addressZip": "29683",
+          "addressCity": "Dorfmark",
+          "addressCountry": "germany",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 11,
+      "name": "Bad Fallingbostel",
+      "country": "germany",
+      "slug": "bad-fallingbostel",
+      "description": "Kurstadt im Heidekreis mit Soleheilbad. Ende der siebten Etappe. Gut ausgestattete Infrastruktur für Pilger. Das DJH-Jugendherbergsgebäude liegt wenige Gehminuten vom Stadtzentrum entfernt.",
+      "accommodations": [
+        {
+          "name": "DJH Jugendherberge Bad Fallingbostel",
+          "type": "hostel",
+          "description": "Jugendherberge des Deutschen Jugendherbergswerks direkt auf dem Jacobusweg. Mehrbettzimmer und Familienzimmer. Frühstück und Abendessen buchbar. Günstigstes Angebot mit verlässlichem Komfort. Tel. +49 5162/2274.",
+          "addressStreet": "Liethweg 1",
+          "addressZip": "29683",
+          "addressCity": "Bad Fallingbostel",
+          "addressCountry": "germany",
+          "website": "https://www.jugendherberge.de/jugendherbergen/bad-fallingbostel/",
+          "email": "bad-fallingbostel@jugendherberge.de",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 12,
+      "name": "Walsrode",
+      "country": "germany",
+      "slug": "walsrode",
+      "description": "Mittelpunkt der achten Etappe. Das evangelische Damenstift Kloster Walsrode ist eines der sechs historischen Lüneburger Klöster (gegründet ca. 986 n. Chr.) und beherbergt seit Jahrhunderten Pilger. Stempelstelle im Kloster.",
+      "accommodations": [
+        {
+          "name": "Kloster Walsrode",
+          "type": "monastery",
+          "description": "Ältestes der sechs Lüneburger Klöster, erstmals 986 n. Chr. urkundlich erwähnt. Evangelisches Damenstift mit Pilgerunterkunft. Einzel- und Doppelzimmer sowie Gästeapartments für Gruppen. Frühstück und Wäscheservice inklusive. Mit Pilgerausweis: 35 €/Nacht; ohne: 45 €/Nacht. Maximale Aufenthaltsdauer: 2 Nächte. Buchungen: Tel. +49 151 54 39 76 88 (Christine Malbranc, Di–Do). Büro: Tel. +49 5161 48583 80 (Mo–Do 9:00–13:00 Uhr).",
+          "addressStreet": "Kirchplatz 2",
+          "addressZip": "29664",
+          "addressCity": "Walsrode",
+          "addressCountry": "germany",
+          "website": "https://klosterwalsrode.de",
+          "email": "info@kloster-walsrode.de",
+          "priceRange": "budget",
+          "verified": true
+        },
+        {
+          "name": "Hotel ANDERS Walsrode",
+          "type": "hotel",
+          "description": "Komfortables Hotel in Walsrode, geeignet für Pilger, die mehr Komfort bevorzugen. Tel. 05161/6070.",
+          "addressStreet": null,
+          "addressZip": "29664",
+          "addressCity": "Walsrode",
+          "addressCountry": "germany",
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 13,
+      "name": "Krelingen",
+      "country": "germany",
+      "slug": "krelingen",
+      "description": "Ende der achten Etappe. Das Geistliche Rüstzentrum Krelingen (GRZ) ist eines der größten christlichen Gästehäuser Deutschlands und ein zentraler Anlaufpunkt für Jacobusweg-Pilger. Stempelstelle im GRZ.",
+      "accommodations": [
+        {
+          "name": "Geistliches Rüstzentrum Krelingen (GRZ)",
+          "type": "hostel",
+          "description": "Eines der größten christlichen Freizeitheime Deutschlands mit 73 Zimmern und 150 Betten. Doppel-, Einzel-, Familien- und Mehrbettzimmer. Frühstücksbuffet, Halb- und Vollpension buchbar. WLAN, barrierefrei. Pilger sind herzlich willkommen. Tel. 05167/970 145 (Unterkunftsbuchung) oder 05167/9700 (Hauptnummer).",
+          "addressStreet": "Krelingen 37",
+          "addressZip": "29664",
+          "addressCity": "Walsrode",
+          "addressCountry": "germany",
+          "website": "https://grz-krelingen.de",
+          "email": null,
+          "priceRange": "budget",
+          "verified": true
+        }
+      ]
+    },
+    {
+      "position": 14,
+      "name": "Hodenhagen",
+      "country": "germany",
+      "slug": "hodenhagen",
+      "description": "Gemeinde an der Aller auf der neunten Etappe zwischen Krelingen und Schwarmstedt. Bekannt durch den Serengeti-Park. Stempelstelle vorhanden.",
+      "accommodations": []
+    },
+    {
+      "position": 15,
+      "name": "Ahlden",
+      "country": "germany",
+      "slug": "ahlden-aller",
+      "description": "Kleines Städtchen an der Aller mit dem historischen Schloss Ahlden, bekannt als der Ort, an dem Sophie Dorothee von Celle (Mutter Georgs I. von Großbritannien) bis zu ihrem Tod 1726 festgehalten wurde. Malerische Lage an der Aller. Auf der neunten Etappe zwischen Hodenhagen und Schwarmstedt.",
+      "accommodations": []
+    },
+    {
+      "position": 16,
+      "name": "Schwarmstedt",
+      "country": "germany",
+      "slug": "schwarmstedt",
+      "description": "Flecken an der Leine, Ende der neunten Etappe. Gute Grundversorgung. Stempelstelle in der Kirche.",
+      "accommodations": [
+        {
+          "name": "Hotel Bertram Schwarmstedt",
+          "type": "hotel",
+          "description": "Solides Hotel im Zentrum von Schwarmstedt, geeignet als Übernachtungsstopp am Ende der neunten Etappe. Tel. 05071/8080.",
+          "addressStreet": null,
+          "addressZip": "29690",
+          "addressCity": "Schwarmstedt",
+          "addressCountry": "germany",
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 17,
+      "name": "Mandelsloh",
+      "country": "germany",
+      "slug": "mandelsloh",
+      "description": "Ortsteil von Neustadt am Rübenberge. Konvergenzpunkt beider Routenvarianten: Hier treffen die westliche Aller-Leine-Tal-Variante und die östliche Südheide-Variante wieder zusammen. Die letzten ca. 10 km bis Kloster Mariensee werden gemeinsam zurückgelegt. Historische Stiftskirche St. Marien.",
+      "accommodations": []
+    },
+    {
+      "position": 18,
+      "name": "Mariensee",
+      "country": "germany",
+      "slug": "mariensee",
+      "description": "Ziel des Jacobuswegs Lüneburger Heide. Kloster Mariensee ist ein über 800 Jahre altes evangelisches Damenstift (gegründet 1221) im Ortsteil Mariensee der Stadt Neustadt am Rübenberge. Das Kloster empfängt Pilger herzlich und erteilt den letzten Stempel der Route. Hier endet sowohl die westliche als auch die östliche Routenvariante.",
+      "accommodations": [
+        {
+          "name": "Kloster Mariensee",
+          "type": "monastery",
+          "description": "Evangelisches Damenstift, gegründet 1221 — Endziel des Jacobuswegs Lüneburger Heide. Pilger werden herzlich empfangen und erhalten hier den Abschlussstempel der Route. Übernachtung auf Anfrage. Tel. 05034/879990.",
+          "addressStreet": "Höltystraße 1",
+          "addressZip": "31535",
+          "addressCity": "Neustadt am Rübenberge",
+          "addressCountry": "germany",
+          "website": "https://www.kloster-mariensee.de",
+          "email": "info@kloster-mariensee.de",
+          "priceRange": "budget",
+          "verified": true
+        }
+      ]
+    }
+  ],
+  "stages": [
+    {
+      "from": "Hamburg",
+      "to": "Sinstorf",
+      "distance": 20.8,
+      "description": "Die erste Etappe führt von der Hauptkirche St. Jacobi durch die südlichen Stadtteile Hamburgs: HafenCity, Veddel, Wilhelmsburg, Harburg, Marmstorf, Langenbek bis nach Sinstorf. Der Weg verlässt die Großstadt auf asphaltierten Wegen und Stadtparks und wechselt gegen Ende in ruhigere Wohngebiete. Stempel in St. Jacobi am Start."
+    },
+    {
+      "from": "Sinstorf",
+      "to": "Ramelsloh",
+      "distance": 16.5,
+      "description": "Die zweite Etappe führt durch das Hamburger Umland nach Hittfeld (Seevetal) und weiter nach Ramelsloh. Der Weg wechselt von Stadtrandgebieten in das sanfte Hügelland des Landkreises Harburg. In Hittfeld befindet sich eine Stempelstelle. Ramelsloh empfängt Pilger mit dem historischen evangelischen Damenstift aus dem 10. Jahrhundert."
+    },
+    {
+      "from": "Ramelsloh",
+      "to": "Undeloh",
+      "distance": 23.3,
+      "description": "Die längste Etappe des nördlichen Abschnitts führt über Marxen und Hanstedt I nach Undeloh. Bei Hanstedt bietet das Missionarische Zentrum eine Übernachtungsmöglichkeit. Ab Hanstedt beginnt die charakteristische Heide-Atmosphäre: Kiefernwälder, Heidehügel und Schafweiden prägen das Bild. Undeloh gilt als 'Tor zur Lüneburger Heide'."
+    },
+    {
+      "from": "Undeloh",
+      "to": "Niederhaverbeck",
+      "distance": 15.4,
+      "description": "Herzkammer der Route: Die vierte Etappe führt durch das Kerngebiet des Naturschutzgebiets Lüneburger Heide — einer der wenigen Bereiche in Norddeutschland, die weitgehend unberührt geblieben sind. Über das autofreie Dorf Wilsede (Stempel im Betsaal des Ehmhoff-Museums) und vorbei am Wilseder Berg (169 m). Heidschnucken-Herden prägen das Landschaftsbild. Ende in Niederhaverbeck am Haverbeck-Bach."
+    },
+    {
+      "from": "Niederhaverbeck",
+      "to": "Schneverdingen",
+      "distance": 10.0,
+      "description": "Die kürzeste Etappe des gesamten Wegs führt aus dem Naturschutzgebiet heraus nach Schneverdingen, dem 'Tor zur Lüneburger Heide'. Der Weg quert Kiefernwälder und offene Heidehänge. Schneverdingen bietet gute Einkaufs- und Versorgungsmöglichkeiten für die Weiterreise."
+    },
+    {
+      "from": "Schneverdingen",
+      "to": "Soltau",
+      "distance": 21.0,
+      "description": "Die sechste Etappe führt durch Wolterdingen und weiteres Heideland nach Soltau. Ab hier gabelt sich der Jacobusweg: Pilger wählen entweder die westliche Aller-Leine-Tal-Variante (weiter nach Bad Fallingbostel) oder die östliche Naturpark-Südheide-Variante (über Wietzendorf und Bergen). Soltau bietet die umfangreichste Unterkunftsauswahl auf dem gesamten Weg."
+    },
+    {
+      "from": "Soltau",
+      "to": "Bad Fallingbostel",
+      "distance": 23.0,
+      "description": "Beginn des westlichen Aller-Leine-Tal-Abschnitts. Die siebte Etappe führt über Dorfmark (mit Stempel und der naturschönen Böhmeschlucht) nach Bad Fallingbostel. Der Weg wechselt von Heidelandschaft in das Flusstal der Böhme. Bad Fallingbostel ist ein Kneipp-Kurort mit guter Infrastruktur; das DJH-Jugendherbergsgebäude liegt direkt auf dem Weg."
+    },
+    {
+      "from": "Bad Fallingbostel",
+      "to": "Krelingen",
+      "distance": 25.8,
+      "description": "Die achte Etappe ist eine der eindrucksvollsten: Sie führt über Meinerdingen und vorbei am mittelalterlichen Kloster Walsrode (Stempel, Übernachtung möglich) nach Krelingen. Das Kloster Walsrode ist eines der sechs historischen Lüneburger Klöster (gegründet ca. 986 n. Chr.) und bietet Pilgern Unterkunft zu einem Sonderpreis. Endpunkt ist das Geistliche Rüstzentrum Krelingen — eines der größten christlichen Gästehäuser Norddeutschlands."
+    },
+    {
+      "from": "Krelingen",
+      "to": "Schwarmstedt",
+      "distance": 22.6,
+      "description": "Die neunte Etappe führt durch das Aller-Leine-Tal: über Hodenhagen (bekannt durch den Serengeti-Park) und Ahlden an der Aller (Schloss Ahlden) nach Schwarmstedt. Der Weg verläuft überwiegend durch Feuchtwiesen und entlang von Flussauen — botanisch besonders interessant im Frühling und Sommer."
+    },
+    {
+      "from": "Schwarmstedt",
+      "to": "Mariensee",
+      "distance": 26.8,
+      "description": "Die letzte Etappe der westlichen Variante führt über Niederstöcken und Mandelsloh (wo sich beide Routenvarianten treffen) weiter über Helstorf und Vesbeck zum Ziel. In Mandelsloh sehenswert: die romanische Stiftskirche St. Marien. Die letzten Kilometer durch die Niederungen des Meerbach-Tals stimmen auf das Ziel ein. Am Kloster Mariensee wartet der Abschlussstempel und ein herzlicher Empfang der evangelischen Stiftsdamen."
+    }
+  ]
+}

@@ -139,7 +139,21 @@
       "WebFetch(domain:schloss-frankleben.de)",
       "WebFetch(domain:kirche-grossenhainerland.de)",
       "WebFetch(domain:www.kirche-strehla.de)",
-      "WebFetch(domain:www.kirche-eisenach.de)"
+      "WebFetch(domain:www.kirche-eisenach.de)",
+      "WebFetch(domain:www.salzmuseum-soltau.de)",
+      "WebFetch(domain:www.lueneburger-heide.de)",
+      "WebFetch(domain:www.soltau-touristik.de)",
+      "WebFetch(domain:www.kloster-mariensee.de)",
+      "WebFetch(domain:www.reiseland-niedersachsen.de)",
+      "WebFetch(domain:www.ludwig-harms-haus.de)",
+      "WebFetch(domain:naturpark-lueneburger-heide.de)",
+      "WebFetch(domain:www.der-pilger.de)",
+      "WebFetch(domain:klosterwalsrode.de)",
+      "WebFetch(domain:grz-krelingen.de)",
+      "WebFetch(domain:www.himmlische-herbergen.de)",
+      "WebFetch(domain:www.unterwegs-nach-santiago.eu)",
+      "WebFetch(domain:jacobus.de)",
+      "WebFetch(domain:www.daspilgerforum.de)"
     ]
   }
 }
