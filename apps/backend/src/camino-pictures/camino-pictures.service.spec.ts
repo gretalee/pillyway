@@ -18,6 +18,7 @@ import { UploadsService } from '../uploads/uploads.service';
 import { CaminosService } from '../caminos/caminos.service';
 import { StagesService } from '../stages/stages.service';
 import { DeleteAuthorizationService } from '../common/delete-authorization.service';
+import { EventLogService } from '../event-log/event-log.service';
 import { CaminoPicturesService } from './camino-pictures.service';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -140,6 +141,7 @@ async function buildModule(
       CaminoPicturesService,
       { provide: PrismaService, useValue: prismaMock },
       { provide: UploadsService, useValue: uploadsMock },
+      { provide: EventLogService, useValue: { logEvent: vi.fn() } },
     ],
   })
     .setLogger(false as unknown as LoggerService)
@@ -667,6 +669,7 @@ describe('CaminosService.delete() — S3 picture cleanup', () => {
         { provide: StagesService, useValue: { upsertStagePairs: vi.fn() } },
         DeleteAuthorizationService,
         { provide: UploadsService, useValue: uploadsMock },
+        { provide: EventLogService, useValue: { logEvent: vi.fn() } },
       ],
     })
       .setLogger(false as unknown as LoggerService)

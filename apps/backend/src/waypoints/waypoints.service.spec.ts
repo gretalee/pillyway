@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateAccommodationDto } from './dto/create-accommodation.dto';
 import { CreateSightDto } from './dto/create-sight.dto';
+import { EventLogService } from '../event-log/event-log.service';
 import { WaypointsService } from './waypoints.service';
 
 // ─── Fixtures ────────────────────────────────────────────────────────────────
@@ -64,6 +65,7 @@ function buildModule(prismaMock: object): Promise<TestingModule> {
     providers: [
       WaypointsService,
       { provide: PrismaService, useValue: prismaMock },
+      { provide: EventLogService, useValue: { logEvent: vi.fn() } },
     ],
   })
     .setLogger(false as unknown as LoggerService)

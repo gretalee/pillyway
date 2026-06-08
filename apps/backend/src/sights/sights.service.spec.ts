@@ -11,6 +11,7 @@ import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { DeleteAuthorizationService } from '../common/delete-authorization.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { UploadsService } from '../uploads/uploads.service';
+import { EventLogService } from '../event-log/event-log.service';
 import { SightsService } from './sights.service';
 import { UpdateSightDto } from './dto/update-sight.dto';
 
@@ -52,6 +53,7 @@ function buildModule(prismaMock: object): Promise<TestingModule> {
       { provide: PrismaService, useValue: prismaMock },
       { provide: UploadsService, useValue: uploadsMock },
       DeleteAuthorizationService,
+      { provide: EventLogService, useValue: { logEvent: vi.fn() } },
     ],
   })
     .setLogger(false as unknown as LoggerService)
@@ -144,7 +146,7 @@ describe('SightsService.update()', () => {
     const dto = Object.assign(new UpdateSightDto(), { name: 'New Name' });
 
     await expect(
-      service.update(SIGHT_ID, dto, NO_ROLES),
+      service.update(SIGHT_ID, USER_ID, dto, NO_ROLES),
     ).rejects.toBeInstanceOf(ForbiddenException);
     expect(prismaMock.sight.update).not.toHaveBeenCalled();
   });
@@ -159,7 +161,7 @@ describe('SightsService.update()', () => {
     const dto = Object.assign(new UpdateSightDto(), { name: 'New Name' });
 
     await expect(
-      service.update(SIGHT_ID, dto, OWNER_ROLES),
+      service.update(SIGHT_ID, USER_ID, dto, OWNER_ROLES),
     ).rejects.toBeInstanceOf(ForbiddenException);
     expect(prismaMock.sight.update).not.toHaveBeenCalled();
   });
@@ -177,7 +179,7 @@ describe('SightsService.update()', () => {
     const dto = Object.assign(new UpdateSightDto(), { name: 'New Name' });
 
     await expect(
-      service.update('unknown-id', dto, PILGRIM_ROLES),
+      service.update('unknown-id', USER_ID, dto, PILGRIM_ROLES),
     ).rejects.toBeInstanceOf(NotFoundException);
     expect(prismaMock.sight.update).not.toHaveBeenCalled();
   });
@@ -202,7 +204,7 @@ describe('SightsService.update()', () => {
       removeImageUrls: ['https://example.com/img1.jpg'],
     });
 
-    const result = await service.update(SIGHT_ID, dto, PILGRIM_ROLES);
+    const result = await service.update(SIGHT_ID, USER_ID, dto, PILGRIM_ROLES);
 
     expect(prismaMock.sight.update).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -235,7 +237,7 @@ describe('SightsService.update()', () => {
       imageUrls: ['https://example.com/img2.jpg'],
     });
 
-    await service.update(SIGHT_ID, dto, PILGRIM_ROLES);
+    await service.update(SIGHT_ID, USER_ID, dto, PILGRIM_ROLES);
 
     expect(uploadsMock.deleteImages).toHaveBeenCalledWith(['https://example.com/img1.jpg']);
   });
@@ -253,7 +255,7 @@ describe('SightsService.update()', () => {
 
     const dto = Object.assign(new UpdateSightDto(), { name: 'No Image Change' });
 
-    await service.update(SIGHT_ID, dto, PILGRIM_ROLES);
+    await service.update(SIGHT_ID, USER_ID, dto, PILGRIM_ROLES);
 
     expect(uploadsMock.deleteImages).not.toHaveBeenCalled();
   });
@@ -274,7 +276,7 @@ describe('SightsService.update()', () => {
     });
 
     await expect(
-      service.update(SIGHT_ID, dto, PILGRIM_ROLES),
+      service.update(SIGHT_ID, USER_ID, dto, PILGRIM_ROLES),
     ).rejects.toBeInstanceOf(BadRequestException);
     expect(prismaMock.sight.update).not.toHaveBeenCalled();
   });
@@ -292,7 +294,7 @@ describe('SightsService.update()', () => {
     const dto = Object.assign(new UpdateSightDto(), { latitude: 43.163 });
 
     await expect(
-      service.update(SIGHT_ID, dto, PILGRIM_ROLES),
+      service.update(SIGHT_ID, USER_ID, dto, PILGRIM_ROLES),
     ).rejects.toBeInstanceOf(BadRequestException);
     expect(prismaMock.sight.update).not.toHaveBeenCalled();
   });
@@ -310,7 +312,7 @@ describe('SightsService.update()', () => {
     const dto = Object.assign(new UpdateSightDto(), { longitude: -1.238 });
 
     await expect(
-      service.update(SIGHT_ID, dto, PILGRIM_ROLES),
+      service.update(SIGHT_ID, USER_ID, dto, PILGRIM_ROLES),
     ).rejects.toBeInstanceOf(BadRequestException);
     expect(prismaMock.sight.update).not.toHaveBeenCalled();
   });
@@ -328,7 +330,7 @@ describe('SightsService.update()', () => {
 
     const dto = Object.assign(new UpdateSightDto(), { name: 'Updated Sight' });
 
-    const result = await service.update(SIGHT_ID, dto, PILGRIM_ROLES);
+    const result = await service.update(SIGHT_ID, USER_ID, dto, PILGRIM_ROLES);
 
     expect(result.name).toBe('Updated Sight');
     expect(prismaMock.sight.update).toHaveBeenCalledWith(

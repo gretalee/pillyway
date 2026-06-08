@@ -15,6 +15,7 @@ import { DeleteAuthorizationService } from '../common/delete-authorization.servi
 import { PrismaService } from '../prisma/prisma.service';
 import { StagesService } from '../stages/stages.service';
 import { UploadsService } from '../uploads/uploads.service';
+import { EventLogService } from '../event-log/event-log.service';
 import { CaminosService } from './caminos.service';
 import { CreateCaminoDto } from './dto/create-camino.dto';
 import { UpdateCaminoDto } from './dto/update-camino.dto';
@@ -66,6 +67,8 @@ const uploadsServiceMock = {
   deleteImages: vi.fn().mockResolvedValue(undefined),
 };
 
+const eventLogMock = { logEvent: vi.fn() };
+
 // Suppress NestJS Logger output for error-path tests — the errors are expected.
 beforeEach(() => {
   vi.spyOn(Logger.prototype, 'error').mockImplementation(() => {});
@@ -85,6 +88,7 @@ function buildModule(prismaMock: object): Promise<TestingModule> {
       { provide: StagesService, useValue: stagesServiceMock },
       DeleteAuthorizationService,
       { provide: UploadsService, useValue: uploadsServiceMock },
+      { provide: EventLogService, useValue: eventLogMock },
     ],
   })
     .setLogger(false as unknown as LoggerService)

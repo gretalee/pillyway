@@ -2,6 +2,7 @@ import { NotFoundException } from '@nestjs/common';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { PrismaService } from '../prisma/prisma.service';
+import { EventLogService } from '../event-log/event-log.service';
 import { CaminoVotesService } from './camino-votes.service';
 
 // ─── Prisma mock factory ──────────────────────────────────────────────────────
@@ -38,7 +39,7 @@ describe('CaminoVotesService', () => {
 
   beforeEach(() => {
     prisma = buildPrismaMock();
-    service = new CaminoVotesService(prisma);
+    service = new CaminoVotesService(prisma, { logEvent: vi.fn() } as unknown as EventLogService);
   });
 
   // ── castVote ──────────────────────────────────────────────────────────────
