@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? '';
 
 function resolveReturnTo(raw: string | null): string {
-  if (raw && raw.startsWith('/')) {
+  if (raw && raw.startsWith('/') && !raw.startsWith('//')) {
     return raw;
   }
   return '/';
