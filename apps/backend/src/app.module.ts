@@ -11,6 +11,7 @@ import { CaminoPointsModule } from './camino-points/camino-points.module';
 import { CaminoVotesModule } from './camino-votes/camino-votes.module';
 import { CaminosModule } from './caminos/caminos.module';
 import { CountriesModule } from './countries/countries.module';
+import { EventLogModule } from './event-log/event-log.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { SightsModule } from './sights/sights.module';
 import { StagesModule } from './stages/stages.module';
@@ -21,6 +22,7 @@ import { WaypointsModule } from './waypoints/waypoints.module';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     PrismaModule,
+    EventLogModule,
     AuthModule,
     CaminosModule,
     CaminoPicturesModule,

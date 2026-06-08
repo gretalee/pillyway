@@ -12,6 +12,8 @@ import { plainToInstance } from 'class-transformer';
 import { randomUUID } from 'crypto';
 
 import { KindeRole } from '../auth/kinde-jwt.strategy';
+import { EventLogService } from '../event-log/event-log.service';
+import { EventType } from '../event-log/event-type.enum';
 import { PrismaService } from '../prisma/prisma.service';
 import { UploadsService } from '../uploads/uploads.service';
 import {
@@ -36,6 +38,7 @@ export class CaminoPicturesService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly uploadsService: UploadsService,
+    private readonly eventLog: EventLogService,
   ) {}
 
   // ── getPictures ─────────────────────────────────────────────────────────────
@@ -203,6 +206,12 @@ export class CaminoPicturesService {
 
       throw err;
     }
+
+    this.eventLog.logEvent(EventType.CAMINO_IMAGE_UPLOADED, userId, {
+      camino_id: caminoId,
+      picture_id: record.id,
+      is_primary: isPrimary,
+    });
 
     return plainToInstance(CaminoPictureResponseDto, record, {
       excludeExtraneousValues: true,
