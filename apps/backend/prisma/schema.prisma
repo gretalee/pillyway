@@ -44,11 +44,9 @@ model UserEvent {
   entityType          String?  @map("entity_type")
   entityId            String?  @map("entity_id") @db.Uuid
   metadata            Json     @default("{}") @db.JsonB
-  eventIdempotencyKey String?  @map("event_idempotency_key")
   occurredAt          DateTime @default(now()) @map("occurred_at") @db.Timestamptz(6)
   createdAt           DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
-  @@unique([eventName, eventIdempotencyKey])
   @@index([eventName, occurredAt])
   @@index([userId, occurredAt])
   @@index([entityType, entityId, occurredAt])
