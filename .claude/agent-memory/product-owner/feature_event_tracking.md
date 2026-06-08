@@ -37,7 +37,7 @@ Indexes: (event_type), (user_id), (occurred_at DESC).
 
 ## user_registered / user_logged_in delivery mechanism
 
-These two events are captured via a new `POST /api/auth/session` endpoint in a new `AuthModule`. The Next.js frontend calls this endpoint from its Kinde OAuth callback handler (`/api/auth/kinde_callback`) — always exactly once per successful login. The endpoint is protected by `JwtAuthGuard` (Kinde JWT in the `Authorization` header). It upserts the user into a `users` table keyed on `kinde_user_id`: if the row did not exist → emit `user_registered`; if it already existed → emit `user_logged_in`. Returns `{ kindeUserId, isNewUser }`.
+These two events are captured via a new `POST /api/auth/session` endpoint in a new `AuthModule`. The Next.js frontend calls this endpoint from its post-login redirect route (`/api/auth/session-init`), configured via `KINDE_POST_LOGIN_REDIRECT_URL` — always exactly once per successful login. The endpoint is protected by `JwtAuthGuard` (Kinde JWT in the `Authorization` header). It upserts the user into a `users` table keyed on `kinde_user_id`: if the row did not exist → emit `user_registered`; if it already existed → emit `user_logged_in`. Returns `{ kindeUserId, isNewUser }`.
 
 No `KINDE_WEBHOOK_SECRET` env var is required.
 
