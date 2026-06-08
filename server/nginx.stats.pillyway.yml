@@ -1,0 +1,14 @@
+# /etc/nginx/sites-available/stats.pillyway.de
+server {
+    listen 80;
+    server_name stats.pillyway.de;
+
+    location / {
+        root /var/www/html;
+        index goaccess.html;
+    }
+
+    # Basic Auth (empfohlen!)
+    auth_basic "Restricted Stats";
+    auth_basic_user_file /etc/nginx/.htpasswd;
+}

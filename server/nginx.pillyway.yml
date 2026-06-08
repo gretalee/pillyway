@@ -1,4 +1,4 @@
- # /etc/nginx/sites-available/pillyway:
+ # /etc/nginx/sites-available/pillyway
 server {
     listen 80;
     server_name pillyway.de www.pillyway.de;
