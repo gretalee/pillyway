@@ -88,9 +88,13 @@ export class SightsService {
       },
     });
 
-    const changedFields = Object.entries(dto)
-      .filter(([k, v]) => v !== undefined && k !== 'removeImageUrls')
-      .map(([k]) => k);
+    const changedFields = Array.from(
+      new Set(
+        Object.entries(dto)
+          .filter(([, v]) => v !== undefined)
+          .map(([k]) => (k === 'removeImageUrls' ? 'imageUrls' : k)),
+      ),
+    );
     this.eventLog.logEvent(EventType.SIGHT_UPDATED, userId, {
       sight_id: id,
       camino_point_id: existing.caminoPointId,
