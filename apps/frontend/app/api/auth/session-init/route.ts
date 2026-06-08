@@ -19,12 +19,17 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   }
 
   try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 1500);
+
     await fetch(`${API_URL}/auth/session`, {
       method: 'POST',
+      cache: 'no-store',
+      signal: controller.signal,
       headers: {
         Authorization: `Bearer ${tokenRaw}`,
       },
-    });
+    }).finally(() => clearTimeout(timer));
   } catch (err) {
     console.error('[session-init] Failed to call backend POST /auth/session:', err);
   }
