@@ -1,6 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Optional } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
+import { UserEventsService } from '../user-events/user-events.service';
 import { AccommodationResponseDto } from './dto/accommodation-response.dto';
 import { CreateAccommodationDto } from './dto/create-accommodation.dto';
 import { CreateSightDto } from './dto/create-sight.dto';
@@ -9,7 +10,11 @@ import { WaypointDetailDto } from './dto/waypoint-detail.dto';
 
 @Injectable()
 export class WaypointsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    @Optional()
+    private readonly userEventsService?: UserEventsService,
+  ) {}
 
   // ── findBySlug ───────────────────────────────────────────────────────────────
 
@@ -72,6 +77,19 @@ export class WaypointsService {
       },
     });
 
+    await this.userEventsService?.track({
+      name: 'accommodation_created',
+      userId,
+      entityType: 'accommodation',
+      entityId: created.id,
+      metadata: {
+        camino_point_id: created.caminoPointId,
+        waypoint_slug: slug,
+        type: created.type,
+        image_count: created.imageUrls.length,
+      },
+    });
+
     return {
       id: created.id,
       caminoPointId: created.caminoPointId,
@@ -112,6 +130,18 @@ export class WaypointsService {
         latitude: dto.latitude ?? null,
         longitude: dto.longitude ?? null,
         createdBy: userId,
+      },
+    });
+
+    await this.userEventsService?.track({
+      name: 'sight_created',
+      userId,
+      entityType: 'sight',
+      entityId: created.id,
+      metadata: {
+        camino_point_id: created.caminoPointId,
+        waypoint_slug: slug,
+        image_count: created.imageUrls.length,
       },
     });
 

@@ -7,6 +7,7 @@ import {
   InternalServerErrorException,
   Logger,
   NotFoundException,
+  Optional,
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
@@ -15,6 +16,7 @@ import { DeleteAuthorizationService } from '../common/delete-authorization.servi
 import { PrismaService } from '../prisma/prisma.service';
 import { StagesService } from '../stages/stages.service';
 import { UploadsService } from '../uploads/uploads.service';
+import { UserEventsService } from '../user-events/user-events.service';
 import { CreateCaminoDto } from './dto/create-camino.dto';
 import { UpdateCaminoDto } from './dto/update-camino.dto';
 
@@ -87,6 +89,8 @@ export class CaminosService {
     private readonly stagesService: StagesService,
     private readonly deleteAuthorizationService: DeleteAuthorizationService,
     private readonly uploadsService: UploadsService,
+    @Optional()
+    private readonly userEventsService?: UserEventsService,
   ) {}
 
   // ── generateSlug ────────────────────────────────────────────────────────────
@@ -190,7 +194,7 @@ export class CaminosService {
     this.logger.debug('Creating camino');
 
     try {
-      return await this.prisma.$transaction(async (tx) => {
+      const created = await this.prisma.$transaction(async (tx) => {
         // 1. Case-insensitive name uniqueness check
         const existing = await tx.camino.findFirst({
           where: { name: { equals: dto.name, mode: 'insensitive' } },
@@ -309,6 +313,16 @@ export class CaminosService {
           caminoPoints,
         };
       });
+
+      await this.userEventsService?.track({
+        name: 'camino_created',
+        userId,
+        entityType: 'camino',
+        entityId: created.id,
+        metadata: { name: created.name, waypoint_count: created.caminoPoints.length },
+      });
+
+      return created;
     } catch (err) {
       // Re-throw NestJS HTTP exceptions as-is (ConflictException, BadRequestException, etc.)
       if (err instanceof HttpException) {
@@ -511,7 +525,18 @@ export class CaminosService {
       }, { timeout: 15000 });
 
       // 6. Return the fresh full representation
-      return this.findById(id);
+      const updated = await this.findById(id);
+      await this.userEventsService?.track({
+        name: 'camino_updated',
+        userId,
+        entityType: 'camino',
+        entityId: id,
+        metadata: {
+          changed_fields: Object.keys(dto),
+          waypoint_count: updated.caminoPoints.length,
+        },
+      });
+      return updated;
     } catch (err) {
       if (err instanceof HttpException) {
         throw err;

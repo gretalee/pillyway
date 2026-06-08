@@ -37,6 +37,24 @@ model CaminoVote {
   @@map("camino_votes")
 }
 
+model UserEvent {
+  id                  String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  eventName           String   @map("event_name")
+  userId              String?  @map("user_id")
+  entityType          String?  @map("entity_type")
+  entityId            String?  @map("entity_id") @db.Uuid
+  metadata            Json     @default("{}") @db.JsonB
+  eventIdempotencyKey String?  @map("event_idempotency_key")
+  occurredAt          DateTime @default(now()) @map("occurred_at") @db.Timestamptz(6)
+  createdAt           DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@unique([eventName, eventIdempotencyKey])
+  @@index([eventName, occurredAt])
+  @@index([userId, occurredAt])
+  @@index([entityType, entityId, occurredAt])
+  @@map("user_events")
+}
+
 model CaminoPoint {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name        String

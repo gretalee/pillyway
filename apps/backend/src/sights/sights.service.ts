@@ -1,9 +1,16 @@
-import { ForbiddenException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  Logger,
+  NotFoundException,
+  Optional,
+} from '@nestjs/common';
 
 import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { DeleteAuthorizationService } from '../common/delete-authorization.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { UploadsService } from '../uploads/uploads.service';
+import { UserEventsService } from '../user-events/user-events.service';
 import { SightDetailDto } from './dto/sight-detail.dto';
 import { UpdateSightDto } from './dto/update-sight.dto';
 
@@ -18,6 +25,8 @@ export class SightsService {
     private readonly prisma: PrismaService,
     private readonly uploadsService: UploadsService,
     private readonly deleteAuthorizationService: DeleteAuthorizationService,
+    @Optional()
+    private readonly userEventsService?: UserEventsService,
   ) {}
 
   // ── findById ─────────────────────────────────────────────────────────────────
@@ -45,6 +54,7 @@ export class SightsService {
     id: string,
     dto: UpdateSightDto,
     roles: KindeRole[],
+    userId?: string,
   ): Promise<SightDetailDto> {
     if (!roles.some((r) => r.key === 'pilgrim')) {
       throw new ForbiddenException('Requires pilgrim role.');
@@ -92,6 +102,18 @@ export class SightsService {
         this.logger.error(`Storage cleanup failed after sight update: ${String(err)}`);
       }
     }
+
+    await this.userEventsService?.track({
+      name: 'sight_updated',
+      userId: userId ?? null,
+      entityType: 'sight',
+      entityId: id,
+      metadata: {
+        changed_fields: Object.keys(dto),
+        camino_point_id: updated.caminoPointId,
+        image_count: updated.imageUrls.length,
+      },
+    });
 
     return this.toDto(updated);
   }

@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Optional } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { passportJwtSecret } from 'jwks-rsa';
 import { ExtractJwt, Strategy } from 'passport-jwt';
+
+import { UserEventsService } from '../user-events/user-events.service';
 
 export interface KindeRole {
   id: string;
@@ -25,7 +27,10 @@ export interface KindeJwtPayload {
 
 @Injectable()
 export class KindeJwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly config: ConfigService) {
+  constructor(
+    private readonly config: ConfigService,
+    @Optional() private readonly userEventsService?: UserEventsService,
+  ) {
     const issuerUrl = config.getOrThrow<string>('KINDE_ISSUER_URL');
 
     super({
@@ -41,7 +46,8 @@ export class KindeJwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  validate(payload: KindeJwtPayload): KindeJwtPayload {
+  async validate(payload: KindeJwtPayload): Promise<KindeJwtPayload> {
+    await this.userEventsService?.trackAuthenticatedUser(payload);
     return payload;
   }
 }

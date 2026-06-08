@@ -1,6 +1,7 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, Optional } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
+import { UserEventsService } from '../user-events/user-events.service';
 
 export interface VoteResult {
   caminoId: string;
@@ -24,7 +25,11 @@ export interface VoteEntry {
 export class CaminoVotesService {
   private readonly logger = new Logger(CaminoVotesService.name);
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    @Optional()
+    private readonly userEventsService?: UserEventsService,
+  ) {}
 
   async castVote(
     caminoId: string,
@@ -42,6 +47,14 @@ export class CaminoVotesService {
       create: { caminoId, userId, vote, updatedAt: now },
       update: { vote, updatedAt: now },
       select: { caminoId: true, vote: true, updatedAt: true },
+    });
+
+    await this.userEventsService?.track({
+      name: 'camino_voted',
+      userId,
+      entityType: 'camino',
+      entityId: caminoId,
+      metadata: { vote },
     });
 
     return result;

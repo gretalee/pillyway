@@ -4,6 +4,7 @@ import {
   Injectable,
   Logger,
   NotFoundException,
+  Optional,
   UnprocessableEntityException,
   UnsupportedMediaTypeException,
 } from '@nestjs/common';
@@ -14,6 +15,7 @@ import { randomUUID } from 'crypto';
 import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { PrismaService } from '../prisma/prisma.service';
 import { UploadsService } from '../uploads/uploads.service';
+import { UserEventsService } from '../user-events/user-events.service';
 import {
   CaminoPictureResponseDto,
   CaminoPicturesResponseDto,
@@ -36,6 +38,8 @@ export class CaminoPicturesService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly uploadsService: UploadsService,
+    @Optional()
+    private readonly userEventsService?: UserEventsService,
   ) {}
 
   // ── getPictures ─────────────────────────────────────────────────────────────
@@ -203,6 +207,18 @@ export class CaminoPicturesService {
 
       throw err;
     }
+
+    await this.userEventsService?.track({
+      name: 'camino_image_uploaded',
+      userId,
+      entityType: 'camino',
+      entityId: caminoId,
+      metadata: {
+        picture_id: record.id,
+        is_primary: record.isPrimary,
+        mime_type: file.mimetype,
+      },
+    });
 
     return plainToInstance(CaminoPictureResponseDto, record, {
       excludeExtraneousValues: true,

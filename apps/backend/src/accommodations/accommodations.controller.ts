@@ -95,7 +95,7 @@ export class AccommodationsController {
     @Req() req: Request & { user: KindeJwtPayload },
   ): Promise<AccommodationDetailDto> {
     const roles = req.user.roles ?? [];
-    return this.accommodationsService.update(id, dto, roles);
+    return this.accommodationsService.update(id, dto, roles, req.user.sub);
   }
 
   // ── DELETE /accommodations/:id ───────────────────────────────────────────────

@@ -1,10 +1,17 @@
-import { ForbiddenException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  Logger,
+  NotFoundException,
+  Optional,
+} from '@nestjs/common';
 import { AccommodationType, PriceRange } from '@prisma/client';
 
 import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { DeleteAuthorizationService } from '../common/delete-authorization.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { UploadsService } from '../uploads/uploads.service';
+import { UserEventsService } from '../user-events/user-events.service';
 import { AccommodationDetailDto } from './dto/accommodation-detail.dto';
 import { UpdateAccommodationDto } from './dto/update-accommodation.dto';
 
@@ -19,6 +26,8 @@ export class AccommodationsService {
     private readonly prisma: PrismaService,
     private readonly uploadsService: UploadsService,
     private readonly deleteAuthorizationService: DeleteAuthorizationService,
+    @Optional()
+    private readonly userEventsService?: UserEventsService,
   ) {}
 
   // ── findById ─────────────────────────────────────────────────────────────────
@@ -53,6 +62,7 @@ export class AccommodationsService {
     id: string,
     dto: UpdateAccommodationDto,
     roles: KindeRole[],
+    userId?: string,
   ): Promise<AccommodationDetailDto> {
     if (!roles.some((r) => r.key === 'pilgrim')) {
       throw new ForbiddenException('Requires pilgrim role.');
@@ -108,6 +118,18 @@ export class AccommodationsService {
         this.logger.error(`Storage cleanup failed after accommodation update: ${String(err)}`);
       }
     }
+
+    await this.userEventsService?.track({
+      name: 'accommodation_updated',
+      userId: userId ?? null,
+      entityType: 'accommodation',
+      entityId: id,
+      metadata: {
+        changed_fields: Object.keys(dto),
+        camino_point_id: updated.caminoPointId,
+        image_count: updated.imageUrls.length,
+      },
+    });
 
     return this.toDto({ ...updated, caminoPoint: existing.caminoPoint });
   }

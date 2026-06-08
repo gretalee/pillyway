@@ -141,6 +141,7 @@ describe('SightsController.update()', () => {
       SIGHT_ID,
       dto,
       mockRequest.user.roles,
+      mockRequest.user.sub,
     );
     expect(result.name).toBe('Updated Sight');
   });
