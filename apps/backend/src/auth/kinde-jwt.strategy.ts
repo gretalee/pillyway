@@ -47,7 +47,7 @@ export class KindeJwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: KindeJwtPayload): Promise<KindeJwtPayload> {
-    await this.userEventsService?.trackAuthenticatedUser(payload);
+    void this.userEventsService?.trackAuthenticatedUser(payload);
     return payload;
   }
 }

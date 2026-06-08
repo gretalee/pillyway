@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
-import { KindeJwtPayload } from '../auth/kinde-jwt.strategy';
+import type { KindeJwtPayload } from '../auth/kinde-jwt.strategy';
 import { PrismaService } from '../prisma/prisma.service';
 
 export const USER_EVENT_NAMES = [
@@ -35,17 +35,25 @@ export class UserEventsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async track(input: TrackEventInput): Promise<void> {
+    const data = {
+      eventName: input.name,
+      userId: input.userId ?? null,
+      entityType: input.entityType ?? null,
+      entityId: input.entityId ?? null,
+      metadata: input.metadata ?? {},
+      eventIdempotencyKey: input.idempotencyKey ?? null,
+    };
+
     try {
-      await this.prisma.userEvent.create({
-        data: {
-          eventName: input.name,
-          userId: input.userId ?? null,
-          entityType: input.entityType ?? null,
-          entityId: input.entityId ?? null,
-          metadata: input.metadata ?? {},
-          eventIdempotencyKey: input.idempotencyKey ?? null,
-        },
-      });
+      if (input.idempotencyKey) {
+        await this.prisma.userEvent.createMany({
+          data: [data],
+          skipDuplicates: true,
+        });
+        return;
+      }
+
+      await this.prisma.userEvent.create({ data });
     } catch (err) {
       if (this.isUniqueConstraintError(err)) {
         return;
@@ -60,19 +68,29 @@ export class UserEventsService {
       return;
     }
 
-    await this.track({
-      name: 'user_registered',
-      userId,
-      metadata: this.authMetadata(payload),
-      idempotencyKey: userId,
-    });
+    const metadata = this.authMetadata(payload);
 
-    await this.track({
-      name: 'user_logged_in',
-      userId,
-      metadata: this.authMetadata(payload),
-      idempotencyKey: `${userId}:${String(payload.iat ?? 'unknown')}`,
-    });
+    try {
+      await this.prisma.userEvent.createMany({
+        data: [
+          {
+            eventName: 'user_registered',
+            userId,
+            metadata,
+            eventIdempotencyKey: userId,
+          },
+          {
+            eventName: 'user_logged_in',
+            userId,
+            metadata,
+            eventIdempotencyKey: `${userId}:${String(payload.iat ?? 'unknown')}`,
+          },
+        ],
+        skipDuplicates: true,
+      });
+    } catch (err) {
+      this.logger.error('Failed to track authenticated user events', err);
+    }
   }
 
   private authMetadata(payload: KindeJwtPayload): Prisma.InputJsonObject {
@@ -87,7 +105,8 @@ export class UserEventsService {
 
   private isUniqueConstraintError(err: unknown): boolean {
     return (
-      err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002'
+      err instanceof Prisma.PrismaClientKnownRequestError &&
+      err.code === 'P2002'
     );
   }
 }
