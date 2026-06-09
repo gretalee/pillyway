@@ -38,7 +38,9 @@ export class CaminoVotesService {
   ): Promise<VoteResult> {
     this.logger.debug(`castVote caminoId=${caminoId} vote=${vote}`);
 
-    const camino = await this.prisma.camino.findUnique({ where: { id: caminoId } });
+    const camino = await this.prisma.camino.findUnique({
+      where: { id: caminoId },
+    });
     if (!camino) throw new NotFoundException('Camino not found.');
 
     const now = new Date();
@@ -51,7 +53,7 @@ export class CaminoVotesService {
 
     this.eventLog.logEvent(EventType.CAMINO_VOTED, userId, {
       camino_id: caminoId,
-      vote: vote,
+      vote,
     });
 
     return result;
@@ -65,7 +67,10 @@ export class CaminoVotesService {
       select: { caminoId: true, vote: true, updatedAt: true },
     });
 
-    if (!record) throw new NotFoundException('No vote exists for this user and camino combination.');
+    if (!record)
+      throw new NotFoundException(
+        'No vote exists for this user and camino combination.',
+      );
 
     return record;
   }
@@ -73,7 +78,9 @@ export class CaminoVotesService {
   async getVoteSummary(caminoId: string): Promise<VoteSummary> {
     this.logger.debug(`getVoteSummary caminoId=${caminoId}`);
 
-    const camino = await this.prisma.camino.findUnique({ where: { id: caminoId } });
+    const camino = await this.prisma.camino.findUnique({
+      where: { id: caminoId },
+    });
     if (!camino) throw new NotFoundException('Camino not found.');
 
     const tallies = await this.prisma.caminoVote.groupBy({
@@ -95,7 +102,9 @@ export class CaminoVotesService {
   async listVotesForOwner(caminoId: string): Promise<VoteEntry[]> {
     this.logger.debug(`listVotesForOwner caminoId=${caminoId}`);
 
-    const camino = await this.prisma.camino.findUnique({ where: { id: caminoId } });
+    const camino = await this.prisma.camino.findUnique({
+      where: { id: caminoId },
+    });
     if (!camino) throw new NotFoundException('Camino not found.');
 
     return this.prisma.caminoVote.findMany({

@@ -9,9 +9,9 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { DeleteAuthorizationService } from '../common/delete-authorization.service';
+import { EventLogService } from '../event-log/event-log.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { UploadsService } from '../uploads/uploads.service';
-import { EventLogService } from '../event-log/event-log.service';
 import { SightsService } from './sights.service';
 import { UpdateSightDto } from './dto/update-sight.dto';
 
@@ -52,8 +52,8 @@ function buildModule(prismaMock: object): Promise<TestingModule> {
       SightsService,
       { provide: PrismaService, useValue: prismaMock },
       { provide: UploadsService, useValue: uploadsMock },
-      DeleteAuthorizationService,
       { provide: EventLogService, useValue: { logEvent: vi.fn() } },
+      DeleteAuthorizationService,
     ],
   })
     .setLogger(false as unknown as LoggerService)

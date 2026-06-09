@@ -1,8 +1,8 @@
 import { NotFoundException } from '@nestjs/common';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { PrismaService } from '../prisma/prisma.service';
 import { EventLogService } from '../event-log/event-log.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { CaminoVotesService } from './camino-votes.service';
 
 // ─── Prisma mock factory ──────────────────────────────────────────────────────

@@ -3,10 +3,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AccommodationType } from '@prisma/client';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
+import { EventLogService } from '../event-log/event-log.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateAccommodationDto } from './dto/create-accommodation.dto';
 import { CreateSightDto } from './dto/create-sight.dto';
-import { EventLogService } from '../event-log/event-log.service';
 import { WaypointsService } from './waypoints.service';
 
 // ─── Fixtures ────────────────────────────────────────────────────────────────

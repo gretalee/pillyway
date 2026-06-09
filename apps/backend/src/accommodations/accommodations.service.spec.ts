@@ -10,9 +10,9 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { DeleteAuthorizationService } from '../common/delete-authorization.service';
+import { EventLogService } from '../event-log/event-log.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { UploadsService } from '../uploads/uploads.service';
-import { EventLogService } from '../event-log/event-log.service';
 import { AccommodationsService } from './accommodations.service';
 import { UpdateAccommodationDto } from './dto/update-accommodation.dto';
 
@@ -59,6 +59,7 @@ function buildModule(prismaMock: object): Promise<TestingModule> {
       AccommodationsService,
       { provide: PrismaService, useValue: prismaMock },
       { provide: UploadsService, useValue: uploadsMock },
+      { provide: EventLogService, useValue: { logEvent: vi.fn() } },
       DeleteAuthorizationService,
       { provide: EventLogService, useValue: { logEvent: vi.fn() } },
     ],

@@ -209,7 +209,7 @@ export class CaminoPicturesService {
 
     this.eventLog.logEvent(EventType.CAMINO_IMAGE_UPLOADED, userId, {
       camino_id: caminoId,
-      picture_id: record.id,
+      picture_id: pictureId,
       is_primary: isPrimary,
     });
 

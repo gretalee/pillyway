@@ -79,8 +79,8 @@ export class WaypointsService {
 
     this.eventLog.logEvent(EventType.ACCOMMODATION_CREATED, userId, {
       accommodation_id: created.id,
-      camino_point_id: created.caminoPointId,
-      accommodation_name: created.name,
+      camino_point_id: point.id,
+      name: created.name,
     });
 
     return {
@@ -128,8 +128,8 @@ export class WaypointsService {
 
     this.eventLog.logEvent(EventType.SIGHT_CREATED, userId, {
       sight_id: created.id,
-      camino_point_id: created.caminoPointId,
-      sight_name: created.name,
+      camino_point_id: point.id,
+      name: created.name,
     });
 
     return {

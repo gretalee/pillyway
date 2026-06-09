@@ -162,14 +162,6 @@ model Sight {
   @@map("sights")
 }
 
-model User {
-  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  kindeUserId String   @unique @map("kinde_user_id")
-  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-
-  @@map("users")
-}
-
 model UserEvent {
   id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   eventType  String   @map("event_type") @db.VarChar(100)

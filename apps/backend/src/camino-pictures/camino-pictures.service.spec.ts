@@ -13,12 +13,12 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { Prisma } from '@prisma/client';
 import { KindeRole } from '../auth/kinde-jwt.strategy';
+import { EventLogService } from '../event-log/event-log.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { UploadsService } from '../uploads/uploads.service';
 import { CaminosService } from '../caminos/caminos.service';
 import { StagesService } from '../stages/stages.service';
 import { DeleteAuthorizationService } from '../common/delete-authorization.service';
-import { EventLogService } from '../event-log/event-log.service';
 import { CaminoPicturesService } from './camino-pictures.service';
 
 // ─── Constants ────────────────────────────────────────────────────────────────

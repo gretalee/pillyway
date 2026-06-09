@@ -1,6 +1,4 @@
 export const EventType = {
-  USER_REGISTERED: 'user_registered',
-  USER_LOGGED_IN: 'user_logged_in',
   CAMINO_CREATED: 'camino_created',
   CAMINO_UPDATED: 'camino_updated',
   CAMINO_VOTED: 'camino_voted',
