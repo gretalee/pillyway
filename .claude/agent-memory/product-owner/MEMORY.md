@@ -6,3 +6,4 @@
 - [Stages feature decisions](feature_stages.md) — PILLY-STG-001: Stage entity, lazy creation, shared-stage reuse, stageNumber URL, pilgrim-only edit, new endpoints, open questions
 - [Waypoint POI edit/delete feature decisions](feature_waypoint_poi_edit_delete.md) — PILLY-POI-001: Accommodation/Sight new fields, edit+delete flows, API contract, pilgrim permission, test scope
 - [Camino pictures feature decisions](feature_camino_pictures.md) — PILLY-CAM-003: CaminoPicture entity, S3 upload, primary vs. gallery, owner-override delete, lightbox UX, open questions
+- [Event tracking feature decisions](feature_event_tracking.md) — PILLY-EVT-001: user_events table, EventLogModule, OAuth callback session endpoint for auth events, fire-and-forget, Metabase-ready schema

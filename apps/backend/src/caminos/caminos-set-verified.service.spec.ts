@@ -90,7 +90,7 @@ describe('CaminosService.setVerified', () => {
 
   beforeEach(() => {
     prisma = buildPrismaMock();
-    service = new CaminosService(prisma, stagesServiceStub, new DeleteAuthorizationService(), { deleteImages: vi.fn() } as never);
+    service = new CaminosService(prisma, stagesServiceStub, new DeleteAuthorizationService(), { deleteImages: vi.fn() } as never, { logEvent: vi.fn() } as never);
   });
 
   it('sets verified=true and returns the updated camino', async () => {

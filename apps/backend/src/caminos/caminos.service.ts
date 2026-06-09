@@ -12,6 +12,8 @@ import { Prisma } from '@prisma/client';
 
 import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { DeleteAuthorizationService } from '../common/delete-authorization.service';
+import { EventLogService } from '../event-log/event-log.service';
+import { EventType } from '../event-log/event-type.enum';
 import { PrismaService } from '../prisma/prisma.service';
 import { StagesService } from '../stages/stages.service';
 import { UploadsService } from '../uploads/uploads.service';
@@ -87,6 +89,7 @@ export class CaminosService {
     private readonly stagesService: StagesService,
     private readonly deleteAuthorizationService: DeleteAuthorizationService,
     private readonly uploadsService: UploadsService,
+    private readonly eventLog: EventLogService,
   ) {}
 
   // ── generateSlug ────────────────────────────────────────────────────────────
@@ -190,7 +193,7 @@ export class CaminosService {
     this.logger.debug('Creating camino');
 
     try {
-      return await this.prisma.$transaction(async (tx) => {
+      const result = await this.prisma.$transaction(async (tx) => {
         // 1. Case-insensitive name uniqueness check
         const existing = await tx.camino.findFirst({
           where: { name: { equals: dto.name, mode: 'insensitive' } },
@@ -250,11 +253,7 @@ export class CaminosService {
             pointSlug = found.slug;
           } else {
             // New point — upsert by name+country composite unique key
-            const slug = await this.generateSlug(
-              item.name!,
-              item.country!,
-              tx,
-            );
+            const slug = await this.generateSlug(item.name!, item.country!, tx);
             const upserted = await tx.caminoPoint.upsert({
               where: {
                 name_country: {
@@ -309,6 +308,13 @@ export class CaminosService {
           caminoPoints,
         };
       });
+
+      this.eventLog.logEvent(EventType.CAMINO_CREATED, userId, {
+        camino_id: result.id,
+        camino_name: result.name,
+      });
+
+      return result;
     } catch (err) {
       // Re-throw NestJS HTTP exceptions as-is (ConflictException, BadRequestException, etc.)
       if (err instanceof HttpException) {
@@ -400,118 +406,135 @@ export class CaminosService {
       // 3–5. Run the name check, waypoint replacement, and scalar camino update in a
       //      single transaction so the operation is fully atomic. If any step fails,
       //      all changes are rolled back — including waypoint deletions.
-      await this.prisma.$transaction(async (tx) => {
-        // 3. Name-conflict check (only when name is being changed)
-        if (dto.name !== undefined) {
-          const conflict = await tx.camino.findFirst({
-            where: {
-              name: { equals: dto.name, mode: 'insensitive' },
-              id: { not: id },
-            },
-          });
-          if (conflict) {
-            throw new ConflictException(
-              'A camino with this name already exists.',
+      await this.prisma.$transaction(
+        async (tx) => {
+          // 3. Name-conflict check (only when name is being changed)
+          if (dto.name !== undefined) {
+            const conflict = await tx.camino.findFirst({
+              where: {
+                name: { equals: dto.name, mode: 'insensitive' },
+                id: { not: id },
+              },
+            });
+            if (conflict) {
+              throw new ConflictException(
+                'A camino with this name already exists.',
+              );
+            }
+          }
+
+          // 4. Waypoint replacement (only when caminoPoints is supplied)
+          if (dto.caminoPoints !== undefined) {
+            // 4a. Delete existing waypoint orders for this camino
+            await tx.caminoPointOrder.deleteMany({ where: { caminoId: id } });
+
+            // 4b. Detect duplicate references to the same existing caminoPointId
+            const seenIds = new Set<string>();
+            for (const item of dto.caminoPoints) {
+              if (item.caminoPointId) {
+                if (seenIds.has(item.caminoPointId)) {
+                  throw new BadRequestException(
+                    'The request contains duplicate caminoPointId references.',
+                  );
+                }
+                seenIds.add(item.caminoPointId);
+              }
+            }
+
+            // 4c. Detect duplicate new-point definitions in the payload
+            const newPointDefs = dto.caminoPoints.filter(
+              (p) => !p.caminoPointId,
             );
-          }
-        }
-
-        // 4. Waypoint replacement (only when caminoPoints is supplied)
-        if (dto.caminoPoints !== undefined) {
-          // 4a. Delete existing waypoint orders for this camino
-          await tx.caminoPointOrder.deleteMany({ where: { caminoId: id } });
-
-          // 4b. Detect duplicate references to the same existing caminoPointId
-          const seenIds = new Set<string>();
-          for (const item of dto.caminoPoints) {
-            if (item.caminoPointId) {
-              if (seenIds.has(item.caminoPointId)) {
+            const seen = new Set<string>();
+            for (const point of newPointDefs) {
+              const key = `${point.name!.toLowerCase()}|${point.country!.toLowerCase()}`;
+              if (seen.has(key)) {
                 throw new BadRequestException(
-                  'The request contains duplicate caminoPointId references.',
+                  'The request contains duplicate camino point definitions (same name and country).',
                 );
               }
-              seenIds.add(item.caminoPointId);
+              seen.add(key);
             }
-          }
 
-          // 4c. Detect duplicate new-point definitions in the payload
-          const newPointDefs = dto.caminoPoints.filter((p) => !p.caminoPointId);
-          const seen = new Set<string>();
-          for (const point of newPointDefs) {
-            const key = `${point.name!.toLowerCase()}|${point.country!.toLowerCase()}`;
-            if (seen.has(key)) {
-              throw new BadRequestException(
-                'The request contains duplicate camino point definitions (same name and country).',
-              );
-            }
-            seen.add(key);
-          }
+            // 4d. Re-insert using the same create-or-link logic as create()
+            const newOrderedPointIds: string[] = [];
+            for (let i = 0; i < dto.caminoPoints.length; i++) {
+              const item = dto.caminoPoints[i];
+              let pointId: string;
 
-          // 4d. Re-insert using the same create-or-link logic as create()
-          const newOrderedPointIds: string[] = [];
-          for (let i = 0; i < dto.caminoPoints.length; i++) {
-            const item = dto.caminoPoints[i];
-            let pointId: string;
-
-            if (item.caminoPointId) {
-              const found = await tx.caminoPoint.findUnique({
-                where: { id: item.caminoPointId },
-              });
-              if (!found) {
-                throw new BadRequestException(
-                  `CaminoPoint not found: ${item.caminoPointId}`,
+              if (item.caminoPointId) {
+                const found = await tx.caminoPoint.findUnique({
+                  where: { id: item.caminoPointId },
+                });
+                if (!found) {
+                  throw new BadRequestException(
+                    `CaminoPoint not found: ${item.caminoPointId}`,
+                  );
+                }
+                pointId = found.id;
+              } else {
+                const slug = await this.generateSlug(
+                  item.name!,
+                  item.country!,
+                  tx,
                 );
-              }
-              pointId = found.id;
-            } else {
-              const slug = await this.generateSlug(
-                item.name!,
-                item.country!,
-                tx,
-              );
-              const upserted = await tx.caminoPoint.upsert({
-                where: {
-                  name_country: {
+                const upserted = await tx.caminoPoint.upsert({
+                  where: {
+                    name_country: {
+                      name: item.name!,
+                      country: item.country!,
+                    },
+                  },
+                  create: {
                     name: item.name!,
                     country: item.country!,
+                    description: item.description ?? null,
+                    slug,
                   },
-                },
-                create: {
-                  name: item.name!,
-                  country: item.country!,
-                  description: item.description ?? null,
-                  slug,
-                },
-                update: {}, // slug is immutable — never update it
+                  update: {}, // slug is immutable — never update it
+                });
+                pointId = upserted.id;
+              }
+
+              await tx.caminoPointOrder.create({
+                data: { caminoId: id, caminoPointId: pointId, position: i + 1 },
               });
-              pointId = upserted.id;
+              newOrderedPointIds.push(pointId);
             }
 
-            await tx.caminoPointOrder.create({
-              data: { caminoId: id, caminoPointId: pointId, position: i + 1 },
-            });
-            newOrderedPointIds.push(pointId);
+            // Eagerly upsert Stage rows for the new ordering inside the same
+            // transaction — old pairs that left the sequence are NOT deleted.
+            await this.stagesService.upsertStagePairs(newOrderedPointIds, tx);
           }
 
-          // Eagerly upsert Stage rows for the new ordering inside the same
-          // transaction — old pairs that left the sequence are NOT deleted.
-          await this.stagesService.upsertStagePairs(newOrderedPointIds, tx);
-        }
-
-        // 5. Update scalar fields on the camino row.
-        //    updatedAt is set explicitly — the schema does not use @updatedAt.
-        const updateData: Prisma.CaminoUpdateInput = { updatedAt: new Date() };
-        if (dto.name !== undefined) {
-          updateData.name = dto.name;
-        }
-        if (dto.description !== undefined) {
-          updateData.description = dto.description;
-        }
-        await tx.camino.update({ where: { id }, data: updateData });
-      }, { timeout: 15000 });
+          // 5. Update scalar fields on the camino row.
+          //    updatedAt is set explicitly — the schema does not use @updatedAt.
+          const updateData: Prisma.CaminoUpdateInput = {
+            updatedAt: new Date(),
+          };
+          if (dto.name !== undefined) {
+            updateData.name = dto.name;
+          }
+          if (dto.description !== undefined) {
+            updateData.description = dto.description;
+          }
+          await tx.camino.update({ where: { id }, data: updateData });
+        },
+        { timeout: 15000 },
+      );
 
       // 6. Return the fresh full representation
-      return this.findById(id);
+      const updated = await this.findById(id);
+
+      this.eventLog.logEvent(EventType.CAMINO_UPDATED, userId, {
+        camino_id: id,
+        camino_name: updated.name,
+        changed_fields: Object.entries(dto)
+          .filter(([, v]) => v !== undefined)
+          .map(([k]) => k),
+      });
+
+      return updated;
     } catch (err) {
       if (err instanceof HttpException) {
         throw err;

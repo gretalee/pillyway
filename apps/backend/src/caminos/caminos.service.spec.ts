@@ -12,6 +12,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { DeleteAuthorizationService } from '../common/delete-authorization.service';
+import { EventLogService } from '../event-log/event-log.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { StagesService } from '../stages/stages.service';
 import { UploadsService } from '../uploads/uploads.service';
@@ -66,6 +67,8 @@ const uploadsServiceMock = {
   deleteImages: vi.fn().mockResolvedValue(undefined),
 };
 
+const eventLogMock = { logEvent: vi.fn() };
+
 // Suppress NestJS Logger output for error-path tests — the errors are expected.
 beforeEach(() => {
   vi.spyOn(Logger.prototype, 'error').mockImplementation(() => {});
@@ -85,6 +88,7 @@ function buildModule(prismaMock: object): Promise<TestingModule> {
       { provide: StagesService, useValue: stagesServiceMock },
       DeleteAuthorizationService,
       { provide: UploadsService, useValue: uploadsServiceMock },
+      { provide: EventLogService, useValue: eventLogMock },
     ],
   })
     .setLogger(false as unknown as LoggerService)
@@ -679,8 +683,12 @@ describe('CaminosService.update()', () => {
 
 // Helper: adds the caminoPicture.findMany stub required by CaminosService.delete
 // after the S3 picture cleanup was added.
-function makeDeletePrismaMock(caminoRecord: object | null, options: { deleteSpy?: ReturnType<typeof vi.fn> } = {}) {
-  const deleteSpy = options.deleteSpy ?? vi.fn().mockResolvedValue(caminoRecord);
+function makeDeletePrismaMock(
+  caminoRecord: object | null,
+  options: { deleteSpy?: ReturnType<typeof vi.fn> } = {},
+) {
+  const deleteSpy =
+    options.deleteSpy ?? vi.fn().mockResolvedValue(caminoRecord);
   return {
     camino: {
       findUnique: vi.fn().mockResolvedValue(caminoRecord),

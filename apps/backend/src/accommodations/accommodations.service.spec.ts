@@ -10,6 +10,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { DeleteAuthorizationService } from '../common/delete-authorization.service';
+import { EventLogService } from '../event-log/event-log.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { UploadsService } from '../uploads/uploads.service';
 import { AccommodationsService } from './accommodations.service';
@@ -44,7 +45,9 @@ const baseAccommodation = {
   caminoPoint: { slug: 'burgos' },
 };
 
-const PILGRIM_ROLES: KindeRole[] = [{ id: 'r1', key: 'pilgrim', name: 'Pilgrim' }];
+const PILGRIM_ROLES: KindeRole[] = [
+  { id: 'r1', key: 'pilgrim', name: 'Pilgrim' },
+];
 const OWNER_ROLES: KindeRole[] = [{ id: 'r2', key: 'owner', name: 'Owner' }];
 const NO_ROLES: KindeRole[] = [];
 
@@ -58,7 +61,9 @@ function buildModule(prismaMock: object): Promise<TestingModule> {
       AccommodationsService,
       { provide: PrismaService, useValue: prismaMock },
       { provide: UploadsService, useValue: uploadsMock },
+      { provide: EventLogService, useValue: { logEvent: vi.fn() } },
       DeleteAuthorizationService,
+      { provide: EventLogService, useValue: { logEvent: vi.fn() } },
     ],
   })
     .setLogger(false as unknown as LoggerService)
@@ -95,7 +100,9 @@ describe('AccommodationsService.findById()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(AccommodationsService);
 
-    await expect(service.findById('unknown-id')).rejects.toBeInstanceOf(NotFoundException);
+    await expect(service.findById('unknown-id')).rejects.toBeInstanceOf(
+      NotFoundException,
+    );
   });
 });
 
@@ -153,10 +160,12 @@ describe('AccommodationsService.update()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(AccommodationsService);
 
-    const dto = Object.assign(new UpdateAccommodationDto(), { name: 'New Name' });
+    const dto = Object.assign(new UpdateAccommodationDto(), {
+      name: 'New Name',
+    });
 
     await expect(
-      service.update(ACCOMMODATION_ID, dto, NO_ROLES),
+      service.update(ACCOMMODATION_ID, USER_ID, dto, NO_ROLES),
     ).rejects.toBeInstanceOf(ForbiddenException);
     expect(prismaMock.accommodation.update).not.toHaveBeenCalled();
   });
@@ -168,10 +177,12 @@ describe('AccommodationsService.update()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(AccommodationsService);
 
-    const dto = Object.assign(new UpdateAccommodationDto(), { name: 'New Name' });
+    const dto = Object.assign(new UpdateAccommodationDto(), {
+      name: 'New Name',
+    });
 
     await expect(
-      service.update(ACCOMMODATION_ID, dto, OWNER_ROLES),
+      service.update(ACCOMMODATION_ID, USER_ID, dto, OWNER_ROLES),
     ).rejects.toBeInstanceOf(ForbiddenException);
     expect(prismaMock.accommodation.update).not.toHaveBeenCalled();
   });
@@ -186,10 +197,12 @@ describe('AccommodationsService.update()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(AccommodationsService);
 
-    const dto = Object.assign(new UpdateAccommodationDto(), { name: 'New Name' });
+    const dto = Object.assign(new UpdateAccommodationDto(), {
+      name: 'New Name',
+    });
 
     await expect(
-      service.update('unknown-id', dto, PILGRIM_ROLES),
+      service.update('unknown-id', USER_ID, dto, PILGRIM_ROLES),
     ).rejects.toBeInstanceOf(NotFoundException);
     expect(prismaMock.accommodation.update).not.toHaveBeenCalled();
   });
@@ -197,24 +210,37 @@ describe('AccommodationsService.update()', () => {
   it('correctly removes URLs listed in removeImageUrls', async () => {
     const existingWithImages = {
       ...baseAccommodation,
-      imageUrls: ['https://example.com/img1.jpg', 'https://example.com/img2.jpg'],
+      imageUrls: [
+        'https://example.com/img1.jpg',
+        'https://example.com/img2.jpg',
+      ],
     };
     const prismaMock = {
       accommodation: {
         findUnique: vi.fn().mockResolvedValue(existingWithImages),
-        update: vi.fn().mockImplementation(({ data }) =>
-          Promise.resolve({ ...existingWithImages, ...data }),
-        ),
+        update: vi
+          .fn()
+          .mockImplementation(({ data }) =>
+            Promise.resolve({ ...existingWithImages, ...data }),
+          ),
       },
     };
     const module = await buildModule(prismaMock);
     const service = module.get(AccommodationsService);
 
     const dto = Object.assign(new UpdateAccommodationDto(), {
-      removeImageUrls: ['https://example.com/img1.jpg', 'https://example.com/not-attached.jpg'],
+      removeImageUrls: [
+        'https://example.com/img1.jpg',
+        'https://example.com/not-attached.jpg',
+      ],
     });
 
-    const result = await service.update(ACCOMMODATION_ID, dto, PILGRIM_ROLES);
+    const result = await service.update(
+      ACCOMMODATION_ID,
+      USER_ID,
+      dto,
+      PILGRIM_ROLES,
+    );
 
     expect(prismaMock.accommodation.update).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -224,21 +250,28 @@ describe('AccommodationsService.update()', () => {
       }),
     );
     expect(result.imageUrls).toEqual(['https://example.com/img2.jpg']);
-    expect(uploadsMock.deleteImages).toHaveBeenCalledWith(['https://example.com/img1.jpg']);
+    expect(uploadsMock.deleteImages).toHaveBeenCalledWith([
+      'https://example.com/img1.jpg',
+    ]);
     expect(uploadsMock.deleteImages).toHaveBeenCalledTimes(1);
   });
 
   it('deletes dropped URLs when imageUrls diff path is used', async () => {
     const existingWithImages = {
       ...baseAccommodation,
-      imageUrls: ['https://example.com/img1.jpg', 'https://example.com/img2.jpg'],
+      imageUrls: [
+        'https://example.com/img1.jpg',
+        'https://example.com/img2.jpg',
+      ],
     };
     const prismaMock = {
       accommodation: {
         findUnique: vi.fn().mockResolvedValue(existingWithImages),
-        update: vi.fn().mockImplementation(({ data }) =>
-          Promise.resolve({ ...existingWithImages, ...data }),
-        ),
+        update: vi
+          .fn()
+          .mockImplementation(({ data }) =>
+            Promise.resolve({ ...existingWithImages, ...data }),
+          ),
       },
     };
     const module = await buildModule(prismaMock);
@@ -248,7 +281,7 @@ describe('AccommodationsService.update()', () => {
       imageUrls: ['https://example.com/img2.jpg'],
     });
 
-    await service.update(ACCOMMODATION_ID, dto, PILGRIM_ROLES);
+    await service.update(ACCOMMODATION_ID, USER_ID, dto, PILGRIM_ROLES);
 
     expect(prismaMock.accommodation.update).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -257,12 +290,18 @@ describe('AccommodationsService.update()', () => {
         }),
       }),
     );
-    expect(uploadsMock.deleteImages).toHaveBeenCalledWith(['https://example.com/img1.jpg']);
+    expect(uploadsMock.deleteImages).toHaveBeenCalledWith([
+      'https://example.com/img1.jpg',
+    ]);
     expect(uploadsMock.deleteImages).toHaveBeenCalledTimes(1);
   });
 
   it('does not call deleteImages when update has no image changes', async () => {
-    const updated = { ...baseAccommodation, name: 'New Name', updatedAt: new Date() };
+    const updated = {
+      ...baseAccommodation,
+      name: 'New Name',
+      updatedAt: new Date(),
+    };
     const prismaMock = {
       accommodation: {
         findUnique: vi.fn().mockResolvedValue(baseAccommodation),
@@ -272,9 +311,11 @@ describe('AccommodationsService.update()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(AccommodationsService);
 
-    const dto = Object.assign(new UpdateAccommodationDto(), { name: 'New Name' });
+    const dto = Object.assign(new UpdateAccommodationDto(), {
+      name: 'New Name',
+    });
 
-    await service.update(ACCOMMODATION_ID, dto, PILGRIM_ROLES);
+    await service.update(ACCOMMODATION_ID, USER_ID, dto, PILGRIM_ROLES);
 
     expect(uploadsMock.deleteImages).not.toHaveBeenCalled();
   });
@@ -295,13 +336,17 @@ describe('AccommodationsService.update()', () => {
     });
 
     await expect(
-      service.update(ACCOMMODATION_ID, dto, PILGRIM_ROLES),
+      service.update(ACCOMMODATION_ID, USER_ID, dto, PILGRIM_ROLES),
     ).rejects.toBeInstanceOf(BadRequestException);
     expect(prismaMock.accommodation.update).not.toHaveBeenCalled();
   });
 
   it('allows a pilgrim to update an accommodation and sets updatedAt', async () => {
-    const updated = { ...baseAccommodation, name: 'Updated Name', updatedAt: new Date() };
+    const updated = {
+      ...baseAccommodation,
+      name: 'Updated Name',
+      updatedAt: new Date(),
+    };
     const prismaMock = {
       accommodation: {
         findUnique: vi.fn().mockResolvedValue(baseAccommodation),
@@ -311,9 +356,16 @@ describe('AccommodationsService.update()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(AccommodationsService);
 
-    const dto = Object.assign(new UpdateAccommodationDto(), { name: 'Updated Name' });
+    const dto = Object.assign(new UpdateAccommodationDto(), {
+      name: 'Updated Name',
+    });
 
-    const result = await service.update(ACCOMMODATION_ID, dto, PILGRIM_ROLES);
+    const result = await service.update(
+      ACCOMMODATION_ID,
+      USER_ID,
+      dto,
+      PILGRIM_ROLES,
+    );
 
     expect(result.name).toBe('Updated Name');
     expect(prismaMock.accommodation.update).toHaveBeenCalledWith(
@@ -353,7 +405,11 @@ describe('AccommodationsService.delete()', () => {
 
   // Creator within the 1-hour window is allowed.
   it('allows the creator to delete their own accommodation within the time window', async () => {
-    const recentAccommodation = { ...baseAccommodation, createdBy: USER_ID, createdAt: new Date(Date.now() - 60 * 1000) };
+    const recentAccommodation = {
+      ...baseAccommodation,
+      createdBy: USER_ID,
+      createdAt: new Date(Date.now() - 60 * 1000),
+    };
     const prismaMock = {
       accommodation: {
         findUnique: vi.fn().mockResolvedValue(recentAccommodation),
@@ -369,7 +425,9 @@ describe('AccommodationsService.delete()', () => {
     expect(prismaMock.accommodation.delete).toHaveBeenCalledWith({
       where: { id: ACCOMMODATION_ID },
     });
-    expect(uploadsMock.deleteImages).toHaveBeenCalledWith(recentAccommodation.imageUrls);
+    expect(uploadsMock.deleteImages).toHaveBeenCalledWith(
+      recentAccommodation.imageUrls,
+    );
   });
 
   // Creator after the 1-hour window is forbidden.
@@ -392,7 +450,11 @@ describe('AccommodationsService.delete()', () => {
 
   // Non-creator, non-owner is always forbidden.
   it('throws ForbiddenException when user is neither creator nor owner', async () => {
-    const recentAccommodation = { ...baseAccommodation, createdBy: USER_ID, createdAt: new Date(Date.now() - 60 * 1000) };
+    const recentAccommodation = {
+      ...baseAccommodation,
+      createdBy: USER_ID,
+      createdAt: new Date(Date.now() - 60 * 1000),
+    };
     const prismaMock = {
       accommodation: {
         findUnique: vi.fn().mockResolvedValue(recentAccommodation),
@@ -442,7 +504,9 @@ describe('AccommodationsService.delete()', () => {
     expect(prismaMock.accommodation.delete).toHaveBeenCalledWith({
       where: { id: ACCOMMODATION_ID },
     });
-    expect(uploadsMock.deleteImages).toHaveBeenCalledWith(baseAccommodation.imageUrls);
+    expect(uploadsMock.deleteImages).toHaveBeenCalledWith(
+      baseAccommodation.imageUrls,
+    );
   });
 
   it('does not call deleteImages when accommodation has no imageUrls', async () => {

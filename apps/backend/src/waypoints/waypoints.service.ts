@@ -1,5 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
+import { EventLogService } from '../event-log/event-log.service';
+import { EventType } from '../event-log/event-type.enum';
 import { PrismaService } from '../prisma/prisma.service';
 import { AccommodationResponseDto } from './dto/accommodation-response.dto';
 import { CreateAccommodationDto } from './dto/create-accommodation.dto';
@@ -9,7 +11,10 @@ import { WaypointDetailDto } from './dto/waypoint-detail.dto';
 
 @Injectable()
 export class WaypointsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly eventLog: EventLogService,
+  ) {}
 
   // ── findBySlug ───────────────────────────────────────────────────────────────
 
@@ -72,6 +77,12 @@ export class WaypointsService {
       },
     });
 
+    this.eventLog.logEvent(EventType.ACCOMMODATION_CREATED, userId, {
+      accommodation_id: created.id,
+      camino_point_id: point.id,
+      accommodation_name: created.name,
+    });
+
     return {
       id: created.id,
       caminoPointId: created.caminoPointId,
@@ -113,6 +124,12 @@ export class WaypointsService {
         longitude: dto.longitude ?? null,
         createdBy: userId,
       },
+    });
+
+    this.eventLog.logEvent(EventType.SIGHT_CREATED, userId, {
+      sight_id: created.id,
+      camino_point_id: point.id,
+      sight_name: created.name,
     });
 
     return {

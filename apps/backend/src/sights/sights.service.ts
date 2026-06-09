@@ -1,7 +1,14 @@
-import { ForbiddenException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 
 import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { DeleteAuthorizationService } from '../common/delete-authorization.service';
+import { EventLogService } from '../event-log/event-log.service';
+import { EventType } from '../event-log/event-type.enum';
 import { PrismaService } from '../prisma/prisma.service';
 import { UploadsService } from '../uploads/uploads.service';
 import { SightDetailDto } from './dto/sight-detail.dto';
@@ -18,6 +25,7 @@ export class SightsService {
     private readonly prisma: PrismaService,
     private readonly uploadsService: UploadsService,
     private readonly deleteAuthorizationService: DeleteAuthorizationService,
+    private readonly eventLog: EventLogService,
   ) {}
 
   // ── findById ─────────────────────────────────────────────────────────────────
@@ -35,7 +43,9 @@ export class SightsService {
   // ── findByCaminoPointId ───────────────────────────────────────────────────────
 
   async findByCaminoPointId(caminoPointId: string): Promise<SightDetailDto[]> {
-    const sights = await this.prisma.sight.findMany({ where: { caminoPointId } });
+    const sights = await this.prisma.sight.findMany({
+      where: { caminoPointId },
+    });
     return sights.map((s) => this.toDto(s));
   }
 
@@ -43,6 +53,7 @@ export class SightsService {
 
   async update(
     id: string,
+    userId: string,
     dto: UpdateSightDto,
     roles: KindeRole[],
   ): Promise<SightDetailDto> {
@@ -64,7 +75,9 @@ export class SightsService {
     if (dto.removeImageUrls !== undefined) {
       const toRemove = new Set(dto.removeImageUrls);
       urlsToDelete = existing.imageUrls.filter((url) => toRemove.has(url));
-      resolvedImageUrls = existing.imageUrls.filter((url) => !toRemove.has(url));
+      resolvedImageUrls = existing.imageUrls.filter(
+        (url) => !toRemove.has(url),
+      );
     } else if (dto.imageUrls !== undefined) {
       resolvedImageUrls = dto.imageUrls;
       const kept = new Set(dto.imageUrls);
@@ -76,7 +89,9 @@ export class SightsService {
       data: {
         ...(dto.name !== undefined && { name: dto.name }),
         ...(dto.description !== undefined && { description: dto.description }),
-        ...(resolvedImageUrls !== undefined && { imageUrls: resolvedImageUrls }),
+        ...(resolvedImageUrls !== undefined && {
+          imageUrls: resolvedImageUrls,
+        }),
         ...(dto.address !== undefined && { address: dto.address }),
         ...(dto.latitude !== undefined && { latitude: dto.latitude }),
         ...(dto.longitude !== undefined && { longitude: dto.longitude }),
@@ -84,12 +99,22 @@ export class SightsService {
       },
     });
 
+    this.eventLog.logEvent(EventType.SIGHT_UPDATED, userId, {
+      sight_id: id,
+      camino_point_id: existing.caminoPointId,
+      changed_fields: Object.entries(dto)
+        .filter(([k, v]) => v !== undefined && k !== 'removeImageUrls')
+        .map(([k]) => k),
+    });
+
     if (urlsToDelete.length > 0) {
       try {
         await this.uploadsService.deleteImages(urlsToDelete);
       } catch (err) {
         // Storage cleanup is best-effort — DB write already succeeded
-        this.logger.error(`Storage cleanup failed after sight update: ${String(err)}`);
+        this.logger.error(
+          `Storage cleanup failed after sight update: ${String(err)}`,
+        );
       }
     }
 
@@ -104,11 +129,7 @@ export class SightsService {
    *   - Creator: permitted within 1 hour of creation.
    *   - All others: ForbiddenException (403).
    */
-  async delete(
-    id: string,
-    userId: string,
-    roles: KindeRole[],
-  ): Promise<void> {
+  async delete(id: string, userId: string, roles: KindeRole[]): Promise<void> {
     // Fetch first so we return 404 before 403
     const existing = await this.prisma.sight.findUnique({ where: { id } });
     if (!existing) {
@@ -129,7 +150,9 @@ export class SightsService {
         await this.uploadsService.deleteImages(existing.imageUrls);
       } catch (err) {
         // Storage cleanup is best-effort — DB write already succeeded
-        this.logger.error(`Storage cleanup failed after sight delete: ${String(err)}`);
+        this.logger.error(
+          `Storage cleanup failed after sight delete: ${String(err)}`,
+        );
       }
     }
   }

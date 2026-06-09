@@ -1,0 +1,12 @@
+export const EventType = {
+  CAMINO_CREATED: 'camino_created',
+  CAMINO_UPDATED: 'camino_updated',
+  CAMINO_VOTED: 'camino_voted',
+  CAMINO_IMAGE_UPLOADED: 'camino_image_uploaded',
+  ACCOMMODATION_CREATED: 'accommodation_created',
+  ACCOMMODATION_UPDATED: 'accommodation_updated',
+  SIGHT_CREATED: 'sight_created',
+  SIGHT_UPDATED: 'sight_updated',
+} as const;
+
+export type EventType = (typeof EventType)[keyof typeof EventType];

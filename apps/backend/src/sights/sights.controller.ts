@@ -95,7 +95,7 @@ export class SightsController {
     @Req() req: Request & { user: KindeJwtPayload },
   ): Promise<SightDetailDto> {
     const roles = req.user.roles ?? [];
-    return this.sightsService.update(id, dto, roles);
+    return this.sightsService.update(id, req.user.sub, dto, roles);
   }
 
   // ── DELETE /sights/:id ───────────────────────────────────────────────────────

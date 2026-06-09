@@ -1,8 +1,15 @@
-import { ForbiddenException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { AccommodationType, PriceRange } from '@prisma/client';
 
 import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { DeleteAuthorizationService } from '../common/delete-authorization.service';
+import { EventLogService } from '../event-log/event-log.service';
+import { EventType } from '../event-log/event-type.enum';
 import { PrismaService } from '../prisma/prisma.service';
 import { UploadsService } from '../uploads/uploads.service';
 import { AccommodationDetailDto } from './dto/accommodation-detail.dto';
@@ -19,6 +26,7 @@ export class AccommodationsService {
     private readonly prisma: PrismaService,
     private readonly uploadsService: UploadsService,
     private readonly deleteAuthorizationService: DeleteAuthorizationService,
+    private readonly eventLog: EventLogService,
   ) {}
 
   // ── findById ─────────────────────────────────────────────────────────────────
@@ -38,7 +46,9 @@ export class AccommodationsService {
 
   // ── findByCaminoPointId ───────────────────────────────────────────────────────
 
-  async findByCaminoPointId(caminoPointId: string): Promise<AccommodationDetailDto[]> {
+  async findByCaminoPointId(
+    caminoPointId: string,
+  ): Promise<AccommodationDetailDto[]> {
     const accommodations = await this.prisma.accommodation.findMany({
       where: { caminoPointId },
       include: { caminoPoint: { select: { slug: true } } },
@@ -51,6 +61,7 @@ export class AccommodationsService {
 
   async update(
     id: string,
+    userId: string,
     dto: UpdateAccommodationDto,
     roles: KindeRole[],
   ): Promise<AccommodationDetailDto> {
@@ -75,7 +86,9 @@ export class AccommodationsService {
     if (dto.removeImageUrls !== undefined) {
       const toRemove = new Set(dto.removeImageUrls);
       urlsToDelete = existing.imageUrls.filter((url) => toRemove.has(url));
-      resolvedImageUrls = existing.imageUrls.filter((url) => !toRemove.has(url));
+      resolvedImageUrls = existing.imageUrls.filter(
+        (url) => !toRemove.has(url),
+      );
     } else if (dto.imageUrls !== undefined) {
       resolvedImageUrls = dto.imageUrls;
       const kept = new Set(dto.imageUrls);
@@ -87,17 +100,31 @@ export class AccommodationsService {
       data: {
         ...(dto.name !== undefined && { name: dto.name }),
         ...(dto.description !== undefined && { description: dto.description }),
-        ...(resolvedImageUrls !== undefined && { imageUrls: resolvedImageUrls }),
+        ...(resolvedImageUrls !== undefined && {
+          imageUrls: resolvedImageUrls,
+        }),
         ...(dto.type !== undefined && { type: dto.type }),
         ...(dto.email !== undefined && { email: dto.email }),
         ...(dto.website !== undefined && { website: dto.website }),
-        ...(dto.addressStreet !== undefined && { addressStreet: dto.addressStreet }),
+        ...(dto.addressStreet !== undefined && {
+          addressStreet: dto.addressStreet,
+        }),
         ...(dto.addressZip !== undefined && { addressZip: dto.addressZip }),
         ...(dto.addressCity !== undefined && { addressCity: dto.addressCity }),
-        ...(dto.addressCountry !== undefined && { addressCountry: dto.addressCountry }),
+        ...(dto.addressCountry !== undefined && {
+          addressCountry: dto.addressCountry,
+        }),
         ...(dto.priceRange !== undefined && { priceRange: dto.priceRange }),
         updatedAt: new Date(),
       },
+    });
+
+    this.eventLog.logEvent(EventType.ACCOMMODATION_UPDATED, userId, {
+      accommodation_id: id,
+      camino_point_id: existing.caminoPointId,
+      changed_fields: Object.entries(dto)
+        .filter(([k, v]) => v !== undefined && k !== 'removeImageUrls')
+        .map(([k]) => k),
     });
 
     if (urlsToDelete.length > 0) {
@@ -105,7 +132,9 @@ export class AccommodationsService {
         await this.uploadsService.deleteImages(urlsToDelete);
       } catch (err) {
         // Storage cleanup is best-effort — DB write already succeeded
-        this.logger.error(`Storage cleanup failed after accommodation update: ${String(err)}`);
+        this.logger.error(
+          `Storage cleanup failed after accommodation update: ${String(err)}`,
+        );
       }
     }
 
@@ -120,13 +149,11 @@ export class AccommodationsService {
    *   - Creator: permitted within 1 hour of creation.
    *   - All others: ForbiddenException (403).
    */
-  async delete(
-    id: string,
-    userId: string,
-    roles: KindeRole[],
-  ): Promise<void> {
+  async delete(id: string, userId: string, roles: KindeRole[]): Promise<void> {
     // Fetch first so we return 404 before 403
-    const existing = await this.prisma.accommodation.findUnique({ where: { id } });
+    const existing = await this.prisma.accommodation.findUnique({
+      where: { id },
+    });
     if (!existing) {
       throw new NotFoundException('Accommodation not found.');
     }
@@ -145,7 +172,9 @@ export class AccommodationsService {
         await this.uploadsService.deleteImages(existing.imageUrls);
       } catch (err) {
         // Storage cleanup is best-effort — DB write already succeeded
-        this.logger.error(`Storage cleanup failed after accommodation delete: ${String(err)}`);
+        this.logger.error(
+          `Storage cleanup failed after accommodation delete: ${String(err)}`,
+        );
       }
     }
   }
