@@ -120,7 +120,8 @@ export class CaminoPicturesController {
   @ApiForbiddenResponse({ description: 'Requires pilgrim role.' })
   @ApiNotFoundResponse({ description: 'Camino not found.' })
   @ApiConflictResponse({
-    description: 'isPrimary=true requested but a primary picture already exists.',
+    description:
+      'isPrimary=true requested but a primary picture already exists.',
   })
   @ApiUnprocessableEntityResponse({
     description: 'Camino has reached the maximum of 50 pictures.',
@@ -165,13 +166,18 @@ export class CaminoPicturesController {
       'A pilgrim may only update captions of pictures they uploaded. An owner may update any caption. ' +
       'Pass null to clear the caption.',
   })
-  @ApiOkResponse({ description: 'Caption updated.', type: CaminoPictureResponseDto })
+  @ApiOkResponse({
+    description: 'Caption updated.',
+    type: CaminoPictureResponseDto,
+  })
   @ApiUnauthorizedResponse({ description: 'Missing or invalid JWT.' })
   @ApiForbiddenResponse({
-    description: 'Requires pilgrim role, or pilgrim is not the uploader and does not hold owner role.',
+    description:
+      'Requires pilgrim role, or pilgrim is not the uploader and does not hold owner role.',
   })
   @ApiNotFoundResponse({
-    description: 'No picture with the given pictureId exists under the given caminoId.',
+    description:
+      'No picture with the given pictureId exists under the given caminoId.',
   })
   async updateLabel(
     @Param('caminoId', ParseUUIDPipe) caminoId: string,
@@ -209,7 +215,8 @@ export class CaminoPicturesController {
       'Requires pilgrim role, or pilgrim holds it but is not the uploader and does not hold owner role.',
   })
   @ApiNotFoundResponse({
-    description: 'No picture with the given pictureId exists under the given caminoId.',
+    description:
+      'No picture with the given pictureId exists under the given caminoId.',
   })
   @ApiResponse({
     status: 502,

@@ -38,7 +38,9 @@ const baseSight = {
   updatedAt: new Date('2026-02-01'),
 };
 
-const PILGRIM_ROLES: KindeRole[] = [{ id: 'r1', key: 'pilgrim', name: 'Pilgrim' }];
+const PILGRIM_ROLES: KindeRole[] = [
+  { id: 'r1', key: 'pilgrim', name: 'Pilgrim' },
+];
 const OWNER_ROLES: KindeRole[] = [{ id: 'r2', key: 'owner', name: 'Owner' }];
 const NO_ROLES: KindeRole[] = [];
 
@@ -85,7 +87,9 @@ describe('SightsService.findById()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(SightsService);
 
-    await expect(service.findById('unknown-id')).rejects.toBeInstanceOf(NotFoundException);
+    await expect(service.findById('unknown-id')).rejects.toBeInstanceOf(
+      NotFoundException,
+    );
   });
 });
 
@@ -187,14 +191,19 @@ describe('SightsService.update()', () => {
   it('correctly removes URLs listed in removeImageUrls', async () => {
     const existingWithImages = {
       ...baseSight,
-      imageUrls: ['https://example.com/img1.jpg', 'https://example.com/img2.jpg'],
+      imageUrls: [
+        'https://example.com/img1.jpg',
+        'https://example.com/img2.jpg',
+      ],
     };
     const prismaMock = {
       sight: {
         findUnique: vi.fn().mockResolvedValue(existingWithImages),
-        update: vi.fn().mockImplementation(({ data }) =>
-          Promise.resolve({ ...existingWithImages, ...data }),
-        ),
+        update: vi
+          .fn()
+          .mockImplementation(({ data }) =>
+            Promise.resolve({ ...existingWithImages, ...data }),
+          ),
       },
     };
     const module = await buildModule(prismaMock);
@@ -214,20 +223,27 @@ describe('SightsService.update()', () => {
       }),
     );
     expect(result.imageUrls).toEqual(['https://example.com/img2.jpg']);
-    expect(uploadsMock.deleteImages).toHaveBeenCalledWith(['https://example.com/img1.jpg']);
+    expect(uploadsMock.deleteImages).toHaveBeenCalledWith([
+      'https://example.com/img1.jpg',
+    ]);
   });
 
   it('deletes dropped URLs when imageUrls diff path is used', async () => {
     const existingWithImages = {
       ...baseSight,
-      imageUrls: ['https://example.com/img1.jpg', 'https://example.com/img2.jpg'],
+      imageUrls: [
+        'https://example.com/img1.jpg',
+        'https://example.com/img2.jpg',
+      ],
     };
     const prismaMock = {
       sight: {
         findUnique: vi.fn().mockResolvedValue(existingWithImages),
-        update: vi.fn().mockImplementation(({ data }) =>
-          Promise.resolve({ ...existingWithImages, ...data }),
-        ),
+        update: vi
+          .fn()
+          .mockImplementation(({ data }) =>
+            Promise.resolve({ ...existingWithImages, ...data }),
+          ),
       },
     };
     const module = await buildModule(prismaMock);
@@ -239,11 +255,17 @@ describe('SightsService.update()', () => {
 
     await service.update(SIGHT_ID, USER_ID, dto, PILGRIM_ROLES);
 
-    expect(uploadsMock.deleteImages).toHaveBeenCalledWith(['https://example.com/img1.jpg']);
+    expect(uploadsMock.deleteImages).toHaveBeenCalledWith([
+      'https://example.com/img1.jpg',
+    ]);
   });
 
   it('does not call deleteImages when update has no image changes', async () => {
-    const updated = { ...baseSight, name: 'Updated Sight', updatedAt: new Date() };
+    const updated = {
+      ...baseSight,
+      name: 'Updated Sight',
+      updatedAt: new Date(),
+    };
     const prismaMock = {
       sight: {
         findUnique: vi.fn().mockResolvedValue(baseSight),
@@ -253,7 +275,9 @@ describe('SightsService.update()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(SightsService);
 
-    const dto = Object.assign(new UpdateSightDto(), { name: 'No Image Change' });
+    const dto = Object.assign(new UpdateSightDto(), {
+      name: 'No Image Change',
+    });
 
     await service.update(SIGHT_ID, USER_ID, dto, PILGRIM_ROLES);
 
@@ -318,7 +342,11 @@ describe('SightsService.update()', () => {
   });
 
   it('allows a pilgrim to update a sight and sets updatedAt', async () => {
-    const updated = { ...baseSight, name: 'Updated Sight', updatedAt: new Date() };
+    const updated = {
+      ...baseSight,
+      name: 'Updated Sight',
+      updatedAt: new Date(),
+    };
     const prismaMock = {
       sight: {
         findUnique: vi.fn().mockResolvedValue(baseSight),
@@ -370,7 +398,11 @@ describe('SightsService.delete()', () => {
 
   // Creator within the 1-hour window is allowed.
   it('allows the creator to delete their own sight within the time window', async () => {
-    const recentSight = { ...baseSight, createdBy: USER_ID, createdAt: new Date(Date.now() - 60 * 1000) };
+    const recentSight = {
+      ...baseSight,
+      createdBy: USER_ID,
+      createdAt: new Date(Date.now() - 60 * 1000),
+    };
     const prismaMock = {
       sight: {
         findUnique: vi.fn().mockResolvedValue(recentSight),
@@ -386,7 +418,9 @@ describe('SightsService.delete()', () => {
     expect(prismaMock.sight.delete).toHaveBeenCalledWith({
       where: { id: SIGHT_ID },
     });
-    expect(uploadsMock.deleteImages).toHaveBeenCalledWith(recentSight.imageUrls);
+    expect(uploadsMock.deleteImages).toHaveBeenCalledWith(
+      recentSight.imageUrls,
+    );
   });
 
   // Creator after the 1-hour window is forbidden.
@@ -409,7 +443,11 @@ describe('SightsService.delete()', () => {
 
   // Non-creator, non-owner is always forbidden.
   it('throws ForbiddenException when user is neither creator nor owner', async () => {
-    const recentSight = { ...baseSight, createdBy: USER_ID, createdAt: new Date(Date.now() - 60 * 1000) };
+    const recentSight = {
+      ...baseSight,
+      createdBy: USER_ID,
+      createdAt: new Date(Date.now() - 60 * 1000),
+    };
     const prismaMock = {
       sight: {
         findUnique: vi.fn().mockResolvedValue(recentSight),

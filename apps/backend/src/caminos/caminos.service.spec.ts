@@ -513,12 +513,12 @@ describe('CaminosService.update()', () => {
   // DTO without caminoPoints — name-only update, removal check never triggered
   const nameDto: UpdateCaminoDto = {
     name: 'Camino Updated',
-  } as UpdateCaminoDto;
+  };
 
   // DTO whose only point is a brand-new one — existing pt-1 is absent → triggers removal check
   const removalDto: UpdateCaminoDto = {
     caminoPoints: [{ name: 'New Point', country: 'spain' }],
-  } as UpdateCaminoDto;
+  };
 
   // Builds a Prisma mock suitable for update() tests.
   // firstResult  — returned by the first camino.findUnique (existence + removal check)

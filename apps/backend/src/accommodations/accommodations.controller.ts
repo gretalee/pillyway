@@ -49,13 +49,17 @@ export class AccommodationsController {
     description: 'List of accommodations for the waypoint.',
     type: [AccommodationDetailDto],
   })
-  @ApiBadRequestResponse({ description: 'caminoPointId query param is missing or invalid.' })
+  @ApiBadRequestResponse({
+    description: 'caminoPointId query param is missing or invalid.',
+  })
   async findByCaminoPointId(
     @Query('caminoPointId', new ParseUUIDPipe({ optional: true }))
     caminoPointId: string | undefined,
   ): Promise<AccommodationDetailDto[]> {
     if (!caminoPointId) {
-      throw new BadRequestException('caminoPointId query parameter is required.');
+      throw new BadRequestException(
+        'caminoPointId query parameter is required.',
+      );
     }
     return this.accommodationsService.findByCaminoPointId(caminoPointId);
   }

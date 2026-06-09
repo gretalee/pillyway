@@ -45,7 +45,9 @@ const mockRequest = {
   },
 };
 
-function buildModule(serviceMock: Partial<SightsService>): Promise<TestingModule> {
+function buildModule(
+  serviceMock: Partial<SightsService>,
+): Promise<TestingModule> {
   return Test.createTestingModule({
     controllers: [SightsController],
     providers: [{ provide: SightsService, useValue: serviceMock }],
@@ -66,7 +68,9 @@ describe('SightsController.findByCaminoPointId()', () => {
 
     const result = await controller.findByCaminoPointId(CAMINO_POINT_ID);
 
-    expect(serviceMock.findByCaminoPointId).toHaveBeenCalledWith(CAMINO_POINT_ID);
+    expect(serviceMock.findByCaminoPointId).toHaveBeenCalledWith(
+      CAMINO_POINT_ID,
+    );
     expect(result).toEqual([mockDto]);
   });
 
@@ -112,7 +116,9 @@ describe('SightsController.findById()', () => {
 
   it('propagates NotFoundException from service', async () => {
     const serviceMock = {
-      findById: vi.fn().mockRejectedValue(new NotFoundException('Sight not found.')),
+      findById: vi
+        .fn()
+        .mockRejectedValue(new NotFoundException('Sight not found.')),
     };
     const module = await buildModule(serviceMock);
     const controller = module.get(SightsController);
@@ -148,7 +154,9 @@ describe('SightsController.update()', () => {
 
   it('propagates ForbiddenException when service throws', async () => {
     const serviceMock = {
-      update: vi.fn().mockRejectedValue(new ForbiddenException('Requires pilgrim role.')),
+      update: vi
+        .fn()
+        .mockRejectedValue(new ForbiddenException('Requires pilgrim role.')),
     };
     const module = await buildModule(serviceMock);
     const controller = module.get(SightsController);
@@ -161,7 +169,9 @@ describe('SightsController.update()', () => {
 
   it('propagates NotFoundException when service throws', async () => {
     const serviceMock = {
-      update: vi.fn().mockRejectedValue(new NotFoundException('Sight not found.')),
+      update: vi
+        .fn()
+        .mockRejectedValue(new NotFoundException('Sight not found.')),
     };
     const module = await buildModule(serviceMock);
     const controller = module.get(SightsController);
@@ -195,7 +205,9 @@ describe('SightsController.delete()', () => {
 
   it('propagates ForbiddenException when service throws', async () => {
     const serviceMock = {
-      delete: vi.fn().mockRejectedValue(new ForbiddenException('Requires pilgrim role.')),
+      delete: vi
+        .fn()
+        .mockRejectedValue(new ForbiddenException('Requires pilgrim role.')),
     };
     const module = await buildModule(serviceMock);
     const controller = module.get(SightsController);
@@ -207,7 +219,9 @@ describe('SightsController.delete()', () => {
 
   it('propagates NotFoundException when service throws', async () => {
     const serviceMock = {
-      delete: vi.fn().mockRejectedValue(new NotFoundException('Sight not found.')),
+      delete: vi
+        .fn()
+        .mockRejectedValue(new NotFoundException('Sight not found.')),
     };
     const module = await buildModule(serviceMock);
     const controller = module.get(SightsController);
@@ -255,9 +269,9 @@ describe('UpdateSightDto validation', () => {
   });
 
   it('throws BadRequestException for non-numeric latitude', async () => {
-    await expect(validate({ latitude: 'north', longitude: 0 })).rejects.toBeInstanceOf(
-      BadRequestException,
-    );
+    await expect(
+      validate({ latitude: 'north', longitude: 0 }),
+    ).rejects.toBeInstanceOf(BadRequestException);
   });
 
   it('accepts null description (clears the field)', async () => {

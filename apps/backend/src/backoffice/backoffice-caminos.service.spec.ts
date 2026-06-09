@@ -39,7 +39,9 @@ describe('BackofficeCaminosService', () => {
 
   describe('getCaminosWithTallies', () => {
     it('returns each camino enriched with correct yesCount and noCount', async () => {
-      vi.mocked(prisma.camino.findMany).mockResolvedValue(CAMINOS_STUB as never);
+      vi.mocked(prisma.camino.findMany).mockResolvedValue(
+        CAMINOS_STUB as never,
+      );
       vi.mocked(prisma.caminoVote.groupBy).mockResolvedValue([
         { caminoId: CAMINO_A_ID, vote: true, _count: { vote: 10 } },
         { caminoId: CAMINO_A_ID, vote: false, _count: { vote: 4 } },
@@ -49,20 +51,46 @@ describe('BackofficeCaminosService', () => {
       const result = await service.getCaminosWithTallies();
 
       expect(result).toEqual([
-        { id: CAMINO_A_ID, name: 'Camino Frances', verified: true, yesCount: 10, noCount: 4 },
-        { id: CAMINO_B_ID, name: 'Via de la Plata', verified: false, yesCount: 2, noCount: 0 },
+        {
+          id: CAMINO_A_ID,
+          name: 'Camino Frances',
+          verified: true,
+          yesCount: 10,
+          noCount: 4,
+        },
+        {
+          id: CAMINO_B_ID,
+          name: 'Via de la Plata',
+          verified: false,
+          yesCount: 2,
+          noCount: 0,
+        },
       ]);
     });
 
     it('returns yesCount=0 and noCount=0 for caminos with no votes', async () => {
-      vi.mocked(prisma.camino.findMany).mockResolvedValue(CAMINOS_STUB as never);
+      vi.mocked(prisma.camino.findMany).mockResolvedValue(
+        CAMINOS_STUB as never,
+      );
       vi.mocked(prisma.caminoVote.groupBy).mockResolvedValue([] as never);
 
       const result = await service.getCaminosWithTallies();
 
       expect(result).toEqual([
-        { id: CAMINO_A_ID, name: 'Camino Frances', verified: true, yesCount: 0, noCount: 0 },
-        { id: CAMINO_B_ID, name: 'Via de la Plata', verified: false, yesCount: 0, noCount: 0 },
+        {
+          id: CAMINO_A_ID,
+          name: 'Camino Frances',
+          verified: true,
+          yesCount: 0,
+          noCount: 0,
+        },
+        {
+          id: CAMINO_B_ID,
+          name: 'Via de la Plata',
+          verified: false,
+          yesCount: 0,
+          noCount: 0,
+        },
       ]);
     });
 

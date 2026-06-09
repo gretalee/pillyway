@@ -34,7 +34,10 @@ describe('UploadCaminoPictureDto', () => {
 
     expect(errors.length).toBeGreaterThan(0);
     const isPrimaryError = errors.find((e) => e.property === 'isPrimary');
-    expect(isPrimaryError, 'expected a validation error on property isPrimary').toBeDefined();
+    expect(
+      isPrimaryError,
+      'expected a validation error on property isPrimary',
+    ).toBeDefined();
   });
 
   it('fails validation with @IsBoolean error when isPrimary is an unrecognised string', async () => {
@@ -42,6 +45,9 @@ describe('UploadCaminoPictureDto', () => {
 
     expect(errors.length).toBeGreaterThan(0);
     const isPrimaryError = errors.find((e) => e.property === 'isPrimary');
-    expect(isPrimaryError, 'expected a validation error on property isPrimary').toBeDefined();
+    expect(
+      isPrimaryError,
+      'expected a validation error on property isPrimary',
+    ).toBeDefined();
   });
 });

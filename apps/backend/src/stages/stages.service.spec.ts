@@ -389,7 +389,7 @@ describe('StagesService.update()', () => {
     };
   }
 
-  const distanceDto: UpdateStageDto = { distance: 30.5 } as UpdateStageDto;
+  const distanceDto: UpdateStageDto = { distance: 30.5 };
 
   it('updates distance and returns StageDetail when user has pilgrim role', async () => {
     const updatedRow = { ...stageRow1, distance: 30.5, updatedAt: LATER };
@@ -457,7 +457,7 @@ describe('StagesService.update()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(StagesService);
 
-    const dto: UpdateStageDto = { distance: null } as UpdateStageDto;
+    const dto: UpdateStageDto = { distance: null };
     const result = await service.update(CAMINO_ID_A, 1, dto, ['pilgrim']);
 
     expect(result.distance).toBeNull();
@@ -477,7 +477,7 @@ describe('StagesService.update()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(StagesService);
 
-    const dto: UpdateStageDto = { description: null } as UpdateStageDto;
+    const dto: UpdateStageDto = { description: null };
     const result = await service.update(CAMINO_ID_A, 1, dto, ['pilgrim']);
 
     expect(result.description).toBeNull();
@@ -513,7 +513,7 @@ describe('StagesService.update()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(StagesService);
 
-    const dto: UpdateStageDto = { distance: 42.0 } as UpdateStageDto;
+    const dto: UpdateStageDto = { distance: 42.0 };
     await service.update(CAMINO_ID_A, 1, dto, ['pilgrim']);
 
     // Reading the same stage via Camino B's context uses the same underlying Stage row
@@ -607,7 +607,6 @@ describe('StagesService.upsertStagePairs()', () => {
     const service = module.get(StagesService);
     const tx = makeTxMock();
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await service.upsertStagePairs([], tx as any);
 
     expect(tx.stage.upsert).not.toHaveBeenCalled();
@@ -619,7 +618,6 @@ describe('StagesService.upsertStagePairs()', () => {
     const service = module.get(StagesService);
     const tx = makeTxMock();
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await service.upsertStagePairs([PT_A.id], tx as any);
 
     expect(tx.stage.upsert).not.toHaveBeenCalled();
@@ -631,7 +629,6 @@ describe('StagesService.upsertStagePairs()', () => {
     const service = module.get(StagesService);
     const tx = makeTxMock();
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await service.upsertStagePairs([PT_A.id, PT_B.id], tx as any);
 
     expect(tx.stage.upsert).toHaveBeenCalledOnce();
@@ -653,7 +650,6 @@ describe('StagesService.upsertStagePairs()', () => {
     const service = module.get(StagesService);
     const tx = makeTxMock();
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await service.upsertStagePairs([PT_A.id, PT_B.id, PT_C.id], tx as any);
 
     expect(tx.stage.upsert).toHaveBeenCalledTimes(2);
@@ -675,9 +671,8 @@ describe('StagesService.upsertStagePairs()', () => {
       .mockResolvedValueOnce(stageRow1) // first call: creates the row
       .mockResolvedValueOnce(stageRow1); // second call: no-op update, returns same row
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await service.upsertStagePairs([PT_A.id, PT_B.id], tx as any);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     await service.upsertStagePairs([PT_A.id, PT_B.id], tx as any);
 
     expect(tx.stage.upsert).toHaveBeenCalledTimes(2);
@@ -699,7 +694,6 @@ describe('StagesService.upsertStagePairs()', () => {
       },
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await expect(
       service.upsertStagePairs([PT_A.id, PT_B.id], tx as any),
     ).rejects.toThrow('DB connection timeout');

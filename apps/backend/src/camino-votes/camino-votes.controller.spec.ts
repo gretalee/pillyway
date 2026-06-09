@@ -1,4 +1,8 @@
-import { ForbiddenException, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -7,7 +11,11 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { KindeJwtPayload } from '../auth/kinde-jwt.strategy';
 import { CaminoVotesController } from './camino-votes.controller';
-import { CaminoVotesService, VoteResult, VoteSummary } from './camino-votes.service';
+import {
+  CaminoVotesService,
+  VoteResult,
+  VoteSummary,
+} from './camino-votes.service';
 import { CastVoteDto } from './cast-vote.dto';
 
 // ─── Fixtures ─────────────────────────────────────────────────────────────────
@@ -16,7 +24,11 @@ const CAMINO_ID = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
 const USER_ID = 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb';
 const NOW = new Date('2024-01-01T00:00:00.000Z');
 
-const VOTE_RESULT: VoteResult = { caminoId: CAMINO_ID, vote: true, updatedAt: NOW };
+const VOTE_RESULT: VoteResult = {
+  caminoId: CAMINO_ID,
+  vote: true,
+  updatedAt: NOW,
+};
 
 const VOTE_SUMMARY: VoteSummary = {
   caminoId: CAMINO_ID,
@@ -91,7 +103,11 @@ describe('CaminoVotesController', () => {
       );
 
       await expect(
-        controller.castVote(CAMINO_ID, { vote: true }, buildUserRequest(['pilgrim']) as never),
+        controller.castVote(
+          CAMINO_ID,
+          { vote: true },
+          buildUserRequest(['pilgrim']) as never,
+        ),
       ).rejects.toThrow(NotFoundException);
     });
 
@@ -99,8 +115,13 @@ describe('CaminoVotesController', () => {
       // Guards only execute in the HTTP pipeline, not on direct method calls.
       // Verify the decorator metadata is wired correctly so the runtime enforces it.
       const guards: unknown[] =
-        Reflect.getMetadata('__guards__', CaminoVotesController.prototype.castVote) ?? [];
-      expect(guards, 'castVote must declare JwtAuthGuard').toContain(JwtAuthGuard);
+        Reflect.getMetadata(
+          '__guards__',
+          CaminoVotesController.prototype.castVote,
+        ) ?? [];
+      expect(guards, 'castVote must declare JwtAuthGuard').toContain(
+        JwtAuthGuard,
+      );
     });
   });
 
@@ -110,7 +131,10 @@ describe('CaminoVotesController', () => {
     it('returns the callers vote when one exists', async () => {
       vi.mocked(service.getMyVote).mockResolvedValue(VOTE_RESULT);
 
-      const result = await controller.getMyVote(CAMINO_ID, buildUserRequest(['pilgrim']) as never);
+      const result = await controller.getMyVote(
+        CAMINO_ID,
+        buildUserRequest(['pilgrim']) as never,
+      );
 
       expect(service.getMyVote).toHaveBeenCalledWith(CAMINO_ID, USER_ID);
       expect(result).toEqual(VOTE_RESULT);
@@ -118,7 +142,9 @@ describe('CaminoVotesController', () => {
 
     it('propagates NotFoundException when no vote exists for this user', async () => {
       vi.mocked(service.getMyVote).mockRejectedValue(
-        new NotFoundException('No vote exists for this user and camino combination.'),
+        new NotFoundException(
+          'No vote exists for this user and camino combination.',
+        ),
       );
 
       await expect(
@@ -128,8 +154,13 @@ describe('CaminoVotesController', () => {
 
     it('has JwtAuthGuard applied — unauthenticated callers are blocked', () => {
       const guards: unknown[] =
-        Reflect.getMetadata('__guards__', CaminoVotesController.prototype.getMyVote) ?? [];
-      expect(guards, 'getMyVote must declare JwtAuthGuard').toContain(JwtAuthGuard);
+        Reflect.getMetadata(
+          '__guards__',
+          CaminoVotesController.prototype.getMyVote,
+        ) ?? [];
+      expect(guards, 'getMyVote must declare JwtAuthGuard').toContain(
+        JwtAuthGuard,
+      );
     });
   });
 
@@ -179,12 +210,19 @@ describe('CaminoVotesController', () => {
       const failingModule = Test.createTestingModule({
         controllers: [CaminoVotesController],
         providers: [
-          { provide: CaminoVotesService, useValue: { castVote: vi.fn(), getMyVote: vi.fn() } },
+          {
+            provide: CaminoVotesService,
+            useValue: { castVote: vi.fn(), getMyVote: vi.fn() },
+          },
           Reflector,
         ],
       })
         .overrideGuard(JwtAuthGuard)
-        .useValue({ canActivate: () => { throw new UnauthorizedException(); } });
+        .useValue({
+          canActivate: () => {
+            throw new UnauthorizedException();
+          },
+        });
 
       // Resolves without error — the test is simply confirming the setup compiles.
       expect(failingModule).toBeDefined();

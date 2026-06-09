@@ -39,15 +39,21 @@ describe('CaminoVotesService', () => {
 
   beforeEach(() => {
     prisma = buildPrismaMock();
-    service = new CaminoVotesService(prisma, { logEvent: vi.fn() } as unknown as EventLogService);
+    service = new CaminoVotesService(prisma, {
+      logEvent: vi.fn(),
+    } as unknown as EventLogService);
   });
 
   // ── castVote ──────────────────────────────────────────────────────────────
 
   describe('castVote', () => {
     it('upserts the vote and returns the result when the camino exists', async () => {
-      vi.mocked(prisma.camino.findUnique).mockResolvedValue(CAMINO_STUB as never);
-      vi.mocked(prisma.caminoVote.upsert).mockResolvedValue(VOTE_RESULT_STUB as never);
+      vi.mocked(prisma.camino.findUnique).mockResolvedValue(
+        CAMINO_STUB as never,
+      );
+      vi.mocked(prisma.caminoVote.upsert).mockResolvedValue(
+        VOTE_RESULT_STUB as never,
+      );
 
       const result = await service.castVote(CAMINO_ID, USER_ID, true);
 
@@ -57,7 +63,11 @@ describe('CaminoVotesService', () => {
       expect(prisma.caminoVote.upsert).toHaveBeenCalledWith(
         expect.objectContaining({
           where: { caminoId_userId: { caminoId: CAMINO_ID, userId: USER_ID } },
-          create: expect.objectContaining({ caminoId: CAMINO_ID, userId: USER_ID, vote: true }),
+          create: expect.objectContaining({
+            caminoId: CAMINO_ID,
+            userId: USER_ID,
+            vote: true,
+          }),
           update: expect.objectContaining({ vote: true }),
         }),
       );
@@ -74,7 +84,9 @@ describe('CaminoVotesService', () => {
 
     it('upserts a false (no) vote correctly', async () => {
       const noVote = { caminoId: CAMINO_ID, vote: false, updatedAt: NOW };
-      vi.mocked(prisma.camino.findUnique).mockResolvedValue(CAMINO_STUB as never);
+      vi.mocked(prisma.camino.findUnique).mockResolvedValue(
+        CAMINO_STUB as never,
+      );
       vi.mocked(prisma.caminoVote.upsert).mockResolvedValue(noVote as never);
 
       const result = await service.castVote(CAMINO_ID, USER_ID, false);
@@ -92,8 +104,12 @@ describe('CaminoVotesService', () => {
       // The DB should receive an upsert — the service does not query the old
       // vote first. This test verifies the upsert update path carries the new value.
       const updatedVote = { caminoId: CAMINO_ID, vote: false, updatedAt: NOW };
-      vi.mocked(prisma.camino.findUnique).mockResolvedValue(CAMINO_STUB as never);
-      vi.mocked(prisma.caminoVote.upsert).mockResolvedValue(updatedVote as never);
+      vi.mocked(prisma.camino.findUnique).mockResolvedValue(
+        CAMINO_STUB as never,
+      );
+      vi.mocked(prisma.caminoVote.upsert).mockResolvedValue(
+        updatedVote as never,
+      );
 
       const result = await service.castVote(CAMINO_ID, USER_ID, false);
 
@@ -108,7 +124,9 @@ describe('CaminoVotesService', () => {
 
   describe('getMyVote', () => {
     it('returns the vote record when one exists for this user and camino', async () => {
-      vi.mocked(prisma.caminoVote.findUnique).mockResolvedValue(VOTE_RESULT_STUB as never);
+      vi.mocked(prisma.caminoVote.findUnique).mockResolvedValue(
+        VOTE_RESULT_STUB as never,
+      );
 
       const result = await service.getMyVote(CAMINO_ID, USER_ID);
 
@@ -132,7 +150,9 @@ describe('CaminoVotesService', () => {
 
   describe('getVoteSummary', () => {
     it('returns correct yes and no counts when both vote types are present', async () => {
-      vi.mocked(prisma.camino.findUnique).mockResolvedValue(CAMINO_STUB as never);
+      vi.mocked(prisma.camino.findUnique).mockResolvedValue(
+        CAMINO_STUB as never,
+      );
       vi.mocked(prisma.caminoVote.groupBy).mockResolvedValue([
         { vote: true, _count: { vote: 5 } },
         { vote: false, _count: { vote: 3 } },
@@ -149,7 +169,9 @@ describe('CaminoVotesService', () => {
     });
 
     it('returns yesCount=0 when only no votes are present', async () => {
-      vi.mocked(prisma.camino.findUnique).mockResolvedValue(CAMINO_STUB as never);
+      vi.mocked(prisma.camino.findUnique).mockResolvedValue(
+        CAMINO_STUB as never,
+      );
       vi.mocked(prisma.caminoVote.groupBy).mockResolvedValue([
         { vote: false, _count: { vote: 4 } },
       ] as never);
@@ -160,7 +182,9 @@ describe('CaminoVotesService', () => {
     });
 
     it('returns all zeros when no votes have been cast yet', async () => {
-      vi.mocked(prisma.camino.findUnique).mockResolvedValue(CAMINO_STUB as never);
+      vi.mocked(prisma.camino.findUnique).mockResolvedValue(
+        CAMINO_STUB as never,
+      );
       vi.mocked(prisma.caminoVote.groupBy).mockResolvedValue([] as never);
 
       const result = await service.getVoteSummary(CAMINO_ID);
@@ -185,7 +209,9 @@ describe('CaminoVotesService', () => {
         { vote: true, updatedAt: new Date('2024-01-02T00:00:00.000Z') },
         { vote: false, updatedAt: new Date('2024-01-01T00:00:00.000Z') },
       ];
-      vi.mocked(prisma.camino.findUnique).mockResolvedValue(CAMINO_STUB as never);
+      vi.mocked(prisma.camino.findUnique).mockResolvedValue(
+        CAMINO_STUB as never,
+      );
       vi.mocked(prisma.caminoVote.findMany).mockResolvedValue(entries as never);
 
       const result = await service.listVotesForOwner(CAMINO_ID);
@@ -199,7 +225,9 @@ describe('CaminoVotesService', () => {
     });
 
     it('returns an empty array when the camino has no votes', async () => {
-      vi.mocked(prisma.camino.findUnique).mockResolvedValue(CAMINO_STUB as never);
+      vi.mocked(prisma.camino.findUnique).mockResolvedValue(
+        CAMINO_STUB as never,
+      );
       vi.mocked(prisma.caminoVote.findMany).mockResolvedValue([] as never);
 
       const result = await service.listVotesForOwner(CAMINO_ID);
@@ -219,7 +247,9 @@ describe('CaminoVotesService', () => {
       // findMany is called with select: { vote, updatedAt } — no userId field.
       // The mock enforces the same constraint: no userId in the stub.
       const entries = [{ vote: true, updatedAt: NOW }];
-      vi.mocked(prisma.camino.findUnique).mockResolvedValue(CAMINO_STUB as never);
+      vi.mocked(prisma.camino.findUnique).mockResolvedValue(
+        CAMINO_STUB as never,
+      );
       vi.mocked(prisma.caminoVote.findMany).mockResolvedValue(entries as never);
 
       const result = await service.listVotesForOwner(CAMINO_ID);

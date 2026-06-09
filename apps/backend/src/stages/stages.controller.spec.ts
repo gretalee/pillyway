@@ -151,7 +151,7 @@ describe('StagesController.update()', () => {
     const module = await buildModule(serviceMock);
     const controller = module.get(StagesController);
 
-    const dto: UpdateStageDto = { distance: 30.5 } as UpdateStageDto;
+    const dto: UpdateStageDto = { distance: 30.5 };
     const result = await controller.update(
       CAMINO_ID,
       1,
@@ -178,7 +178,7 @@ describe('StagesController.update()', () => {
     const module = await buildModule(serviceMock);
     const controller = module.get(StagesController);
 
-    const dto: UpdateStageDto = { distance: 10.0 } as UpdateStageDto;
+    const dto: UpdateStageDto = { distance: 10.0 };
     await expect(
       controller.update(CAMINO_ID, 1, dto, mockRequest as never),
     ).rejects.toBeInstanceOf(ForbiddenException);
@@ -193,7 +193,7 @@ describe('StagesController.update()', () => {
     const module = await buildModule(serviceMock);
     const controller = module.get(StagesController);
 
-    const dto: UpdateStageDto = { distance: 10.0 } as UpdateStageDto;
+    const dto: UpdateStageDto = { distance: 10.0 };
     await expect(
       controller.update(CAMINO_ID, 1, dto, mockRequest as never),
     ).rejects.toBeInstanceOf(NotFoundException);

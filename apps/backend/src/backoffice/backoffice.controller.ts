@@ -1,4 +1,10 @@
-import { Controller, Get, Param, ParseUUIDPipe, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiForbiddenResponse,
@@ -12,8 +18,14 @@ import {
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { RolesGuard } from '../auth/roles.guard';
-import { CaminoVotesService, VoteEntry } from '../camino-votes/camino-votes.service';
-import { BackofficeCaminosService, CaminoWithTally } from './backoffice-caminos.service';
+import {
+  CaminoVotesService,
+  VoteEntry,
+} from '../camino-votes/camino-votes.service';
+import {
+  BackofficeCaminosService,
+  CaminoWithTally,
+} from './backoffice-caminos.service';
 
 @ApiTags('Backoffice')
 @ApiBearerAuth()

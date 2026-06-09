@@ -12,10 +12,13 @@ import { UploadsService } from './uploads.service';
 const { sendMock } = vi.hoisted(() => ({ sendMock: vi.fn() }));
 
 vi.mock('@aws-sdk/client-s3', () => ({
-  // eslint-disable-next-line prefer-arrow-callback
-  S3Client: vi.fn(function () { return { send: sendMock }; }),
-  // eslint-disable-next-line prefer-arrow-callback
-  PutObjectCommand: vi.fn(function (input: unknown) { return { input }; }),
+  S3Client: vi.fn(function () {
+    return { send: sendMock };
+  }),
+
+  PutObjectCommand: vi.fn(function (input: unknown) {
+    return { input };
+  }),
 }));
 
 // ─── Fixtures ─────────────────────────────────────────────────────────────────
@@ -50,7 +53,9 @@ function makeFile(
   };
 }
 
-function buildModule(configValues: Record<string, string>): Promise<TestingModule> {
+function buildModule(
+  configValues: Record<string, string>,
+): Promise<TestingModule> {
   const configServiceMock: Partial<ConfigService> = {
     getOrThrow: vi.fn(<T = string>(key: string): T => {
       if (key in configValues) return configValues[key] as unknown as T;
@@ -136,18 +141,18 @@ describe('UploadsService.uploadImages() — failure', () => {
     sendMock.mockRejectedValue(new Error('S3 network error'));
     const service = (await buildModule(defaultConfig)).get(UploadsService);
 
-    await expect(service.uploadImages([makeFile('broken.jpg')])).rejects.toBeInstanceOf(
-      InternalServerErrorException,
-    );
+    await expect(
+      service.uploadImages([makeFile('broken.jpg')]),
+    ).rejects.toBeInstanceOf(InternalServerErrorException);
   });
 
   it('includes the original filename in the error message', async () => {
     sendMock.mockRejectedValue(new Error('Forbidden'));
     const service = (await buildModule(defaultConfig)).get(UploadsService);
 
-    await expect(service.uploadImages([makeFile('problem-file.jpg')])).rejects.toThrow(
-      'problem-file.jpg',
-    );
+    await expect(
+      service.uploadImages([makeFile('problem-file.jpg')]),
+    ).rejects.toThrow('problem-file.jpg');
   });
 
   it('stops uploading on the first failure and throws immediately', async () => {

@@ -4,7 +4,8 @@ import { IsBoolean, IsDefined } from 'class-validator';
 
 export class UploadCaminoPictureDto {
   @ApiProperty({
-    description: 'Set to "true" to upload as the primary (hero) picture, "false" for gallery.',
+    description:
+      'Set to "true" to upload as the primary (hero) picture, "false" for gallery.',
     type: 'string',
     enum: ['true', 'false'],
   })

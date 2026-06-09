@@ -5,7 +5,9 @@ import { KindeJwtPayload } from '../kinde-jwt.strategy';
 
 export const CurrentUser = createParamDecorator(
   (_data: unknown, ctx: ExecutionContext): KindeJwtPayload => {
-    const request = ctx.switchToHttp().getRequest<Request & { user: KindeJwtPayload }>();
+    const request = ctx
+      .switchToHttp()
+      .getRequest<Request & { user: KindeJwtPayload }>();
     return request.user;
   },
 );

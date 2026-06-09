@@ -48,14 +48,16 @@ export class StagesController {
 
   @Get(':stageNumber')
   @ApiOperation({
-    summary: 'Get a single stage by its 1-based number within a Camino (public)',
+    summary:
+      'Get a single stage by its 1-based number within a Camino (public)',
   })
   @ApiOkResponse({ description: 'Stage detail with adjacent stage summaries.' })
   @ApiNotFoundResponse({
     description: 'Camino not found or stageNumber out of range.',
   })
   @ApiBadRequestResponse({
-    description: 'caminoId is not a valid UUID or stageNumber is not an integer.',
+    description:
+      'caminoId is not a valid UUID or stageNumber is not an integer.',
   })
   async findOne(
     @Param('caminoId', ParseUUIDPipe) caminoId: string,
@@ -68,11 +70,13 @@ export class StagesController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({
-    summary: 'Update a stage distance and/or description (pilgrim role required)',
+    summary:
+      'Update a stage distance and/or description (pilgrim role required)',
   })
   @ApiOkResponse({ description: 'Stage updated successfully.' })
   @ApiBadRequestResponse({
-    description: 'Empty body, field constraint violation, or invalid path params.',
+    description:
+      'Empty body, field constraint violation, or invalid path params.',
   })
   @ApiUnauthorizedResponse({ description: 'Missing or invalid JWT.' })
   @ApiForbiddenResponse({ description: 'Requires pilgrim role.' })

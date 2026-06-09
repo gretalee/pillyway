@@ -90,12 +90,18 @@ describe('CaminosService.setVerified', () => {
 
   beforeEach(() => {
     prisma = buildPrismaMock();
-    service = new CaminosService(prisma, stagesServiceStub, new DeleteAuthorizationService(), { deleteImages: vi.fn() } as never, { logEvent: vi.fn() } as never);
+    service = new CaminosService(
+      prisma,
+      stagesServiceStub,
+      new DeleteAuthorizationService(),
+      { deleteImages: vi.fn() } as never,
+      { logEvent: vi.fn() } as never,
+    );
   });
 
   it('sets verified=true and returns the updated camino', async () => {
     vi.mocked(prisma.camino.findUnique)
-      .mockResolvedValueOnce(CAMINO_STUB as never) // existence check
+      .mockResolvedValueOnce(CAMINO_STUB) // existence check
       .mockResolvedValueOnce({
         // findById call inside setVerified
         ...CAMINO_STUB,
@@ -105,7 +111,7 @@ describe('CaminosService.setVerified', () => {
     vi.mocked(prisma.camino.update).mockResolvedValue({
       ...CAMINO_STUB,
       verified: true,
-    } as never);
+    });
 
     const result = await service.setVerified(CAMINO_ID, true);
 
@@ -121,7 +127,7 @@ describe('CaminosService.setVerified', () => {
   it('sets verified=false (unverifies a previously verified camino)', async () => {
     const verifiedCamino = { ...CAMINO_STUB, verified: true };
     vi.mocked(prisma.camino.findUnique)
-      .mockResolvedValueOnce(verifiedCamino as never)
+      .mockResolvedValueOnce(verifiedCamino)
       .mockResolvedValueOnce({
         ...verifiedCamino,
         verified: false,
@@ -130,7 +136,7 @@ describe('CaminosService.setVerified', () => {
     vi.mocked(prisma.camino.update).mockResolvedValue({
       ...verifiedCamino,
       verified: false,
-    } as never);
+    });
 
     const result = await service.setVerified(CAMINO_ID, false);
 
@@ -153,7 +159,7 @@ describe('CaminosService.setVerified', () => {
   it('sets updatedAt manually because the schema does not use @updatedAt', async () => {
     // The service must explicitly set updatedAt on every update.
     vi.mocked(prisma.camino.findUnique)
-      .mockResolvedValueOnce(CAMINO_STUB as never)
+      .mockResolvedValueOnce(CAMINO_STUB)
       .mockResolvedValueOnce({
         ...CAMINO_STUB,
         verified: true,
@@ -162,7 +168,7 @@ describe('CaminosService.setVerified', () => {
     vi.mocked(prisma.camino.update).mockResolvedValue({
       ...CAMINO_STUB,
       verified: true,
-    } as never);
+    });
 
     await service.setVerified(CAMINO_ID, true);
 

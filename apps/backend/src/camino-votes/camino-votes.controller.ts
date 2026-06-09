@@ -22,7 +22,11 @@ import { Request } from 'express';
 
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { KindeJwtPayload } from '../auth/kinde-jwt.strategy';
-import { CaminoVotesService, VoteResult, VoteSummary } from './camino-votes.service';
+import {
+  CaminoVotesService,
+  VoteResult,
+  VoteSummary,
+} from './camino-votes.service';
 import { CastVoteDto } from './cast-vote.dto';
 
 @ApiTags('Camino Votes')
@@ -39,7 +43,8 @@ export class CaminoVotesController {
   @ApiOkResponse({ description: 'Vote record for this user.' })
   @ApiUnauthorizedResponse({ description: 'Missing or invalid JWT.' })
   @ApiNotFoundResponse({
-    description: 'No vote exists for this user + camino combination (camino may or may not exist).',
+    description:
+      'No vote exists for this user + camino combination (camino may or may not exist).',
   })
   async getMyVote(
     @Param('caminoId', ParseUUIDPipe) caminoId: string,
@@ -62,7 +67,9 @@ export class CaminoVotesController {
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Cast or update a vote for a camino (requires auth)' })
+  @ApiOperation({
+    summary: 'Cast or update a vote for a camino (requires auth)',
+  })
   @ApiOkResponse({ description: 'Vote recorded or updated.' })
   @ApiUnauthorizedResponse({ description: 'Missing or invalid JWT.' })
   @ApiNotFoundResponse({ description: 'Camino not found.' })

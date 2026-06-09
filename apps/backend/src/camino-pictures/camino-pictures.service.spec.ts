@@ -30,9 +30,12 @@ const OTHER_CAMINO_ID = 'c3d4e5f6-a7b8-9012-cdef-123456789012';
 const USER_ID = 'kinde-user-001';
 const OTHER_USER_ID = 'kinde-user-002';
 const OWNER_USER_ID = 'kinde-owner-001';
-const PICTURE_URL = 'https://example.supabase.co/storage/v1/object/public/bucket/camino-pictures/pic.jpeg';
+const PICTURE_URL =
+  'https://example.supabase.co/storage/v1/object/public/bucket/camino-pictures/pic.jpeg';
 
-const PILGRIM_ROLES: KindeRole[] = [{ id: 'r1', key: 'pilgrim', name: 'Pilgrim' }];
+const PILGRIM_ROLES: KindeRole[] = [
+  { id: 'r1', key: 'pilgrim', name: 'Pilgrim' },
+];
 const OWNER_ROLES: KindeRole[] = [
   { id: 'r1', key: 'pilgrim', name: 'Pilgrim' },
   { id: 'r2', key: 'owner', name: 'Owner' },
@@ -40,17 +43,19 @@ const OWNER_ROLES: KindeRole[] = [
 
 // ─── Mock factories ───────────────────────────────────────────────────────────
 
-function makeBasePicture(overrides: Partial<{
-  id: string;
-  caminoId: string;
-  uploadedBy: string;
-  url: string;
-  isPrimary: boolean;
-  position: number | null;
-  label: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-}> = {}) {
+function makeBasePicture(
+  overrides: Partial<{
+    id: string;
+    caminoId: string;
+    uploadedBy: string;
+    url: string;
+    isPrimary: boolean;
+    position: number | null;
+    label: string | null;
+    createdAt: Date;
+    updatedAt: Date;
+  }> = {},
+) {
   return {
     id: PICTURE_ID,
     caminoId: CAMINO_ID,
@@ -77,27 +82,36 @@ function makeUploadsServiceMock() {
  * Returns a Prisma mock wired for CaminoPicturesService tests.
  * Individual test cases override specific methods via spread/assignment.
  */
-function makePrismaMock(overrides: {
-  caminoFindUnique?: ReturnType<typeof vi.fn>;
-  pictureFindFirst?: ReturnType<typeof vi.fn>;
-  pictureFindMany?: ReturnType<typeof vi.fn>;
-  pictureCount?: ReturnType<typeof vi.fn>;
-  pictureAggregate?: ReturnType<typeof vi.fn>;
-  pictureCreate?: ReturnType<typeof vi.fn>;
-  pictureUpdate?: ReturnType<typeof vi.fn>;
-  pictureDelete?: ReturnType<typeof vi.fn>;
-  transaction?: ReturnType<typeof vi.fn>;
-} = {}) {
+function makePrismaMock(
+  overrides: {
+    caminoFindUnique?: ReturnType<typeof vi.fn>;
+    pictureFindFirst?: ReturnType<typeof vi.fn>;
+    pictureFindMany?: ReturnType<typeof vi.fn>;
+    pictureCount?: ReturnType<typeof vi.fn>;
+    pictureAggregate?: ReturnType<typeof vi.fn>;
+    pictureCreate?: ReturnType<typeof vi.fn>;
+    pictureUpdate?: ReturnType<typeof vi.fn>;
+    pictureDelete?: ReturnType<typeof vi.fn>;
+    transaction?: ReturnType<typeof vi.fn>;
+  } = {},
+) {
   const defaultPicture = makeBasePicture();
 
   const caminoPictureMock = {
-    findFirst: overrides.pictureFindFirst ?? vi.fn().mockResolvedValue(defaultPicture),
-    findMany: overrides.pictureFindMany ?? vi.fn().mockResolvedValue([defaultPicture]),
+    findFirst:
+      overrides.pictureFindFirst ?? vi.fn().mockResolvedValue(defaultPicture),
+    findMany:
+      overrides.pictureFindMany ?? vi.fn().mockResolvedValue([defaultPicture]),
     count: overrides.pictureCount ?? vi.fn().mockResolvedValue(0),
-    aggregate: overrides.pictureAggregate ?? vi.fn().mockResolvedValue({ _max: { position: null } }),
-    create: overrides.pictureCreate ?? vi.fn().mockResolvedValue(defaultPicture),
-    update: overrides.pictureUpdate ?? vi.fn().mockResolvedValue(defaultPicture),
-    delete: overrides.pictureDelete ?? vi.fn().mockResolvedValue(defaultPicture),
+    aggregate:
+      overrides.pictureAggregate ??
+      vi.fn().mockResolvedValue({ _max: { position: null } }),
+    create:
+      overrides.pictureCreate ?? vi.fn().mockResolvedValue(defaultPicture),
+    update:
+      overrides.pictureUpdate ?? vi.fn().mockResolvedValue(defaultPicture),
+    delete:
+      overrides.pictureDelete ?? vi.fn().mockResolvedValue(defaultPicture),
   };
 
   // Build the $transaction mock: default implementation executes the callback
@@ -116,7 +130,9 @@ function makePrismaMock(overrides: {
     $transaction: ReturnType<typeof vi.fn>;
   } = {
     camino: {
-      findUnique: overrides.caminoFindUnique ?? vi.fn().mockResolvedValue({ id: CAMINO_ID }),
+      findUnique:
+        overrides.caminoFindUnique ??
+        vi.fn().mockResolvedValue({ id: CAMINO_ID }),
     },
     caminoPicture: caminoPictureMock,
     $transaction: mock,
@@ -124,9 +140,11 @@ function makePrismaMock(overrides: {
 
   // Patch default $transaction to pass the mock itself as the tx arg
   if (!overrides.transaction) {
-    prismaMock.$transaction = vi.fn().mockImplementation(
-      (cb: (tx: typeof prismaMock) => unknown) => cb(prismaMock),
-    );
+    prismaMock.$transaction = vi
+      .fn()
+      .mockImplementation((cb: (tx: typeof prismaMock) => unknown) =>
+        cb(prismaMock),
+      );
   }
 
   return prismaMock;
@@ -150,7 +168,9 @@ async function buildModule(
 
 /** Minimal valid JPEG buffer (SOI + EOI markers). */
 function jpegBuffer(): Buffer {
-  return Buffer.from([0xff, 0xd8, 0xff, 0xe0, 0x00, 0x10, 0x4a, 0x46, 0x49, 0x46, 0x00, 0x01]);
+  return Buffer.from([
+    0xff, 0xd8, 0xff, 0xe0, 0x00, 0x10, 0x4a, 0x46, 0x49, 0x46, 0x00, 0x01,
+  ]);
 }
 
 /** Buffer that does not match any known image magic bytes. */
@@ -163,7 +183,9 @@ function pngBuffer(): Buffer {
   return Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
 }
 
-function makeFile(overrides: Partial<Express.Multer.File> = {}): Express.Multer.File {
+function makeFile(
+  overrides: Partial<Express.Multer.File> = {},
+): Express.Multer.File {
   return {
     fieldname: 'file',
     originalname: 'photo.jpg',
@@ -219,9 +241,21 @@ describe('CaminoPicturesService.getPictures()', () => {
   });
 
   it('splits pictures into primary and gallery correctly', async () => {
-    const primary = makeBasePicture({ id: 'p-primary', isPrimary: true, position: null });
-    const gallery1 = makeBasePicture({ id: 'p-gallery-1', isPrimary: false, position: 1 });
-    const gallery2 = makeBasePicture({ id: 'p-gallery-2', isPrimary: false, position: 2 });
+    const primary = makeBasePicture({
+      id: 'p-primary',
+      isPrimary: true,
+      position: null,
+    });
+    const gallery1 = makeBasePicture({
+      id: 'p-gallery-1',
+      isPrimary: false,
+      position: 1,
+    });
+    const gallery2 = makeBasePicture({
+      id: 'p-gallery-2',
+      isPrimary: false,
+      position: 2,
+    });
 
     const prismaMock = makePrismaMock({
       pictureFindMany: vi.fn().mockResolvedValue([primary, gallery1, gallery2]),
@@ -260,7 +294,10 @@ describe('CaminoPicturesService.uploadPicture()', () => {
     const service = module.get(CaminoPicturesService);
 
     // Buffer that has no recognisable magic bytes
-    const badFile = makeFile({ buffer: binaryGarbageBuffer(), mimetype: 'image/jpeg' });
+    const badFile = makeFile({
+      buffer: binaryGarbageBuffer(),
+      mimetype: 'image/jpeg',
+    });
 
     await expect(
       service.uploadPicture(CAMINO_ID, badFile, false, USER_ID),
@@ -268,7 +305,10 @@ describe('CaminoPicturesService.uploadPicture()', () => {
   });
 
   it('returns 409 when isPrimary=true and a primary picture already exists', async () => {
-    const existingPrimary = makeBasePicture({ isPrimary: true, position: null });
+    const existingPrimary = makeBasePicture({
+      isPrimary: true,
+      position: null,
+    });
     const prismaMock = makePrismaMock({
       pictureFindFirst: vi.fn().mockResolvedValue(existingPrimary),
       pictureCount: vi.fn().mockResolvedValue(1),
@@ -304,7 +344,12 @@ describe('CaminoPicturesService.uploadPicture()', () => {
     const module = await buildModule(prismaMock, uploadsServiceMock);
     const service = module.get(CaminoPicturesService);
 
-    const result = await service.uploadPicture(CAMINO_ID, makeFile(), false, USER_ID);
+    const result = await service.uploadPicture(
+      CAMINO_ID,
+      makeFile(),
+      false,
+      USER_ID,
+    );
 
     // Verify the create call used userId from the param
     expect(prismaMock.caminoPicture.create).toHaveBeenCalledWith(
@@ -327,7 +372,12 @@ describe('CaminoPicturesService.uploadPicture()', () => {
     const service = module.get(CaminoPicturesService);
 
     // Pass isPrimary = false (the boolean after DTO transform from "false" string)
-    const result = await service.uploadPicture(CAMINO_ID, makeFile(), false, USER_ID);
+    const result = await service.uploadPicture(
+      CAMINO_ID,
+      makeFile(),
+      false,
+      USER_ID,
+    );
 
     expect(result.isPrimary).toBe(false);
     expect(prismaMock.caminoPicture.create).toHaveBeenCalledWith(
@@ -347,7 +397,12 @@ describe('CaminoPicturesService.uploadPicture()', () => {
     const module = await buildModule(prismaMock, makeUploadsServiceMock());
     const service = module.get(CaminoPicturesService);
 
-    const result = await service.uploadPicture(CAMINO_ID, makeFile(), true, USER_ID);
+    const result = await service.uploadPicture(
+      CAMINO_ID,
+      makeFile(),
+      true,
+      USER_ID,
+    );
 
     expect(result.isPrimary).toBe(true);
     expect(prismaMock.caminoPicture.create).toHaveBeenCalledWith(
@@ -382,7 +437,10 @@ describe('CaminoPicturesService.uploadPicture()', () => {
     const module = await buildModule(prismaMock, makeUploadsServiceMock());
     const service = module.get(CaminoPicturesService);
 
-    const mismatchedFile = makeFile({ buffer: pngBuffer(), mimetype: 'image/jpeg' });
+    const mismatchedFile = makeFile({
+      buffer: pngBuffer(),
+      mimetype: 'image/jpeg',
+    });
 
     await expect(
       service.uploadPicture(CAMINO_ID, mismatchedFile, false, USER_ID),
@@ -392,13 +450,18 @@ describe('CaminoPicturesService.uploadPicture()', () => {
   it('maps Prisma P2002 on primary insert to ConflictException and cleans up S3', async () => {
     const p2002 = new Prisma.PrismaClientKnownRequestError(
       'Unique constraint failed on camino_pictures_primary_unique',
-      { code: 'P2002', clientVersion: '7.0.0', meta: { target: ['camino_id'] } },
+      {
+        code: 'P2002',
+        clientVersion: '7.0.0',
+        meta: { target: ['camino_id'] },
+      },
     );
 
     const prismaMock = makePrismaMock({
       // No existing primary so the early-exit check (findFirst) passes
       pictureFindFirst: vi.fn().mockResolvedValue(null),
-      transaction: vi.fn()
+      transaction: vi
+        .fn()
         .mockResolvedValueOnce({ maxPosition: 0 })
         .mockRejectedValueOnce(p2002),
     });
@@ -416,11 +479,16 @@ describe('CaminoPicturesService.uploadPicture()', () => {
   it('does not map P2002 to ConflictException when isPrimary is false', async () => {
     const p2002 = new Prisma.PrismaClientKnownRequestError(
       'Unique constraint failed on camino_pictures_primary_unique',
-      { code: 'P2002', clientVersion: '7.0.0', meta: { target: ['camino_id'] } },
+      {
+        code: 'P2002',
+        clientVersion: '7.0.0',
+        meta: { target: ['camino_id'] },
+      },
     );
 
     const prismaMock = makePrismaMock({
-      transaction: vi.fn()
+      transaction: vi
+        .fn()
         .mockResolvedValueOnce({ maxPosition: 0 })
         .mockRejectedValueOnce(p2002),
     });
@@ -451,7 +519,12 @@ describe('CaminoPicturesService.deletePicture()', () => {
     const service = module.get(CaminoPicturesService);
 
     await expect(
-      service.deletePicture(OTHER_CAMINO_ID, PICTURE_ID, USER_ID, PILGRIM_ROLES),
+      service.deletePicture(
+        OTHER_CAMINO_ID,
+        PICTURE_ID,
+        USER_ID,
+        PILGRIM_ROLES,
+      ),
     ).rejects.toBeInstanceOf(NotFoundException);
   });
 
@@ -465,7 +538,12 @@ describe('CaminoPicturesService.deletePicture()', () => {
 
     // OTHER_USER_ID is not the uploader and has only pilgrim (no owner)
     await expect(
-      service.deletePicture(CAMINO_ID, PICTURE_ID, OTHER_USER_ID, PILGRIM_ROLES),
+      service.deletePicture(
+        CAMINO_ID,
+        PICTURE_ID,
+        OTHER_USER_ID,
+        PILGRIM_ROLES,
+      ),
     ).rejects.toBeInstanceOf(ForbiddenException);
   });
 
@@ -566,7 +644,13 @@ describe('CaminoPicturesService.updateLabel()', () => {
     const service = module.get(CaminoPicturesService);
 
     await expect(
-      service.updateLabel(CAMINO_ID, PICTURE_ID, 'hello', USER_ID, PILGRIM_ROLES),
+      service.updateLabel(
+        CAMINO_ID,
+        PICTURE_ID,
+        'hello',
+        USER_ID,
+        PILGRIM_ROLES,
+      ),
     ).rejects.toBeInstanceOf(NotFoundException);
   });
 
@@ -579,13 +663,22 @@ describe('CaminoPicturesService.updateLabel()', () => {
     const service = module.get(CaminoPicturesService);
 
     await expect(
-      service.updateLabel(CAMINO_ID, PICTURE_ID, 'hello', OTHER_USER_ID, PILGRIM_ROLES),
+      service.updateLabel(
+        CAMINO_ID,
+        PICTURE_ID,
+        'hello',
+        OTHER_USER_ID,
+        PILGRIM_ROLES,
+      ),
     ).rejects.toBeInstanceOf(ForbiddenException);
   });
 
   it('updates the label when called by the uploader', async () => {
     const picture = makeBasePicture({ uploadedBy: USER_ID });
-    const updated = makeBasePicture({ uploadedBy: USER_ID, label: 'My caption' });
+    const updated = makeBasePicture({
+      uploadedBy: USER_ID,
+      label: 'My caption',
+    });
     const prismaMock = makePrismaMock({
       pictureFindFirst: vi.fn().mockResolvedValue(picture),
       pictureUpdate: vi.fn().mockResolvedValue(updated),
@@ -593,7 +686,13 @@ describe('CaminoPicturesService.updateLabel()', () => {
     const module = await buildModule(prismaMock, makeUploadsServiceMock());
     const service = module.get(CaminoPicturesService);
 
-    const result = await service.updateLabel(CAMINO_ID, PICTURE_ID, 'My caption', USER_ID, PILGRIM_ROLES);
+    const result = await service.updateLabel(
+      CAMINO_ID,
+      PICTURE_ID,
+      'My caption',
+      USER_ID,
+      PILGRIM_ROLES,
+    );
 
     expect(result.label).toBe('My caption');
     expect(prismaMock.caminoPicture.update).toHaveBeenCalledWith(
@@ -602,7 +701,10 @@ describe('CaminoPicturesService.updateLabel()', () => {
   });
 
   it('clears the label when null is passed', async () => {
-    const picture = makeBasePicture({ uploadedBy: USER_ID, label: 'old caption' });
+    const picture = makeBasePicture({
+      uploadedBy: USER_ID,
+      label: 'old caption',
+    });
     const cleared = makeBasePicture({ uploadedBy: USER_ID, label: null });
     const prismaMock = makePrismaMock({
       pictureFindFirst: vi.fn().mockResolvedValue(picture),
@@ -611,7 +713,13 @@ describe('CaminoPicturesService.updateLabel()', () => {
     const module = await buildModule(prismaMock, makeUploadsServiceMock());
     const service = module.get(CaminoPicturesService);
 
-    const result = await service.updateLabel(CAMINO_ID, PICTURE_ID, null, USER_ID, PILGRIM_ROLES);
+    const result = await service.updateLabel(
+      CAMINO_ID,
+      PICTURE_ID,
+      null,
+      USER_ID,
+      PILGRIM_ROLES,
+    );
 
     expect(result.label).toBeNull();
     expect(prismaMock.caminoPicture.update).toHaveBeenCalledWith(
@@ -621,7 +729,10 @@ describe('CaminoPicturesService.updateLabel()', () => {
 
   it('allows an owner to update the label of a picture uploaded by someone else', async () => {
     const picture = makeBasePicture({ uploadedBy: USER_ID });
-    const updated = makeBasePicture({ uploadedBy: USER_ID, label: 'owner caption' });
+    const updated = makeBasePicture({
+      uploadedBy: USER_ID,
+      label: 'owner caption',
+    });
     const prismaMock = makePrismaMock({
       pictureFindFirst: vi.fn().mockResolvedValue(picture),
       pictureUpdate: vi.fn().mockResolvedValue(updated),
@@ -690,9 +801,9 @@ describe('CaminosService.delete() — S3 picture cleanup', () => {
         }),
       },
       caminoPicture: {
-        findMany: vi.fn().mockResolvedValue(
-          pictureUrls.map((url) => ({ url })),
-        ),
+        findMany: vi
+          .fn()
+          .mockResolvedValue(pictureUrls.map((url) => ({ url }))),
       },
     };
 

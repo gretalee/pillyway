@@ -75,7 +75,9 @@ describe('AccommodationsController.findByCaminoPointId()', () => {
 
     const result = await controller.findByCaminoPointId(CAMINO_POINT_ID);
 
-    expect(serviceMock.findByCaminoPointId).toHaveBeenCalledWith(CAMINO_POINT_ID);
+    expect(serviceMock.findByCaminoPointId).toHaveBeenCalledWith(
+      CAMINO_POINT_ID,
+    );
     expect(result).toEqual([mockDto]);
   });
 
@@ -121,14 +123,16 @@ describe('AccommodationsController.findById()', () => {
 
   it('propagates NotFoundException from service', async () => {
     const serviceMock = {
-      findById: vi.fn().mockRejectedValue(new NotFoundException('Accommodation not found.')),
+      findById: vi
+        .fn()
+        .mockRejectedValue(new NotFoundException('Accommodation not found.')),
     };
     const module = await buildModule(serviceMock);
     const controller = module.get(AccommodationsController);
 
-    await expect(
-      controller.findById('unknown-id'),
-    ).rejects.toBeInstanceOf(NotFoundException);
+    await expect(controller.findById('unknown-id')).rejects.toBeInstanceOf(
+      NotFoundException,
+    );
   });
 });
 
@@ -143,7 +147,9 @@ describe('AccommodationsController.update()', () => {
     const module = await buildModule(serviceMock);
     const controller = module.get(AccommodationsController);
 
-    const dto = Object.assign(new UpdateAccommodationDto(), { name: 'Updated Name' });
+    const dto = Object.assign(new UpdateAccommodationDto(), {
+      name: 'Updated Name',
+    });
     const result = await controller.update(
       ACCOMMODATION_ID,
       dto,
@@ -161,7 +167,9 @@ describe('AccommodationsController.update()', () => {
 
   it('propagates ForbiddenException when service throws', async () => {
     const serviceMock = {
-      update: vi.fn().mockRejectedValue(new ForbiddenException('Requires pilgrim role.')),
+      update: vi
+        .fn()
+        .mockRejectedValue(new ForbiddenException('Requires pilgrim role.')),
     };
     const module = await buildModule(serviceMock);
     const controller = module.get(AccommodationsController);
@@ -174,7 +182,9 @@ describe('AccommodationsController.update()', () => {
 
   it('propagates NotFoundException when service throws', async () => {
     const serviceMock = {
-      update: vi.fn().mockRejectedValue(new NotFoundException('Accommodation not found.')),
+      update: vi
+        .fn()
+        .mockRejectedValue(new NotFoundException('Accommodation not found.')),
     };
     const module = await buildModule(serviceMock);
     const controller = module.get(AccommodationsController);
@@ -208,7 +218,9 @@ describe('AccommodationsController.delete()', () => {
 
   it('propagates ForbiddenException when service throws', async () => {
     const serviceMock = {
-      delete: vi.fn().mockRejectedValue(new ForbiddenException('Requires pilgrim role.')),
+      delete: vi
+        .fn()
+        .mockRejectedValue(new ForbiddenException('Requires pilgrim role.')),
     };
     const module = await buildModule(serviceMock);
     const controller = module.get(AccommodationsController);
@@ -220,7 +232,9 @@ describe('AccommodationsController.delete()', () => {
 
   it('propagates NotFoundException when service throws', async () => {
     const serviceMock = {
-      delete: vi.fn().mockRejectedValue(new NotFoundException('Accommodation not found.')),
+      delete: vi
+        .fn()
+        .mockRejectedValue(new NotFoundException('Accommodation not found.')),
     };
     const module = await buildModule(serviceMock);
     const controller = module.get(AccommodationsController);
@@ -262,7 +276,9 @@ describe('UpdateAccommodationDto validation', () => {
   });
 
   it('throws BadRequestException for an unknown accommodation type', async () => {
-    await expect(validate({ type: 'tent' })).rejects.toBeInstanceOf(BadRequestException);
+    await expect(validate({ type: 'tent' })).rejects.toBeInstanceOf(
+      BadRequestException,
+    );
   });
 
   it('accepts a valid price range', async () => {

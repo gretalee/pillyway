@@ -42,7 +42,8 @@ export class UpdateAccommodationDto {
   @IsString({ each: true })
   @ApiPropertyOptional({
     type: [String],
-    description: 'URLs to remove from imageUrls. Mutually exclusive with imageUrls.',
+    description:
+      'URLs to remove from imageUrls. Mutually exclusive with imageUrls.',
   })
   removeImageUrls?: string[];
 

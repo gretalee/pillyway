@@ -21,7 +21,8 @@ export class CaminoPictureResponseDto {
 
   @Expose()
   @ApiProperty({
-    description: 'Sort position within the gallery (null for the primary picture).',
+    description:
+      'Sort position within the gallery (null for the primary picture).',
     nullable: true,
   })
   position: number | null;

@@ -21,9 +21,7 @@ import {
  * by the client) with `always: true` so it fires even when the property is absent.
  */
 @ValidatorConstraint({ name: 'atLeastOneStageUpdateField', async: false })
-class AtLeastOneStageUpdateFieldConstraint
-  implements ValidatorConstraintInterface
-{
+class AtLeastOneStageUpdateFieldConstraint implements ValidatorConstraintInterface {
   validate(_value: unknown, args: ValidationArguments): boolean {
     const obj = args.object as Record<string, unknown>;
     return obj['distance'] !== undefined || obj['description'] !== undefined;

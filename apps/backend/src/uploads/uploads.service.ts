@@ -33,7 +33,9 @@ export class UploadsService {
       region,
       credentials: {
         accessKeyId: this.config.getOrThrow<string>('SUPABASE_S3_ACCESS_KEY'),
-        secretAccessKey: this.config.getOrThrow<string>('SUPABASE_S3_SECRET_KEY'),
+        secretAccessKey: this.config.getOrThrow<string>(
+          'SUPABASE_S3_SECRET_KEY',
+        ),
       },
       forcePathStyle: true,
     });
@@ -45,7 +47,9 @@ export class UploadsService {
    * Returns the public URL for the uploaded object.
    */
   async uploadImage(key: string, file: Express.Multer.File): Promise<string> {
-    this.logger.debug(`Uploading key="${key}" size=${file.size} mime=${file.mimetype}`);
+    this.logger.debug(
+      `Uploading key="${key}" size=${file.size} mime=${file.mimetype}`,
+    );
 
     try {
       await this.s3.send(
@@ -75,14 +79,18 @@ export class UploadsService {
   async deleteImageStrict(url: string): Promise<void> {
     const prefix = `${this.publicBaseUrl}/`;
     if (!url.startsWith(prefix)) {
-      this.logger.error(`deleteImageStrict: URL does not match expected prefix — url="${url}"`);
+      this.logger.error(
+        `deleteImageStrict: URL does not match expected prefix — url="${url}"`,
+      );
       throw new BadGatewayException(
         'Failed to delete the image from storage. The record has been preserved.',
       );
     }
 
     const key = url.slice(prefix.length);
-    this.logger.debug(`Deleting object key="${key}" from bucket "${this.bucket}"`);
+    this.logger.debug(
+      `Deleting object key="${key}" from bucket "${this.bucket}"`,
+    );
 
     let response: DeleteObjectsCommandOutput;
     try {
@@ -96,7 +104,9 @@ export class UploadsService {
         }),
       );
     } catch (err) {
-      this.logger.error(`S3 deleteImageStrict SDK error for key "${key}": ${String(err)}`);
+      this.logger.error(
+        `S3 deleteImageStrict SDK error for key "${key}": ${String(err)}`,
+      );
       throw new BadGatewayException(
         'Failed to delete the image from storage. The record has been preserved.',
       );
@@ -129,7 +139,9 @@ export class UploadsService {
       const sanitisedName = file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_');
       const key = `images/${randomUUID()}-${sanitisedName}`;
 
-      this.logger.debug(`Uploading key="${key}" size=${file.size} mime=${file.mimetype}`);
+      this.logger.debug(
+        `Uploading key="${key}" size=${file.size} mime=${file.mimetype}`,
+      );
 
       try {
         await this.s3.send(
