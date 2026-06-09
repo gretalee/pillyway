@@ -129,7 +129,7 @@ export class WaypointsService {
     this.eventLog.logEvent(EventType.SIGHT_CREATED, userId, {
       sight_id: created.id,
       camino_point_id: point.id,
-      accommodation_name: created.name,
+      sight_name: created.name,
     });
 
     return {
