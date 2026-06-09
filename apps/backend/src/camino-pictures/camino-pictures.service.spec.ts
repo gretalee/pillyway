@@ -13,6 +13,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { Prisma } from '@prisma/client';
 import { KindeRole } from '../auth/kinde-jwt.strategy';
+import { EventLogService } from '../event-log/event-log.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { UploadsService } from '../uploads/uploads.service';
 import { CaminosService } from '../caminos/caminos.service';
@@ -140,6 +141,7 @@ async function buildModule(
       CaminoPicturesService,
       { provide: PrismaService, useValue: prismaMock },
       { provide: UploadsService, useValue: uploadsMock },
+      { provide: EventLogService, useValue: { logEvent: vi.fn() } },
     ],
   })
     .setLogger(false as unknown as LoggerService)
@@ -667,6 +669,7 @@ describe('CaminosService.delete() — S3 picture cleanup', () => {
         { provide: StagesService, useValue: { upsertStagePairs: vi.fn() } },
         DeleteAuthorizationService,
         { provide: UploadsService, useValue: uploadsMock },
+        { provide: EventLogService, useValue: { logEvent: vi.fn() } },
       ],
     })
       .setLogger(false as unknown as LoggerService)

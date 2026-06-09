@@ -2,6 +2,8 @@ import { ForbiddenException, Injectable, Logger, NotFoundException } from '@nest
 
 import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { DeleteAuthorizationService } from '../common/delete-authorization.service';
+import { EventLogService } from '../event-log/event-log.service';
+import { EventType } from '../event-log/event-type.enum';
 import { PrismaService } from '../prisma/prisma.service';
 import { UploadsService } from '../uploads/uploads.service';
 import { SightDetailDto } from './dto/sight-detail.dto';
@@ -18,6 +20,7 @@ export class SightsService {
     private readonly prisma: PrismaService,
     private readonly uploadsService: UploadsService,
     private readonly deleteAuthorizationService: DeleteAuthorizationService,
+    private readonly eventLog: EventLogService,
   ) {}
 
   // ── findById ─────────────────────────────────────────────────────────────────
@@ -43,6 +46,7 @@ export class SightsService {
 
   async update(
     id: string,
+    userId: string,
     dto: UpdateSightDto,
     roles: KindeRole[],
   ): Promise<SightDetailDto> {
@@ -82,6 +86,13 @@ export class SightsService {
         ...(dto.longitude !== undefined && { longitude: dto.longitude }),
         updatedAt: new Date(),
       },
+    });
+
+    this.eventLog.logEvent(EventType.SIGHT_UPDATED, userId, {
+      sight_id: id,
+      changed_fields: Object.entries(dto)
+        .filter(([k, v]) => v !== undefined && k !== 'removeImageUrls')
+        .map(([k]) => k),
     });
 
     if (urlsToDelete.length > 0) {

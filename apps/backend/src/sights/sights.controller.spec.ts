@@ -139,6 +139,7 @@ describe('SightsController.update()', () => {
 
     expect(serviceMock.update).toHaveBeenCalledWith(
       SIGHT_ID,
+      mockRequest.user.sub,
       dto,
       mockRequest.user.roles,
     );

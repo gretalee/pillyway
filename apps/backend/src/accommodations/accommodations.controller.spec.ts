@@ -152,6 +152,7 @@ describe('AccommodationsController.update()', () => {
 
     expect(serviceMock.update).toHaveBeenCalledWith(
       ACCOMMODATION_ID,
+      mockRequest.user.sub,
       dto,
       mockRequest.user.roles,
     );

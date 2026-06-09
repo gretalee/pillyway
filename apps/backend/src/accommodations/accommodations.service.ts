@@ -3,6 +3,8 @@ import { AccommodationType, PriceRange } from '@prisma/client';
 
 import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { DeleteAuthorizationService } from '../common/delete-authorization.service';
+import { EventLogService } from '../event-log/event-log.service';
+import { EventType } from '../event-log/event-type.enum';
 import { PrismaService } from '../prisma/prisma.service';
 import { UploadsService } from '../uploads/uploads.service';
 import { AccommodationDetailDto } from './dto/accommodation-detail.dto';
@@ -19,6 +21,7 @@ export class AccommodationsService {
     private readonly prisma: PrismaService,
     private readonly uploadsService: UploadsService,
     private readonly deleteAuthorizationService: DeleteAuthorizationService,
+    private readonly eventLog: EventLogService,
   ) {}
 
   // ── findById ─────────────────────────────────────────────────────────────────
@@ -51,6 +54,7 @@ export class AccommodationsService {
 
   async update(
     id: string,
+    userId: string,
     dto: UpdateAccommodationDto,
     roles: KindeRole[],
   ): Promise<AccommodationDetailDto> {
@@ -98,6 +102,13 @@ export class AccommodationsService {
         ...(dto.priceRange !== undefined && { priceRange: dto.priceRange }),
         updatedAt: new Date(),
       },
+    });
+
+    this.eventLog.logEvent(EventType.ACCOMMODATION_UPDATED, userId, {
+      accommodation_id: id,
+      changed_fields: Object.entries(dto)
+        .filter(([k, v]) => v !== undefined && k !== 'removeImageUrls')
+        .map(([k]) => k),
     });
 
     if (urlsToDelete.length > 0) {

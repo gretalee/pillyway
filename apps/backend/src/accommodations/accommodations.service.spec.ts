@@ -10,6 +10,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { DeleteAuthorizationService } from '../common/delete-authorization.service';
+import { EventLogService } from '../event-log/event-log.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { UploadsService } from '../uploads/uploads.service';
 import { AccommodationsService } from './accommodations.service';
@@ -58,6 +59,7 @@ function buildModule(prismaMock: object): Promise<TestingModule> {
       AccommodationsService,
       { provide: PrismaService, useValue: prismaMock },
       { provide: UploadsService, useValue: uploadsMock },
+      { provide: EventLogService, useValue: { logEvent: vi.fn() } },
       DeleteAuthorizationService,
     ],
   })
@@ -156,7 +158,7 @@ describe('AccommodationsService.update()', () => {
     const dto = Object.assign(new UpdateAccommodationDto(), { name: 'New Name' });
 
     await expect(
-      service.update(ACCOMMODATION_ID, dto, NO_ROLES),
+      service.update(ACCOMMODATION_ID, USER_ID, dto, NO_ROLES),
     ).rejects.toBeInstanceOf(ForbiddenException);
     expect(prismaMock.accommodation.update).not.toHaveBeenCalled();
   });
@@ -171,7 +173,7 @@ describe('AccommodationsService.update()', () => {
     const dto = Object.assign(new UpdateAccommodationDto(), { name: 'New Name' });
 
     await expect(
-      service.update(ACCOMMODATION_ID, dto, OWNER_ROLES),
+      service.update(ACCOMMODATION_ID, USER_ID, dto, OWNER_ROLES),
     ).rejects.toBeInstanceOf(ForbiddenException);
     expect(prismaMock.accommodation.update).not.toHaveBeenCalled();
   });
@@ -189,7 +191,7 @@ describe('AccommodationsService.update()', () => {
     const dto = Object.assign(new UpdateAccommodationDto(), { name: 'New Name' });
 
     await expect(
-      service.update('unknown-id', dto, PILGRIM_ROLES),
+      service.update('unknown-id', USER_ID, dto, PILGRIM_ROLES),
     ).rejects.toBeInstanceOf(NotFoundException);
     expect(prismaMock.accommodation.update).not.toHaveBeenCalled();
   });
@@ -214,7 +216,7 @@ describe('AccommodationsService.update()', () => {
       removeImageUrls: ['https://example.com/img1.jpg', 'https://example.com/not-attached.jpg'],
     });
 
-    const result = await service.update(ACCOMMODATION_ID, dto, PILGRIM_ROLES);
+    const result = await service.update(ACCOMMODATION_ID, USER_ID, dto, PILGRIM_ROLES);
 
     expect(prismaMock.accommodation.update).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -248,7 +250,7 @@ describe('AccommodationsService.update()', () => {
       imageUrls: ['https://example.com/img2.jpg'],
     });
 
-    await service.update(ACCOMMODATION_ID, dto, PILGRIM_ROLES);
+    await service.update(ACCOMMODATION_ID, USER_ID, dto, PILGRIM_ROLES);
 
     expect(prismaMock.accommodation.update).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -274,7 +276,7 @@ describe('AccommodationsService.update()', () => {
 
     const dto = Object.assign(new UpdateAccommodationDto(), { name: 'New Name' });
 
-    await service.update(ACCOMMODATION_ID, dto, PILGRIM_ROLES);
+    await service.update(ACCOMMODATION_ID, USER_ID, dto, PILGRIM_ROLES);
 
     expect(uploadsMock.deleteImages).not.toHaveBeenCalled();
   });
@@ -295,7 +297,7 @@ describe('AccommodationsService.update()', () => {
     });
 
     await expect(
-      service.update(ACCOMMODATION_ID, dto, PILGRIM_ROLES),
+      service.update(ACCOMMODATION_ID, USER_ID, dto, PILGRIM_ROLES),
     ).rejects.toBeInstanceOf(BadRequestException);
     expect(prismaMock.accommodation.update).not.toHaveBeenCalled();
   });
@@ -313,7 +315,7 @@ describe('AccommodationsService.update()', () => {
 
     const dto = Object.assign(new UpdateAccommodationDto(), { name: 'Updated Name' });
 
-    const result = await service.update(ACCOMMODATION_ID, dto, PILGRIM_ROLES);
+    const result = await service.update(ACCOMMODATION_ID, USER_ID, dto, PILGRIM_ROLES);
 
     expect(result.name).toBe('Updated Name');
     expect(prismaMock.accommodation.update).toHaveBeenCalledWith(

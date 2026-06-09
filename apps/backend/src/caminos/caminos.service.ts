@@ -12,6 +12,8 @@ import { Prisma } from '@prisma/client';
 
 import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { DeleteAuthorizationService } from '../common/delete-authorization.service';
+import { EventLogService } from '../event-log/event-log.service';
+import { EventType } from '../event-log/event-type.enum';
 import { PrismaService } from '../prisma/prisma.service';
 import { StagesService } from '../stages/stages.service';
 import { UploadsService } from '../uploads/uploads.service';
@@ -87,6 +89,7 @@ export class CaminosService {
     private readonly stagesService: StagesService,
     private readonly deleteAuthorizationService: DeleteAuthorizationService,
     private readonly uploadsService: UploadsService,
+    private readonly eventLog: EventLogService,
   ) {}
 
   // ── generateSlug ────────────────────────────────────────────────────────────
@@ -190,7 +193,7 @@ export class CaminosService {
     this.logger.debug('Creating camino');
 
     try {
-      return await this.prisma.$transaction(async (tx) => {
+      const result = await this.prisma.$transaction(async (tx) => {
         // 1. Case-insensitive name uniqueness check
         const existing = await tx.camino.findFirst({
           where: { name: { equals: dto.name, mode: 'insensitive' } },
@@ -309,6 +312,13 @@ export class CaminosService {
           caminoPoints,
         };
       });
+
+      this.eventLog.logEvent(EventType.CAMINO_CREATED, userId, {
+        camino_id: result.id,
+        camino_name: result.name,
+      });
+
+      return result;
     } catch (err) {
       // Re-throw NestJS HTTP exceptions as-is (ConflictException, BadRequestException, etc.)
       if (err instanceof HttpException) {
@@ -511,7 +521,16 @@ export class CaminosService {
       }, { timeout: 15000 });
 
       // 6. Return the fresh full representation
-      return this.findById(id);
+      const updated = await this.findById(id);
+
+      this.eventLog.logEvent(EventType.CAMINO_UPDATED, userId, {
+        camino_id: id,
+        changed_fields: Object.entries(dto)
+          .filter(([, v]) => v !== undefined)
+          .map(([k]) => k),
+      });
+
+      return updated;
     } catch (err) {
       if (err instanceof HttpException) {
         throw err;

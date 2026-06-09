@@ -43,7 +43,8 @@
       "Bash(npx prettier *)",
       "Bash(yarn --cwd apps/backend build)",
       "Bash(git add *)",
-      "Bash(node_modules/.bin/playwright test *)"
+      "Bash(node_modules/.bin/playwright test *)",
+      "Bash(yarn --cwd apps/backend test --run)"
     ]
   }
 }
