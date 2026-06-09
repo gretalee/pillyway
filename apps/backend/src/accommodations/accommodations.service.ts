@@ -122,7 +122,6 @@ export class AccommodationsService {
     this.eventLog.logEvent(EventType.ACCOMMODATION_UPDATED, userId, {
       accommodation_id: id,
       camino_point_id: existing.caminoPointId,
-      accommodation_name: existing.name,
       changed_fields: Object.entries(dto)
         .filter(([k, v]) => v !== undefined && k !== 'removeImageUrls')
         .map(([k]) => k),
