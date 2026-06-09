@@ -528,7 +528,7 @@ export class CaminosService {
 
       this.eventLog.logEvent(EventType.CAMINO_UPDATED, userId, {
         camino_id: id,
-        camino_name: dto.name,
+        camino_name: updated.name,
         changed_fields: Object.entries(dto)
           .filter(([, v]) => v !== undefined)
           .map(([k]) => k),

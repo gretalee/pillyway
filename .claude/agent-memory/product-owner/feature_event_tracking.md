@@ -24,8 +24,6 @@ Indexes: (event_type), (user_id), (occurred_at DESC).
 
 ## Event types and payload shape
 
-- user_registered: { email, kinde_user_id }
-- user_logged_in: { kinde_user_id }
 - camino_created: { camino_id, camino_name }
 - camino_updated: { camino_id, camino_name, changed_fields: string[] }
 - camino_voted: { camino_id, vote: boolean }
@@ -35,9 +33,6 @@ Indexes: (event_type), (user_id), (occurred_at DESC).
 - sight_created: { sight_id, camino_point_id, sight_name }
 - sight_updated: { sight_id, camino_point_id, changed_fields: string[] }
 
-## user_registered / user_logged_in delivery mechanism
-
-These two events are captured via a new `POST /api/auth/session` endpoint in a new `AuthModule`. The Next.js frontend calls this endpoint from its post-login redirect route (`/api/auth/session-init`), configured via `KINDE_POST_LOGIN_REDIRECT_URL` — always exactly once per successful login. The endpoint is protected by `JwtAuthGuard` (Kinde JWT in the `Authorization` header). It upserts the user into a `users` table keyed on `kinde_user_id`: if the row did not exist → emit `user_registered`; if it already existed → emit `user_logged_in`. Returns `{ kindeUserId, isNewUser }`.
 
 No `KINDE_WEBHOOK_SECRET` env var is required.
 

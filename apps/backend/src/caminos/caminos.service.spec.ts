@@ -88,7 +88,7 @@ function buildModule(prismaMock: object): Promise<TestingModule> {
       { provide: StagesService, useValue: stagesServiceMock },
       DeleteAuthorizationService,
       { provide: UploadsService, useValue: uploadsServiceMock },
-      { provide: EventLogService, useValue: { logEvent: vi.fn() } },
+      { provide: EventLogService, useValue: eventLogMock },
     ],
   })
     .setLogger(false as unknown as LoggerService)
