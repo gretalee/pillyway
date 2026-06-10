@@ -39,18 +39,37 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql IMMUTABLE;
 
-UPDATE "caminos"
-SET "slug" = slugify_name("name");
+-- Backfill caminos one row at a time so duplicates and empty slugs are handled
+-- safely before the NOT NULL + UNIQUE constraints are applied.
+-- Duplicate names get a numeric suffix (-2, -3, …).
+-- Names that slugify to an empty string fall back to "camino-<id>".
+DO $$
+DECLARE
+  r         RECORD;
+  base_slug TEXT;
+  candidate TEXT;
+  counter   INT;
+BEGIN
+  FOR r IN SELECT id, name FROM "caminos" ORDER BY id LOOP
+    base_slug := slugify_name(r.name);
 
--- camino_points: update only where the new slug is conflict-free
-UPDATE "camino_points" cp
-SET "slug" = slugify_name(cp."name")
-WHERE slugify_name(cp."name") <> cp."slug"
-  AND NOT EXISTS (
-    SELECT 1 FROM "camino_points" other
-    WHERE other."id" <> cp."id"
-      AND other."slug" = slugify_name(cp."name")
-  );
+    IF base_slug = '' THEN
+      base_slug := 'camino-' || replace(r.id::text, '-', '');
+    END IF;
+
+    candidate := base_slug;
+    counter   := 2;
+
+    WHILE EXISTS (
+      SELECT 1 FROM "caminos" WHERE slug = candidate AND id <> r.id
+    ) LOOP
+      candidate := base_slug || '-' || counter;
+      counter   := counter + 1;
+    END LOOP;
+
+    UPDATE "caminos" SET slug = candidate WHERE id = r.id;
+  END LOOP;
+END $$;
 
 DROP FUNCTION slugify_name(TEXT);
 

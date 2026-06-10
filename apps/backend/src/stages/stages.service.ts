@@ -44,14 +44,22 @@ export class StagesService {
   // ── resolveCaminoId ───────────────────────────────────────────────────────────
 
   private async resolveCaminoId(slugOrId: string): Promise<string> {
-    if (UUID_RE.test(slugOrId)) return slugOrId;
-
-    const camino = await this.prisma.camino.findUnique({
+    // Slug lookup first — handles the edge case where a slug matches the UUID pattern.
+    const bySlug = await this.prisma.camino.findUnique({
       where: { slug: slugOrId },
       select: { id: true },
     });
-    if (!camino) throw new NotFoundException('Camino not found.');
-    return camino.id;
+    if (bySlug) return bySlug.id;
+
+    if (UUID_RE.test(slugOrId)) {
+      const byId = await this.prisma.camino.findUnique({
+        where: { id: slugOrId },
+        select: { id: true },
+      });
+      if (byId) return byId.id;
+    }
+
+    throw new NotFoundException('Camino not found.');
   }
 
   // ── findByCamino ─────────────────────────────────────────────────────────────
