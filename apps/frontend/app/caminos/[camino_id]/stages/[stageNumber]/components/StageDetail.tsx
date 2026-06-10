@@ -222,6 +222,7 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
                 slug={stage.startPoint.slug}
                 canContribute={canEdit}
                 isOwner={isOwner}
+                className="border border-border rounded-lg p-4"
               />
             ))}
           </ul>
@@ -246,6 +247,7 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
                 slug={stage.endPoint.slug}
                 canContribute={canEdit}
                 isOwner={isOwner}
+                className="border border-border rounded-lg p-4"
               />
             ))}
           </ul>

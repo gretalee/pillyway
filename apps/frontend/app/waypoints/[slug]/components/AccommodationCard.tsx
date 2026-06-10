@@ -21,6 +21,9 @@ interface Props {
   slug: string;
   canContribute: boolean;
   isOwner: boolean;
+  showImage?: boolean;
+  className?: string;
+  headerClass?: string;
 }
 
 export async function AccommodationCard({
@@ -28,12 +31,16 @@ export async function AccommodationCard({
   slug,
   canContribute,
   isOwner,
+  showImage = true,
+  className,
+  headerClass,
 }: Props) {
   const t = await getTranslations('waypoint_detail');
   const tCountries = await getTranslations('countries');
 
   const firstImage =
-    accommodation.imageUrls.length > 0 ? accommodation.imageUrls[0] : null;
+    showImage && accommodation.imageUrls.length > 0 ? accommodation.imageUrls[0] : null;
+
   const hasAddress =
     accommodation.addressStreet ||
     accommodation.addressZip ||
@@ -41,11 +48,11 @@ export async function AccommodationCard({
     accommodation.addressCountry;
 
   return (
-    <li className="rounded-lg border border-border p-4 overflow-hidden">
+    <li className={cn('overflow-hidden', className)}>
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className="font-semibold">
+            <h3 className={cn('font-semibold', headerClass)}>
               <Link
                 href={`/accommodations/${accommodation.id}`}
                 className="hover:underline underline-offset-4">
@@ -74,11 +81,12 @@ export async function AccommodationCard({
           )}
 
           {hasAddress && (
-            <address className="mt-2 not-italic text-sm">
+            <address className="mt-4 not-italic text-sm">
+              <i className="icon-location text-base inline-block pr-1"></i>
               {accommodation.addressStreet && <span>{accommodation.addressStreet}</span>}
               {(accommodation.addressZip || accommodation.addressCity) && (
                 <span>
-                  ,{' '}
+                  {accommodation.addressStreet ? ', ' : ''}
                   {[accommodation.addressZip, accommodation.addressCity]
                     .filter(Boolean)
                     .join(' ')}
@@ -86,7 +94,11 @@ export async function AccommodationCard({
               )}
               {accommodation.addressCountry && (
                 <span>
-                  ,{' '}
+                  {accommodation.addressStreet ||
+                  accommodation.addressZip ||
+                  accommodation.addressCity
+                    ? ', '
+                    : ''}
                   {tCountries(
                     accommodation.addressCountry.toLowerCase() as Parameters<
                       typeof tCountries
@@ -99,29 +111,39 @@ export async function AccommodationCard({
 
           <div className="mt-2 flex flex-wrap gap-3">
             {accommodation.phone && (
-              <a
-                href={`tel:${accommodation.phone.replace(/\s/g, '')}`}
-                className="text-sm text-primary underline-offset-4 hover:underline">
-                {accommodation.phone}
-              </a>
+              <span>
+                <i className="icon-phone pr-1"></i>
+                <a
+                  href={`tel:${accommodation.phone.replace(/\s/g, '')}`}
+                  className="text-sm text-primary underline-offset-4 hover:underline">
+                  {accommodation.phone}
+                </a>
+              </span>
             )}
             {accommodation.email && (
-              <a
-                href={`mailto:${accommodation.email}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-primary underline-offset-4 hover:underline">
-                {accommodation.email}
-              </a>
+              <div>
+                <i className="icon-envelope-o translate-y-0.5 inline-block pr-1"></i>
+                <a
+                  href={`mailto:${accommodation.email}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-primary underline-offset-4 hover:underline">
+                  {accommodation.email}
+                </a>
+              </div>
             )}
             {accommodation.website && (
-              <a
-                href={accommodation.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-primary underline-offset-4 hover:underline">
-                {accommodation.website}
-              </a>
+              <div>
+                <i className="icon-sphere pr-1"></i>
+
+                <a
+                  href={accommodation.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-primary underline-offset-4 hover:underline">
+                  {accommodation.website}
+                </a>
+              </div>
             )}
           </div>
         </div>

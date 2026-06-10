@@ -4,21 +4,11 @@ import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import { getAuthUser } from '@/lib/getAuthUser';
 import { fetchAccommodation } from '@/app/api/accommodations/fetch-accommodation';
-import { buttonVariants } from '@/app/components/ui/button';
-import type { PriceRange } from '@/app/api/accommodations/accommodation-types';
-import { cn } from '@/lib/utils';
+import { AccommodationCard } from '@/app/waypoints/[slug]/components/AccommodationCard';
 
 interface Props {
   params: Promise<{ id: string }>;
 }
-
-const PRICE_RANGE_SYMBOLS: Record<PriceRange, string> = {
-  budget: '€',
-  moderate: '€€',
-  comfortable: '€€€',
-  luxury: '€€€€',
-};
-
 export async function generateMetadata({ params }: Props) {
   const { id } = await params;
   const t = await getTranslations('accommodation_detail');
@@ -39,12 +29,12 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function AccommodationDetailPage({ params }: Props) {
   const { id } = await params;
-  const [user, t, tType, tCountries] = await Promise.all([
+  const [user, t] = await Promise.all([
     getAuthUser(),
     getTranslations('accommodation_detail'),
-    getTranslations('waypoint_detail'),
-    getTranslations('countries'),
   ]);
+
+  const isOwner = user?.roles.some((r) => r.key === 'owner') ?? false;
 
   const canContribute = user?.roles.some((r) => r.key === 'pilgrim') ?? false;
 
@@ -64,12 +54,6 @@ export default async function AccommodationDetailPage({ params }: Props) {
     );
   }
 
-  const hasAddress =
-    accommodation.addressStreet ||
-    accommodation.addressZip ||
-    accommodation.addressCity ||
-    accommodation.addressCountry;
-
   return (
     <div className="mx-auto w-full max-w-3xl flex-1 px-4 py-6 lg:py-16 sm:px-6 lg:px-8">
       {/* Back link */}
@@ -82,101 +66,15 @@ export default async function AccommodationDetailPage({ params }: Props) {
         </Link>
       </div>
 
-      {/* Header row */}
-      <div className="flex items-start justify-between gap-4">
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-2 ">
-            <h1 className="text-3xl font-bold tracking-tight">{accommodation.name}</h1>
-            <span className="inline-block rounded-full border border-border px-2 py-0.5 text-xs font-medium text-muted-foreground">
-              {tType(
-                `accommodation_type.${accommodation.type}` as Parameters<typeof tType>[0],
-              )}
-            </span>
-            {accommodation.priceRange && (
-              <span className="inline-block rounded-full bg-muted px-2 py-0.5 text-xs font-medium">
-                {PRICE_RANGE_SYMBOLS[accommodation.priceRange]}
-              </span>
-            )}
-            {accommodation.verified && (
-              <span className="inline-block rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900/30 dark:text-green-400">
-                {tType('verified_badge')}
-              </span>
-            )}
-          </div>
-        </div>
-
-        {canContribute && (
-          <Link
-            href={`/waypoints/${accommodation.waypointSlug}/accommodations/${accommodation.id}/edit`}
-            aria-label={t('edit_label')}
-            className={cn(
-              buttonVariants({ variant: 'outline', size: 'sm' }),
-              'shrink-0 mt-1',
-            )}>
-            <i className="icon-pencil text-xl" aria-hidden="true" />
-            <span className="max-sm:hidden">{t('edit_label')}</span>
-          </Link>
-        )}
-      </div>
-
-      {/* Description */}
-      {accommodation.description && (
-        <p className="mt-6 whitespace-pre-wrap">{accommodation.description}</p>
-      )}
-
-      {/* Contact */}
-      {(accommodation.phone || accommodation.email || accommodation.website) && (
-        <div className="mt-6 flex flex-wrap gap-4">
-          {accommodation.phone && (
-            <a
-              href={`tel:${accommodation.phone.replace(/\s/g, '')}`}
-              className="text-sm text-primary underline-offset-4 hover:underline">
-              {accommodation.phone}
-            </a>
-          )}
-          {accommodation.email && (
-            <a
-              href={`mailto:${accommodation.email}`}
-              className="text-sm text-primary underline-offset-4 hover:underline">
-              {accommodation.email}
-            </a>
-          )}
-          {accommodation.website && (
-            <a
-              href={accommodation.website}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-primary underline-offset-4 hover:underline">
-              {accommodation.website}
-            </a>
-          )}
-        </div>
-      )}
-
-      {/* Address */}
-      {hasAddress && (
-        <address className="mt-6 not-italic text-sm ">
-          {accommodation.addressStreet && <span>{accommodation.addressStreet}</span>}
-          {(accommodation.addressZip || accommodation.addressCity) && (
-            <span>
-              ,{' '}
-              {[accommodation.addressZip, accommodation.addressCity]
-                .filter(Boolean)
-                .join(' ')}
-            </span>
-          )}
-          {accommodation.addressCountry && (
-            <span>
-              ,{' '}
-              {tCountries(
-                accommodation.addressCountry.toLowerCase() as Parameters<
-                  typeof tCountries
-                >[0],
-              )}
-            </span>
-          )}
-        </address>
-      )}
+      <AccommodationCard
+        key={accommodation.id}
+        accommodation={accommodation}
+        slug={accommodation.waypointSlug}
+        canContribute={canContribute}
+        isOwner={isOwner}
+        showImage={false}
+        headerClass="text-2xl mb-4"
+      />
 
       {/* Images */}
       {accommodation.imageUrls.length > 0 && (
