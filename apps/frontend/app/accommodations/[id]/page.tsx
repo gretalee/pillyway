@@ -69,6 +69,7 @@ export default async function AccommodationDetailPage({ params }: Props) {
       <AccommodationCard
         key={accommodation.id}
         accommodation={accommodation}
+        headlineLevel={1}
         slug={accommodation.waypointSlug}
         canContribute={canContribute}
         isOwner={isOwner}

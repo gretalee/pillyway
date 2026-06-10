@@ -113,14 +113,15 @@ export default async function WaypointDetailPage({ params }: Props) {
         ) : (
           <ul className="mt-4 space-y-4">
             {accommodations.map((acc) => (
-              <AccommodationCard
-                key={acc.id}
-                accommodation={acc}
-                slug={slug}
-                canContribute={canContribute}
-                isOwner={isOwner}
-                className="border border-border rounded-lg p-4"
-              />
+              <li key={acc.id}>
+                <AccommodationCard
+                  accommodation={acc}
+                  slug={slug}
+                  canContribute={canContribute}
+                  isOwner={isOwner}
+                  className="border border-border rounded-lg p-4"
+                />
+              </li>
             ))}
           </ul>
         )}

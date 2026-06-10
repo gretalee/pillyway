@@ -8,6 +8,7 @@ import type {
 import { DeleteAccommodationButton } from './DeleteAccommodationButton';
 import { buttonVariants } from '@/app/components/ui/button';
 import { cn } from '@/lib/utils';
+import { JSX } from 'react/jsx-dev-runtime';
 
 const PRICE_RANGE_SYMBOLS: Record<PriceRange, string> = {
   budget: '€',
@@ -22,6 +23,7 @@ interface Props {
   canContribute: boolean;
   isOwner: boolean;
   showImage?: boolean;
+  headlineLevel?: 1 | 2 | 3 | 4;
   className?: string;
   headerClass?: string;
 }
@@ -32,6 +34,7 @@ export async function AccommodationCard({
   canContribute,
   isOwner,
   showImage = true,
+  headlineLevel = 3,
   className,
   headerClass,
 }: Props) {
@@ -47,18 +50,23 @@ export async function AccommodationCard({
     accommodation.addressCity ||
     accommodation.addressCountry;
 
+  const Heading = `h${headlineLevel}` as keyof Pick<
+    JSX.IntrinsicElements,
+    'h1' | 'h2' | 'h3' | 'h4'
+  >;
+
   return (
     <div className={cn('overflow-hidden', className)}>
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className={cn('font-semibold', headerClass)}>
+            <Heading className={cn('font-semibold', headerClass)}>
               <Link
                 href={`/accommodations/${accommodation.id}`}
                 className="hover:underline underline-offset-4">
                 {accommodation.name}
               </Link>
-            </h3>
+            </Heading>
             <span className="inline-block rounded-full border border-border px-2 py-0.5 text-xs font-medium text-muted-foreground">
               {t(`accommodation_type.${accommodation.type}` as Parameters<typeof t>[0])}
             </span>

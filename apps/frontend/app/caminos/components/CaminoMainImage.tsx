@@ -1,3 +1,5 @@
+'use client';
+
 import { useCaminoPictures } from '@/app/api/camino-pictures/use-camino-pictures';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
