@@ -21,6 +21,11 @@ export async function redirectIfLegacyCaminoUrl(
   let canonicalSlug: string;
   try {
     const camino = await fetchCamino(slugOrId);
+
+    // Only redirect when the request used the legacy UUID (avoid redirect loops
+    // if a slug ever happens to match the UUID pattern).
+    if (camino.id !== slugOrId) return;
+
     canonicalSlug = camino.slug;
   } catch {
     return;
