@@ -83,6 +83,24 @@ function makeOrderRows(points: (typeof PT_A)[]) {
   }));
 }
 
+/**
+ * Returns a camino mock that mirrors the resolveCaminoId logic:
+ * slug lookups return null (UUIDs are never valid slugs in tests),
+ * id lookups return the matching record for any provided caminoId.
+ */
+function makeCaminoMock(...caminoIds: string[]) {
+  const ids = new Set(caminoIds);
+  return {
+    findUnique: vi.fn().mockImplementation(({ where }: { where: { slug?: string; id?: string } }) => {
+      if ('slug' in where) return Promise.resolve(null);
+      if ('id' in where && where.id !== undefined && ids.has(where.id)) {
+        return Promise.resolve({ id: where.id });
+      }
+      return Promise.resolve(null);
+    }),
+  };
+}
+
 function buildModule(prismaMock: object): Promise<TestingModule> {
   return Test.createTestingModule({
     providers: [
@@ -99,6 +117,7 @@ function buildModule(prismaMock: object): Promise<TestingModule> {
 describe('StagesService.findByCamino()', () => {
   it('returns ordered StageListItem[] for a Camino with 3 points (2 stages)', async () => {
     const prismaMock = {
+      camino: makeCaminoMock(CAMINO_ID_A),
       caminoPointOrder: {
         findMany: vi.fn().mockResolvedValue(makeOrderRows([PT_A, PT_B, PT_C])),
       },
@@ -124,6 +143,7 @@ describe('StagesService.findByCamino()', () => {
 
   it('returns [] for a Camino with 1 point (fewer than 2)', async () => {
     const prismaMock = {
+      camino: makeCaminoMock(CAMINO_ID_A),
       caminoPointOrder: {
         findMany: vi.fn().mockResolvedValue(makeOrderRows([PT_A])),
       },
@@ -142,6 +162,7 @@ describe('StagesService.findByCamino()', () => {
 
   it('all returned items have a non-null id (eager creation guarantees this)', async () => {
     const prismaMock = {
+      camino: makeCaminoMock(CAMINO_ID_A),
       caminoPointOrder: {
         findMany: vi.fn().mockResolvedValue(makeOrderRows([PT_A, PT_B, PT_C])),
       },
@@ -208,6 +229,7 @@ describe('StagesService.findOne()', () => {
 
   it('returns previousStage: null for stage 1', async () => {
     const prismaMock = {
+      camino: makeCaminoMock(CAMINO_ID_A),
       caminoPointOrder: {
         findMany: vi
           .fn()
@@ -234,6 +256,7 @@ describe('StagesService.findOne()', () => {
 
   it('returns nextStage: null for the last stage', async () => {
     const prismaMock = {
+      camino: makeCaminoMock(CAMINO_ID_A),
       caminoPointOrder: {
         findMany: vi
           .fn()
@@ -276,6 +299,7 @@ describe('StagesService.findOne()', () => {
     };
 
     const prismaMock = {
+      camino: makeCaminoMock(CAMINO_ID_A),
       caminoPointOrder: {
         findMany: vi
           .fn()
@@ -301,6 +325,7 @@ describe('StagesService.findOne()', () => {
 
   it('throws NotFoundException for stageNumber = 0', async () => {
     const prismaMock = {
+      camino: makeCaminoMock(CAMINO_ID_A),
       caminoPointOrder: {
         findMany: vi
           .fn()
@@ -318,6 +343,7 @@ describe('StagesService.findOne()', () => {
 
   it('throws NotFoundException for stageNumber exceeding total stages', async () => {
     const prismaMock = {
+      camino: makeCaminoMock(CAMINO_ID_A),
       caminoPointOrder: {
         findMany: vi
           .fn()
@@ -336,6 +362,7 @@ describe('StagesService.findOne()', () => {
 
   it('throws NotFoundException for negative stageNumber', async () => {
     const prismaMock = {
+      camino: makeCaminoMock(CAMINO_ID_A),
       caminoPointOrder: {
         findMany: vi
           .fn()
@@ -394,6 +421,7 @@ describe('StagesService.update()', () => {
   it('updates distance and returns StageDetail when user has pilgrim role', async () => {
     const updatedRow = { ...stageRow1, distance: 30.5, updatedAt: LATER };
     const prismaMock = {
+      camino: makeCaminoMock(CAMINO_ID_A),
       caminoPointOrder: {
         findMany: vi.fn().mockResolvedValue(makeOrderRows([PT_A, PT_B, PT_C])),
       },
@@ -417,6 +445,7 @@ describe('StagesService.update()', () => {
   it('creates the stage row when it does not exist yet (legacy camino, no prior GET)', async () => {
     const createdRow = { ...stageRow1, distance: 30.5, updatedAt: LATER };
     const prismaMock = {
+      camino: makeCaminoMock(CAMINO_ID_A),
       caminoPointOrder: {
         findMany: vi.fn().mockResolvedValue(makeOrderRows([PT_A, PT_B, PT_C])),
       },
@@ -446,6 +475,7 @@ describe('StagesService.update()', () => {
   it('clears distance to null and returns StageDetail', async () => {
     const clearedRow = { ...stageRow1, distance: null, updatedAt: LATER };
     const prismaMock = {
+      camino: makeCaminoMock(CAMINO_ID_A),
       caminoPointOrder: {
         findMany: vi.fn().mockResolvedValue(makeOrderRows([PT_A, PT_B, PT_C])),
       },
@@ -466,6 +496,7 @@ describe('StagesService.update()', () => {
   it('clears description to null and returns StageDetail', async () => {
     const clearedRow = { ...stageRow1, description: null, updatedAt: LATER };
     const prismaMock = {
+      camino: makeCaminoMock(CAMINO_ID_A),
       caminoPointOrder: {
         findMany: vi.fn().mockResolvedValue(makeOrderRows([PT_A, PT_B, PT_C])),
       },
@@ -496,6 +527,7 @@ describe('StagesService.update()', () => {
 
     let findManyCalls = 0;
     const prismaMock = {
+      camino: makeCaminoMock(CAMINO_ID_A, CAMINO_ID_B),
       caminoPointOrder: {
         // First call is from update (Camino A), subsequent calls from findOne (both caminos)
         findMany: vi.fn().mockImplementation(() => {
@@ -571,6 +603,7 @@ describe('StagesService.update()', () => {
 
   it('throws NotFoundException for out-of-range stageNumber', async () => {
     const prismaMock = {
+      camino: makeCaminoMock(CAMINO_ID_A),
       caminoPointOrder: {
         findMany: vi.fn().mockResolvedValue(makeOrderRows([PT_A, PT_B])),
       },
