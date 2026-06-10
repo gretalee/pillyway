@@ -2,6 +2,7 @@ import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { getTranslations } from 'next-intl/server';
 import { notFound, redirect } from 'next/navigation';
 import { AccessDenied } from '@/app/caminos/components/AccessDenied';
+import { redirectIfLegacyCaminoUrl } from '@/lib/redirectIfLegacyCaminoUrl';
 import { StageEditForm } from './components/StageEditForm';
 
 interface Props {
@@ -29,6 +30,7 @@ export default async function StageEditPage({ params }: Props) {
   const { slug, stageNumber } = await params;
   const n = parseInt(stageNumber, 10);
   if (isNaN(n) || n < 1) notFound();
+  await redirectIfLegacyCaminoUrl(slug, `stages/${stageNumber}/edit`);
 
   const { isAuthenticated, getRoles } = getKindeServerSession();
   const authenticated = await isAuthenticated();

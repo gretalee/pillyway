@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { getAuthUser } from '@/lib/getAuthUser';
+import { redirectIfLegacyCaminoUrl } from '@/lib/redirectIfLegacyCaminoUrl';
 import { StageDetail } from './components/StageDetail';
 
 interface Props {
@@ -28,6 +29,7 @@ export default async function StageDetailPage({ params }: Props) {
   const { slug, stageNumber } = await params;
   const n = parseInt(stageNumber, 10);
   if (isNaN(n) || n < 1) notFound();
+  await redirectIfLegacyCaminoUrl(slug, `stages/${stageNumber}`);
   const user = await getAuthUser();
 
   return (

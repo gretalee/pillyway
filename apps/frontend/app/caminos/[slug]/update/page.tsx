@@ -1,6 +1,7 @@
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { getTranslations } from 'next-intl/server';
 import { redirect } from 'next/navigation';
+import { redirectIfLegacyCaminoUrl } from '@/lib/redirectIfLegacyCaminoUrl';
 import { UpdateCaminoForm } from '../components/UpdateCaminoForm';
 
 interface Props {
@@ -21,6 +22,7 @@ export async function generateMetadata() {
 
 export default async function UpdateCaminoPage({ params }: Props) {
   const { slug } = await params;
+  await redirectIfLegacyCaminoUrl(slug, 'update');
   const { isAuthenticated } = getKindeServerSession();
   const authenticated = await isAuthenticated();
 

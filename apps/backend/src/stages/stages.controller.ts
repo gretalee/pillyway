@@ -4,7 +4,6 @@ import {
   Get,
   Param,
   ParseIntPipe,
-  ParseUUIDPipe,
   Patch,
   Req,
   UseGuards,
@@ -39,9 +38,8 @@ export class StagesController {
   })
   @ApiOkResponse({ description: 'Ordered array of stage list items.' })
   @ApiNotFoundResponse({ description: 'Camino not found.' })
-  @ApiBadRequestResponse({ description: 'caminoId is not a valid UUID.' })
   async findByCamino(
-    @Param('caminoId', ParseUUIDPipe) caminoId: string,
+    @Param('caminoId') caminoId: string,
   ): Promise<StageListItem[]> {
     return this.stagesService.findByCamino(caminoId);
   }
@@ -56,11 +54,10 @@ export class StagesController {
     description: 'Camino not found or stageNumber out of range.',
   })
   @ApiBadRequestResponse({
-    description:
-      'caminoId is not a valid UUID or stageNumber is not an integer.',
+    description: 'stageNumber is not an integer.',
   })
   async findOne(
-    @Param('caminoId', ParseUUIDPipe) caminoId: string,
+    @Param('caminoId') caminoId: string,
     @Param('stageNumber', ParseIntPipe) stageNumber: number,
   ): Promise<StageDetail> {
     return this.stagesService.findOne(caminoId, stageNumber);
@@ -84,7 +81,7 @@ export class StagesController {
     description: 'Camino not found or stageNumber out of range.',
   })
   async update(
-    @Param('caminoId', ParseUUIDPipe) caminoId: string,
+    @Param('caminoId') caminoId: string,
     @Param('stageNumber', ParseIntPipe) stageNumber: number,
     @Body() dto: UpdateStageDto,
     @Req() req: Request & { user: KindeJwtPayload },
