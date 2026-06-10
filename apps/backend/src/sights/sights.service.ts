@@ -63,7 +63,10 @@ export class SightsService {
 
     dto.assertValid();
 
-    const existing = await this.prisma.sight.findUnique({ where: { id } });
+    const existing = await this.prisma.sight.findUnique({
+      where: { id },
+      include: { caminoPoint: { select: { name: true } } },
+    });
     if (!existing) {
       throw new NotFoundException('Sight not found.');
     }
@@ -102,6 +105,7 @@ export class SightsService {
     this.eventLog.logEvent(EventType.SIGHT_UPDATED, userId, {
       sight_id: id,
       camino_point_id: existing.caminoPointId,
+      waypoint_name: existing.caminoPoint.name,
       changed_fields: Object.entries(dto)
         .filter(([k, v]) => v !== undefined && k !== 'removeImageUrls')
         .map(([k]) => k),

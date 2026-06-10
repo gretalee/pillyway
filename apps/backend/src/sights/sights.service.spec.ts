@@ -36,6 +36,7 @@ const baseSight = {
   createdBy: USER_ID,
   createdAt: new Date('2026-02-01'),
   updatedAt: new Date('2026-02-01'),
+  caminoPoint: { name: 'Saint-Jean-Pied-de-Port' },
 };
 
 const PILGRIM_ROLES: KindeRole[] = [

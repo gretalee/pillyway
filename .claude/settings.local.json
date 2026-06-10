@@ -45,7 +45,8 @@
       "Bash(git add *)",
       "Bash(node_modules/.bin/playwright test *)",
       "Bash(yarn --cwd apps/backend test --run)",
-      "Bash(yarn ts)"
+      "Bash(yarn ts)",
+      "Bash(yarn --cwd apps/backend vitest run)"
     ]
   }
 }

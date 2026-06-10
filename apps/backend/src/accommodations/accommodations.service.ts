@@ -73,7 +73,7 @@ export class AccommodationsService {
 
     const existing = await this.prisma.accommodation.findUnique({
       where: { id },
-      include: { caminoPoint: { select: { slug: true } } },
+      include: { caminoPoint: { select: { slug: true, name: true } } },
     });
     if (!existing) {
       throw new NotFoundException('Accommodation not found.');
@@ -122,6 +122,7 @@ export class AccommodationsService {
     this.eventLog.logEvent(EventType.ACCOMMODATION_UPDATED, userId, {
       accommodation_id: id,
       camino_point_id: existing.caminoPointId,
+      waypoint_name: existing.caminoPoint.name,
       changed_fields: Object.entries(dto)
         .filter(([k, v]) => v !== undefined && k !== 'removeImageUrls')
         .map(([k]) => k),
