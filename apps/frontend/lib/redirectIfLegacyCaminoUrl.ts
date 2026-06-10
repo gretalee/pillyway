@@ -1,4 +1,4 @@
-import { redirect } from 'next/navigation';
+import { permanentRedirect } from 'next/navigation';
 import { fetchCamino } from '@/app/api/caminos/caminos';
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -30,5 +30,5 @@ export async function redirectIfLegacyCaminoUrl(
     ? `/caminos/${canonicalSlug}/${restPath}`
     : `/caminos/${canonicalSlug}`;
 
-  redirect(destination);
+  permanentRedirect(destination);
 }
