@@ -116,7 +116,7 @@ model Accommodation {
   addressCity    String?           @map("address_city")
   addressCountry String?           @map("address_country")
   priceRange     PriceRange?       @map("price_range")
-  phone          String?
+  phone          String?           @db.VarChar(30)
   createdBy      String            @map("created_by")
   createdAt      DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt      DateTime          @default(now()) @map("updated_at") @db.Timestamptz(6)
