@@ -2,6 +2,7 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { AccommodationType, PriceRange, PrismaClient } from '@prisma/client';
 import * as fs from 'fs';
 import * as path from 'path';
+import { slugify } from '../src/common/slug.utils';
 
 // ─── JSON data types ───────────────────────────────────────────────────────
 
@@ -156,12 +157,7 @@ async function seed(
 
   await prisma.$transaction(async (tx) => {
     // 1. Upsert Camino
-    const caminoSlug = caminoData.name
-      .toLowerCase()
-      .trim()
-      .replace(/[\s_]+/g, '-')
-      .replace(/[^a-z0-9-]/g, '')
-      .replace(/^-+|-+$/g, '');
+    const caminoSlug = slugify(caminoData.name);
     const camino = await tx.camino.upsert({
       where: { name: caminoData.name },
       create: {

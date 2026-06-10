@@ -13,6 +13,7 @@ import { Prisma } from '@prisma/client';
 import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { DeleteAuthorizationService } from '../common/delete-authorization.service';
 import { EventLogService } from '../event-log/event-log.service';
+import { slugify } from '../common/slug.utils';
 import { EventType } from '../event-log/event-type.enum';
 import { PrismaService } from '../prisma/prisma.service';
 import { StagesService } from '../stages/stages.service';
@@ -107,22 +108,17 @@ export class CaminosService {
     country: string,
     tx: Prisma.TransactionClient,
   ): Promise<string> {
-    const base = name
-      .toLowerCase()
-      .trim()
-      .replace(/[\s_]+/g, '-')
-      .replace(/[^a-z0-9-]/g, '')
-      .replace(/^-+|-+$/g, '');
+    const base = slugify(name);
 
     const exists = async (slug: string): Promise<boolean> =>
       !!(await tx.caminoPoint.findUnique({ where: { slug } }));
 
     let candidate = base;
     if (await exists(candidate)) {
-      candidate = `${base}-${country.toLowerCase()}`;
+      candidate = `${base}-${slugify(country)}`;
       let n = 2;
       while (await exists(candidate)) {
-        candidate = `${base}-${country.toLowerCase()}-${n++}`;
+        candidate = `${base}-${slugify(country)}-${n++}`;
       }
     }
     return candidate;
@@ -139,12 +135,7 @@ export class CaminosService {
     name: string,
     tx: Prisma.TransactionClient,
   ): Promise<string> {
-    const base = name
-      .toLowerCase()
-      .trim()
-      .replace(/[\s_]+/g, '-')
-      .replace(/[^a-z0-9-]/g, '')
-      .replace(/^-+|-+$/g, '');
+    const base = slugify(name);
 
     const exists = async (slug: string): Promise<boolean> =>
       !!(await tx.camino.findUnique({ where: { slug } }));
