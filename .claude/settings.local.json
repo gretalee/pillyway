@@ -48,7 +48,8 @@
       "Bash(yarn ts)",
       "Bash(yarn --cwd apps/backend vitest run)",
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); [print\\(k,'->',json.dumps\\(v,ensure_ascii=False\\)\\) for k,v in d.items\\(\\) if 'accommodation' in k.lower\\(\\)]\")",
-      "Bash(yarn --cwd apps/backend tsc --noEmit)"
+      "Bash(yarn --cwd apps/backend tsc --noEmit)",
+      "Bash(yarn --cwd apps/frontend test)"
     ]
   }
 }
