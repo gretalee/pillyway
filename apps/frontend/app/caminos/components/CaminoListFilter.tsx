@@ -7,7 +7,7 @@ import { ToggleSwitch } from '@/app/components/ui/toggle-switch';
 import type { CaminoSummary } from '@/app/api/caminos/caminos';
 import { CaminoActionsMenu } from './CaminoActionsMenu';
 import { VerifiedBadge } from './VerifiedBadge';
-import { cn } from '@/lib/utils';
+import CaminoMainImage from './CaminoMainImage';
 
 const DESCRIPTION_MAX = 665;
 
@@ -76,6 +76,12 @@ export function CaminoListFilter({ caminos, isPilgrim }: CaminoListFilterProps) 
                   </p>
                 )}
               </Link>
+
+              <CaminoMainImage
+                caminoId={camino.id}
+                title={camino.name}
+                className="mt-1"
+              />
             </li>
           ))}
         </ul>

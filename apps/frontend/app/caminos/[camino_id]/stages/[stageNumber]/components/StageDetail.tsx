@@ -216,14 +216,15 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
         {startAccommodations.length > 0 ? (
           <ul className="mt-4 space-y-4">
             {startAccommodations.map((accommodation) => (
-              <AccommodationCard
-                key={accommodation.id}
-                accommodation={accommodation}
-                slug={stage.startPoint.slug}
-                canContribute={canEdit}
-                isOwner={isOwner}
-                className="border border-border rounded-lg p-4"
-              />
+              <li key={accommodation.id}>
+                <AccommodationCard
+                  accommodation={accommodation}
+                  slug={stage.startPoint.slug}
+                  canContribute={canEdit}
+                  isOwner={isOwner}
+                  className="border border-border rounded-lg p-4"
+                />
+              </li>
             ))}
           </ul>
         ) : (
@@ -241,14 +242,15 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
         {endAccommodations.length > 0 ? (
           <ul className="mt-4 space-y-4">
             {endAccommodations.map((accommodation) => (
-              <AccommodationCard
-                key={accommodation.id}
-                accommodation={accommodation}
-                slug={stage.endPoint.slug}
-                canContribute={canEdit}
-                isOwner={isOwner}
-                className="border border-border rounded-lg p-4"
-              />
+              <li key={accommodation.id}>
+                <AccommodationCard
+                  accommodation={accommodation}
+                  slug={stage.endPoint.slug}
+                  canContribute={canEdit}
+                  isOwner={isOwner}
+                  className="border border-border rounded-lg p-4"
+                />
+              </li>
             ))}
           </ul>
         ) : (

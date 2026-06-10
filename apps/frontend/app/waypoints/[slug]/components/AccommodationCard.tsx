@@ -48,7 +48,7 @@ export async function AccommodationCard({
     accommodation.addressCountry;
 
   return (
-    <li className={cn('overflow-hidden', className)}>
+    <div className={cn('overflow-hidden', className)}>
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
@@ -82,7 +82,9 @@ export async function AccommodationCard({
 
           {hasAddress && (
             <address className="mt-4 not-italic text-sm">
-              <i className="icon-location text-base inline-block pr-1"></i>
+              <i
+                className="icon-location text-base inline-block pr-1"
+                aria-hidden="true"></i>
               {accommodation.addressStreet && <span>{accommodation.addressStreet}</span>}
               {(accommodation.addressZip || accommodation.addressCity) && (
                 <span>
@@ -112,9 +114,9 @@ export async function AccommodationCard({
           <div className="mt-2 flex flex-wrap gap-3">
             {accommodation.phone && (
               <span>
-                <i className="icon-phone pr-1"></i>
+                <i className="icon-phone pr-1" aria-hidden="true"></i>
                 <a
-                  href={`tel:${accommodation.phone.replace(/\s/g, '')}`}
+                  href={`tel:${accommodation.phone.replace(/[^\d+]/g, '')}`}
                   className="text-sm text-primary underline-offset-4 hover:underline">
                   {accommodation.phone}
                 </a>
@@ -122,7 +124,9 @@ export async function AccommodationCard({
             )}
             {accommodation.email && (
               <div>
-                <i className="icon-envelope-o translate-y-0.5 inline-block pr-1"></i>
+                <i
+                  className="icon-envelope-o translate-y-0.5 inline-block pr-1"
+                  aria-hidden="true"></i>
                 <a
                   href={`mailto:${accommodation.email}`}
                   target="_blank"
@@ -134,7 +138,7 @@ export async function AccommodationCard({
             )}
             {accommodation.website && (
               <div>
-                <i className="icon-sphere pr-1"></i>
+                <i className="icon-sphere pr-1" aria-hidden="true"></i>
 
                 <a
                   href={accommodation.website}
@@ -183,6 +187,6 @@ export async function AccommodationCard({
           />
         </div>
       )}
-    </li>
+    </div>
   );
 }
