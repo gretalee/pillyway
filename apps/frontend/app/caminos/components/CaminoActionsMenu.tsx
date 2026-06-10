@@ -18,7 +18,7 @@ import { canDelete } from '@/lib/can-delete';
 const CAMINO_DELETE_WINDOW_MS = 2 * 60 * 60 * 1000; // 2 hours
 
 interface CaminoActionsMenuProps {
-  camino: { id: string; name: string; createdBy: string; createdAt: string };
+  camino: { id: string; slug: string; name: string; createdBy: string; createdAt: string };
 }
 
 export function CaminoActionsMenu({ camino }: CaminoActionsMenuProps) {
@@ -56,7 +56,7 @@ export function CaminoActionsMenu({ camino }: CaminoActionsMenuProps) {
         <DropdownMenuContent align="end" ignoreAnchorWidth>
           <DropdownMenuItem
             className="whitespace-nowrap"
-            onClick={() => router.push(`/caminos/${camino.id}/update`)}>
+            onClick={() => router.push(`/caminos/${camino.slug}/update`)}>
             {t('menu_change_data')}
           </DropdownMenuItem>
           {showDelete && (

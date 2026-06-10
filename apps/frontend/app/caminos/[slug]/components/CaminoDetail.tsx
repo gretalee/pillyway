@@ -79,14 +79,12 @@ function InlineField({ value, onSave, onCancel, as: Tag, ariaLabel }: InlineFiel
 
 interface CaminoDetailProps {
   camino: CaminoDetailFull;
-  caminoId: string;
   user: AuthUser | null;
   children?: React.ReactNode;
 }
 
 export function CaminoDetail({
   camino: initialCamino,
-  caminoId,
   user,
   children,
 }: CaminoDetailProps) {
@@ -134,7 +132,7 @@ export function CaminoDetail({
     setEditingField(null);
 
     mutation.mutate(
-      { id: caminoId, payload: { [field]: value } },
+      { id: camino.id, payload: { [field]: value } },
       {
         onSuccess: (updated) => {
           setCamino(updated);
@@ -204,7 +202,7 @@ export function CaminoDetail({
       )}
 
       {/* Hero picture — above description */}
-      <CaminoPictures caminoId={caminoId} caminoName={camino.name} section="hero" />
+      <CaminoPictures caminoId={camino.id} caminoName={camino.name} section="hero" />
 
       {/* Description */}
       <div className="mt-4">
@@ -246,16 +244,16 @@ export function CaminoDetail({
       </section>
 
       {/* Verification voting */}
-      {camino.caminoPoints.length >= 3 && <VerificationSection caminoId={caminoId} />}
+      {camino.caminoPoints.length >= 3 && <VerificationSection caminoId={camino.id} />}
 
       {/* Gallery and upload controls — below verification */}
-      <CaminoPictures caminoId={caminoId} section="gallery" />
+      <CaminoPictures caminoId={camino.id} section="gallery" />
 
       {/* Edit waypoints link */}
       {canEdit && (
         <div className="mt-8">
           <Link
-            href={`/caminos/${caminoId}/update`}
+            href={`/caminos/${camino.slug}/update`}
             className={cn(buttonVariants({ variant: 'outline' }))}>
             <i className="icon-pencil text-base -translate-y-0.5" aria-hidden="true" />
             {t('edit_waypoints')}

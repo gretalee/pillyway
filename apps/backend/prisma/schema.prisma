@@ -9,6 +9,7 @@ datasource db {
 model Camino {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name        String
+  slug        String   @unique
   description String?
   verified    Boolean  @default(false)
   createdBy   String   @map("created_by")

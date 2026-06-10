@@ -57,7 +57,7 @@ export function CaminoListFilter({ caminos, isPilgrim }: CaminoListFilterProps) 
               className="rounded-xl border border-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md">
               <div className="flex items-start justify-between gap-2">
                 <div className="">
-                  <Link href={`/caminos/${camino.id}`}>
+                  <Link href={`/caminos/${camino.slug}`}>
                     <h2 className="text-lg font-semibold text-foreground inline">
                       {camino.name}
                     </h2>
@@ -69,7 +69,7 @@ export function CaminoListFilter({ caminos, isPilgrim }: CaminoListFilterProps) 
                 {isPilgrim && <CaminoActionsMenu camino={camino} />}
               </div>
 
-              <Link href={`/caminos/${camino.id}`} className="flex-1">
+              <Link href={`/caminos/${camino.slug}`} className="flex-1">
                 {camino.description && (
                   <p className="mt-1 whitespace-pre-wrap text-sm text-muted-foreground">
                     {truncateAtSentence(camino.description)}

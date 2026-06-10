@@ -17,6 +17,7 @@ export interface CreateCaminoPayload {
 
 export interface CreatedCamino {
   id: string;
+  slug: string;
   name: string;
 }
 

@@ -52,14 +52,12 @@ export class CaminosController {
     return this.caminosService.findAll();
   }
 
-  @Get(':id')
-  @ApiOperation({ summary: 'Get a single camino by ID (public)' })
+  @Get(':slug')
+  @ApiOperation({ summary: 'Get a single camino by slug or UUID (public)' })
   @ApiOkResponse({ description: 'Camino detail.' })
   @ApiNotFoundResponse({ description: 'Camino not found.' })
-  async findById(
-    @Param('id', ParseUUIDPipe) id: string,
-  ): Promise<CaminoDetailFull> {
-    return this.caminosService.findById(id);
+  async findBySlugOrId(@Param('slug') slug: string): Promise<CaminoDetailFull> {
+    return this.caminosService.findBySlugOrId(slug);
   }
 
   @Post()

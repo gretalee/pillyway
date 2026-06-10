@@ -46,8 +46,9 @@ export function CreateCaminoForm() {
   const isPending = mutation.isPending;
   const { accessTokenEncoded } = useKindeBrowserClient();
 
-  // After the camino is saved, we track its id for the pictures step
+  // After the camino is saved, track id (for picture API calls) and slug (for URL navigation)
   const [createdCaminoId, setCreatedCaminoId] = useState<string | null>(null);
+  const [createdCaminoSlug, setCreatedCaminoSlug] = useState<string | null>(null);
   // Track ids of pictures uploaded in the pictures step, for cancel cleanup
   const uploadedPictureIdsRef = useRef<string[]>([]);
   const [isCancellingCleanup, setIsCancellingCleanup] = useState(false);
@@ -127,6 +128,7 @@ export function CreateCaminoForm() {
         void queryClient.invalidateQueries({ queryKey: ['caminos'] });
         // Move to the pictures step — user can now add pictures or go straight to the camino
         setCreatedCaminoId(created.id);
+        setCreatedCaminoSlug(created.slug);
       },
       onError: (err: Error & { status?: number }) => {
         if (err.status === 409) {
@@ -204,7 +206,7 @@ export function CreateCaminoForm() {
         <div className="flex flex-wrap items-center gap-3">
           <Button
             type="button"
-            onClick={() => router.push(`/caminos/${createdCaminoId}`)}
+            onClick={() => router.push(`/caminos/${createdCaminoSlug ?? createdCaminoId}`)}
             className="w-full sm:w-auto">
             {t('view_camino')}
           </Button>
