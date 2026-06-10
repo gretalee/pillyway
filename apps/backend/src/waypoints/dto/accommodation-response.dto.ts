@@ -5,6 +5,7 @@ export interface AccommodationResponseDto {
   description: string | null;
   imageUrls: string[];
   verified: boolean;
+  phone: string | null;
   createdBy: string;
   createdAt: Date;
   updatedAt: Date;

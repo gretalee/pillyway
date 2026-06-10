@@ -98,6 +98,13 @@ export async function AccommodationCard({
           )}
 
           <div className="mt-2 flex flex-wrap gap-3">
+            {accommodation.phone && (
+              <a
+                href={`tel:${accommodation.phone.replace(/\s/g, '')}`}
+                className="text-sm text-primary underline-offset-4 hover:underline">
+                {accommodation.phone}
+              </a>
+            )}
             {accommodation.email && (
               <a
                 href={`mailto:${accommodation.email}`}

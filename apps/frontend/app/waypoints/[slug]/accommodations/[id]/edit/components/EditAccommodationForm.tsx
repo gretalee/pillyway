@@ -34,6 +34,7 @@ interface FormValues {
   type: AccommodationType | '';
   email: string;
   website: string;
+  phone: string;
   addressStreet: string;
   addressZip: string;
   addressCity: string;
@@ -85,6 +86,7 @@ export function EditAccommodationForm({
       type: accommodation.type,
       email: accommodation.email ?? '',
       website: accommodation.website ?? '',
+      phone: accommodation.phone ?? '',
       addressStreet: accommodation.addressStreet ?? '',
       addressZip: accommodation.addressZip ?? '',
       addressCity: accommodation.addressCity ?? '',
@@ -104,6 +106,7 @@ export function EditAccommodationForm({
   const typeId = 'edit-accommodation-type';
   const emailId = 'edit-accommodation-email';
   const websiteId = 'edit-accommodation-website';
+  const phoneId = 'edit-accommodation-phone';
   const addressStreetId = 'edit-accommodation-address-street';
   const addressZipId = 'edit-accommodation-address-zip';
   const addressCityId = 'edit-accommodation-address-city';
@@ -158,6 +161,7 @@ export function EditAccommodationForm({
       type: values.type as AccommodationType,
       email: values.email.trim() || null,
       website: values.website.trim() || null,
+      phone: values.phone.trim() || null,
       addressStreet: values.addressStreet.trim() || null,
       addressZip: values.addressZip.trim() || null,
       addressCity: values.addressCity.trim() || null,
@@ -304,6 +308,14 @@ export function EditAccommodationForm({
         <Label htmlFor={websiteId}>{tNew('field_website')}</Label>
         <div className="mt-1">
           <Input id={websiteId} type="url" {...register('website')} />
+        </div>
+      </div>
+
+      {/* Phone */}
+      <div>
+        <Label htmlFor={phoneId}>{tNew('field_phone')}</Label>
+        <div className="mt-1">
+          <Input id={phoneId} type="tel" {...register('phone')} />
         </div>
       </div>
 

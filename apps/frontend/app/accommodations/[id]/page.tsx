@@ -125,8 +125,15 @@ export default async function AccommodationDetailPage({ params }: Props) {
       )}
 
       {/* Contact */}
-      {(accommodation.email || accommodation.website) && (
+      {(accommodation.phone || accommodation.email || accommodation.website) && (
         <div className="mt-6 flex flex-wrap gap-4">
+          {accommodation.phone && (
+            <a
+              href={`tel:${accommodation.phone.replace(/\s/g, '')}`}
+              className="text-sm text-primary underline-offset-4 hover:underline">
+              {accommodation.phone}
+            </a>
+          )}
           {accommodation.email && (
             <a
               href={`mailto:${accommodation.email}`}

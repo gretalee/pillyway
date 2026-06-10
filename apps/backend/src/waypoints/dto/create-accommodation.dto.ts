@@ -61,4 +61,9 @@ export class CreateAccommodationDto {
   @IsOptional()
   @IsEnum(PriceRange)
   priceRange?: PriceRange;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(30)
+  phone?: string;
 }

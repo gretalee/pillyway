@@ -320,6 +320,7 @@
     "field_type": "Typ",
     "field_email": "E-Mail",
     "field_website": "Website",
+    "field_phone": "Telefon",
     "field_address_street": "Straße",
     "field_address_zip": "PLZ / Postleitzahl",
     "field_address_city": "Stadt",

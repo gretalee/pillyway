@@ -87,6 +87,12 @@ export class UpdateAccommodationDto {
   @ApiPropertyOptional({ enum: PriceRange })
   priceRange?: PriceRange;
 
+  @IsOptional()
+  @IsString()
+  @MaxLength(30)
+  @ApiPropertyOptional()
+  phone?: string;
+
   /**
    * Validates business rules that cannot be expressed as field-level decorators:
    * - Body must contain at least one field.
