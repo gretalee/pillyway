@@ -53,6 +53,7 @@ export class CaminoVotesService {
 
     this.eventLog.logEvent(EventType.CAMINO_VOTED, userId, {
       camino_id: caminoId,
+      camino_name: camino.name,
       vote,
     });
 

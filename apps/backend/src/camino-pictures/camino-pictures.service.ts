@@ -86,7 +86,7 @@ export class CaminoPicturesService {
     // 1. Verify camino exists
     const camino = await this.prisma.camino.findUnique({
       where: { id: caminoId },
-      select: { id: true },
+      select: { id: true, name: true },
     });
     if (!camino) {
       throw new NotFoundException('Camino not found.');
@@ -209,7 +209,9 @@ export class CaminoPicturesService {
 
     this.eventLog.logEvent(EventType.CAMINO_IMAGE_UPLOADED, userId, {
       camino_id: caminoId,
+      camino_name: camino.name,
       picture_id: pictureId,
+      picture_name: file.originalname,
       is_primary: isPrimary,
     });
 
