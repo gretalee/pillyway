@@ -156,10 +156,17 @@ async function seed(
 
   await prisma.$transaction(async (tx) => {
     // 1. Upsert Camino
+    const caminoSlug = caminoData.name
+      .toLowerCase()
+      .trim()
+      .replace(/[\s_]+/g, '-')
+      .replace(/[^a-z0-9-]/g, '')
+      .replace(/^-+|-+$/g, '');
     const camino = await tx.camino.upsert({
       where: { name: caminoData.name },
       create: {
         name: caminoData.name,
+        slug: caminoSlug,
         description: caminoData.description,
         verified: caminoData.verified,
         createdBy,

@@ -146,7 +146,7 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
 
   function executeMutation(payload: UpdateCaminoPayload) {
     mutation.mutate(
-      { id: caminoId, payload },
+      { id: camino!.id, payload },
       {
         onSuccess: () => {
           void queryClient.invalidateQueries({ queryKey: ['caminos'] });

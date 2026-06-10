@@ -4,7 +4,7 @@ import { getAuthUser } from '@/lib/getAuthUser';
 import { StageDetail } from './components/StageDetail';
 
 interface Props {
-  params: Promise<{ camino_id: string; stageNumber: string }>;
+  params: Promise<{ slug: string; stageNumber: string }>;
 }
 
 export async function generateMetadata({ params }: Props) {
@@ -25,14 +25,14 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export default async function StageDetailPage({ params }: Props) {
-  const { camino_id, stageNumber } = await params;
+  const { slug, stageNumber } = await params;
   const n = parseInt(stageNumber, 10);
   if (isNaN(n) || n < 1) notFound();
   const user = await getAuthUser();
 
   return (
     <div className="mx-auto w-full max-w-3xl flex-1 px-4 py-6 lg:py-16 sm:px-6 lg:px-8">
-      {camino_id && n && <StageDetail caminoId={camino_id} stageNumber={n} user={user} />}
+      <StageDetail caminoId={slug} stageNumber={n} user={user} />
     </div>
   );
 }

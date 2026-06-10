@@ -54,6 +54,7 @@ const NOW = new Date('2024-01-01T00:00:00.000Z');
 
 const CAMINO_STUB = {
   id: CAMINO_ID,
+  slug: 'camino-frances',
   name: 'Camino Frances',
   verified: false,
   description: null,
@@ -64,6 +65,7 @@ const CAMINO_STUB = {
 
 const CAMINO_FULL_STUB: CaminoDetailFull = {
   id: CAMINO_ID,
+  slug: 'camino-frances',
   name: 'Camino Frances',
   verified: true,
   description: null,

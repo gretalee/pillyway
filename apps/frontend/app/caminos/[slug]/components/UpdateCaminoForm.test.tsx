@@ -78,6 +78,7 @@ beforeEach(() => {
         json: () =>
           Promise.resolve({
             id: CAMINO_ID,
+            slug: 'camino-frances',
             name: 'Updated Name',
             description: null,
             verified: false,
@@ -119,6 +120,7 @@ const CAMINO_ID = 'camino-123';
 
 const CAMINO_FIXTURE = {
   id: CAMINO_ID,
+  slug: 'camino-frances',
   name: 'Camino Francés',
   description: 'The most popular route.',
   verified: false,

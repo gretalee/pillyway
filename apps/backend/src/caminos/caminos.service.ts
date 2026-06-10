@@ -24,6 +24,7 @@ import { UpdateCaminoDto } from './dto/update-camino.dto';
 
 export interface CaminoSummary {
   id: string;
+  slug: string;
   name: string;
   description: string | null;
   verified: boolean;
@@ -47,6 +48,7 @@ export interface CaminoPointInResponse {
  */
 export interface CaminoDetail {
   id: string;
+  slug: string;
   name: string;
   description: string | null;
   verified: boolean;
@@ -55,10 +57,11 @@ export interface CaminoDetail {
 
 /**
  * Full camino representation with timestamps and createdBy.
- * Returned by findById, update.
+ * Returned by findBySlugOrId, update.
  */
 export interface CaminoDetailFull {
   id: string;
+  slug: string;
   name: string;
   description: string | null;
   verified: boolean;
@@ -92,17 +95,12 @@ export class CaminosService {
     private readonly eventLog: EventLogService,
   ) {}
 
-  // ── generateSlug ────────────────────────────────────────────────────────────
+  // ── generateSlug (CaminoPoint) ──────────────────────────────────────────────
 
   /**
-   * Generates a unique, human-readable slug for a CaminoPoint.
+   * Generates a unique slug for a CaminoPoint.
    * Falls back to appending the country and then a numeric suffix on collision.
    * Slug is immutable once set — never call this on an existing point.
-   *
-   * @param name    - The point's display name.
-   * @param country - The point's country (used only for collision resolution).
-   * @param tx      - Caller's transaction client so the uniqueness check is
-   *                  consistent within the outer transaction.
    */
   private async generateSlug(
     name: string,
@@ -130,6 +128,35 @@ export class CaminosService {
     return candidate;
   }
 
+  // ── generateCaminoSlug ──────────────────────────────────────────────────────
+
+  /**
+   * Generates a unique slug for a Camino from its name.
+   * Falls back to a numeric suffix on collision.
+   * Slug is frozen at creation — never regenerate for an existing camino.
+   */
+  private async generateCaminoSlug(
+    name: string,
+    tx: Prisma.TransactionClient,
+  ): Promise<string> {
+    const base = name
+      .toLowerCase()
+      .trim()
+      .replace(/[\s_]+/g, '-')
+      .replace(/[^a-z0-9-]/g, '')
+      .replace(/^-+|-+$/g, '');
+
+    const exists = async (slug: string): Promise<boolean> =>
+      !!(await tx.camino.findUnique({ where: { slug } }));
+
+    let candidate = base;
+    let n = 2;
+    while (await exists(candidate)) {
+      candidate = `${base}-${n++}`;
+    }
+    return candidate;
+  }
+
   // ── findAll ─────────────────────────────────────────────────────────────────
 
   async findAll(): Promise<CaminoSummary[]> {
@@ -137,6 +164,7 @@ export class CaminosService {
       return await this.prisma.camino.findMany({
         select: {
           id: true,
+          slug: true,
           name: true,
           description: true,
           verified: true,
@@ -151,18 +179,38 @@ export class CaminosService {
     }
   }
 
-  // ── findById ────────────────────────────────────────────────────────────────
+  // ── findBySlugOrId ──────────────────────────────────────────────────────────
 
-  async findById(id: string): Promise<CaminoDetailFull> {
-    const camino = await this.prisma.camino.findUnique({
-      where: { id },
-      include: {
-        caminoPointOrder: {
-          orderBy: { position: 'asc' },
-          include: { caminoPoint: true },
-        },
+  /**
+   * Look up a camino by its slug (preferred) or UUID (legacy fallback for old links).
+   * Returns the full detail so the caller can detect when a UUID was used and
+   * redirect the browser to the canonical slug URL.
+   */
+  async findBySlugOrId(slugOrId: string): Promise<CaminoDetailFull> {
+    const include = {
+      caminoPointOrder: {
+        orderBy: { position: 'asc' as const },
+        include: { caminoPoint: true },
       },
+    };
+
+    let camino = await this.prisma.camino.findUnique({
+      where: { slug: slugOrId },
+      include,
     });
+
+    if (!camino) {
+      const isUuid =
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+          slugOrId,
+        );
+      if (isUuid) {
+        camino = await this.prisma.camino.findUnique({
+          where: { id: slugOrId },
+          include,
+        });
+      }
+    }
 
     if (!camino) {
       throw new NotFoundException('Camino not found.');
@@ -170,6 +218,7 @@ export class CaminosService {
 
     return {
       id: camino.id,
+      slug: camino.slug,
       name: camino.name,
       description: camino.description,
       verified: camino.verified,
@@ -218,9 +267,11 @@ export class CaminosService {
         }
 
         // 3. Create the camino record
+        const slug = await this.generateCaminoSlug(dto.name, tx);
         const camino = await tx.camino.create({
           data: {
             name: dto.name,
+            slug,
             description: dto.description ?? null,
             createdBy: userId,
           },
@@ -302,6 +353,7 @@ export class CaminosService {
 
         return {
           id: camino.id,
+          slug: camino.slug,
           name: camino.name,
           description: camino.description,
           verified: camino.verified,
@@ -524,7 +576,7 @@ export class CaminosService {
       );
 
       // 6. Return the fresh full representation
-      const updated = await this.findById(id);
+      const updated = await this.findBySlugOrId(id);
 
       this.eventLog.logEvent(EventType.CAMINO_UPDATED, userId, {
         camino_id: id,
@@ -585,7 +637,7 @@ export class CaminosService {
       data: { verified, updatedAt: new Date() },
     });
 
-    return this.findById(id);
+    return this.findBySlugOrId(id);
   }
 
   // ── delete ──────────────────────────────────────────────────────────────────

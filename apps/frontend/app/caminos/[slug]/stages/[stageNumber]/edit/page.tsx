@@ -5,7 +5,7 @@ import { AccessDenied } from '@/app/caminos/components/AccessDenied';
 import { StageEditForm } from './components/StageEditForm';
 
 interface Props {
-  params: Promise<{ camino_id: string; stageNumber: string }>;
+  params: Promise<{ slug: string; stageNumber: string }>;
 }
 
 export async function generateMetadata({ params }: Props) {
@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export default async function StageEditPage({ params }: Props) {
-  const { camino_id, stageNumber } = await params;
+  const { slug, stageNumber } = await params;
   const n = parseInt(stageNumber, 10);
   if (isNaN(n) || n < 1) notFound();
 
@@ -48,7 +48,7 @@ export default async function StageEditPage({ params }: Props) {
         {t('title', { number: n })}
       </h1>
       {canEdit ? (
-        <StageEditForm caminoId={camino_id} stageNumber={n} />
+        <StageEditForm caminoId={slug} stageNumber={n} />
       ) : (
         <AccessDenied message={t('access_denied')} />
       )}

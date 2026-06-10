@@ -86,6 +86,7 @@ import { CaminoListFilter } from './CaminoListFilter';
 
 const verifiedCamino: CaminoSummary = {
   id: 'c1',
+  slug: 'camino-frances',
   name: 'Camino Francés',
   description: 'The classic route.',
   verified: true,
@@ -95,6 +96,7 @@ const verifiedCamino: CaminoSummary = {
 
 const unverifiedCamino: CaminoSummary = {
   id: 'c2',
+  slug: 'via-de-la-plata',
   name: 'Via de la Plata',
   description: 'Southern route.',
   verified: false,
@@ -212,7 +214,7 @@ describe('CaminoListFilter', () => {
     );
 
     const link = screen.getByRole('link', { name: /Camino Francés/i });
-    expect(link).toHaveAttribute('href', `/caminos/${verifiedCamino.id}`);
+    expect(link).toHaveAttribute('href', `/caminos/${verifiedCamino.slug}`);
   });
 
   it('truncates long descriptions and does not break layout', () => {
