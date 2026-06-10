@@ -86,7 +86,7 @@ export default async function WaypointDetailPage({ params }: Props) {
 
       {/* Accommodations */}
       <section className="mt-10" aria-labelledby="accommodations-heading">
-        <div className="flex items-center gap-2 bg-pillyGreen-300 rounded-tl-lg rounded-tr-lg px-4 py-2  overflow-hidden">
+        <div className="flex items-center gap-2 bg-pillyGreen-300 rounded-tl-lg rounded-tr-lg px-4 py-2 overflow-hidden">
           <h2 id="accommodations-heading" className="text-xl font-semibold">
             {t('accommodations_heading')}
           </h2>
@@ -113,13 +113,15 @@ export default async function WaypointDetailPage({ params }: Props) {
         ) : (
           <ul className="mt-4 space-y-4">
             {accommodations.map((acc) => (
-              <AccommodationCard
-                key={acc.id}
-                accommodation={acc}
-                slug={slug}
-                canContribute={canContribute}
-                isOwner={isOwner}
-              />
+              <li key={acc.id}>
+                <AccommodationCard
+                  accommodation={acc}
+                  slug={slug}
+                  canContribute={canContribute}
+                  isOwner={isOwner}
+                  className="border border-border rounded-lg p-4"
+                />
+              </li>
             ))}
           </ul>
         )}

@@ -8,6 +8,7 @@ import type {
 import { DeleteAccommodationButton } from './DeleteAccommodationButton';
 import { buttonVariants } from '@/app/components/ui/button';
 import { cn } from '@/lib/utils';
+import { JSX } from 'react/jsx-dev-runtime';
 
 const PRICE_RANGE_SYMBOLS: Record<PriceRange, string> = {
   budget: '€',
@@ -21,6 +22,10 @@ interface Props {
   slug: string;
   canContribute: boolean;
   isOwner: boolean;
+  showImage?: boolean;
+  headlineLevel?: 1 | 2 | 3 | 4;
+  className?: string;
+  headerClass?: string;
 }
 
 export async function AccommodationCard({
@@ -28,30 +33,40 @@ export async function AccommodationCard({
   slug,
   canContribute,
   isOwner,
+  showImage = true,
+  headlineLevel = 3,
+  className,
+  headerClass,
 }: Props) {
   const t = await getTranslations('waypoint_detail');
   const tCountries = await getTranslations('countries');
 
   const firstImage =
-    accommodation.imageUrls.length > 0 ? accommodation.imageUrls[0] : null;
+    showImage && accommodation.imageUrls.length > 0 ? accommodation.imageUrls[0] : null;
+
   const hasAddress =
     accommodation.addressStreet ||
     accommodation.addressZip ||
     accommodation.addressCity ||
     accommodation.addressCountry;
 
+  const Heading = `h${headlineLevel}` as keyof Pick<
+    JSX.IntrinsicElements,
+    'h1' | 'h2' | 'h3' | 'h4'
+  >;
+
   return (
-    <li className="rounded-lg border border-border p-4 overflow-hidden">
+    <div className={cn('overflow-hidden', className)}>
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className="font-semibold">
+            <Heading className={cn('font-semibold', headerClass)}>
               <Link
                 href={`/accommodations/${accommodation.id}`}
                 className="hover:underline underline-offset-4">
                 {accommodation.name}
               </Link>
-            </h3>
+            </Heading>
             <span className="inline-block rounded-full border border-border px-2 py-0.5 text-xs font-medium text-muted-foreground">
               {t(`accommodation_type.${accommodation.type}` as Parameters<typeof t>[0])}
             </span>
@@ -74,11 +89,14 @@ export async function AccommodationCard({
           )}
 
           {hasAddress && (
-            <address className="mt-2 not-italic text-sm">
+            <address className="mt-4 not-italic text-sm">
+              <i
+                className="icon-location text-base inline-block pr-1"
+                aria-hidden="true"></i>
               {accommodation.addressStreet && <span>{accommodation.addressStreet}</span>}
               {(accommodation.addressZip || accommodation.addressCity) && (
                 <span>
-                  ,{' '}
+                  {accommodation.addressStreet ? ', ' : ''}
                   {[accommodation.addressZip, accommodation.addressCity]
                     .filter(Boolean)
                     .join(' ')}
@@ -86,7 +104,11 @@ export async function AccommodationCard({
               )}
               {accommodation.addressCountry && (
                 <span>
-                  ,{' '}
+                  {accommodation.addressStreet ||
+                  accommodation.addressZip ||
+                  accommodation.addressCity
+                    ? ', '
+                    : ''}
                   {tCountries(
                     accommodation.addressCountry.toLowerCase() as Parameters<
                       typeof tCountries
@@ -98,23 +120,42 @@ export async function AccommodationCard({
           )}
 
           <div className="mt-2 flex flex-wrap gap-3">
+            {accommodation.phone && (
+              <span>
+                <i className="icon-phone pr-1" aria-hidden="true"></i>
+                <a
+                  href={`tel:${accommodation.phone.replace(/[^\d+]/g, '')}`}
+                  className="text-sm text-primary underline-offset-4 hover:underline">
+                  {accommodation.phone}
+                </a>
+              </span>
+            )}
             {accommodation.email && (
-              <a
-                href={`mailto:${accommodation.email}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-primary underline-offset-4 hover:underline">
-                {accommodation.email}
-              </a>
+              <div>
+                <i
+                  className="icon-envelope-o translate-y-0.5 inline-block pr-1"
+                  aria-hidden="true"></i>
+                <a
+                  href={`mailto:${accommodation.email}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-primary underline-offset-4 hover:underline">
+                  {accommodation.email}
+                </a>
+              </div>
             )}
             {accommodation.website && (
-              <a
-                href={accommodation.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-primary underline-offset-4 hover:underline">
-                {accommodation.website}
-              </a>
+              <div>
+                <i className="icon-sphere pr-1" aria-hidden="true"></i>
+
+                <a
+                  href={accommodation.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-primary underline-offset-4 hover:underline">
+                  {accommodation.website}
+                </a>
+              </div>
             )}
           </div>
         </div>
@@ -154,6 +195,6 @@ export async function AccommodationCard({
           />
         </div>
       )}
-    </li>
+    </div>
   );
 }

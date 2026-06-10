@@ -61,6 +61,10 @@ export class AccommodationDetailDto {
   priceRange: PriceRange | null;
 
   @Expose()
+  @ApiPropertyOptional({ nullable: true })
+  phone: string | null;
+
+  @Expose()
   @ApiProperty()
   waypointSlug: string;
 

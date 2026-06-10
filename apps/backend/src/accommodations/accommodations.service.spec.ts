@@ -39,10 +39,11 @@ const baseAccommodation = {
   addressCity: null,
   addressCountry: null,
   priceRange: null,
+  phone: null,
   createdBy: USER_ID,
   createdAt: new Date('2026-02-01'),
   updatedAt: new Date('2026-02-01'),
-  caminoPoint: { slug: 'burgos' },
+  caminoPoint: { slug: 'burgos', name: 'Burgos' },
 };
 
 const PILGRIM_ROLES: KindeRole[] = [
@@ -373,6 +374,36 @@ describe('AccommodationsService.update()', () => {
         data: expect.objectContaining({ updatedAt: expect.any(Date) }),
       }),
     );
+  });
+
+  it('stores and returns phone number when phone is provided', async () => {
+    const updated = { ...baseAccommodation, phone: '+34 912 345 678' };
+    const prismaMock = {
+      accommodation: {
+        findUnique: vi.fn().mockResolvedValue(baseAccommodation),
+        update: vi.fn().mockResolvedValue(updated),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(AccommodationsService);
+
+    const dto = Object.assign(new UpdateAccommodationDto(), {
+      phone: '+34 912 345 678',
+    });
+
+    const result = await service.update(
+      ACCOMMODATION_ID,
+      USER_ID,
+      dto,
+      PILGRIM_ROLES,
+    );
+
+    expect(prismaMock.accommodation.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ phone: '+34 912 345 678' }),
+      }),
+    );
+    expect(result.phone).toBe('+34 912 345 678');
   });
 });
 

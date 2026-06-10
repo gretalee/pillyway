@@ -115,6 +115,7 @@ export class AccommodationsService {
           addressCountry: dto.addressCountry,
         }),
         ...(dto.priceRange !== undefined && { priceRange: dto.priceRange }),
+        ...(dto.phone !== undefined && { phone: dto.phone }),
         updatedAt: new Date(),
       },
     });
@@ -197,6 +198,7 @@ export class AccommodationsService {
     addressCity: string | null;
     addressCountry: string | null;
     priceRange: PriceRange | null;
+    phone: string | null;
     createdBy: string;
     createdAt: Date;
     updatedAt: Date;
@@ -218,6 +220,7 @@ export class AccommodationsService {
     dto.addressCity = accommodation.addressCity;
     dto.addressCountry = accommodation.addressCountry;
     dto.priceRange = accommodation.priceRange;
+    dto.phone = accommodation.phone;
     dto.createdBy = accommodation.createdBy;
     dto.createdAt = accommodation.createdAt;
     dto.updatedAt = accommodation.updatedAt;

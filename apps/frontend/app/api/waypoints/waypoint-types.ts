@@ -16,6 +16,7 @@ export interface CreateAccommodationPayload {
   type: AccommodationType;
   email?: string | null;
   website?: string | null;
+  phone?: string | null;
   addressStreet?: string | null;
   addressZip?: string | null;
   addressCity?: string | null;

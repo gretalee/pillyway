@@ -31,6 +31,7 @@ interface FormValues {
   type: AccommodationType | '';
   email: string;
   website: string;
+  phone: string;
   addressStreet: string;
   addressZip: string;
   addressCity: string;
@@ -75,6 +76,7 @@ export function AddAccommodationForm({ slug }: AddAccommodationFormProps) {
       type: '',
       email: '',
       website: '',
+      phone: '',
       addressStreet: '',
       addressZip: '',
       addressCity: '',
@@ -91,6 +93,7 @@ export function AddAccommodationForm({ slug }: AddAccommodationFormProps) {
   const typeId = 'accommodation-type';
   const emailId = 'accommodation-email';
   const websiteId = 'accommodation-website';
+  const phoneId = 'accommodation-phone';
   const addressStreetId = 'accommodation-address-street';
   const addressZipId = 'accommodation-address-zip';
   const addressCityId = 'accommodation-address-city';
@@ -133,6 +136,7 @@ export function AddAccommodationForm({ slug }: AddAccommodationFormProps) {
       type: values.type as AccommodationType,
       ...(values.email.trim() ? { email: values.email.trim() } : {}),
       ...(values.website.trim() ? { website: values.website.trim() } : {}),
+      ...(values.phone.trim() ? { phone: values.phone.trim() } : {}),
       ...(values.addressStreet.trim()
         ? { addressStreet: values.addressStreet.trim() }
         : {}),
@@ -281,6 +285,14 @@ export function AddAccommodationForm({ slug }: AddAccommodationFormProps) {
         <Label htmlFor={websiteId}>{t('field_website')}</Label>
         <div className="mt-1">
           <Input id={websiteId} type="url" {...register('website')} />
+        </div>
+      </div>
+
+      {/* Phone */}
+      <div>
+        <Label htmlFor={phoneId}>{t('field_phone')}</Label>
+        <div className="mt-1">
+          <Input id={phoneId} type="tel" {...register('phone')} />
         </div>
       </div>
 

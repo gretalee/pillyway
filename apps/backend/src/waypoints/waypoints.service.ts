@@ -73,6 +73,7 @@ export class WaypointsService {
         addressCity: dto.addressCity ?? null,
         addressCountry: dto.addressCountry ?? null,
         priceRange: dto.priceRange ?? null,
+        phone: dto.phone ?? null,
         createdBy: userId,
       },
     });
@@ -91,6 +92,7 @@ export class WaypointsService {
       description: created.description,
       imageUrls: created.imageUrls,
       verified: created.verified,
+      phone: created.phone,
       createdBy: created.createdBy,
       createdAt: created.createdAt,
       updatedAt: created.updatedAt,

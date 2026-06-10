@@ -26,6 +26,13 @@ vi.mock('next/link', () => ({
   ),
 }));
 
+// CaminoMainImage uses useQuery internally — stub it out to avoid needing a QueryClientProvider.
+vi.mock('./CaminoMainImage', () => ({
+  default: ({ caminoId }: { caminoId: string }) => (
+    <div data-testid={`camino-image-${caminoId}`} />
+  ),
+}));
+
 // CaminoActionsMenu is irrelevant to the filter behaviour being tested here.
 vi.mock('./CaminoActionsMenu', () => ({
   CaminoActionsMenu: ({ camino }: { camino: { name: string } }) => (

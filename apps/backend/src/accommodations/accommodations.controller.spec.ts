@@ -36,6 +36,7 @@ const mockDto: AccommodationDetailDto = {
   addressCity: null,
   addressCountry: null,
   priceRange: null,
+  phone: null,
   createdBy: 'kinde-user-001',
   createdAt: NOW,
   updatedAt: NOW,
