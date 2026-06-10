@@ -136,10 +136,12 @@ export class CaminosService {
     tx: Prisma.TransactionClient,
   ): Promise<string> {
     const base = slugify(name);
+    if (base === '') {
+      throw new BadRequestException('Camino name cannot be converted into a valid slug.');
+    }
 
     const exists = async (slug: string): Promise<boolean> =>
       !!(await tx.camino.findUnique({ where: { slug } }));
-
     let candidate = base;
     let n = 2;
     while (await exists(candidate)) {
