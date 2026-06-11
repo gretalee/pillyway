@@ -1,10 +1,11 @@
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { getTranslations } from 'next-intl/server';
 import { redirect } from 'next/navigation';
+import { redirectIfLegacyCaminoUrl } from '@/lib/redirectIfLegacyCaminoUrl';
 import { UpdateCaminoForm } from '../components/UpdateCaminoForm';
 
 interface Props {
-  params: Promise<{ camino_id: string }>;
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata() {
@@ -20,7 +21,8 @@ export async function generateMetadata() {
 }
 
 export default async function UpdateCaminoPage({ params }: Props) {
-  const { camino_id } = await params;
+  const { slug } = await params;
+  await redirectIfLegacyCaminoUrl(slug, 'update');
   const { isAuthenticated } = getKindeServerSession();
   const authenticated = await isAuthenticated();
 
@@ -33,7 +35,7 @@ export default async function UpdateCaminoPage({ params }: Props) {
   return (
     <div className="mx-auto w-full max-w-2xl flex-1 px-4 py-6 lg:py-16 sm:px-6 lg:px-8">
       <h1 className="mb-8 text-3xl font-bold tracking-tight">{t('title')}</h1>
-      <UpdateCaminoForm caminoId={camino_id} />
+      <UpdateCaminoForm caminoId={slug} />
     </div>
   );
 }

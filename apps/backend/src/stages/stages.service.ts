@@ -31,6 +31,8 @@ interface StagePair {
   endHasAccommodation: boolean;
 }
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 // ─── Service ─────────────────────────────────────────────────────────────────
 
 @Injectable()
@@ -38,6 +40,27 @@ export class StagesService {
   private readonly logger = new Logger(StagesService.name);
 
   constructor(private readonly prisma: PrismaService) {}
+
+  // ── resolveCaminoId ───────────────────────────────────────────────────────────
+
+  private async resolveCaminoId(slugOrId: string): Promise<string> {
+    // Slug lookup first — handles the edge case where a slug matches the UUID pattern.
+    const bySlug = await this.prisma.camino.findUnique({
+      where: { slug: slugOrId },
+      select: { id: true },
+    });
+    if (bySlug) return bySlug.id;
+
+    if (UUID_RE.test(slugOrId)) {
+      const byId = await this.prisma.camino.findUnique({
+        where: { id: slugOrId },
+        select: { id: true },
+      });
+      if (byId) return byId.id;
+    }
+
+    throw new NotFoundException('Camino not found.');
+  }
 
   // ── findByCamino ─────────────────────────────────────────────────────────────
 
@@ -47,7 +70,8 @@ export class StagesService {
    *
    * @throws NotFoundException when the Camino does not exist.
    */
-  async findByCamino(caminoId: string): Promise<StageListItem[]> {
+  async findByCamino(slugOrId: string): Promise<StageListItem[]> {
+    const caminoId = await this.resolveCaminoId(slugOrId);
     const orderedPoints = await this.prisma.caminoPointOrder.findMany({
       where: { caminoId },
       orderBy: { position: 'asc' },
@@ -159,7 +183,8 @@ export class StagesService {
    *
    * @throws NotFoundException when the Camino does not exist or stageNumber is out of range.
    */
-  async findOne(caminoId: string, stageNumber: number): Promise<StageDetail> {
+  async findOne(slugOrId: string, stageNumber: number): Promise<StageDetail> {
+    const caminoId = await this.resolveCaminoId(slugOrId);
     const orderedPoints = await this.prisma.caminoPointOrder.findMany({
       where: { caminoId },
       orderBy: { position: 'asc' },
@@ -264,7 +289,7 @@ export class StagesService {
    * @throws NotFoundException when the Camino does not exist or stageNumber is out of range.
    */
   async update(
-    caminoId: string,
+    slugOrId: string,
     stageNumber: number,
     dto: UpdateStageDto,
     userRoles: string[],
@@ -275,6 +300,7 @@ export class StagesService {
       );
     }
 
+    const caminoId = await this.resolveCaminoId(slugOrId);
     const orderedPoints = await this.prisma.caminoPointOrder.findMany({
       where: { caminoId },
       orderBy: { position: 'asc' },

@@ -2,6 +2,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? '';
 
 export interface CaminoSummary {
   id: string;
+  slug: string;
   name: string;
   description: string | null;
   verified: boolean;
@@ -19,6 +20,7 @@ export interface CaminoPointDetail {
 
 export interface CaminoDetailFull {
   id: string;
+  slug: string;
   name: string;
   description: string | null;
   verified: boolean;

@@ -55,6 +55,7 @@ vi.mock('./DeleteCaminoDialog', () => ({
 
 const TEST_CAMINO = {
   id: 'camino-99',
+  slug: 'camino-del-norte',
   name: 'Camino del Norte',
   createdBy: 'user-1',
   createdAt: new Date(Date.now() - 60_000).toISOString(), // 1 min ago — within window
@@ -109,7 +110,7 @@ describe('CaminoActionsMenu — edit action', () => {
     const user = userEvent.setup();
     renderMenu();
     await user.click(screen.getByText('menu_change_data'));
-    expect(mockPush).toHaveBeenCalledWith(`/caminos/${TEST_CAMINO.id}/update`);
+    expect(mockPush).toHaveBeenCalledWith(`/caminos/${TEST_CAMINO.slug}/update`);
   });
 });
 

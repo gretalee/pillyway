@@ -30,8 +30,10 @@ function makeTx() {
   return {
     camino: {
       findFirst: vi.fn().mockResolvedValue(null),
+      findUnique: vi.fn().mockResolvedValue(null), // slug uniqueness check in generateCaminoSlug
       create: vi.fn().mockResolvedValue({
         id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        slug: 'camino-frances',
         name: 'Camino Francés',
         description: 'The most popular route.',
         verified: false,
@@ -447,6 +449,7 @@ const NO_ROLES: KindeRole[] = [];
 
 const baseCamino = {
   id: CAMINO_ID,
+  slug: 'camino-frances',
   name: 'Camino Francés',
   description: 'A popular route.',
   verified: false,
@@ -462,6 +465,7 @@ const caminoWithOrder = {
       position: 1,
       caminoPoint: {
         id: 'pt-1',
+        slug: 'saint-jean',
         name: 'Saint-Jean',
         country: 'france',
         description: null,
@@ -477,31 +481,55 @@ const caminoWithPointIds = {
   caminoPointOrder: [{ caminoPointId: 'pt-1' }],
 };
 
-// ─── CaminosService.findById() ───────────────────────────────────────────────
+// ─── CaminosService.findBySlugOrId() ────────────────────────────────────────
 
-describe('CaminosService.findById()', () => {
-  it('returns CaminoDetailFull with ordered caminoPoints when camino exists', async () => {
+describe('CaminosService.findBySlugOrId()', () => {
+  it('returns CaminoDetailFull when looked up by slug', async () => {
     const prismaMock = {
-      camino: { findUnique: vi.fn().mockResolvedValue(caminoWithOrder) },
+      camino: {
+        findUnique: vi
+          .fn()
+          .mockResolvedValueOnce(caminoWithOrder)  // slug lookup succeeds
+          .mockResolvedValue(null),
+      },
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
-    const result = await service.findById(CAMINO_ID);
+    const result = await service.findBySlugOrId('camino-frances');
 
     expect(result.id).toBe(CAMINO_ID);
+    expect(result.slug).toBe('camino-frances');
     expect(result.caminoPoints).toHaveLength(1);
     expect(result.caminoPoints[0].position).toBe(1);
   });
 
-  it('throws NotFoundException when camino does not exist', async () => {
+  it('falls back to UUID lookup when slug is not found', async () => {
+    const prismaMock = {
+      camino: {
+        findUnique: vi
+          .fn()
+          .mockResolvedValueOnce(null)           // slug lookup misses
+          .mockResolvedValueOnce(caminoWithOrder), // UUID lookup hits
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
+
+    const result = await service.findBySlugOrId(CAMINO_ID);
+
+    expect(result.id).toBe(CAMINO_ID);
+    expect(result.slug).toBe('camino-frances');
+  });
+
+  it('throws NotFoundException when neither slug nor UUID matches', async () => {
     const prismaMock = {
       camino: { findUnique: vi.fn().mockResolvedValue(null) },
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
-    await expect(service.findById(CAMINO_ID)).rejects.toBeInstanceOf(
+    await expect(service.findBySlugOrId('camino-frances')).rejects.toBeInstanceOf(
       NotFoundException,
     );
   });
@@ -522,7 +550,8 @@ describe('CaminosService.update()', () => {
 
   // Builds a Prisma mock suitable for update() tests.
   // firstResult  — returned by the first camino.findUnique (existence + removal check)
-  // secondResult — returned by the second camino.findUnique (findById after update)
+  // secondResult — returned by the third camino.findUnique (findBySlugOrId UUID fallback after update)
+  // The second call is the slug lookup inside findBySlugOrId — always null because the id is a UUID.
   function makeUpdatePrismaMock(
     firstResult: object = caminoWithPointIds,
     secondResult: object = caminoWithOrder,
@@ -530,8 +559,9 @@ describe('CaminosService.update()', () => {
     const caminoMock = {
       findUnique: vi
         .fn()
-        .mockResolvedValueOnce(firstResult)
-        .mockResolvedValueOnce(secondResult),
+        .mockResolvedValueOnce(firstResult)  // update(): existence check
+        .mockResolvedValueOnce(null)          // findBySlugOrId: slug lookup (miss — id is a UUID)
+        .mockResolvedValueOnce(secondResult), // findBySlugOrId: UUID fallback
       findFirst: vi.fn().mockResolvedValue(null),
       update: vi.fn().mockResolvedValue(baseCamino),
     };
@@ -801,8 +831,10 @@ describe('CaminosService — generateSlug() slug generation', () => {
     return {
       camino: {
         findFirst: vi.fn().mockResolvedValue(null),
+        findUnique: vi.fn().mockResolvedValue(null), // camino slug uniqueness check
         create: vi.fn().mockResolvedValue({
           id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+          slug: 'test-camino',
           name: 'Test Camino',
           description: null,
           verified: false,
