@@ -133,7 +133,7 @@ export class CaminoPicturesService {
     });
 
     // 4. Compress and re-encode to WebP. Errors from sharp (corrupt file, decompression
-    //    bomb, unsupported format variant) are caught and surfaced as 422 rather than 500.
+    //    bomb, unsupported format variant) are caught and surfaced as 400 (Bad Request) rather than 500.
     let processedBuffer: Buffer;
     try {
       processedBuffer = await this.imageProcessing.processForUpload(file.buffer);
