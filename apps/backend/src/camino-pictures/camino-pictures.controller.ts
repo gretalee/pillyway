@@ -48,7 +48,7 @@ import {
 import { UploadCaminoPictureDto } from './dto/upload-camino-picture.dto';
 import { UpdateCaminoPictureDto } from './dto/update-camino-picture.dto';
 
-const TEN_MB = 10 * 1024 * 1024;
+const THIRTY_MB = 30 * 1024 * 1024;
 
 @ApiTags('camino-pictures')
 @Controller('caminos/:caminoId/pictures')
@@ -82,7 +82,7 @@ export class CaminoPicturesController {
   @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(
     FileInterceptor('file', {
-      limits: { fileSize: TEN_MB },
+      limits: { fileSize: THIRTY_MB },
     }),
   )
   @ApiBearerAuth()
@@ -91,8 +91,9 @@ export class CaminoPicturesController {
     summary: 'Upload a picture for a camino (pilgrim role required)',
     description:
       'Uploads an image as either the primary (hero) picture or a gallery picture. ' +
+      'Images are automatically resized (longest edge ≤ 1920 px) and re-encoded as WebP before storage. ' +
       'MIME validation is two-layered: declared Content-Type header (FileTypeValidator) and magic-byte inspection (file-type). ' +
-      'Maximum file size: 10 MB. Maximum pictures per camino: 50.',
+      'Maximum upload size: 30 MB. Maximum pictures per camino: 50.',
   })
   @ApiBody({
     schema: {
@@ -102,7 +103,7 @@ export class CaminoPicturesController {
         file: {
           type: 'string',
           format: 'binary',
-          description: 'Image file (JPEG, PNG, or WebP, max 10 MB)',
+          description: 'Image file (JPEG, PNG, or WebP, max 30 MB — automatically resized and converted to WebP)',
         },
         isPrimary: {
           type: 'string',
@@ -133,8 +134,8 @@ export class CaminoPicturesController {
       new ParseFilePipe({
         validators: [
           new MaxFileSizeValidator({
-            maxSize: TEN_MB,
-            message: 'File exceeds the maximum size of 10 MB',
+            maxSize: THIRTY_MB,
+            message: 'File exceeds the maximum size of 30 MB',
           }),
           new FileTypeValidator({
             fileType: /^image\/(jpeg|png|webp)$/,

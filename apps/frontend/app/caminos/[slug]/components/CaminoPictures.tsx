@@ -45,11 +45,13 @@ function uploadErrorMessage(
     key:
       | 'upload_error_too_large'
       | 'upload_error_wrong_type'
+      | 'upload_error_cannot_process'
       | 'upload_error_primary_exists'
       | 'limit_reached'
       | 'upload_error_generic',
   ) => string,
 ): string {
+  if (status === 400) return t('upload_error_cannot_process');
   if (status === 413) return t('upload_error_too_large');
   if (status === 415) return t('upload_error_wrong_type');
   if (status === 409) return t('upload_error_primary_exists');
