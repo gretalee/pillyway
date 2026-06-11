@@ -15,6 +15,7 @@ import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { EventLogService } from '../event-log/event-log.service';
 import { EventType } from '../event-log/event-type.enum';
 import { PrismaService } from '../prisma/prisma.service';
+import { ImageProcessingService } from '../uploads/image-processing.service';
 import { UploadsService } from '../uploads/uploads.service';
 import {
   CaminoPictureResponseDto,
@@ -22,12 +23,6 @@ import {
 } from './dto/camino-picture-response.dto';
 
 const ALLOWED_MIME = new Set(['image/jpeg', 'image/png', 'image/webp']);
-
-const EXT_MAP: Record<string, string> = {
-  'image/jpeg': 'jpeg',
-  'image/png': 'png',
-  'image/webp': 'webp',
-};
 
 const MAX_PICTURES = 50;
 
@@ -38,6 +33,7 @@ export class CaminoPicturesService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly uploadsService: UploadsService,
+    private readonly imageProcessing: ImageProcessingService,
     private readonly eventLog: EventLogService,
   ) {}
 
@@ -118,10 +114,14 @@ export class CaminoPicturesService {
       }
     }
 
+    // 3b. Compress and re-encode to WebP
+    const processedBuffer = await this.imageProcessing.processForUpload(
+      file.buffer,
+    );
+
     // 4. Generate picture ID before transaction and S3 upload so DB record and key are consistent
     const pictureId = randomUUID();
-    const ext = EXT_MAP[detected.mime];
-    const key = `camino-pictures/${caminoId}/${pictureId}.${ext}`;
+    const key = `camino-pictures/${caminoId}/${pictureId}.webp`;
 
     // 5. Wrap the 50-picture count check and the DB insert in a transaction to prevent races
     //    The S3 upload happens outside the transaction; on S3 failure we skip the DB insert.
@@ -150,7 +150,7 @@ export class CaminoPicturesService {
 
     // 6. Upload to S3 — key uses only server-generated values; no user filename
     try {
-      url = await this.uploadsService.uploadImage(key, file);
+      url = await this.uploadsService.uploadImage(key, processedBuffer, 'image/webp');
     } catch (err) {
       this.logger.error(
         `S3 upload failed for camino picture caminoId=${caminoId} pictureId=${pictureId}: ${String(err)}`,

@@ -42,13 +42,17 @@ export class UploadsService {
   }
 
   /**
-   * Uploads a single file to S3 using a caller-supplied key.
+   * Uploads a raw buffer to S3 using a caller-supplied key and content type.
    * The key format is fully controlled by the caller — no filename appending.
    * Returns the public URL for the uploaded object.
    */
-  async uploadImage(key: string, file: Express.Multer.File): Promise<string> {
+  async uploadImage(
+    key: string,
+    buffer: Buffer,
+    contentType: string,
+  ): Promise<string> {
     this.logger.debug(
-      `Uploading key="${key}" size=${file.size} mime=${file.mimetype}`,
+      `Uploading key="${key}" size=${buffer.byteLength} mime=${contentType}`,
     );
 
     try {
@@ -56,8 +60,8 @@ export class UploadsService {
         new PutObjectCommand({
           Bucket: this.bucket,
           Key: key,
-          Body: file.buffer,
-          ContentType: file.mimetype,
+          Body: buffer,
+          ContentType: contentType,
         }),
       );
     } catch (err) {

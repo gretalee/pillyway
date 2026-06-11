@@ -15,6 +15,7 @@ import { Prisma } from '@prisma/client';
 import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { EventLogService } from '../event-log/event-log.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { ImageProcessingService } from '../uploads/image-processing.service';
 import { UploadsService } from '../uploads/uploads.service';
 import { CaminosService } from '../caminos/caminos.service';
 import { StagesService } from '../stages/stages.service';
@@ -75,6 +76,12 @@ function makeUploadsServiceMock() {
     uploadImage: vi.fn().mockResolvedValue(PICTURE_URL),
     deleteImages: vi.fn().mockResolvedValue(undefined),
     deleteImageStrict: vi.fn().mockResolvedValue(undefined),
+  };
+}
+
+function makeImageProcessingServiceMock() {
+  return {
+    processForUpload: vi.fn().mockImplementation((buf: Buffer) => Promise.resolve(buf)),
   };
 }
 
@@ -159,6 +166,7 @@ async function buildModule(
       CaminoPicturesService,
       { provide: PrismaService, useValue: prismaMock },
       { provide: UploadsService, useValue: uploadsMock },
+      { provide: ImageProcessingService, useValue: makeImageProcessingServiceMock() },
       { provide: EventLogService, useValue: { logEvent: vi.fn() } },
     ],
   })
