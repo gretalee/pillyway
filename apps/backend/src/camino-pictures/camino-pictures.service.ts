@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   ForbiddenException,
   Injectable,
@@ -101,34 +102,7 @@ export class CaminoPicturesService {
       );
     }
 
-    // 3. If uploading as primary, ensure no primary exists yet
-    if (isPrimary) {
-      const existingPrimary = await this.prisma.caminoPicture.findFirst({
-        where: { caminoId, isPrimary: true },
-        select: { id: true },
-      });
-      if (existingPrimary) {
-        throw new ConflictException(
-          'A primary picture already exists for this camino.',
-        );
-      }
-    }
-
-    // 3b. Compress and re-encode to WebP
-    const processedBuffer = await this.imageProcessing.processForUpload(
-      file.buffer,
-    );
-
-    // 4. Generate picture ID before transaction and S3 upload so DB record and key are consistent
-    const pictureId = randomUUID();
-    const key = `camino-pictures/${caminoId}/${pictureId}.webp`;
-
-    // 5. Wrap the 50-picture count check and the DB insert in a transaction to prevent races
-    //    The S3 upload happens outside the transaction; on S3 failure we skip the DB insert.
-    let url: string;
-
-    // Perform the 50-picture count check and compute maxPosition inside a transaction.
-    // We do this before the S3 upload so we fail fast before incurring S3 cost.
+    // 3. Fail fast: check the 50-picture limit and compute maxPosition before any CPU-heavy work.
     const { maxPosition } = await this.prisma.$transaction(async (tx) => {
       const count = await tx.caminoPicture.count({ where: { caminoId } });
       if (count >= MAX_PICTURES) {
@@ -137,16 +111,46 @@ export class CaminoPicturesService {
         );
       }
 
-      if (!isPrimary) {
-        const maxPositionRecord = await tx.caminoPicture.aggregate({
-          where: { caminoId, isPrimary: false },
-          _max: { position: true },
+      // If uploading as primary, ensure no primary exists yet
+      if (isPrimary) {
+        const existingPrimary = await tx.caminoPicture.findFirst({
+          where: { caminoId, isPrimary: true },
+          select: { id: true },
         });
-        return { maxPosition: maxPositionRecord._max.position ?? 0 };
+        if (existingPrimary) {
+          throw new ConflictException(
+            'A primary picture already exists for this camino.',
+          );
+        }
+        return { maxPosition: 0 };
       }
 
-      return { maxPosition: 0 };
+      const maxPositionRecord = await tx.caminoPicture.aggregate({
+        where: { caminoId, isPrimary: false },
+        _max: { position: true },
+      });
+      return { maxPosition: maxPositionRecord._max.position ?? 0 };
     });
+
+    // 4. Compress and re-encode to WebP. Errors from sharp (corrupt file, decompression
+    //    bomb, unsupported format variant) are caught and surfaced as 422 rather than 500.
+    let processedBuffer: Buffer;
+    try {
+      processedBuffer = await this.imageProcessing.processForUpload(file.buffer);
+    } catch (err) {
+      this.logger.warn(
+        `Image processing failed for caminoId=${caminoId}: ${String(err)}`,
+      );
+      throw new BadRequestException(
+        'The image could not be processed. Please ensure it is a valid, non-corrupted image file.',
+      );
+    }
+
+    // 5. Generate picture ID before S3 upload so DB record and key are consistent
+    const pictureId = randomUUID();
+    const key = `camino-pictures/${caminoId}/${pictureId}.webp`;
+
+    let url: string;
 
     // 6. Upload to S3 — key uses only server-generated values; no user filename
     try {
