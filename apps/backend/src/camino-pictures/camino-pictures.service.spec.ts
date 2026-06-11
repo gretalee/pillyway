@@ -518,7 +518,7 @@ describe('CaminoPicturesService.uploadPicture()', () => {
     expect(uploadsServiceMock.deleteImages).toHaveBeenCalledOnce();
   });
 
-  it('returns 422 and does not reach S3 when sharp throws', async () => {
+  it('returns 400 and does not reach S3 when sharp throws', async () => {
     const prismaMock = makePrismaMock({
       pictureCount: vi.fn().mockResolvedValue(0),
       pictureFindFirst: vi.fn().mockResolvedValue(null),
