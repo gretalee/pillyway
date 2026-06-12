@@ -8,7 +8,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const [t, og] = await Promise.all([getTranslations('meta'), sharedOpenGraph()]);
   return {
     description: t('description'),
-    openGraph: { ...og, url: '/' },
+    openGraph: { ...og, title: t('title'), description: t('description'), url: '/' },
   };
 }
 import heroBg from '@/assets/img/IMG_4978.jpg';
