@@ -16,9 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('meta');
 
   const ogLocale = locale;
-  const ogAlternateLocale = SUPPORTED_LOCALES.filter((l: string) => l !== locale).join(
-    ', ',
-  );
+  const ogAlternateLocale = SUPPORTED_LOCALES.filter((l) => l !== locale);
 
   return {
     metadataBase: new URL(SITE_URL),
