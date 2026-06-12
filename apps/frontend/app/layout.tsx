@@ -1,4 +1,5 @@
 import { getLocale, getMessages, getTimeZone, getTranslations } from 'next-intl/server';
+import type { Metadata } from 'next';
 import { Providers } from '@/providers/providers';
 import { Header } from '@/app/components/layout/Header';
 import { Footer } from '@/app/components/layout/Footer';
@@ -6,12 +7,36 @@ import { PathTracker } from '@/app/components/PathTracker';
 import { getAuthUser } from '@/lib/getAuthUser';
 import type { Locale } from '@/i18n/detectLocale';
 import '../assets/styles/global.css';
+import { SUPPORTED_LOCALES } from '@/i18n/detectLocale';
 
-export async function generateMetadata() {
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pillyway.de';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = (await getLocale()) as Locale;
   const t = await getTranslations('meta');
+
+  const ogLocale = locale;
+  const ogAlternateLocale = SUPPORTED_LOCALES.filter((l: string) => l !== locale).join(
+    ', ',
+  );
+
   return {
-    title: t('title'),
+    metadataBase: new URL(SITE_URL),
+    applicationName: 'Pillyway',
+    title: {
+      default: t('title'),
+      template: `%s | Pillyway`,
+    },
     description: t('description'),
+    openGraph: {
+      siteName: 'Pillyway',
+      type: 'website',
+      locale: ogLocale,
+      alternateLocale: ogAlternateLocale,
+    },
+    twitter: {
+      card: 'summary_large_image',
+    },
   };
 }
 

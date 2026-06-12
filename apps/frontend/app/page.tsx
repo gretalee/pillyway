@@ -1,6 +1,16 @@
 import { getTranslations } from 'next-intl/server';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
+import { sharedOpenGraph } from '@/lib/seo';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const [t, og] = await Promise.all([getTranslations('meta'), sharedOpenGraph()]);
+  return {
+    description: t('description'),
+    openGraph: { ...og, url: '/' },
+  };
+}
 import heroBg from '@/assets/img/IMG_4978.jpg';
 // import heroBg from '@/assets/img/IMG_5240.jpg';
 // import heroBg from '@/assets/img/IMG_5042.jpg';
