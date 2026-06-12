@@ -21,6 +21,8 @@ interface LightboxProps {
   onNavigate: (index: number) => void;
 }
 
+const SWIPE_THRESHOLD = 50;
+
 export function Lightbox({
   images,
   isGalleryMode,
@@ -30,7 +32,8 @@ export function Lightbox({
 }: LightboxProps) {
   const t = useTranslations('camino_detail.pictures.lightbox');
   const closeButtonRef = useRef<HTMLButtonElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
 
   const canGoPrev = isGalleryMode && currentIndex > 0;
   const canGoNext = isGalleryMode && currentIndex < images.length - 1;
@@ -43,6 +46,23 @@ export function Lightbox({
     if (canGoNext) onNavigate(currentIndex + 1);
   }, [canGoNext, currentIndex, onNavigate]);
 
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  }, []);
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    if (touchStartX.current === null || touchStartY.current === null) return;
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+    const deltaY = e.changedTouches[0].clientY - touchStartY.current;
+    touchStartX.current = null;
+    touchStartY.current = null;
+    // Only handle as a horizontal swipe when horizontal movement dominates
+    if (Math.abs(deltaX) < SWIPE_THRESHOLD || Math.abs(deltaX) < Math.abs(deltaY)) return;
+    if (deltaX > 0) handlePrev();
+    else handleNext();
+  }, [handlePrev, handleNext]);
+
   // Focus the close button when the lightbox opens
   useEffect(() => {
     closeButtonRef.current?.focus();
@@ -50,15 +70,10 @@ export function Lightbox({
 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === 'Escape') {
-        onClose();
-      } else if (e.key === 'ArrowLeft') {
-        handlePrev();
-      } else if (e.key === 'ArrowRight') {
-        handleNext();
-      }
+      if (e.key === 'Escape') onClose();
+      else if (e.key === 'ArrowLeft') handlePrev();
+      else if (e.key === 'ArrowRight') handleNext();
     }
-
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [handlePrev, handleNext, onClose]);
@@ -67,15 +82,19 @@ export function Lightbox({
 
   if (!currentImage) return null;
 
+  const btnClass =
+    'flex size-12 items-center justify-center rounded-full bg-white/20 text-white ring-1 ring-white/40 backdrop-blur-sm transition-colors hover:bg-white/30 active:bg-white/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white';
+
   const content = (
     <div
       role="dialog"
       aria-modal="true"
       aria-label={t('title')}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90">
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}>
       {/* Overlay click closes the lightbox */}
       <div
-        ref={overlayRef}
         className="absolute inset-0"
         onClick={onClose}
         aria-hidden="true"
@@ -87,7 +106,7 @@ export function Lightbox({
         type="button"
         aria-label={t('close')}
         onClick={onClose}
-        className="absolute right-4 top-4 z-10 flex size-10 items-center justify-center rounded-full bg-black/50 text-white transition-colors hover:bg-black/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+        className={`absolute right-4 top-4 z-10 ${btnClass}`}>
         <X size={20} aria-hidden="true" />
       </button>
 
@@ -97,7 +116,7 @@ export function Lightbox({
           type="button"
           aria-label={t('prev')}
           onClick={handlePrev}
-          className="absolute left-4 top-1/2 z-10 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white transition-colors hover:bg-black/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+          className={`absolute left-4 top-1/2 z-10 -translate-y-1/2 ${btnClass}`}>
           <ChevronLeft size={24} aria-hidden="true" />
         </button>
       )}
@@ -108,7 +127,7 @@ export function Lightbox({
           type="button"
           aria-label={t('next')}
           onClick={handleNext}
-          className="absolute right-4 top-1/2 z-10 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white transition-colors hover:bg-black/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+          className={`absolute right-4 top-1/2 z-10 -translate-y-1/2 ${btnClass}`}>
           <ChevronRight size={24} aria-hidden="true" />
         </button>
       )}
