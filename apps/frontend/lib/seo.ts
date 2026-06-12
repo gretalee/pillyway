@@ -7,6 +7,6 @@ export async function sharedOpenGraph() {
     siteName: 'Pillyway' as const,
     type: 'website' as const,
     locale,
-    alternateLocale: SUPPORTED_LOCALES.filter((l: string) => l !== locale).join(', '),
+    alternateLocale: SUPPORTED_LOCALES.filter((l) => l !== locale),
   };
 }
