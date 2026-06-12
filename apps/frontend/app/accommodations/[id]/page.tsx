@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import { getAuthUser } from '@/lib/getAuthUser';
 import { fetchAccommodation } from '@/app/api/accommodations/fetch-accommodation';
+import { sharedOpenGraph } from '@/lib/seo';
 import { AccommodationCard } from '@/app/waypoints/[slug]/components/AccommodationCard';
 import { PictureGallery } from '@/app/components/PictureGallery';
 
@@ -11,16 +12,16 @@ interface Props {
 }
 export async function generateMetadata({ params }: Props) {
   const { id } = await params;
-  const t = await getTranslations('accommodation_detail');
+  const [t, og] = await Promise.all([
+    getTranslations('accommodation_detail'),
+    sharedOpenGraph(),
+  ]);
   try {
     const accommodation = await fetchAccommodation(id);
     return {
       title: t('meta_title', { name: accommodation.name }),
       description: t('meta_description'),
-      openGraph: {
-        title: t('meta_title', { name: accommodation.name }),
-        description: t('meta_description'),
-      },
+      openGraph: { ...og, url: `/accommodations/${id}` },
     };
   } catch {
     return { title: t('meta_title', { name: '' }) };

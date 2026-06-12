@@ -24,8 +24,8 @@
     "aria_greeting": "Angemeldet als {name}"
   },
   "meta": {
-    "title": "Pillyway",
-    "description": "Plane deine Pilgerreise."
+    "title": "Mit Pillyway Pilgerwege in Europa entdecken und teilen",
+    "description": "Finde deine nächste Pilgerroute. Plane Etappen, Unterkünfte und Sehenswürdigkeiten entlang bekannter und neuer Jakobswege. Bringe dein Wissen ein und hilf mit, Europas offenste Pilger-Datenbank aufzubauen. Profitiere von den Erfahrungen anderer Pilger und gib dein eigenes Wissen weiter, um künftigen Pilgern zu helfen."
   },
   "home": {
     "heading": "Pillyway",
@@ -34,7 +34,7 @@
     "hero_title": "Entdecke Pilgerwege in ganz Europa",
     "hero_body_1": "Erkunde historische Caminos, abgelegene Pilgerpfade und Fernwanderwege in ganz Europa.",
     "hero_body_2": "Navigiere Etappe für Etappe durch deinen Weg, entdecke Ortschaften, Unterkünfte und Sehenswürdigkeiten entlang der Strecke — und hilf dabei, die offenste Pilgerdatenbank Europas aufzubauen.",
-    "hero_cta": "Pillyway Caminos",
+    "hero_cta": "Alle Pillyway Caminos erkunden",
     "community_title": "Eine gemeinschaftliche Plattform für Pilger",
     "community_body_1": "Pillyway ist eine kollaborative Plattform für Pilger, Wanderer und Fernreisende zu Fuß.",
     "community_body_2": "Viele Pilgerwege außerhalb Spaniens sind nur unzureichend dokumentiert. Informationen zu Etappen, Unterkünften und Wegverläufen sind oft über unzählige Webseiten, Blogs und PDFs verstreut.",
@@ -74,8 +74,8 @@
     "loginInInfo": "Du kannst eigene Caminos erstellen oder bestehende verbessern. Dafür muss du dich <link>anmelden</link>.",
     "empty": "Noch keine Caminos vorhanden. Sei der Erste und erstelle einen!",
     "create_link": "Neuen Camino erstellen",
-    "meta_title": "Caminos | Pillyway",
-    "meta_description": "Entdecke und erkunde Pilgerrouten aus aller Welt.",
+    "meta_title": "Finde hier neue und verifizierte Caminos in Europa",
+    "meta_description": "Hier findest du bewährte und neue Pilgerrouten in Europa. Filtere nach verifizierten Caminos oder gib einfach deinen eigenen Weg ein, um deine nächste Strecke zu planen und dein Wissen mit anderen Pilgern zu teilen.",
     "og_image_alt": "Pillyway Caminos",
     "error_loading": "Die Caminos konnten nicht geladen werden. Bitte versuche es erneut.",
     "verified": "Verifiziert",
@@ -99,7 +99,7 @@
   },
   "caminos_new": {
     "title": "Neuen Camino erstellen",
-    "meta_title": "Neuen Camino erstellen | Pillyway",
+    "meta_title": "Neuen Camino erstellen",
     "meta_description": "Erstelle einen neuen Camino und trage zur Pilgergemeinschaft bei.",
     "pictures_step_heading": "Bilder hinzufügen (optional)",
     "view_camino": "Camino ansehen",
@@ -135,7 +135,7 @@
     "delete": "Löschen"
   },
   "camino_detail": {
-    "meta_title": "{name} | Pillyway",
+    "meta_title": "{name}",
     "meta_description": "Hier findest du alle Stationen und Unterkünfte dieses Caminos.",
     "waypoints_heading": "Wegpunkte",
     "edit_waypoints": "Wegpunkte bearbeiten",
@@ -184,7 +184,7 @@
   },
   "caminos_update": {
     "title": "Camino bearbeiten",
-    "meta_title": "Camino bearbeiten | Pillyway",
+    "meta_title": "Camino bearbeiten",
     "meta_description": "Diese Pilgerroute bearbeiten.",
     "submit": "Änderungen speichern",
     "submitting": "Wird gespeichert…",
@@ -201,8 +201,8 @@
     "reorder_warning_cancel": "Zurück"
   },
   "stage_detail": {
-    "meta_title": "Etappe {number} | Pillyway",
-    "meta_description": "Sieh dir die Details von Etappe {number} dieser Pilgerroute an.",
+    "meta_title": "{name}, Etappe {number}: {start} – {end}",
+    "meta_description": "Finde hier alle Details zu der Etappe zwischen {start} – {end}.",
     "stage_number": "Etappe {number}: {start} – {end}",
     "back_to_camino": "Zurück zum Camino",
     "start_label": "Start",
@@ -223,7 +223,7 @@
   },
   "stage_edit": {
     "title": "Etappe {number} bearbeiten",
-    "meta_title": "Etappe {number} bearbeiten | Pillyway",
+    "meta_title": "Etappe {number} bearbeiten",
     "meta_description": "Entfernung und Beschreibung dieser Etappe bearbeiten.",
     "start_point_label": "Startpunkt",
     "end_point_label": "Endpunkt",
@@ -261,7 +261,7 @@
     "sweden": "SE"
   },
   "auth_error": {
-    "meta_title": "Anmeldung fehlgeschlagen | Pillyway",
+    "meta_title": "Anmeldung fehlgeschlagen",
     "heading": "Anmeldesitzung abgelaufen",
     "message": "Deine Anmeldesitzung ist abgelaufen oder nicht mehr gültig. Bitte versuche dich erneut anzumelden.",
     "retry": "Erneut anmelden"
@@ -274,7 +274,7 @@
     "nav_caminos": "Caminos"
   },
   "waypoint_detail": {
-    "meta_title": "{name} | Pillyway",
+    "meta_title": "{name}",
     "meta_description": "Unterkünfte und Sehenswürdigkeiten in {name}, {country} entdecken.",
     "back_label": "Zurück",
     "accommodations_heading": "Unterkünfte",
@@ -314,15 +314,15 @@
     "delete_error_forbidden": "Du bist nicht berechtigt, dieses Element zu löschen. Nur der Ersteller (innerhalb von 1 Stunde nach der Erstellung) oder ein Administrator kann es löschen."
   },
   "accommodation_detail": {
-    "meta_title": "{name} | Pillyway",
-    "meta_description": "Unterkunft im Detail ansehen.",
+    "meta_title": "{name}",
+    "meta_description": "Sieh dir Fotos, Lage und Kontaktdaten dieser Unterkunft an.",
     "back_label": "Zurück",
     "edit_label": "Unterkunft bearbeiten",
     "error_loading": "Unterkunft konnte nicht geladen werden. Bitte versuche es erneut."
   },
   "accommodation_new": {
     "title": "Unterkunft hinzufügen",
-    "meta_title": "Unterkunft hinzufügen | Pillyway",
+    "meta_title": "Unterkunft hinzufügen",
     "meta_description": "Neue Unterkunft für diesen Wegpunkt hinzufügen.",
     "field_name": "Name",
     "field_description": "Beschreibung (optional)",
@@ -350,7 +350,7 @@
   },
   "sight_new": {
     "title": "Sehenswürdigkeit hinzufügen",
-    "meta_title": "Sehenswürdigkeit hinzufügen | Pillyway",
+    "meta_title": "Sehenswürdigkeit hinzufügen",
     "meta_description": "Neue Sehenswürdigkeit für diesen Wegpunkt hinzufügen.",
     "field_name": "Name",
     "field_description": "Beschreibung (optional)",
@@ -372,7 +372,7 @@
   },
   "accommodation_edit": {
     "title": "Unterkunft bearbeiten",
-    "meta_title": "Unterkunft bearbeiten | Pillyway",
+    "meta_title": "Unterkunft bearbeiten",
     "submit_label": "Änderungen speichern",
     "submitting": "Wird gespeichert…",
     "cancel": "Abbrechen",
@@ -383,7 +383,7 @@
   },
   "sight_edit": {
     "title": "Sehenswürdigkeit bearbeiten",
-    "meta_title": "Sehenswürdigkeit bearbeiten | Pillyway",
+    "meta_title": "Sehenswürdigkeit bearbeiten",
     "submit_label": "Änderungen speichern",
     "submitting": "Wird gespeichert…",
     "cancel": "Abbrechen",
@@ -423,7 +423,7 @@
   },
   "imprint": {
     "title": "Impressum",
-    "meta_title": "Impressum | Pillyway",
+    "meta_title": "Impressum",
     "meta_description": "Impressum und Anbieterkennzeichnung für Pillyway.",
     "legal_notice": "Angaben gemäß § 5 TMG",
     "operator_heading": "Betreiber der Plattform",
@@ -452,7 +452,7 @@
   },
   "privacy": {
     "title": "Datenschutzerklärung",
-    "meta_title": "Datenschutzerklärung | Pillyway",
+    "meta_title": "Datenschutzerklärung",
     "meta_description": "Informationen zur Verarbeitung personenbezogener Daten auf Pillyway.",
     "intro": "Diese Datenschutzerklärung informiert über die Art, den Umfang und den Zweck der Verarbeitung personenbezogener Daten innerhalb der Webanwendung Pillyway.",
     "responsible_heading": "1. Verantwortlicher",
@@ -513,7 +513,7 @@
   },
   "tac": {
     "title": "Nutzungsbedingungen",
-    "meta_title": "Nutzungsbedingungen | Pillyway",
+    "meta_title": "Nutzungsbedingungen",
     "meta_description": "Nutzungsbedingungen für die Pillyway-Plattform.",
     "intro": "Diese Nutzungsbedingungen regeln die Nutzung der Webanwendung Pillyway. Durch die Nutzung der Plattform erklären Sie sich mit diesen Bedingungen einverstanden.",
     "purpose_heading": "1. Zweck der Plattform",

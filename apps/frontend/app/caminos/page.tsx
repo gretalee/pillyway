@@ -4,18 +4,6 @@ import { getAuthUser } from '@/lib/getAuthUser';
 import { CaminoList } from './components/CaminoList';
 import Link from 'next/link';
 
-export async function generateMetadata() {
-  const t = await getTranslations('caminos');
-  return {
-    title: t('meta_title'),
-    description: t('meta_description'),
-    openGraph: {
-      title: t('meta_title'),
-      description: t('meta_description'),
-    },
-  };
-}
-
 export default async function CaminosPage() {
   const t = await getTranslations('caminos');
   const user = await getAuthUser();

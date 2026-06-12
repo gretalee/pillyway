@@ -24,8 +24,8 @@
     "aria_greeting": "Signed in as {name}"
   },
   "meta": {
-    "title": "Pillyway",
-    "description": "Plan your pilgrimage journey."
+    "title": "Pillyway - Pilgrimage routes across Europe",
+    "description": "Find your next pilgrimage route. Plan stages, accommodations and sights along well-known and new caminos. Contribute your knowledge and help build Europe's most open pilgrimage database. Benefit from the experiences of other pilgrims and share the knowledge you have gained to help future pilgrims."
   },
   "home": {
     "heading": "Pillyway",
@@ -74,8 +74,8 @@
     "loginInInfo": "You can create your own caminos or improve existing ones by <link>logging in</link>.",
     "empty": "No caminos yet. Be the first to create one!",
     "create_link": "Create New Camino",
-    "meta_title": "Caminos | Pillyway",
-    "meta_description": "Discover and explore pilgrimage routes from around the world.",
+    "meta_title": "Find new and verified caminos across Europe",
+    "meta_description": "Here you can find proven and new pilgrimage routes in Europe. Filter by verified caminos or simply enter your own route to plan your next journey and share your knowledge with other pilgrims.",
     "og_image_alt": "Pillyway Caminos",
     "error_loading": "Failed to load caminos. Please try again.",
     "verified": "Verified",
@@ -99,7 +99,7 @@
   },
   "caminos_new": {
     "title": "Create New Camino",
-    "meta_title": "Create New Camino | Pillyway",
+    "meta_title": "Create New Camino",
     "meta_description": "Create a new camino and contribute to the pilgrimage community.",
     "pictures_step_heading": "Add pictures (optional)",
     "view_camino": "View camino",
@@ -135,7 +135,7 @@
     "delete": "Delete"
   },
   "camino_detail": {
-    "meta_title": "{name} | Pillyway",
+    "meta_title": "{name}",
     "meta_description": "Explore all stages and accommodations of {name}.",
     "waypoints_heading": "Waypoints",
     "edit_waypoints": "Edit waypoints",
@@ -184,7 +184,7 @@
   },
   "caminos_update": {
     "title": "Update Camino",
-    "meta_title": "{name} | Pillyway",
+    "meta_title": "{name}",
     "meta_description": "Here you can see and edit all stages and accommodations of this camino.",
     "submit": "Save changes",
     "submitting": "Saving…",
@@ -201,8 +201,8 @@
     "reorder_warning_cancel": "Go back"
   },
   "stage_detail": {
-    "meta_title": "Stage {number} | Pillyway",
-    "meta_description": "View the details of stage {number} of this pilgrimage route.",
+    "meta_title": "{name}, stage {number}: {start} – {end}",
+    "meta_description": "Find here all details about the stage between {start} – {end}.",
     "stage_number": "Stage {number}: {start} – {end}",
     "back_to_camino": "Back to camino",
     "start_label": "Start",
@@ -223,7 +223,7 @@
   },
   "stage_edit": {
     "title": "Edit Stage {number}",
-    "meta_title": "Edit Stage {number} | Pillyway",
+    "meta_title": "Edit Stage {number}",
     "meta_description": "Edit the distance and description of this stage.",
     "start_point_label": "Start point",
     "end_point_label": "End point",
@@ -261,7 +261,7 @@
     "sweden": "SE"
   },
   "auth_error": {
-    "meta_title": "Login failed | Pillyway",
+    "meta_title": "Login failed",
     "heading": "Login session expired",
     "message": "Your login session has expired or is no longer valid. Please try logging in again.",
     "retry": "Log in again"
@@ -274,7 +274,7 @@
     "nav_caminos": "Caminos"
   },
   "waypoint_detail": {
-    "meta_title": "{name} | Pillyway",
+    "meta_title": "{name}",
     "meta_description": "Discover accommodations and sights in {name}, {country}.",
     "back_label": "Back",
     "accommodations_heading": "Accommodations",
@@ -314,15 +314,15 @@
     "delete_error_forbidden": "You are not authorized to delete this item. Only the creator (within 1 hour of creation) or an administrator can delete it."
   },
   "accommodation_detail": {
-    "meta_title": "{name} | Pillyway",
-    "meta_description": "View accommodation details.",
+    "meta_title": "{name}",
+    "meta_description": "See photos, location and contact details of this accommodation.",
     "back_label": "Back",
     "edit_label": "Edit accommodation",
     "error_loading": "Failed to load accommodation. Please try again."
   },
   "accommodation_new": {
     "title": "Add Accommodation",
-    "meta_title": "Add Accommodation | Pillyway",
+    "meta_title": "Add Accommodation",
     "meta_description": "Add a new accommodation for this waypoint.",
     "field_name": "Name",
     "field_description": "Description (optional)",
@@ -350,7 +350,7 @@
   },
   "sight_new": {
     "title": "Add Sight",
-    "meta_title": "Add Sight | Pillyway",
+    "meta_title": "Add Sight",
     "meta_description": "Add a new sight for this waypoint.",
     "field_name": "Name",
     "field_description": "Description (optional)",
@@ -372,7 +372,7 @@
   },
   "accommodation_edit": {
     "title": "Edit Accommodation",
-    "meta_title": "Edit Accommodation | Pillyway",
+    "meta_title": "Edit Accommodation",
     "submit_label": "Save changes",
     "submitting": "Saving…",
     "cancel": "Cancel",
@@ -383,7 +383,7 @@
   },
   "sight_edit": {
     "title": "Edit Sight",
-    "meta_title": "Edit Sight | Pillyway",
+    "meta_title": "Edit Sight",
     "submit_label": "Save changes",
     "submitting": "Saving…",
     "cancel": "Cancel",
@@ -423,7 +423,7 @@
   },
   "imprint": {
     "title": "Imprint",
-    "meta_title": "Imprint | Pillyway",
+    "meta_title": "Imprint",
     "meta_description": "Imprint and provider identification for Pillyway.",
     "legal_notice": "Information pursuant to § 5 TMG",
     "operator_heading": "Platform operator",
@@ -452,7 +452,7 @@
   },
   "privacy": {
     "title": "Privacy Policy",
-    "meta_title": "Privacy Policy | Pillyway",
+    "meta_title": "Privacy Policy",
     "meta_description": "Information on the processing of personal data on Pillyway.",
     "intro": "This privacy policy informs you about the nature, scope and purpose of the processing of personal data within the Pillyway web application.",
     "responsible_heading": "1. Controller",
@@ -513,7 +513,7 @@
   },
   "tac": {
     "title": "Terms and Conditions",
-    "meta_title": "Terms and Conditions | Pillyway",
+    "meta_title": "Terms and Conditions",
     "meta_description": "Terms and conditions for the Pillyway platform.",
     "intro": "These terms and conditions govern the use of the Pillyway web application. By using the platform, you agree to these terms.",
     "purpose_heading": "1. Purpose of the platform",

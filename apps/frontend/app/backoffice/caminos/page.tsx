@@ -6,7 +6,7 @@ import { BackofficeCaminosClient } from './BackofficeCaminosClient';
 export async function generateMetadata() {
   const t = await getTranslations('backoffice_caminos');
   return {
-    title: t('heading') + ' | Pillyway',
+    title: t('heading'),
     description: t('subtitle'),
     robots: { index: false, follow: false },
   };

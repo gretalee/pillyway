@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import { fetchWaypoint } from '@/app/api/waypoints/fetch-waypoint';
+import { sharedOpenGraph } from '@/lib/seo';
 import { fetchAccommodationsByWaypoint } from '@/app/api/accommodations/fetch-accommodation';
 import { fetchSightsByWaypoint } from '@/app/api/sights/fetch-sight';
 import { buttonVariants } from '@/app/components/ui/button';
@@ -18,14 +19,14 @@ interface Props {
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   try {
-    const waypoint = await fetchWaypoint(slug);
-    const t = await getTranslations('waypoint_detail');
+    const [waypoint, t, og] = await Promise.all([
+      fetchWaypoint(slug),
+      getTranslations('waypoint_detail'),
+      sharedOpenGraph(),
+    ]);
     const title = t('meta_title', { name: waypoint.name });
-    const description = t('meta_description', {
-      name: waypoint.name,
-      country: waypoint.country,
-    });
-    return { title, description, openGraph: { title, description } };
+    const description = t('meta_description', { name: waypoint.name, country: waypoint.country });
+    return { title, description, openGraph: { ...og, url: `/waypoints/${slug}` } };
   } catch {
     return {};
   }

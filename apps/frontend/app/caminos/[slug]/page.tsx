@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { fetchCamino } from '@/app/api/caminos/caminos';
+import { sharedOpenGraph } from '@/lib/seo';
 import { getAuthUser } from '@/lib/getAuthUser';
 import { redirectIfLegacyCaminoUrl } from '@/lib/redirectIfLegacyCaminoUrl';
 import { CaminoDetail } from './components/CaminoDetail';
@@ -12,7 +13,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
-  const t = await getTranslations('camino_detail');
+  const [t, og] = await Promise.all([getTranslations('camino_detail'), sharedOpenGraph()]);
 
   let name: string;
   try {
@@ -25,10 +26,7 @@ export async function generateMetadata({ params }: Props) {
   return {
     title: t('meta_title', { name }),
     description: t('meta_description', { name }),
-    openGraph: {
-      title: t('meta_title', { name }),
-      description: t('meta_description', { name }),
-    },
+    openGraph: { ...og, url: `/caminos/${slug}` },
   };
 }
 
