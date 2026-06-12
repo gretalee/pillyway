@@ -1,0 +1,183 @@
+'use client';
+
+import { useEffect, useRef, useCallback } from 'react';
+import { createPortal } from 'react-dom';
+import Image from 'next/image';
+import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { cn } from '@/lib/utils';
+
+export interface LightboxImage {
+  id: string;
+  url: string;
+  label?: string | null;
+}
+
+interface LightboxProps {
+  images: LightboxImage[];
+  initialIndex: number;
+  isGalleryMode: boolean;
+  onClose: () => void;
+  currentIndex: number;
+  onNavigate: (index: number) => void;
+}
+
+const SWIPE_THRESHOLD = 50;
+
+export function Lightbox({
+  images,
+  isGalleryMode,
+  onClose,
+  currentIndex,
+  onNavigate,
+}: LightboxProps) {
+  const t = useTranslations('picture_gallery.lightbox');
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
+
+  const canGoPrev = isGalleryMode && currentIndex > 0;
+  const canGoNext = isGalleryMode && currentIndex < images.length - 1;
+
+  const handlePrev = useCallback(() => {
+    if (canGoPrev) onNavigate(currentIndex - 1);
+  }, [canGoPrev, currentIndex, onNavigate]);
+
+  const handleNext = useCallback(() => {
+    if (canGoNext) onNavigate(currentIndex + 1);
+  }, [canGoNext, currentIndex, onNavigate]);
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  }, []);
+
+  const handleTouchCancel = useCallback(() => {
+    touchStartX.current = null;
+    touchStartY.current = null;
+  }, []);
+
+  const handleTouchEnd = useCallback(
+    (e: React.TouchEvent) => {
+      if (touchStartX.current === null || touchStartY.current === null) return;
+      const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+      const deltaY = e.changedTouches[0].clientY - touchStartY.current;
+      touchStartX.current = null;
+      touchStartY.current = null;
+      if (Math.abs(deltaX) < SWIPE_THRESHOLD || Math.abs(deltaX) < Math.abs(deltaY)) return;
+      if (deltaX > 0) handlePrev();
+      else handleNext();
+    },
+    [handlePrev, handleNext],
+  );
+
+  useEffect(() => {
+    closeButtonRef.current?.focus();
+  }, []);
+
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') onClose();
+      else if (e.key === 'ArrowLeft') handlePrev();
+      else if (e.key === 'ArrowRight') handleNext();
+    }
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [handlePrev, handleNext, onClose]);
+
+  const currentImage = images[currentIndex];
+
+  if (!currentImage) return null;
+
+  const btnClass = cn(
+    'flex size-8 items-center justify-center z-10',
+    'rounded-md bg-white/20 text-white ring-1 ring-white/40 backdrop-blur-sm transition-colors',
+    'hover:bg-white/30 active:bg-white/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white',
+  );
+
+  const content = (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={t('title')}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchCancel}>
+      <div className="absolute inset-0" onClick={onClose} aria-hidden="true" />
+
+      <div
+        className="relative z-10 max-h-[90vh] max-w-[90vw]"
+        onClick={(e) => e.stopPropagation()}>
+        <Image
+          src={currentImage.url}
+          alt={currentImage.label ?? t('title')}
+          width={1200}
+          height={900}
+          className="max-h-[90vh] max-w-[90vw] object-contain"
+          style={{ width: 'auto', height: 'auto', maxHeight: '90vh', maxWidth: '90vw' }}
+          priority
+          unoptimized
+        />
+      </div>
+
+      <button
+        ref={closeButtonRef}
+        type="button"
+        aria-label={t('close')}
+        onClick={onClose}
+        className={cn('absolute right-4 top-4 z-10', btnClass)}>
+        <X size={20} aria-hidden="true" />
+      </button>
+
+      {canGoPrev && (
+        <button
+          type="button"
+          aria-label={t('prev')}
+          onClick={handlePrev}
+          className={cn(
+            'absolute left-1 md:left-4 top-1/2 z-10 -translate-y-1/2',
+            btnClass,
+            'size-auto py-16 rounded-xl opacity-50 md:opacity-70 hover:opacity-100',
+          )}>
+          <ChevronLeft size={40} aria-hidden="true" />
+        </button>
+      )}
+
+      {canGoNext && (
+        <button
+          type="button"
+          aria-label={t('next')}
+          onClick={handleNext}
+          className={cn(
+            'absolute right-1 md:right-4 top-1/2 z-10 -translate-y-1/2',
+            btnClass,
+            'size-auto py-16 rounded-xl opacity-50 md:opacity-70 hover:opacity-100',
+          )}>
+          <ChevronRight size={40} aria-hidden="true" />
+        </button>
+      )}
+
+      {currentImage.label && (
+        <div
+          className={cn(
+            'absolute bottom-4 left-1/2 z-10 -translate-x-1/2 max-w-[80vw] rounded-full bg-black/50 px-4 py-1 text-center text-sm text-white',
+          )}>
+          {currentImage.label}
+        </div>
+      )}
+
+      {isGalleryMode && images.length > 1 && (
+        <div
+          className={cn(
+            'absolute z-10 left-1/2 -translate-x-1/2 rounded-full bg-black/50 px-3 py-1 text-sm text-white',
+            currentImage.label ? 'bottom-14' : 'bottom-4',
+          )}>
+          {currentIndex + 1} / {images.length}
+        </div>
+      )}
+    </div>
+  );
+
+  return createPortal(content, document.body);
+}

@@ -1,4 +1,13 @@
 {
+  "picture_gallery": {
+    "open_fullscreen": "Bild im Vollbild öffnen",
+    "lightbox": {
+      "title": "Bildansicht",
+      "close": "Schließen",
+      "prev": "Vorheriges Bild",
+      "next": "Nächstes Bild"
+    }
+  },
   "header": {
     "home_label": "Pillyway",
     "login": "Anmelden",
