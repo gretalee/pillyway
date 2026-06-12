@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import type {
@@ -9,6 +8,7 @@ import { DeleteAccommodationButton } from './DeleteAccommodationButton';
 import { buttonVariants } from '@/app/components/ui/button';
 import { cn } from '@/lib/utils';
 import { JSX } from 'react/jsx-dev-runtime';
+import { PictureGallery } from '@/app/components/PictureGallery';
 
 const PRICE_RANGE_SYMBOLS: Record<PriceRange, string> = {
   budget: '€',
@@ -22,7 +22,7 @@ interface Props {
   slug: string;
   canContribute: boolean;
   isOwner: boolean;
-  showImage?: boolean;
+  showImages?: boolean;
   headlineLevel?: 1 | 2 | 3 | 4;
   className?: string;
   headerClass?: string;
@@ -33,16 +33,13 @@ export async function AccommodationCard({
   slug,
   canContribute,
   isOwner,
-  showImage = true,
+  showImages = true,
   headlineLevel = 3,
   className,
   headerClass,
 }: Props) {
   const t = await getTranslations('waypoint_detail');
   const tCountries = await getTranslations('countries');
-
-  const firstImage =
-    showImage && accommodation.imageUrls.length > 0 ? accommodation.imageUrls[0] : null;
 
   const hasAddress =
     accommodation.addressStreet ||
@@ -183,17 +180,13 @@ export async function AccommodationCard({
           </div>
         )}
       </div>
-      {firstImage && (
-        <div className="relative mt-3 h-48 w-full overflow-hidden rounded-md">
-          <Image
-            src={firstImage}
-            alt={accommodation.name}
-            fill
-            unoptimized
-            loading="eager"
-            className="object-cover"
-          />
-        </div>
+
+      {/* Images */}
+      {showImages && accommodation.imageUrls.length > 0 && (
+        <PictureGallery
+          pictures={accommodation.imageUrls.map((url) => ({ id: url, url }))}
+          className="mt-4 sm:grid-cols-6 lg:grid-cols-6"
+        />
       )}
     </div>
   );

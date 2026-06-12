@@ -31,7 +31,7 @@ export function Lightbox({
   currentIndex,
   onNavigate,
 }: LightboxProps) {
-  const t = useTranslations('camino_detail.pictures.lightbox');
+  const t = useTranslations('picture_gallery.lightbox');
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const touchStartX = useRef<number | null>(null);
   const touchStartY = useRef<number | null>(null);
@@ -64,16 +64,13 @@ export function Lightbox({
       const deltaY = e.changedTouches[0].clientY - touchStartY.current;
       touchStartX.current = null;
       touchStartY.current = null;
-      // Only handle as a horizontal swipe when horizontal movement dominates
-      if (Math.abs(deltaX) < SWIPE_THRESHOLD || Math.abs(deltaX) < Math.abs(deltaY))
-        return;
+      if (Math.abs(deltaX) < SWIPE_THRESHOLD || Math.abs(deltaX) < Math.abs(deltaY)) return;
       if (deltaX > 0) handlePrev();
       else handleNext();
     },
     [handlePrev, handleNext],
   );
 
-  // Focus the close button when the lightbox opens
   useEffect(() => {
     closeButtonRef.current?.focus();
   }, []);
@@ -107,10 +104,8 @@ export function Lightbox({
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onTouchCancel={handleTouchCancel}>
-      {/* Overlay click closes the lightbox */}
       <div className="absolute inset-0" onClick={onClose} aria-hidden="true" />
 
-      {/* Image */}
       <div
         className="relative z-10 max-h-[90vh] max-w-[90vw]"
         onClick={(e) => e.stopPropagation()}>
@@ -126,7 +121,6 @@ export function Lightbox({
         />
       </div>
 
-      {/* Close button */}
       <button
         ref={closeButtonRef}
         type="button"
@@ -136,7 +130,6 @@ export function Lightbox({
         <X size={20} aria-hidden="true" />
       </button>
 
-      {/* Prev button */}
       {canGoPrev && (
         <button
           type="button"
@@ -151,7 +144,6 @@ export function Lightbox({
         </button>
       )}
 
-      {/* Next button */}
       {canGoNext && (
         <button
           type="button"
@@ -166,7 +158,6 @@ export function Lightbox({
         </button>
       )}
 
-      {/* Label */}
       {currentImage.label && (
         <div
           className={cn(
@@ -176,7 +167,6 @@ export function Lightbox({
         </div>
       )}
 
-      {/* Position indicator — offset upward when label is also shown */}
       {isGalleryMode && images.length > 1 && (
         <div
           className={cn(

@@ -26,7 +26,7 @@ const CaminoMainImage = ({
         src={primary.url}
         alt={title ?? ''}
         fill
-        className="object-cover cursor-zoom-in"
+        className="object-cover"
         priority
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
         unoptimized

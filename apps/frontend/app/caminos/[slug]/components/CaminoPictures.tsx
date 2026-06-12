@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { Pencil, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -11,7 +11,8 @@ import { useUploadCaminoPicture } from '@/app/api/camino-pictures/use-upload-cam
 import { useUploadCaminoPictures } from '@/app/api/camino-pictures/use-upload-camino-pictures';
 import { useDeleteCaminoPicture } from '@/app/api/camino-pictures/use-delete-camino-picture';
 import { useUpdateCaminoPicture } from '@/app/api/camino-pictures/use-update-camino-picture';
-import { Lightbox, type LightboxImage } from './Lightbox';
+import { Lightbox } from '@/app/components/Lightbox';
+import { PictureGallery, type GalleryPicture } from '@/app/components/PictureGallery';
 import {
   AlertDialog,
   AlertDialogContent,
@@ -31,12 +32,6 @@ interface CaminoPicturesProps {
   /** "hero" renders the main picture slot above the description.
    *  "gallery" renders the gallery grid, upload controls, and delete dialogs. */
   section: 'hero' | 'gallery';
-}
-
-interface LightboxState {
-  images: LightboxImage[];
-  currentIndex: number;
-  isGalleryMode: boolean;
 }
 
 function uploadErrorMessage(
@@ -76,9 +71,9 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
 
   const primaryFileInputRef = useRef<HTMLInputElement>(null);
   const galleryFileInputRef = useRef<HTMLInputElement>(null);
-  const triggerElementRef = useRef<HTMLElement | null>(null);
+  const heroTriggerRef = useRef<HTMLButtonElement | null>(null);
 
-  const [lightbox, setLightbox] = useState<LightboxState | null>(null);
+  const [heroLightboxOpen, setHeroLightboxOpen] = useState(false);
   const [primaryUploadError, setPrimaryUploadError] = useState<string | null>(null);
   const [galleryUploadError, setGalleryUploadError] = useState<string | null>(null);
   const [deleteDialogPictureId, setDeleteDialogPictureId] = useState<string | null>(null);
@@ -94,44 +89,11 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
   const totalCount = (primary ? 1 : 0) + gallery.length;
   const limitReached = totalCount >= 50;
 
-  const galleryImages: LightboxImage[] = gallery.map((p) => ({
+  const galleryImages: GalleryPicture[] = gallery.map((p) => ({
     id: p.id,
     url: p.url,
     label: p.label,
   }));
-
-  const openLightboxFromHero = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      if (!primary) return;
-      triggerElementRef.current = e.currentTarget;
-      setLightbox({
-        images: [{ id: primary.id, url: primary.url }],
-        currentIndex: 0,
-        isGalleryMode: false,
-      });
-    },
-    [primary],
-  );
-
-  const openLightboxFromGallery = useCallback(
-    (index: number, e: React.MouseEvent<HTMLButtonElement>) => {
-      triggerElementRef.current = e.currentTarget;
-      setLightbox({ images: galleryImages, currentIndex: index, isGalleryMode: true });
-    },
-    [galleryImages],
-  );
-
-  const closeLightbox = useCallback(() => {
-    setLightbox(null);
-    if (triggerElementRef.current) {
-      triggerElementRef.current.focus();
-      triggerElementRef.current = null;
-    }
-  }, []);
-
-  const handleNavigate = useCallback((index: number) => {
-    setLightbox((prev) => (prev ? { ...prev, currentIndex: index } : null));
-  }, []);
 
   function handlePrimaryFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -275,9 +237,10 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
           <div className="relative aspect-video w-full overflow-hidden rounded-lg">
             {/* Fullscreen button covers the whole image */}
             <button
+              ref={heroTriggerRef}
               type="button"
               aria-label={t('open_fullscreen')}
-              onClick={openLightboxFromHero}
+              onClick={() => setHeroLightboxOpen(true)}
               className={cn(
                 'absolute inset-0 z-10 cursor-zoom-in',
                 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
@@ -340,14 +303,17 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
           </p>
         )}
 
-        {lightbox && (
+        {heroLightboxOpen && (
           <Lightbox
-            images={lightbox.images}
-            initialIndex={lightbox.currentIndex}
-            currentIndex={lightbox.currentIndex}
-            isGalleryMode={lightbox.isGalleryMode}
-            onClose={closeLightbox}
-            onNavigate={handleNavigate}
+            images={[{ id: primary.id, url: primary.url }]}
+            initialIndex={0}
+            currentIndex={0}
+            isGalleryMode={false}
+            onClose={() => {
+              setHeroLightboxOpen(false);
+              heroTriggerRef.current?.focus();
+            }}
+            onNavigate={() => {}}
           />
         )}
       </>
@@ -363,80 +329,57 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
       {/* Gallery grid */}
       {gallery.length > 0 && (
         <section className="mt-8">
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
-            {gallery.map((picture, index) => {
-              const canEdit = canEditPicture(picture.uploadedBy);
-              const isEditingThisLabel = editingLabelId === picture.id;
-
+          <PictureGallery
+            pictures={galleryImages}
+            renderThumbnailOverlay={(picture, index) => {
+              if (!canEditPicture(gallery[index].uploadedBy)) return null;
               return (
-                <div key={picture.id} className="flex flex-col gap-1">
-                  {/* Thumbnail */}
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
-                    <button
-                      type="button"
-                      aria-label={t('open_fullscreen')}
-                      onClick={(e) => openLightboxFromGallery(index, e)}
-                      className={cn(
-                        'absolute inset-0 z-10 cursor-zoom-in',
-                        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-                      )}>
-                      <span className="sr-only">{t('open_fullscreen')}</span>
-                    </button>
-                    <Image
-                      src={picture.url}
-                      alt={picture.label ?? ''}
-                      fill
-                      className="object-cover cursor-zoom-in"
-                      sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                      unoptimized
-                    />
-                    {/* Action buttons — always visible for eligible users */}
-                    {canEdit && (
-                      <div className="absolute bottom-2 right-2 z-20 flex gap-1">
-                        <button
-                          type="button"
-                          aria-label={t('edit_label')}
-                          onClick={() => startLabelEdit(picture.id, picture.label)}
-                          className={cn(
-                            'flex size-7 items-center justify-center rounded-md bg-black/60 text-white transition-colors hover:bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white',
-                          )}>
-                          <Pencil size={13} aria-hidden="true" />
-                        </button>
-                        <button
-                          type="button"
-                          aria-label={t('delete')}
-                          onClick={() => handleDeleteIconClick(picture.id)}
-                          className={cn(
-                            'flex size-7 items-center justify-center rounded-md bg-black/60 text-white transition-colors hover:bg-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white',
-                          )}>
-                          <Trash2 size={13} aria-hidden="true" />
-                        </button>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Label area */}
-                  {isEditingThisLabel ? (
-                    <input
-                      autoFocus
-                      type="text"
-                      value={labelDraft}
-                      onChange={(e) => setLabelDraft(e.target.value)}
-                      onBlur={() => commitLabelEdit(picture.id)}
-                      onKeyDown={(e) => handleLabelKeyDown(e, picture.id)}
-                      maxLength={200}
-                      placeholder={t('label_placeholder')}
-                      className="w-full rounded border border-border bg-background px-2 py-1 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring"
-                    />
-                  ) : picture.label ? (
-                    <p className="truncate px-0.5 text-xs text-muted-foreground">
-                      {picture.label}
-                    </p>
-                  ) : null}
+                <div className="absolute bottom-2 right-2 z-20 flex gap-1">
+                  <button
+                    type="button"
+                    aria-label={t('edit_label')}
+                    onClick={() => startLabelEdit(picture.id, picture.label ?? null)}
+                    className={cn(
+                      'flex size-7 items-center justify-center rounded-md bg-black/60 text-white transition-colors hover:bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white',
+                    )}>
+                    <Pencil size={13} aria-hidden="true" />
+                  </button>
+                  <button
+                    type="button"
+                    aria-label={t('delete')}
+                    onClick={() => handleDeleteIconClick(picture.id)}
+                    className={cn(
+                      'flex size-7 items-center justify-center rounded-md bg-black/60 text-white transition-colors hover:bg-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white',
+                    )}>
+                    <Trash2 size={13} aria-hidden="true" />
+                  </button>
                 </div>
               );
-            })}
-          </div>
+            }}
+            renderAfterThumbnail={(picture) => {
+              if (editingLabelId === picture.id) {
+                return (
+                  <input
+                    autoFocus
+                    type="text"
+                    value={labelDraft}
+                    onChange={(e) => setLabelDraft(e.target.value)}
+                    onBlur={() => commitLabelEdit(picture.id)}
+                    onKeyDown={(e) => handleLabelKeyDown(e, picture.id)}
+                    maxLength={200}
+                    placeholder={t('label_placeholder')}
+                    className="w-full rounded border border-border bg-background px-2 py-1 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+                  />
+                );
+              }
+              if (picture.label) {
+                return (
+                  <p className="truncate px-0.5 text-xs text-muted-foreground">{picture.label}</p>
+                );
+              }
+              return null;
+            }}
+          />
           {labelError && (
             <p role="alert" className="mt-2 text-xs text-destructive">
               {labelError}
@@ -513,17 +456,6 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* Lightbox */}
-      {lightbox && (
-        <Lightbox
-          images={lightbox.images}
-          initialIndex={lightbox.currentIndex}
-          currentIndex={lightbox.currentIndex}
-          isGalleryMode={lightbox.isGalleryMode}
-          onClose={closeLightbox}
-          onNavigate={handleNavigate}
-        />
-      )}
     </>
   );
 }

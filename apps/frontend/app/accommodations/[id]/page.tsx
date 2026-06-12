@@ -1,10 +1,10 @@
-import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import { getAuthUser } from '@/lib/getAuthUser';
 import { fetchAccommodation } from '@/app/api/accommodations/fetch-accommodation';
 import { AccommodationCard } from '@/app/waypoints/[slug]/components/AccommodationCard';
+import { PictureGallery } from '@/app/components/PictureGallery';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -73,26 +73,16 @@ export default async function AccommodationDetailPage({ params }: Props) {
         slug={accommodation.waypointSlug}
         canContribute={canContribute}
         isOwner={isOwner}
-        showImage={false}
+        showImages={false}
         headerClass="text-2xl mb-4"
       />
 
       {/* Images */}
       {accommodation.imageUrls.length > 0 && (
-        <ul className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
-          {accommodation.imageUrls.map((url) => (
-            <li key={url} className="relative aspect-square overflow-hidden rounded-md">
-              <Image
-                src={url}
-                alt={accommodation.name}
-                fill
-                className="object-cover"
-                loading="eager"
-                unoptimized
-              />
-            </li>
-          ))}
-        </ul>
+        <PictureGallery
+          pictures={accommodation.imageUrls.map((url) => ({ id: url, url }))}
+          className="mt-8 sm:grid-cols-3 lg:grid-cols-3"
+        />
       )}
     </div>
   );
