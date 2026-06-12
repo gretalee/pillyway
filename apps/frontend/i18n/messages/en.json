@@ -24,8 +24,8 @@
     "aria_greeting": "Signed in as {name}"
   },
   "meta": {
-    "title": "Pillyway",
-    "description": "Discover pilgrimage routes across Europe. Find stages, accommodations and sights along historic caminos — open, collaborative and built by pilgrims."
+    "title": "Pillyway - Pilgrimage routes across Europe",
+    "description": "Find your next pilgrimage route. Plan stages, accommodations and sights along well-known and new caminos. Contribute your knowledge and help build Europe's most open pilgrimage database. Benefit from the experiences of other pilgrims and share the knowledge you have gained to help future pilgrims."
   },
   "home": {
     "heading": "Pillyway",
@@ -315,7 +315,7 @@
   },
   "accommodation_detail": {
     "meta_title": "{name}",
-    "meta_description": "View photos, location and contact details for this accommodation on the pilgrimage route.",
+    "meta_description": "See photos, location and contact details of this accommodation.",
     "back_label": "Back",
     "edit_label": "Edit accommodation",
     "error_loading": "Failed to load accommodation. Please try again."

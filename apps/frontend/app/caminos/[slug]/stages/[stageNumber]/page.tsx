@@ -15,26 +15,32 @@ export async function generateMetadata({ params }: Props) {
   const { slug, stageNumber } = await params;
   const n = parseInt(stageNumber, 10);
   if (isNaN(n) || n < 1) notFound();
-  const [t, og, stage, camino] = await Promise.all([
-    getTranslations('stage_detail'),
-    sharedOpenGraph(),
-    fetchStage(slug, n),
-    fetchCamino(slug),
-  ]);
-  return {
-    title: t('meta_title', {
-      number: n,
-      start: stage.startPoint.name,
-      end: stage.endPoint.name,
-      name: camino.name,
-    }),
-    description: t('meta_description', {
-      number: n,
-      start: stage.startPoint.name,
-      end: stage.endPoint.name,
-    }),
-    openGraph: { ...og, url: `/caminos/${slug}/stages/${n}` },
-  };
+  const [t, og] = await Promise.all([getTranslations('stage_detail'), sharedOpenGraph()]);
+
+  try {
+    const stage = await fetchStage(slug, n);
+    const camino = await fetchCamino(slug);
+    return {
+      title: t('meta_title', {
+        number: n,
+        start: stage.startPoint.name,
+        end: stage.endPoint.name,
+        name: camino.name,
+      }),
+      description: t('meta_description', {
+        number: n,
+        start: stage.startPoint.name,
+        end: stage.endPoint.name,
+      }),
+      openGraph: { ...og, url: `/caminos/${slug}/stages/${n}` },
+    };
+  } catch {
+    return {
+      title: '',
+      description: '',
+      openGraph: { ...og, url: `/caminos/${slug}/stages/${n}` },
+    };
+  }
 }
 
 export default async function StageDetailPage({ params }: Props) {

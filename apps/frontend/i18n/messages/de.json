@@ -25,7 +25,7 @@
   },
   "meta": {
     "title": "Mit Pillyway Pilgerwege in Europa entdecken und teilen",
-    "description": "Finde hier deine neue Pilgerroute. Plane Etappen, Unterkünfte und Sehenswürdigkeiten entlang historischer und neuer Caminos. Nutze die Erfahrungen anderer Pilger und teile dein erlangtes Wissen, um zukünftigen Pilgern zu helfen."
+    "description": "Finde deine nächste Pilgerroute. Plane Etappen, Unterkünfte und Sehenswürdigkeiten entlang bekannter und neuer Jakobswege. Bringe dein Wissen ein und hilf mit, Europas offenste Pilger-Datenbank aufzubauen. Profitiere von den Erfahrungen anderer Pilger und gib dein eigenes Wissen weiter, um künftigen Pilgern zu helfen."
   },
   "home": {
     "heading": "Pillyway",
@@ -315,7 +315,7 @@
   },
   "accommodation_detail": {
     "meta_title": "{name}",
-    "meta_description": "Fotos, Lage und Kontaktdaten dieser Unterkunft entlang der Pilgerroute ansehen.",
+    "meta_description": "Sieh dir Fotos, Lage und Kontaktdaten dieser Unterkunft an.",
     "back_label": "Zurück",
     "edit_label": "Unterkunft bearbeiten",
     "error_loading": "Unterkunft konnte nicht geladen werden. Bitte versuche es erneut."

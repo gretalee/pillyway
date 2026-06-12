@@ -1,18 +1,8 @@
 import { getTranslations } from 'next-intl/server';
 import { fetchCaminos } from '@/app/api/caminos/caminos';
 import { getAuthUser } from '@/lib/getAuthUser';
-import { sharedOpenGraph } from '@/lib/seo';
 import { CaminoList } from './components/CaminoList';
 import Link from 'next/link';
-
-export async function generateMetadata() {
-  const [t, og] = await Promise.all([getTranslations('caminos'), sharedOpenGraph()]);
-  return {
-    title: t('meta_title'),
-    description: t('meta_description'),
-    openGraph: { ...og, url: '/caminos' },
-  };
-}
 
 export default async function CaminosPage() {
   const t = await getTranslations('caminos');

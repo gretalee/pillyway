@@ -12,7 +12,10 @@ interface Props {
 }
 export async function generateMetadata({ params }: Props) {
   const { id } = await params;
-  const [t, og] = await Promise.all([getTranslations('accommodation_detail'), sharedOpenGraph()]);
+  const [t, og] = await Promise.all([
+    getTranslations('accommodation_detail'),
+    sharedOpenGraph(),
+  ]);
   try {
     const accommodation = await fetchAccommodation(id);
     return {
