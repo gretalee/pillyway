@@ -52,6 +52,11 @@ export function Lightbox({
     touchStartY.current = e.touches[0].clientY;
   }, []);
 
+  const handleTouchCancel = useCallback(() => {
+    touchStartX.current = null;
+    touchStartY.current = null;
+  }, []);
+
   const handleTouchEnd = useCallback(
     (e: React.TouchEvent) => {
       if (touchStartX.current === null || touchStartY.current === null) return;
@@ -100,7 +105,8 @@ export function Lightbox({
       aria-label={t('title')}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
       onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}>
+      onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchCancel}>
       {/* Overlay click closes the lightbox */}
       <div className="absolute inset-0" onClick={onClose} aria-hidden="true" />
 
