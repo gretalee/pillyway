@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { cn } from '@/lib/utils';
 
 export interface LightboxImage {
   id: string;
@@ -51,17 +52,21 @@ export function Lightbox({
     touchStartY.current = e.touches[0].clientY;
   }, []);
 
-  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
-    if (touchStartX.current === null || touchStartY.current === null) return;
-    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
-    const deltaY = e.changedTouches[0].clientY - touchStartY.current;
-    touchStartX.current = null;
-    touchStartY.current = null;
-    // Only handle as a horizontal swipe when horizontal movement dominates
-    if (Math.abs(deltaX) < SWIPE_THRESHOLD || Math.abs(deltaX) < Math.abs(deltaY)) return;
-    if (deltaX > 0) handlePrev();
-    else handleNext();
-  }, [handlePrev, handleNext]);
+  const handleTouchEnd = useCallback(
+    (e: React.TouchEvent) => {
+      if (touchStartX.current === null || touchStartY.current === null) return;
+      const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+      const deltaY = e.changedTouches[0].clientY - touchStartY.current;
+      touchStartX.current = null;
+      touchStartY.current = null;
+      // Only handle as a horizontal swipe when horizontal movement dominates
+      if (Math.abs(deltaX) < SWIPE_THRESHOLD || Math.abs(deltaX) < Math.abs(deltaY))
+        return;
+      if (deltaX > 0) handlePrev();
+      else handleNext();
+    },
+    [handlePrev, handleNext],
+  );
 
   // Focus the close button when the lightbox opens
   useEffect(() => {
@@ -82,8 +87,11 @@ export function Lightbox({
 
   if (!currentImage) return null;
 
-  const btnClass =
-    'flex size-12 items-center justify-center rounded-full bg-white/20 text-white ring-1 ring-white/40 backdrop-blur-sm transition-colors hover:bg-white/30 active:bg-white/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white';
+  const btnClass = cn(
+    'flex size-8 items-center justify-center z-10',
+    'rounded-md bg-white/20 text-white ring-1 ring-white/40 backdrop-blur-sm transition-colors',
+    'hover:bg-white/30 active:bg-white/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white',
+  );
 
   const content = (
     <div
@@ -94,43 +102,7 @@ export function Lightbox({
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}>
       {/* Overlay click closes the lightbox */}
-      <div
-        className="absolute inset-0"
-        onClick={onClose}
-        aria-hidden="true"
-      />
-
-      {/* Close button */}
-      <button
-        ref={closeButtonRef}
-        type="button"
-        aria-label={t('close')}
-        onClick={onClose}
-        className={`absolute right-4 top-4 z-10 ${btnClass}`}>
-        <X size={20} aria-hidden="true" />
-      </button>
-
-      {/* Prev button */}
-      {canGoPrev && (
-        <button
-          type="button"
-          aria-label={t('prev')}
-          onClick={handlePrev}
-          className={`absolute left-4 top-1/2 z-10 -translate-y-1/2 ${btnClass}`}>
-          <ChevronLeft size={24} aria-hidden="true" />
-        </button>
-      )}
-
-      {/* Next button */}
-      {canGoNext && (
-        <button
-          type="button"
-          aria-label={t('next')}
-          onClick={handleNext}
-          className={`absolute right-4 top-1/2 z-10 -translate-y-1/2 ${btnClass}`}>
-          <ChevronRight size={24} aria-hidden="true" />
-        </button>
-      )}
+      <div className="absolute inset-0" onClick={onClose} aria-hidden="true" />
 
       {/* Image */}
       <div
@@ -148,9 +120,52 @@ export function Lightbox({
         />
       </div>
 
+      {/* Close button */}
+      <button
+        ref={closeButtonRef}
+        type="button"
+        aria-label={t('close')}
+        onClick={onClose}
+        className={cn('absolute right-4 top-4 z-10', btnClass)}>
+        <X size={20} aria-hidden="true" />
+      </button>
+
+      {/* Prev button */}
+      {canGoPrev && (
+        <button
+          type="button"
+          aria-label={t('prev')}
+          onClick={handlePrev}
+          className={cn(
+            'absolute left-1 md:left-4 top-1/2 z-10 -translate-y-1/2',
+            btnClass,
+            'size-auto py-16 rounded-xl opacity-50 md:opacity-70 hover:opacity-100',
+          )}>
+          <ChevronLeft size={40} aria-hidden="true" />
+        </button>
+      )}
+
+      {/* Next button */}
+      {canGoNext && (
+        <button
+          type="button"
+          aria-label={t('next')}
+          onClick={handleNext}
+          className={cn(
+            'absolute right-1 md:right-4 top-1/2 z-10 -translate-y-1/2',
+            btnClass,
+            'size-auto py-16 rounded-xl opacity-50 md:opacity-70 hover:opacity-100',
+          )}>
+          <ChevronRight size={40} aria-hidden="true" />
+        </button>
+      )}
+
       {/* Label */}
       {currentImage.label && (
-        <div className="absolute bottom-4 left-1/2 z-10 -translate-x-1/2 max-w-[80vw] rounded-full bg-black/50 px-4 py-1 text-center text-sm text-white">
+        <div
+          className={cn(
+            'absolute bottom-4 left-1/2 z-10 -translate-x-1/2 max-w-[80vw] rounded-full bg-black/50 px-4 py-1 text-center text-sm text-white',
+          )}>
           {currentImage.label}
         </div>
       )}
@@ -158,7 +173,10 @@ export function Lightbox({
       {/* Position indicator — offset upward when label is also shown */}
       {isGalleryMode && images.length > 1 && (
         <div
-          className={`absolute z-10 left-1/2 -translate-x-1/2 rounded-full bg-black/50 px-3 py-1 text-sm text-white ${currentImage.label ? 'bottom-14' : 'bottom-4'}`}>
+          className={cn(
+            'absolute z-10 left-1/2 -translate-x-1/2 rounded-full bg-black/50 px-3 py-1 text-sm text-white',
+            currentImage.label ? 'bottom-14' : 'bottom-4',
+          )}>
           {currentIndex + 1} / {images.length}
         </div>
       )}
