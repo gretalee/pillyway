@@ -1,5 +1,6 @@
 import {
   BadGatewayException,
+  BadRequestException,
   ConflictException,
   ForbiddenException,
   Logger,
@@ -15,6 +16,7 @@ import { Prisma } from '@prisma/client';
 import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { EventLogService } from '../event-log/event-log.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { ImageProcessingService } from '../uploads/image-processing.service';
 import { UploadsService } from '../uploads/uploads.service';
 import { CaminosService } from '../caminos/caminos.service';
 import { StagesService } from '../stages/stages.service';
@@ -75,6 +77,14 @@ function makeUploadsServiceMock() {
     uploadImage: vi.fn().mockResolvedValue(PICTURE_URL),
     deleteImages: vi.fn().mockResolvedValue(undefined),
     deleteImageStrict: vi.fn().mockResolvedValue(undefined),
+  };
+}
+
+const PROCESSED_BUFFER = Buffer.from([0x52, 0x49, 0x46, 0x46]); // fake WebP bytes
+
+function makeImageProcessingServiceMock() {
+  return {
+    processForUpload: vi.fn().mockResolvedValue(PROCESSED_BUFFER),
   };
 }
 
@@ -153,12 +163,14 @@ function makePrismaMock(
 async function buildModule(
   prismaMock: object,
   uploadsMock: object,
+  imageMock: object = makeImageProcessingServiceMock(),
 ): Promise<TestingModule> {
   return Test.createTestingModule({
     providers: [
       CaminoPicturesService,
       { provide: PrismaService, useValue: prismaMock },
       { provide: UploadsService, useValue: uploadsMock },
+      { provide: ImageProcessingService, useValue: imageMock },
       { provide: EventLogService, useValue: { logEvent: vi.fn() } },
     ],
   })
@@ -504,6 +516,62 @@ describe('CaminoPicturesService.uploadPicture()', () => {
     expect(rejection).toBeInstanceOf(Prisma.PrismaClientKnownRequestError);
     expect(rejection).not.toBeInstanceOf(ConflictException);
     expect(uploadsServiceMock.deleteImages).toHaveBeenCalledOnce();
+  });
+
+  it('returns 400 and does not reach S3 when sharp throws', async () => {
+    const prismaMock = makePrismaMock({
+      pictureCount: vi.fn().mockResolvedValue(0),
+      pictureFindFirst: vi.fn().mockResolvedValue(null),
+    });
+    const uploadsServiceMock = makeUploadsServiceMock();
+    const imageMock = {
+      processForUpload: vi.fn().mockRejectedValue(new Error('Input buffer contains unsupported image format')),
+    };
+    const module = await buildModule(prismaMock, uploadsServiceMock, imageMock);
+    const service = module.get(CaminoPicturesService);
+
+    await expect(
+      service.uploadPicture(CAMINO_ID, makeFile(), false, USER_ID),
+    ).rejects.toBeInstanceOf(BadRequestException);
+
+    expect(uploadsServiceMock.uploadImage).not.toHaveBeenCalled();
+  });
+
+  it('passes the processed WebP buffer and image/webp content-type to UploadsService', async () => {
+    const createdRecord = makeBasePicture({ isPrimary: false, position: 1 });
+    const prismaMock = makePrismaMock({
+      pictureCreate: vi.fn().mockResolvedValue(createdRecord),
+      pictureCount: vi.fn().mockResolvedValue(0),
+      pictureFindFirst: vi.fn().mockResolvedValue(null),
+    });
+    const uploadsServiceMock = makeUploadsServiceMock();
+    const imageMock = makeImageProcessingServiceMock();
+    const module = await buildModule(prismaMock, uploadsServiceMock, imageMock);
+    const service = module.get(CaminoPicturesService);
+
+    await service.uploadPicture(CAMINO_ID, makeFile(), false, USER_ID);
+
+    expect(imageMock.processForUpload).toHaveBeenCalledOnce();
+    expect(uploadsServiceMock.uploadImage).toHaveBeenCalledWith(
+      expect.stringMatching(/\.webp$/),
+      PROCESSED_BUFFER,
+      'image/webp',
+    );
+  });
+
+  it('skips image processing when the 50-picture limit is already reached', async () => {
+    const prismaMock = makePrismaMock({
+      pictureCount: vi.fn().mockResolvedValue(50),
+    });
+    const imageMock = makeImageProcessingServiceMock();
+    const module = await buildModule(prismaMock, makeUploadsServiceMock(), imageMock);
+    const service = module.get(CaminoPicturesService);
+
+    await expect(
+      service.uploadPicture(CAMINO_ID, makeFile(), false, USER_ID),
+    ).rejects.toBeInstanceOf(UnprocessableEntityException);
+
+    expect(imageMock.processForUpload).not.toHaveBeenCalled();
   });
 });
 

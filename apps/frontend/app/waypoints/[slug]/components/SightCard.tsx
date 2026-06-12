@@ -1,7 +1,7 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import type { SightDetail } from '@/app/api/sights/sight-types';
+import { PictureGallery } from '@/app/components/PictureGallery';
 import { DeleteSightButton } from './DeleteSightButton';
 import { buttonVariants } from '@/app/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -15,8 +15,6 @@ interface Props {
 
 export async function SightCard({ sight, slug, canContribute, isOwner }: Props) {
   const t = await getTranslations('waypoint_detail');
-
-  const firstImage = sight.imageUrls.length > 0 ? sight.imageUrls[0] : null;
 
   return (
     <li className="rounded-lg border border-border p-4">
@@ -43,17 +41,11 @@ export async function SightCard({ sight, slug, canContribute, isOwner }: Props) 
             </p>
           )}
 
-          {firstImage && (
-            <div className="relative mt-3 h-48 w-full overflow-hidden rounded-md">
-              <Image
-                src={firstImage}
-                alt={sight.name}
-                fill
-                className="object-cover"
-                unoptimized
-                loading="eager"
-              />
-            </div>
+          {sight.imageUrls.length > 0 && (
+            <PictureGallery
+              pictures={sight.imageUrls.map((url) => ({ id: url, url }))}
+              className="mt-3 sm:grid-cols-3 lg:grid-cols-3"
+            />
           )}
         </div>
 

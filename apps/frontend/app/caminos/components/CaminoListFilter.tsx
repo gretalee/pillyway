@@ -75,13 +75,12 @@ export function CaminoListFilter({ caminos, isPilgrim }: CaminoListFilterProps) 
                     {truncateAtSentence(camino.description)}
                   </p>
                 )}
+                <CaminoMainImage
+                  caminoId={camino.id}
+                  title={camino.name}
+                  className="mt-1"
+                />
               </Link>
-
-              <CaminoMainImage
-                caminoId={camino.id}
-                title={camino.name}
-                className="mt-1"
-              />
             </li>
           ))}
         </ul>

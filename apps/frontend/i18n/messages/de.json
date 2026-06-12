@@ -1,4 +1,13 @@
 {
+  "picture_gallery": {
+    "open_fullscreen": "Bild im Vollbild öffnen",
+    "lightbox": {
+      "title": "Bildansicht",
+      "close": "Schließen",
+      "prev": "Vorheriges Bild",
+      "next": "Nächstes Bild"
+    }
+  },
   "header": {
     "home_label": "Pillyway",
     "login": "Anmelden",
@@ -153,8 +162,9 @@
       "delete": "Bild löschen",
       "uploading": "Wird hochgeladen…",
       "upload_error_generic": "Bild konnte nicht hochgeladen werden. Bitte versuche es erneut.",
-      "upload_error_too_large": "Die Datei ist zu groß. Maximal 10 MB erlaubt.",
+      "upload_error_too_large": "Die Datei ist zu groß. Maximal 30 MB erlaubt.",
       "upload_error_wrong_type": "Ungültiger Dateityp. Erlaubt sind JPEG, PNG und WebP.",
+      "upload_error_cannot_process": "Das Bild konnte nicht verarbeitet werden. Bitte versuche eine andere Datei.",
       "upload_error_primary_exists": "Es ist bereits ein Hauptbild vorhanden.",
       "delete_error": "Bild konnte nicht gelöscht werden. Bitte versuche es erneut.",
       "label_placeholder": "Bildbeschriftung hinzufügen…",
