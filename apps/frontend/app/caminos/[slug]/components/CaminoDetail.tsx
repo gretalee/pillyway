@@ -6,6 +6,7 @@ import Link from 'next/link';
 
 import { VerifiedBadge } from '@/app/caminos/components/VerifiedBadge';
 import { VerificationSection } from './VerificationSection';
+import { CaminoGpxFiles } from './CaminoGpxFiles';
 import { CaminoPictures } from './CaminoPictures';
 
 import { Input } from '@/app/components/ui/input';
@@ -248,6 +249,9 @@ export function CaminoDetail({
 
       {/* Gallery and upload controls — below verification */}
       <CaminoPictures caminoId={camino.id} section="gallery" />
+
+      {/* GPX file download and upload */}
+      <CaminoGpxFiles caminoId={camino.id} />
 
       {/* Edit waypoints link */}
       {canEdit && (

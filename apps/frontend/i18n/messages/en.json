@@ -180,6 +180,27 @@
         "prev": "Previous image",
         "next": "Next image"
       }
+    },
+    "gpx": {
+      "download_button": "Download GPX",
+      "upload_button": "Upload GPX",
+      "download_modal_title": "GPX Files",
+      "upload_modal_title": "Upload GPX File",
+      "empty_state": "No GPX files uploaded yet.",
+      "file_name_label": "File Name",
+      "file_name_placeholder": "e.g. My Camino Track",
+      "file_input_label": "GPX File",
+      "upload_submit": "Upload",
+      "uploading": "Uploading...",
+      "upload_error_too_large": "File exceeds the maximum size of 5 MB.",
+      "upload_error_wrong_type": "Only GPX files are accepted.",
+      "upload_error_invalid": "The file is not a valid GPX file.",
+      "upload_error_generic": "Upload failed. Please try again.",
+      "limit_reached": "This camino has reached the maximum of 20 GPX files.",
+      "delete_confirm_title": "Delete file?",
+      "delete_confirm_body": "This action cannot be undone.",
+      "delete_error": "Delete failed. Please try again.",
+      "uploaded_by": "Uploaded by {name}"
     }
   },
   "caminos_update": {
