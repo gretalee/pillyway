@@ -31,7 +31,7 @@ export function VerificationSection({ caminoId, className }: VerificationSection
   }
 
   return (
-    <section className={cn('mt-8', className)}>
+    <section className={cn('', className)}>
       <h2 className="mb-4 text-xl font-semibold">
         {t('camino_detail.verification_heading')}
       </h2>

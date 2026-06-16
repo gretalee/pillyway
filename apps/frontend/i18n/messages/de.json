@@ -182,7 +182,7 @@
       }
     },
     "gpx": {
-      "download_button": "GPX herunterladen",
+      "download_button": "GPX Daten",
       "upload_button": "GPX hochladen",
       "download_modal_title": "GPX-Dateien",
       "upload_modal_title": "GPX-Datei hochladen",

@@ -11,4 +11,14 @@ export class UploadCaminoGpxFileDto {
   @MaxLength(100)
   @Matches(/^[^\r\n]+$/, { message: 'fileName must not contain newline characters' })
   fileName: string;
+
+  @ApiProperty({
+    description: "Uploader's display name from the client (max 200 chars, no newlines).",
+    maxLength: 200,
+  })
+  @IsString()
+  @MinLength(1)
+  @MaxLength(200)
+  @Matches(/^[^\r\n]+$/, { message: 'uploaderName must not contain newline characters' })
+  uploaderName: string;
 }

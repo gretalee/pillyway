@@ -79,7 +79,7 @@ describe('GpxStorageService', () => {
         Bucket: 'pilly_gpx',
         Key: STORAGE_KEY,
         Body: GPX_BUFFER,
-        ContentType: 'application/gpx+xml',
+        ContentType: 'application/xml',
       });
     });
 

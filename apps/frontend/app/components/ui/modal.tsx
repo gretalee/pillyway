@@ -4,7 +4,7 @@ import { Dialog as DialogPrimitive } from '@base-ui/react/dialog';
 import { useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
-import { Button } from '@/app/components/ui/button';
+import { Button, buttonVariants } from '@/app/components/ui/button';
 import { useModalStore } from '@/store/modal-store';
 import { ReactNode, useEffect, useLayoutEffect, useRef } from 'react';
 
@@ -66,12 +66,9 @@ export function Modal({ id, title, children, onOk, onDismiss }: ModalProps) {
               {title}
             </DialogPrimitive.Title>
             <DialogPrimitive.Close
-              className={cn(
-                'rounded p-1 text-muted-foreground hover:bg-accent hover:text-accent-foreground',
-                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-              )}
+              className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }))}
               aria-label={t('close_aria')}>
-              <i className="icon-times text-xl" aria-hidden="true" />
+              <i className="icon-times text-base text-foreground" aria-hidden="true" />
             </DialogPrimitive.Close>
           </div>
 

@@ -9,6 +9,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? '';
 export interface UploadCaminoGpxFileVariables {
   file: File;
   fileName: string;
+  uploaderName: string;
 }
 
 export function useUploadCaminoGpxFile(caminoId: string) {
@@ -16,12 +17,13 @@ export function useUploadCaminoGpxFile(caminoId: string) {
   const { accessTokenEncoded } = useKindeBrowserClient();
 
   return useMutation<CaminoGpxFile, Error & { status?: number }, UploadCaminoGpxFileVariables>({
-    mutationFn: async ({ file, fileName }) => {
+    mutationFn: async ({ file, fileName, uploaderName }) => {
       if (!accessTokenEncoded) throw new Error('Not authenticated');
 
       const formData = new FormData();
       formData.append('file', file);
       formData.append('fileName', fileName);
+      formData.append('uploaderName', uploaderName);
 
       const res = await fetch(`${API_URL}/caminos/${caminoId}/gpx-files`, {
         method: 'POST',

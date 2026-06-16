@@ -147,7 +147,7 @@ export function CaminoDetail({
   }
 
   return (
-    <article>
+    <article className="mb-8">
       {/* Back to list */}
       <div className="mb-6">
         <Link
@@ -244,26 +244,28 @@ export function CaminoDetail({
         {children}
       </section>
 
-      {/* Verification voting */}
-      {camino.caminoPoints.length >= 3 && <VerificationSection caminoId={camino.id} />}
-
-      {/* Gallery and upload controls — below verification */}
-      <CaminoPictures caminoId={camino.id} section="gallery" />
-
-      {/* GPX file download and upload */}
-      <CaminoGpxFiles caminoId={camino.id} />
-
-      {/* Edit waypoints link */}
-      {canEdit && (
-        <div className="mt-8">
+      <section className="flex justify-between items-start mt-4">
+        {/* Edit waypoints link */}
+        {canEdit && (
           <Link
             href={`/caminos/${camino.slug}/update`}
             className={cn(buttonVariants({ variant: 'outline' }))}>
             <i className="icon-pencil text-base -translate-y-0.5" aria-hidden="true" />
             {t('edit_waypoints')}
           </Link>
-        </div>
+        )}
+
+        {/* GPX file download and upload */}
+        <CaminoGpxFiles caminoId={camino.id} className="mt-2" />
+      </section>
+
+      {/* Verification voting */}
+      {camino.caminoPoints.length >= 3 && (
+        <VerificationSection caminoId={camino.id} className="mt-2" />
       )}
+
+      {/* Gallery and upload controls — below verification */}
+      <CaminoPictures caminoId={camino.id} section="gallery" />
     </article>
   );
 }

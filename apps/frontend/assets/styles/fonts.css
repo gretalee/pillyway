@@ -5,6 +5,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
+  font-variant: normal;
 }
 
 /* Normal italic */
@@ -14,6 +15,7 @@
   font-style: italic;
   font-weight: 400;
   font-display: swap;
+  font-variant: normal;
 }
 
 /* Bold */
@@ -23,6 +25,7 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
+  font-variant: normal;
 }
 
 /* Bold italic */
@@ -32,4 +35,5 @@
   font-style: italic;
   font-weight: 700;
   font-display: swap;
+  font-variant: normal;
 }

@@ -59,7 +59,10 @@ export class CaminoGpxFilesController {
 
   @Get()
   @ApiOperation({ summary: 'List all GPX files for a camino (public)' })
-  @ApiOkResponse({ description: 'GPX file list sorted newest-first.', type: [CaminoGpxFileResponseDto] })
+  @ApiOkResponse({
+    description: 'GPX file list sorted newest-first.',
+    type: [CaminoGpxFileResponseDto],
+  })
   @ApiNotFoundResponse({ description: 'Camino not found.' })
   async getGpxFiles(
     @Param('caminoId', ParseUUIDPipe) caminoId: string,
@@ -76,24 +79,39 @@ export class CaminoGpxFilesController {
   @UseInterceptors(FileInterceptor('file', { limits: { fileSize: FIVE_MB } }))
   @ApiBearerAuth()
   @ApiConsumes('multipart/form-data')
-  @ApiOperation({ summary: 'Upload a GPX file for a camino (pilgrim role required)' })
+  @ApiOperation({
+    summary: 'Upload a GPX file for a camino (pilgrim role required)',
+  })
   @ApiBody({
     schema: {
       type: 'object',
       required: ['file', 'fileName'],
       properties: {
-        file: { type: 'string', format: 'binary', description: 'GPX file (max 5 MB)' },
-        fileName: { type: 'string', maxLength: 100, description: 'Display name for the file' },
+        file: {
+          type: 'string',
+          format: 'binary',
+          description: 'GPX file (max 5 MB)',
+        },
+        fileName: {
+          type: 'string',
+          maxLength: 100,
+          description: 'Display name for the file',
+        },
       },
     },
   })
-  @ApiCreatedResponse({ description: 'GPX file uploaded.', type: CaminoGpxFileResponseDto })
+  @ApiCreatedResponse({
+    description: 'GPX file uploaded.',
+    type: CaminoGpxFileResponseDto,
+  })
   @ApiUnauthorizedResponse({ description: 'Missing or invalid JWT.' })
   @ApiForbiddenResponse({ description: 'Requires pilgrim role.' })
   @ApiNotFoundResponse({ description: 'Camino not found.' })
   @ApiResponse({ status: 413, description: 'File exceeds 5 MB.' })
   @ApiResponse({ status: 415, description: 'Declared MIME type not accepted.' })
-  @ApiUnprocessableEntityResponse({ description: 'Invalid GPX content or per-camino limit reached.' })
+  @ApiUnprocessableEntityResponse({
+    description: 'Invalid GPX content or per-camino limit reached.',
+  })
   async uploadGpxFile(
     @Param('caminoId', ParseUUIDPipe) caminoId: string,
     @Body() dto: UploadCaminoGpxFileDto,
@@ -113,10 +131,11 @@ export class CaminoGpxFilesController {
     file: Express.Multer.File,
     @Req() req: Request & { user: KindeJwtPayload },
   ): Promise<CaminoGpxFileResponseDto> {
-    const firstName = (req.user.given_name ?? '').replace(/[<>"'&]/g, '').trim();
-    const lastName = (req.user.family_name ?? '').replace(/[<>"'&]/g, '').trim();
     const uploaderName =
-      [firstName, lastName].filter(Boolean).join(' ').slice(0, 200) || 'Pilgrim';
+      dto.uploaderName
+        .replace(/[<>"'&]/g, '')
+        .trim()
+        .slice(0, 200) || 'no name';
 
     return this.caminoGpxFilesService.uploadGpxFile(
       caminoId,
@@ -134,12 +153,19 @@ export class CaminoGpxFilesController {
   @Roles('pilgrim')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Delete a GPX file (uploader or owner role required)' })
+  @ApiOperation({
+    summary: 'Delete a GPX file (uploader or owner role required)',
+  })
   @ApiNoContentResponse({ description: 'GPX file deleted.' })
   @ApiUnauthorizedResponse({ description: 'Missing or invalid JWT.' })
-  @ApiForbiddenResponse({ description: 'Not the uploader and does not hold owner role.' })
+  @ApiForbiddenResponse({
+    description: 'Not the uploader and does not hold owner role.',
+  })
   @ApiNotFoundResponse({ description: 'GPX file not found.' })
-  @ApiResponse({ status: 502, description: 'S3 deletion failed — database record preserved.' })
+  @ApiResponse({
+    status: 502,
+    description: 'S3 deletion failed — database record preserved.',
+  })
   async deleteGpxFile(
     @Param('caminoId', ParseUUIDPipe) caminoId: string,
     @Param('gpxFileId', ParseUUIDPipe) gpxFileId: string,
@@ -168,7 +194,9 @@ export class CaminoGpxFilesController {
     const { stream, contentLength, fileName } =
       await this.caminoGpxFilesService.downloadGpxFile(caminoId, gpxFileId);
 
-    const safeAscii = fileName.replace(/[\r\n"\\]/g, '').replace(/[^\x20-\x7E]/g, '_');
+    const safeAscii = fileName
+      .replace(/[\r\n"\\]/g, '')
+      .replace(/[^\x20-\x7E]/g, '_');
     const encoded = encodeURIComponent(fileName);
 
     res.setHeader('Content-Type', 'application/gpx+xml');
@@ -179,13 +207,16 @@ export class CaminoGpxFilesController {
       'Content-Disposition',
       `attachment; filename="${safeAscii}.gpx"; filename*=UTF-8''${encoded}.gpx`,
     );
-    res.setTimeout(15_000, () => res.destroy(new Error('GPX download timeout')));
+    res.setTimeout(15_000, () =>
+      res.destroy(new Error('GPX download timeout')),
+    );
 
     stream.on('error', (err) => {
-      this.logger.error(`GPX stream error for gpxFileId=${gpxFileId}: ${String(err)}`);
+      this.logger.error(
+        `GPX stream error for gpxFileId=${gpxFileId}: ${String(err)}`,
+      );
       res.destroy(err);
     });
     stream.pipe(res);
   }
-
 }

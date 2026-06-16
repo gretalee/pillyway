@@ -23,6 +23,7 @@ import { useCaminoGpxFiles } from '@/app/api/camino-gpx-files/use-camino-gpx-fil
 import { useUploadCaminoGpxFile } from '@/app/api/camino-gpx-files/use-upload-camino-gpx-file';
 import { useDeleteCaminoGpxFile } from '@/app/api/camino-gpx-files/use-delete-camino-gpx-file';
 import { canDeleteGpxFile } from '@/lib/can-delete-gpx-file';
+import { cn } from '@/lib/utils';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? '';
 
@@ -31,16 +32,20 @@ const UPLOAD_MODAL_ID = 'gpx-file-upload';
 
 interface CaminoGpxFilesProps {
   caminoId: string;
+  className?: string;
 }
 
-function uploadErrorMessage(status: number | undefined, t: ReturnType<typeof useTranslations<'camino_detail.gpx'>>): string {
+function uploadErrorMessage(
+  status: number | undefined,
+  t: ReturnType<typeof useTranslations<'camino_detail.gpx'>>,
+): string {
   if (status === 413) return t('upload_error_too_large');
   if (status === 415) return t('upload_error_wrong_type');
   if (status === 422) return t('upload_error_invalid');
   return t('upload_error_generic');
 }
 
-export function CaminoGpxFiles({ caminoId }: CaminoGpxFilesProps) {
+export function CaminoGpxFiles({ caminoId, className }: CaminoGpxFilesProps) {
   const t = useTranslations('camino_detail.gpx');
   const tCommon = useTranslations('common');
   const openModal = useModalStore((s) => s.open);
@@ -62,12 +67,15 @@ export function CaminoGpxFiles({ caminoId }: CaminoGpxFilesProps) {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const uploaderName =
+    [user?.given_name, user?.family_name].filter(Boolean).join(' ') || 'Pilgrim';
+
   function handleUploadSubmit() {
     if (!selectedFile || !fileName) return;
 
     setUploadError(null);
     uploadMutation.mutate(
-      { file: selectedFile, fileName },
+      { file: selectedFile, fileName, uploaderName },
       {
         onSuccess: () => {
           closeModal(UPLOAD_MODAL_ID);
@@ -76,7 +84,9 @@ export function CaminoGpxFiles({ caminoId }: CaminoGpxFilesProps) {
           if (fileInputRef.current) fileInputRef.current.value = '';
         },
         onError: (err) => {
-          setUploadError(uploadErrorMessage((err as Error & { status?: number }).status, t));
+          setUploadError(
+            uploadErrorMessage((err as Error & { status?: number }).status, t),
+          );
         },
       },
     );
@@ -96,18 +106,18 @@ export function CaminoGpxFiles({ caminoId }: CaminoGpxFilesProps) {
   }
 
   return (
-    <div className="mt-8">
-      <div className="flex flex-wrap gap-2">
-        <Button variant="outline" onClick={() => openModal(LIST_MODAL_ID)}>
-          {t('download_button')}
-        </Button>
-
-        {isPilgrim && (
-          <Button variant="outline" onClick={() => openModal(UPLOAD_MODAL_ID)}>
-            {t('upload_button')}
-          </Button>
-        )}
-      </div>
+    <>
+      <Button
+        variant="outline"
+        onClick={() => openModal(LIST_MODAL_ID)}
+        className={cn(
+          'border-1 border-pillyGreen-500 bg-pillyGreen-500 text-white px-8 py-8 text-2xl font-bold',
+          'outline-dashed outline-2 outline-offset-4 outline-transparent',
+          'hover:bg-pillyGreen-500 hover:text-white hover:outline-pillyGreen-500',
+          className,
+        )}>
+        {t('download_button')}
+      </Button>
 
       {/* Download / file list modal */}
       <Modal id={LIST_MODAL_ID} title={t('download_modal_title')}>
@@ -137,7 +147,10 @@ export function CaminoGpxFiles({ caminoId }: CaminoGpxFilesProps) {
                     size="sm"
                     aria-label={t('delete_confirm_title')}
                     onClick={() => setDeleteTargetId(file.id)}>
-                    <i className="icon-trash text-base" aria-hidden="true" />
+                    <i
+                      className="icon-trash text-base text-muted-foreground hover:text-foreground"
+                      aria-hidden="true"
+                    />
                   </Button>
                 )}
               </li>
@@ -145,8 +158,17 @@ export function CaminoGpxFiles({ caminoId }: CaminoGpxFilesProps) {
           </ul>
         )}
 
+        {isPilgrim && (
+          <Button
+            variant="outline"
+            onClick={() => openModal(UPLOAD_MODAL_ID)}
+            className="mt-4">
+            {t('upload_button')}
+          </Button>
+        )}
+
         {deleteError && (
-          <p role="alert" className="mt-2 text-sm text-destructive">
+          <p role="alert" className="mt-4 text-sm text-destructive">
             {deleteError}
           </p>
         )}
@@ -173,7 +195,11 @@ export function CaminoGpxFiles({ caminoId }: CaminoGpxFilesProps) {
               ref={fileInputRef}
               type="file"
               accept=".gpx"
-              className="block w-full text-sm text-muted-foreground file:mr-4 file:rounded-md file:border-0 file:bg-muted file:px-3 file:py-1.5 file:text-sm file:font-medium hover:file:bg-muted/80"
+              className={cn(
+                'block w-full text-sm text-muted-foreground cursor-pointer',
+                'file:mr-4 file:rounded-sm file:border file:bg-muted file:px-3 file:py-1.5 file:text-sm file:font-medium',
+                'hover:file:bg-muted/80',
+              )}
               onChange={(e) => setSelectedFile(e.target.files?.[0] ?? null)}
             />
           </div>
@@ -186,6 +212,7 @@ export function CaminoGpxFiles({ caminoId }: CaminoGpxFilesProps) {
 
           <div className="flex justify-end">
             <Button
+              variant="outline"
               onClick={handleUploadSubmit}
               disabled={!fileName || !selectedFile || uploadMutation.isPending}>
               {uploadMutation.isPending ? t('uploading') : t('upload_submit')}
@@ -195,7 +222,11 @@ export function CaminoGpxFiles({ caminoId }: CaminoGpxFilesProps) {
       </Modal>
 
       {/* Delete confirmation */}
-      <AlertDialog open={!!deleteTargetId} onOpenChange={(open) => { if (!open) setDeleteTargetId(null); }}>
+      <AlertDialog
+        open={!!deleteTargetId}
+        onOpenChange={(open) => {
+          if (!open) setDeleteTargetId(null);
+        }}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>{t('delete_confirm_title')}</AlertDialogTitle>
@@ -211,6 +242,6 @@ export function CaminoGpxFiles({ caminoId }: CaminoGpxFilesProps) {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+    </>
   );
 }

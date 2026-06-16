@@ -72,7 +72,7 @@ function renderComponent(caminoId = CAMINO_ID) {
 // ── Default mock setup ────────────────────────────────────────────────────────
 
 beforeEach(() => {
-  vi.mocked(useCaminoGpxFiles).mockReturnValue({ data: [] } as ReturnType<typeof useCaminoGpxFiles>);
+  vi.mocked(useCaminoGpxFiles).mockReturnValue({ data: [] } as unknown as ReturnType<typeof useCaminoGpxFiles>);
   vi.mocked(useUploadCaminoGpxFile).mockReturnValue({ mutate: vi.fn(), isPending: false } as unknown as ReturnType<typeof useUploadCaminoGpxFile>);
   vi.mocked(useDeleteCaminoGpxFile).mockReturnValue({ mutate: vi.fn(), isPending: false } as unknown as ReturnType<typeof useDeleteCaminoGpxFile>);
   vi.mocked(useKindeBrowserClient).mockReturnValue({
@@ -109,7 +109,7 @@ describe('CaminoGpxFiles', () => {
 
   it('shows empty-state text when file list is empty (modal must be open)', () => {
     // The modal content renders even when closed in the DOM (via Portal), so we can query it.
-    vi.mocked(useCaminoGpxFiles).mockReturnValue({ data: [] } as ReturnType<typeof useCaminoGpxFiles>);
+    vi.mocked(useCaminoGpxFiles).mockReturnValue({ data: [] } as unknown as ReturnType<typeof useCaminoGpxFiles>);
 
     renderComponent();
 
@@ -119,7 +119,7 @@ describe('CaminoGpxFiles', () => {
   it('shows file list when hook returns data', () => {
     vi.mocked(useCaminoGpxFiles).mockReturnValue({
       data: [makeFile()],
-    } as ReturnType<typeof useCaminoGpxFiles>);
+    } as unknown as ReturnType<typeof useCaminoGpxFiles>);
 
     renderComponent();
 
@@ -129,7 +129,7 @@ describe('CaminoGpxFiles', () => {
   it('download link points to backend proxy URL (not direct S3)', () => {
     vi.mocked(useCaminoGpxFiles).mockReturnValue({
       data: [makeFile({ id: 'gpx-file-1' })],
-    } as ReturnType<typeof useCaminoGpxFiles>);
+    } as unknown as ReturnType<typeof useCaminoGpxFiles>);
 
     renderComponent();
 
@@ -143,7 +143,7 @@ describe('CaminoGpxFiles', () => {
   it('download link does not have a "download" attribute', () => {
     vi.mocked(useCaminoGpxFiles).mockReturnValue({
       data: [makeFile()],
-    } as ReturnType<typeof useCaminoGpxFiles>);
+    } as unknown as ReturnType<typeof useCaminoGpxFiles>);
 
     renderComponent();
 
@@ -154,7 +154,7 @@ describe('CaminoGpxFiles', () => {
   it('uploaderName is rendered as text, not via dangerouslySetInnerHTML', () => {
     vi.mocked(useCaminoGpxFiles).mockReturnValue({
       data: [makeFile({ uploaderName: '<script>xss</script>' })],
-    } as ReturnType<typeof useCaminoGpxFiles>);
+    } as unknown as ReturnType<typeof useCaminoGpxFiles>);
 
     renderComponent();
 
@@ -171,7 +171,7 @@ describe('CaminoGpxFiles', () => {
 
     vi.mocked(useCaminoGpxFiles).mockReturnValue({
       data: [makeFile({ uploadedBy: 'kinde-user-001' })],
-    } as ReturnType<typeof useCaminoGpxFiles>);
+    } as unknown as ReturnType<typeof useCaminoGpxFiles>);
 
     renderComponent();
 
@@ -186,7 +186,7 @@ describe('CaminoGpxFiles', () => {
 
     vi.mocked(useCaminoGpxFiles).mockReturnValue({
       data: [makeFile({ uploadedBy: 'kinde-user-001' })], // different uploader
-    } as ReturnType<typeof useCaminoGpxFiles>);
+    } as unknown as ReturnType<typeof useCaminoGpxFiles>);
 
     renderComponent();
 

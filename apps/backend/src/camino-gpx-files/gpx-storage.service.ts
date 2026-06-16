@@ -46,7 +46,7 @@ export class GpxStorageService {
           Bucket: this.bucket,
           Key: storageKey,
           Body: buffer,
-          ContentType: 'application/gpx+xml',
+          ContentType: 'application/xml',
         }),
       );
     } catch (err) {
