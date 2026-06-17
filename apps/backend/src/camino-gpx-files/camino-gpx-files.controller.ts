@@ -127,7 +127,8 @@ export class CaminoGpxFilesController {
             message: 'File exceeds the maximum size of 5 MB',
           }),
           new FileTypeValidator({
-            fileType: /^(application\/gpx\+xml|text\/xml|application\/xml)$/,
+            fileType:
+              /^(application\/gpx\+xml|text\/xml|application\/xml|application\/octet-stream)$/,
           }),
         ],
       }),
