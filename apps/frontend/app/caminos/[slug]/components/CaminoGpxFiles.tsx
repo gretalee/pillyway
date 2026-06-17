@@ -72,11 +72,12 @@ export function CaminoGpxFiles({ caminoId, className }: CaminoGpxFilesProps) {
     [user?.given_name, user?.family_name].filter(Boolean).join(' ') || 'Pilgrim';
 
   function handleUploadSubmit() {
-    if (!selectedFile || !fileName) return;
+    const trimmedFileName = fileName.trim();
+    if (!selectedFile || !trimmedFileName) return;
 
     setUploadError(null);
     uploadMutation.mutate(
-      { file: selectedFile, fileName, uploaderName },
+      { file: selectedFile, fileName: trimmedFileName, uploaderName },
       {
         onSuccess: () => {
           closeModal(UPLOAD_MODAL_ID);
