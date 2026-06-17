@@ -85,7 +85,7 @@ export class CaminoGpxFilesController {
   @ApiBody({
     schema: {
       type: 'object',
-      required: ['file', 'fileName'],
+      required: ['file', 'fileName', 'uploaderName'],
       properties: {
         file: {
           type: 'string',
@@ -96,6 +96,11 @@ export class CaminoGpxFilesController {
           type: 'string',
           maxLength: 100,
           description: 'Display name for the file',
+        },
+        uploaderName: {
+          type: 'string',
+          maxLength: 200,
+          description: "Uploader's display name (max 200 chars)",
         },
       },
     },
