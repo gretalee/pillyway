@@ -113,7 +113,7 @@ export function CaminoGpxFiles({ caminoId, className }: CaminoGpxFilesProps) {
         variant="outline"
         onClick={() => openModal(LIST_MODAL_ID)}
         className={cn(
-          'border-1 border-pillyGreen-500 bg-pillyGreen-500 text-white px-8 py-8 text-2xl font-bold',
+          'bg-pillyGreen-500 text-white px-8 py-8 text-2xl font-bold',
           'outline-dashed outline-2 outline-offset-4 outline-transparent',
           'hover:bg-pillyGreen-500 hover:text-white hover:outline-pillyGreen-500',
           className,
