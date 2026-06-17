@@ -180,6 +180,27 @@
         "prev": "Vorheriges Bild",
         "next": "Nächstes Bild"
       }
+    },
+    "gpx": {
+      "download_button": "GPX Daten",
+      "upload_button": "GPX hochladen",
+      "download_modal_title": "GPX-Dateien",
+      "upload_modal_title": "GPX-Datei hochladen",
+      "empty_state": "Noch keine GPX-Dateien vorhanden.",
+      "file_name_label": "Dateiname",
+      "file_name_placeholder": "z.B. Mein Camino Track",
+      "file_input_label": "GPX-Datei",
+      "upload_submit": "Hochladen",
+      "uploading": "Wird hochgeladen...",
+      "upload_error_too_large": "Die Datei überschreitet die maximale Größe von 5 MB.",
+      "upload_error_wrong_type": "Nur GPX-Dateien werden akzeptiert.",
+      "upload_error_invalid": "Die Datei ist keine gültige GPX-Datei.",
+      "upload_error_generic": "Upload fehlgeschlagen. Bitte erneut versuchen.",
+      "limit_reached": "Dieses Camino hat bereits 20 GPX-Dateien (Maximum erreicht).",
+      "delete_confirm_title": "Datei löschen?",
+      "delete_confirm_body": "Diese Aktion kann nicht rückgängig gemacht werden.",
+      "delete_error": "Löschen fehlgeschlagen. Bitte erneut versuchen.",
+      "uploaded_by": "Hochgeladen von {name}"
     }
   },
   "caminos_update": {

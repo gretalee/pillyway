@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { EventLogModule } from './event-log/event-log.module';
 import { BackofficeModule } from './backoffice/backoffice.module';
+import { CaminoGpxFilesModule } from './camino-gpx-files/camino-gpx-files.module';
 import { CaminoPicturesModule } from './camino-pictures/camino-pictures.module';
 import { CaminoPointsModule } from './camino-points/camino-points.module';
 import { CaminoVotesModule } from './camino-votes/camino-votes.module';
@@ -25,6 +26,7 @@ import { WaypointsModule } from './waypoints/waypoints.module';
     EventLogModule,
     AuthModule,
     CaminosModule,
+    CaminoGpxFilesModule,
     CaminoPicturesModule,
     CaminoPointsModule,
     CaminoVotesModule,

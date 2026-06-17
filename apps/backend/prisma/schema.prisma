@@ -19,6 +19,7 @@ model Camino {
   caminoPointOrder CaminoPointOrder[]
   votes            CaminoVote[]
   pictures         CaminoPicture[]
+  gpxFiles         CaminoGpxFile[]
 
   @@unique([name])
   @@map("caminos")
@@ -162,6 +163,23 @@ model Sight {
   caminoPoint CaminoPoint @relation(fields: [caminoPointId], references: [id], onDelete: Cascade)
 
   @@map("sights")
+}
+
+model CaminoGpxFile {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  caminoId     String   @map("camino_id") @db.Uuid
+  uploadedBy   String   @map("uploaded_by")
+  uploaderName String   @map("uploader_name") @db.VarChar(200)
+  fileName     String   @map("file_name") @db.VarChar(100)
+  storageKey   String   @map("storage_key")
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  camino Camino @relation(fields: [caminoId], references: [id], onDelete: Cascade)
+
+  @@index([caminoId, createdAt(sort: Desc)])
+  @@index([uploadedBy])
+  @@map("camino_gpx_files")
 }
 
 model UserEvent {
