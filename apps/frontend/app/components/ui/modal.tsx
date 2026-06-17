@@ -66,9 +66,9 @@ export function Modal({ id, title, children, onOk, onDismiss }: ModalProps) {
               {title}
             </DialogPrimitive.Title>
             <DialogPrimitive.Close
-              className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }))}
+              className={cn(buttonVariants({ variant: 'ghost', size: 'icon-lg' }))}
               aria-label={t('close_aria')}>
-              <i className="icon-times text-base text-foreground" aria-hidden="true" />
+              <i className="icon-times text-foreground" aria-hidden="true" />
             </DialogPrimitive.Close>
           </div>
 

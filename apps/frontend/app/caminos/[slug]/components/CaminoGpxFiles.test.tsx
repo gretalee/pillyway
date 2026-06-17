@@ -158,8 +158,10 @@ describe('CaminoGpxFiles', () => {
 
     renderComponent();
 
-    // The text should be present as escaped text content, not as a script element
-    expect(screen.queryByRole('script')).not.toBeInTheDocument();
+    // Verify no script element was injected (queryByRole('script') is always null
+    // because <script> has no ARIA role — check the DOM directly instead)
+    expect(document.body.querySelector('script[type="text/javascript"]')).toBeNull();
+    expect(document.body.querySelector('script:not([type])')).toBeNull();
     expect(screen.getByText('<script>xss</script>', { exact: false })).toBeInTheDocument();
   });
 

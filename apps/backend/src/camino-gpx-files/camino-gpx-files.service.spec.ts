@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   ForbiddenException,
   InternalServerErrorException,
   NotFoundException,
@@ -279,13 +280,13 @@ describe('CaminoGpxFilesService', () => {
   // ── uploadGpxFile — per-camino cap ───────────────────────────────────────────
 
   describe('uploadGpxFile — per-camino cap', () => {
-    it('throws UnprocessableEntityException when count is 20, S3 not called', async () => {
+    it('throws ConflictException when count is 20, S3 not called', async () => {
       prismaMock.camino.findUnique.mockResolvedValue({ id: CAMINO_ID, name: 'Test Camino' });
       prismaMock.caminoGpxFile.count.mockResolvedValue(20);
 
       await expect(
         service.uploadGpxFile(CAMINO_ID, makeFile(VALID_GPX_11), makeDto(), USER_ID, 'Pilgrim'),
-      ).rejects.toThrow(UnprocessableEntityException);
+      ).rejects.toThrow(ConflictException);
 
       expect(gpxStorageMock.uploadGpxFile).not.toHaveBeenCalled();
     });

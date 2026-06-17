@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   ForbiddenException,
   Injectable,
   Logger,
@@ -70,7 +71,7 @@ export class CaminoGpxFilesService {
 
     const count = await this.prisma.caminoGpxFile.count({ where: { caminoId } });
     if (count >= MAX_GPX_FILES) {
-      throw new UnprocessableEntityException(
+      throw new ConflictException(
         'This camino has reached the maximum of 20 GPX files.',
       );
     }

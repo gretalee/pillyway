@@ -39,6 +39,7 @@ function uploadErrorMessage(
   status: number | undefined,
   t: ReturnType<typeof useTranslations<'camino_detail.gpx'>>,
 ): string {
+  if (status === 409) return t('limit_reached');
   if (status === 413) return t('upload_error_too_large');
   if (status === 415) return t('upload_error_wrong_type');
   if (status === 422) return t('upload_error_invalid');
@@ -144,11 +145,11 @@ export function CaminoGpxFiles({ caminoId, className }: CaminoGpxFilesProps) {
                 {canDeleteGpxFile(user?.id, roleKeys, file.uploadedBy) && (
                   <Button
                     variant="ghost"
-                    size="sm"
+                    size="icon-lg"
                     aria-label={t('delete_confirm_title')}
                     onClick={() => setDeleteTargetId(file.id)}>
                     <i
-                      className="icon-trash text-base text-muted-foreground hover:text-foreground"
+                      className="icon-trash text-muted-foreground hover:text-foreground"
                       aria-hidden="true"
                     />
                   </Button>
@@ -197,8 +198,8 @@ export function CaminoGpxFiles({ caminoId, className }: CaminoGpxFilesProps) {
               accept=".gpx"
               className={cn(
                 'block w-full text-sm text-muted-foreground cursor-pointer',
-                'file:mr-4 file:rounded-sm file:border file:bg-muted file:px-3 file:py-1.5 file:text-sm file:font-medium',
-                'hover:file:bg-muted/80',
+                'file:mr-4 file:rounded-sm file:text-primary-foreground file:border file:bg-primary file:px-3 file:py-1.5 file:text-sm file:font-medium',
+                'hover:file:bg-primary/80',
               )}
               onChange={(e) => setSelectedFile(e.target.files?.[0] ?? null)}
             />
@@ -236,8 +237,8 @@ export function CaminoGpxFiles({ caminoId, className }: CaminoGpxFilesProps) {
             <AlertDialogCancel onClick={() => setDeleteTargetId(null)}>
               {tCommon('cancel')}
             </AlertDialogCancel>
-            <AlertDialogAction onClick={handleDeleteConfirm}>
-              {t('delete_confirm_title')}
+            <AlertDialogAction variant="destructive" onClick={handleDeleteConfirm}>
+              {tCommon('delete')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

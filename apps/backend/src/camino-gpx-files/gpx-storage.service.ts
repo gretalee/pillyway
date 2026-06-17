@@ -12,6 +12,7 @@ import {
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
+import { NodeHttpHandler } from '@smithy/node-http-handler';
 import { Readable } from 'stream';
 
 const GPX_REQUEST_TIMEOUT_MS = 10_000;
@@ -35,7 +36,7 @@ export class GpxStorageService {
         secretAccessKey: config.getOrThrow<string>('SUPABASE_S3_SECRET_KEY'),
       },
       forcePathStyle: true,
-      requestHandler: { requestTimeout: GPX_REQUEST_TIMEOUT_MS },
+      requestHandler: new NodeHttpHandler({ requestTimeout: GPX_REQUEST_TIMEOUT_MS }),
     });
   }
 
