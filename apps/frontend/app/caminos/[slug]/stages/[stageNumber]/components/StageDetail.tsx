@@ -228,7 +228,19 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
             ))}
           </ul>
         ) : (
-          <p className="mt-4 text-sm text-muted-foreground">{t('no_accommodations')}</p>
+          <>
+            <p className="mt-4 text-sm text-muted-foreground">
+              {t('no_accommodations')}
+              <Link
+                href={`/waypoints/${stage.startPoint.slug}/accommodations/new`}
+                className={cn(
+                  buttonVariants({ variant: 'secondary', size: 'sm' }),
+                  'ml-2',
+                )}>
+                <span className="truncate">{t('add_accommodation')}</span>
+              </Link>
+            </p>
+          </>
         )}
       </CollapsibleSection>
 
@@ -254,7 +266,19 @@ export async function StageDetail({ caminoId, stageNumber, user }: StageDetailPr
             ))}
           </ul>
         ) : (
-          <p className="mt-4 text-sm text-muted-foreground">{t('no_accommodations')}</p>
+          <>
+            <p className="mt-4 text-sm text-muted-foreground">
+              {t('no_accommodations')}
+              <Link
+                href={`/waypoints/${stage.endPoint.slug}/accommodations/new`}
+                className={cn(
+                  buttonVariants({ variant: 'secondary', size: 'sm' }),
+                  'ml-2',
+                )}>
+                <span className="truncate">{t('add_accommodation')}</span>
+              </Link>
+            </p>
+          </>
         )}
       </CollapsibleSection>
     </article>

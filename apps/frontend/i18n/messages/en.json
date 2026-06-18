@@ -240,7 +240,8 @@
     "first_stage_label": "This is the starting point",
     "last_stage_label": "Last camino point",
     "accommodations_at": "Accommodations at {name}",
-    "no_accommodations": "No accommodations listed yet."
+    "no_accommodations": "No accommodations listed yet.",
+    "add_accommodation": "Add accommodation"
   },
   "stage_edit": {
     "title": "Edit Stage {number}",

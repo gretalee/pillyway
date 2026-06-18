@@ -240,7 +240,8 @@
     "first_stage_label": "Das ist der Startpunkt",
     "last_stage_label": "Letzter Camino-Punkt",
     "accommodations_at": "Unterkünfte in {name}",
-    "no_accommodations": "Noch keine Unterkünfte eingetragen."
+    "no_accommodations": "Noch keine Unterkünfte eingetragen.",
+    "add_accommodation": "Unterkunft hinzufügen"
   },
   "stage_edit": {
     "title": "Etappe {number} bearbeiten",
