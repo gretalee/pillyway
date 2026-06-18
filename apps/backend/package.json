@@ -34,6 +34,8 @@
     "seed:jacobusweg-heide:prod": "node --env-file=.env.prod ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/seed-camino.ts ../../scripts/data/jacobusweg-lueneburger-heide.json",
     "seed:via-jutlandica": "node --env-file=.env ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/seed-camino.ts ../../scripts/data/via-jutlandica.json",
     "seed:via-jutlandica:prod": "node --env-file=.env.prod ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/seed-camino.ts ../../scripts/data/via-jutlandica.json",
+    "seed:elisabethpfad-e2": "node --env-file=.env ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/seed-camino.ts ../../scripts/data/elisabethpfad-e2.json",
+    "seed:elisabethpfad-e2:prod": "node --env-file=.env.prod ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/seed-camino.ts ../../scripts/data/elisabethpfad-e2.json",
     "db:backup:dev": "DB_BACKUP_ENV=dev node --env-file=.env ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/backup-db.ts",
     "db:backup:prod": "DB_BACKUP_ENV=prod node --env-file=.env.prod ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/backup-db.ts",
     "db:restore:dev": "node --env-file=.env ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/restore-db.ts"

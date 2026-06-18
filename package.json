@@ -35,6 +35,8 @@
     "seed:jacobusweg-heide:prod": "yarn --cwd apps/backend seed:jacobusweg-heide:prod",
     "seed:via-jutlandica": "yarn --cwd apps/backend seed:via-jutlandica",
     "seed:via-jutlandica:prod": "yarn --cwd apps/backend seed:via-jutlandica:prod",
+    "seed:elisabethpfad-e2": "yarn --cwd apps/backend seed:elisabethpfad-e2",
+    "seed:elisabethpfad-e2:prod": "yarn --cwd apps/backend seed:elisabethpfad-e2:prod",
     "db:backup:dev": "yarn --cwd apps/backend db:backup:dev",
     "db:backup:prod": "yarn --cwd apps/backend db:backup:prod",
     "db:restore:dev": "yarn --cwd apps/backend db:restore:dev"
