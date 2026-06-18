@@ -14,7 +14,7 @@ interface AccommodationData {
   addressZip: string | null;
   addressCity: string | null;
   addressCountry: string | null;
-  phone: string | null;
+  phone?: string | null;
   website: string | null;
   email: string | null;
   priceRange: string | null;
