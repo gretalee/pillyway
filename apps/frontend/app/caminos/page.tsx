@@ -3,6 +3,8 @@ import { fetchCaminos } from '@/app/api/caminos/caminos';
 import { getAuthUser } from '@/lib/getAuthUser';
 import { CaminoList } from './components/CaminoList';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
+import { buttonVariants } from '../components/ui/button';
 
 export default async function CaminosPage() {
   const t = await getTranslations('caminos');
@@ -30,6 +32,22 @@ export default async function CaminosPage() {
           ),
         })}
       </p>
+
+      <div
+        className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative mt-4"
+        role="alert">
+        {t('teaser.text')}
+        <br />
+        {t('teaser.text_2')}
+        <Link
+          href="mailto:hello@pillyway.de"
+          aria-label={t('teaser.aria_label')}
+          className={cn(buttonVariants({ variant: 'outline' }), 'ml-2')}
+          target="_blank"
+          rel="noopener noreferrer">
+          {t('teaser.link')}
+        </Link>
+      </div>
 
       {error && (
         <p role="alert" className="mt-4 text-sm text-destructive">
