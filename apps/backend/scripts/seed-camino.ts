@@ -14,6 +14,7 @@ interface AccommodationData {
   addressZip: string | null;
   addressCity: string | null;
   addressCountry: string | null;
+  phone?: string | null;
   website: string | null;
   email: string | null;
   priceRange: string | null;
@@ -153,7 +154,7 @@ async function seed(
   //    This ensures the camino is never left in a partially-rebuilt state if
   //    the script errors mid-import (e.g. after the deleteMany but before all
   //    point orders are recreated).
-  const counts = { points: 0, accommodations: 0, stages: 0 };
+  const counts = { points: 0, accommodations: 0, accommodationsUpdated: 0, stages: 0 };
 
   await prisma.$transaction(async (tx) => {
     // 1. Upsert Camino
@@ -190,9 +191,9 @@ async function seed(
       );
 
       const point = await tx.caminoPoint.upsert({
-        where: { name_country: { name: pd.name, country: pd.country } },
+        where: { slug: pd.slug },
         create: { name: pd.name, country: pd.country, slug: pd.slug, description: pd.description },
-        update: { slug: pd.slug, description: pd.description },
+        update: { name: pd.name, country: pd.country, description: pd.description },
       });
       pointIdByName.set(pd.name, point.id);
       counts.points++;
@@ -207,30 +208,35 @@ async function seed(
           console.warn(`    ⚠ Unknown type "${acc.type}" for "${acc.name}" — skipped`);
           continue;
         }
-        const exists = await tx.accommodation.findFirst({
+        const accData = {
+          type: acc.type as AccommodationType,
+          description: acc.description,
+          addressStreet: acc.addressStreet,
+          addressZip: acc.addressZip,
+          addressCity: acc.addressCity,
+          addressCountry: acc.addressCountry,
+          phone: acc.phone ?? null,
+          website: acc.website,
+          email: acc.email,
+          priceRange:
+            acc.priceRange && VALID_PRICE_RANGES.has(acc.priceRange)
+              ? (acc.priceRange as PriceRange)
+              : null,
+          verified: acc.verified,
+        };
+        const existing = await tx.accommodation.findFirst({
           where: { caminoPointId: point.id, name: acc.name },
           select: { id: true },
         });
-        if (!exists) {
+        if (existing) {
+          await tx.accommodation.update({
+            where: { id: existing.id },
+            data: { ...accData, verified: undefined, updatedAt: new Date() },
+          });
+          counts.accommodationsUpdated++;
+        } else {
           await tx.accommodation.create({
-            data: {
-              caminoPointId: point.id,
-              name: acc.name,
-              type: acc.type as AccommodationType,
-              description: acc.description,
-              addressStreet: acc.addressStreet,
-              addressZip: acc.addressZip,
-              addressCity: acc.addressCity,
-              addressCountry: acc.addressCountry,
-              website: acc.website,
-              email: acc.email,
-              priceRange:
-                acc.priceRange && VALID_PRICE_RANGES.has(acc.priceRange)
-                  ? (acc.priceRange as PriceRange)
-                  : null,
-              verified: acc.verified,
-              createdBy,
-            },
+            data: { caminoPointId: point.id, name: acc.name, createdBy, ...accData },
           });
           counts.accommodations++;
         }
@@ -265,6 +271,7 @@ async function seed(
   console.log('Import complete.');
   console.log(`  Points upserted:        ${counts.points}`);
   console.log(`  Accommodations created: ${counts.accommodations}`);
+  console.log(`  Accommodations updated: ${counts.accommodationsUpdated}`);
   console.log(`  Stages upserted:        ${counts.stages}`);
   console.log('─────────────────────────────────────────\n');
 }

@@ -1,0 +1,783 @@
+{
+  "_meta": {
+    "route": "Via Jutlandica (Schleswig-Holstein / Niedersachsen)",
+    "section": "Harrislee (Krusau border) → Stade",
+    "distance_km": 227,
+    "stages": 15,
+    "created": "2026-06-18",
+    "sources": [
+      "https://www.jakobsweg.de/via-jutlandica/",
+      "https://camino-europe.eu/de/eu/de/jakobswege/via-jutlandica/",
+      "https://www.outdooractive.com/en/route/pilgrim-walk/binnenland-schleswig-holstein/via-jutlandica-from-krusau-to-glueckstadt/1376790/",
+      "https://www.via-jutlandica.com/41859/50601.html",
+      "https://caminotogo.de/pilgerherbergen-norddeutschland/",
+      "https://pilger-im-norden.de/via-jutlandica-westroute/"
+    ],
+    "note": "Replace createdBy with your Kinde user sub. Stages 6+7 of the official route are merged because Stafstedt and Jahrsdorf have no overnight accommodation — Jevenstedt serves as the practical overnight base. The route described here follows the western variant via Handewitter Forst; an eastern variant runs Flensburg → Sieverstedt → Schleswig (32+22 km)."
+  },
+
+  "camino": {
+    "name": "Via Jutlandica",
+    "description": "Die Via Jutlandica ist die älteste der norddeutschen Jakobswege und Teil der transeuropäischen Kulturroute, die St. Olavs Grab in Trondheim (Norwegen) mit dem Apostelgrab in Santiago de Compostela verbindet. Sie wurde am 20. Oktober 2007 nach rund 500 Jahren neu eröffnet.\n\nDer Weg folgt dem historischen Ochsenweg (dänisch: Hærvejen), einer der ältesten Landrouten Nordeuropas. Von der deutsch-dänischen Grenze bei Krusau/Harrislee führt er ca. 227 km durch Schleswig-Holstein und Niedersachsen bis nach Stade an der Elbe. Von dort geht es weiter nach Harsefeld und Bremen.\n\nDie Landschaft ist flach bis leicht hügelig — typisch norddeutsch mit Wiesen, Knicks (Wallhecken), Wäldern, Seen und Deichläufen. Der Weg ist ruhig und einsam; eine Voranmeldung in den Unterkünften wird empfohlen.\n\nHistorische Höhepunkte: UNESCO-Welterbe Haithabu/Hedeby und Danevirke bei Schleswig; Schloss Gottorf (Entfernungsstein nach Santiago: 3.199 km); Schwebefähre und Fußgängertunnel unter dem Nord-Ostsee-Kanal bei Rendsburg; Zisterzienserkloster Itzehoe; historische Planstadt Glückstadt; mittelalterliche Hansestadt Stade.\n\n**Pilgerpass (Credencial):**\nEdition caminotogo: https://caminotogo.de/produkt/321-pilgerausweis-jutlandica/ (€7,00 + Versand). Alternativ: Pilgerzentrum im Norden, St. Jacobi Hamburg (040 30 37 37 23); Deutsche St. Jakobus-Gesellschaft Aachen (0241 4790127).",
+    "verified": false,
+    "createdBy": "kp_53e76e075e3f41bbaa376eb3ca29e14c"
+  },
+
+  "points": [
+    {
+      "position": 1,
+      "name": "Harrislee",
+      "country": "germany",
+      "slug": "harrislee",
+      "description": "Beginn der Via Jutlandica in Deutschland, direkt an der dänisch-deutschen Grenze bei Krusau. Der erste Jakobsmuschel-Wegweiser erscheint am Grenzübergang. Harrislee ist eine Gemeinde nördlich von Flensburg und der Startpunkt aller Varianten der Via Jutlandica.",
+      "accommodations": [
+        {
+          "name": "Grenzmotel Harrislee",
+          "type": "hotel",
+          "description": "2-Sterne-Motel mit skandinavischem Design direkt an der deutschen Grenze, 48 Betten. Ideal als erster oder letzter Übernachtungsort auf der Via Jutlandica.",
+          "addressStreet": "Am Oxer 13",
+          "addressZip": "24955",
+          "addressCity": "Harrislee",
+          "addressCountry": "germany",
+          "phone": "+49 461 9957566",
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "Matthiesen — Privatzimmer",
+          "type": "private_room",
+          "description": "Privatzimmer im Grenzbereich Harrislee/Krusau. Preiskategorie €15–25/Nacht.",
+          "addressStreet": "Am Oxer 13",
+          "addressZip": "24955",
+          "addressCity": "Harrislee",
+          "addressCountry": "germany",
+          "phone": "+49 461 1601645",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 2,
+      "name": "Flensburg",
+      "country": "germany",
+      "slug": "flensburg",
+      "description": "Erste Großstadt auf dem deutschen Teil der Via Jutlandica. Nur wenige Kilometer von der Grenze entfernt ist Flensburg der praktische Ausgangspunkt für Pilger, die mit dem Zug anreisen. Die Stadt hat eine deutsch-dänische Geschichte und beherbergt den historischen Hafen, die mittelalterliche Nikolaikirche und das Rum-Museum. Flensburg ist auch Startpunkt der östlichen Routenvariante, die direkt nach Sieverstedt führt (31,97 km).",
+      "accommodations": [
+        {
+          "name": "Hotel am Nordkreuz",
+          "type": "hotel",
+          "description": "Hotel am Nordkreuz-Knotenpunkt, günstiger Einstieg direkt am Beginn der Via Jutlandica auf deutschem Boden.",
+          "addressStreet": "Süderstraße 12",
+          "addressZip": "24939",
+          "addressCity": "Flensburg",
+          "addressCountry": "germany",
+          "phone": "+49 461 77400",
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 3,
+      "name": "Handewitt",
+      "country": "germany",
+      "slug": "handewitt",
+      "description": "Erste Etappenstation südlich von Flensburg auf der westlichen Routenvariante. Die Gemeinde liegt am Rand des Handewitter Forstes. Nahe der Route befinden sich zwei Bronzezeithügelgräber. Angenehmer Waldweg durch den Handewitter Forst prägt diese Etappe.",
+      "accommodations": [
+        {
+          "name": "Hotel Gasthof Handewitt",
+          "type": "hotel",
+          "description": "Kleines Landhotel mit 6 Doppelzimmern und einem 2-Zimmer-Apartment, eigenes Bad, kostenlosem WLAN und Küchenzeile. Check-in ab 15:00 Uhr.",
+          "addressStreet": "Osterstraße 2",
+          "addressZip": "24983",
+          "addressCity": "Handewitt",
+          "addressCountry": "germany",
+          "phone": "+49 4608 9716800",
+          "website": "https://gasthofhandewitt.de/",
+          "email": "info@gasthofhandewitt.de",
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "Landgasthof Hoffnung",
+          "type": "hotel",
+          "description": "Einfaches 2-Sterne-Gästehaus mit 10 Zimmern, ca. 4,8 km vom Sankelmarker See. Freies Parken, WLAN, Nichtraucherbetrieb. Check-in 14:00–18:00 Uhr. Im Pilgerführer Via Jutlandica als empfohlene Unterkunft aufgeführt.",
+          "addressStreet": "Hoffnung 2",
+          "addressZip": "24983",
+          "addressCity": "Handewitt",
+          "addressCountry": "germany",
+          "phone": "+49 4630 90330",
+          "website": "https://landgasthof-hoffnung-guest-house.schleswigholstein.org/",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Lorenzen — Privatzimmer",
+          "type": "private_room",
+          "description": "Einfaches Privatzimmer in Handewitt, Preiskategorie €15–25/Nacht.",
+          "addressStreet": "An der Au 8",
+          "addressZip": "24983",
+          "addressCity": "Handewitt",
+          "addressCountry": "germany",
+          "phone": "+49 4608 469",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Dänischer Pfadfinderhof Handewitt",
+          "type": "hostel",
+          "description": "Einfache Pilgerübernachtung im dänischen Pfadfinderhof. Schlichtes Lager, Gemeinschaftsküche. Voranmeldung erforderlich.",
+          "addressStreet": "Oberlangberg 6",
+          "addressZip": "24983",
+          "addressCity": "Handewitt",
+          "addressCountry": "germany",
+          "phone": "+49 461 8400724",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 4,
+      "name": "Sankelmark",
+      "country": "germany",
+      "slug": "sankelmark",
+      "description": "Kleines Dorf am Sankelmarker See zwischen Handewitt und Oeversee. Ruhige Waldlage mit dem gleichnamigen See. In der Nähe liegt die dänische Akademie Sankelmark. Die Unterkunftsoption ist in Barderup, einem Ortsteil der Gemeinde Oeversee.",
+      "accommodations": [
+        {
+          "name": "Jakobsen — Privatzimmer (Barderup)",
+          "type": "private_room",
+          "description": "Privatzimmer in Barderup bei Sankelmark. Persönliche Atmosphäre, direkt am Wanderweg. Voranmeldung empfohlen.",
+          "addressStreet": "Dorfstraße 17",
+          "addressZip": "24988",
+          "addressCity": "Barderup",
+          "addressCountry": "germany",
+          "phone": "+49 4630 785",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 5,
+      "name": "Oeversee",
+      "country": "germany",
+      "slug": "oeversee",
+      "description": "Bedeutende mittelalterliche Raststation auf der Via Jutlandica. Die romanische St.-Georg-Kirche aus dem 12. Jahrhundert (Feldsteinbau) ist seit dem Mittelalter Pilgerrast und einer der bedeutendsten Kirchenbauten auf der Route. Nahe liegt der Sankelmarker See. Das Naturschutzgebiet Fröruper Berge befindet sich in der Nähe.",
+      "accommodations": [
+        {
+          "name": "Gemeindehaus St. Georg — Kirchengemeinde Oeversee",
+          "type": "church",
+          "description": "Pilgerübernachtung im Gemeindehaus der mittelalterlichen St.-Georg-Kirche (12. Jh.). Voranmeldung über das Pfarrbüro oder Pilgerkoordinatorin Sigrid Strüber empfohlen. Typischer Pilgertarif: €3–12/Nacht mit Pilgerausweis.",
+          "addressStreet": "Stapelholmer Weg 29",
+          "addressZip": "24988",
+          "addressCity": "Oeversee",
+          "addressCountry": "germany",
+          "phone": "+49 4630 93237",
+          "website": null,
+          "email": "kirchenbuero@oeversee-jarplund.kk-sf.de",
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hotel Seeblick am Sankelmarker See",
+          "type": "hotel",
+          "description": "Hotel und Restaurant direkt am Sankelmarker See, liegt an der Route. Familienbetrieb mit Garten, Fahrradabstellmöglichkeit und Wanderwegen. Italienische und deutsche Küche.",
+          "addressStreet": "Bundesstraße 6-8",
+          "addressZip": "24988",
+          "addressCity": "Oeversee",
+          "addressCountry": "germany",
+          "phone": "+49 176 46585369",
+          "website": "https://hotel-seeblick-am-sankelmarker-see.de/",
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "Historischer Krug Oeversee",
+          "type": "hotel",
+          "description": "Traditionsgasthaus in Oeversee direkt am historischen Pilgerweg. Einfache Zimmer, Gaststätte mit norddeutscher Küche.",
+          "addressStreet": "Am Gratzer Platz",
+          "addressZip": "24988",
+          "addressCity": "Oeversee",
+          "addressCountry": "germany",
+          "phone": "+49 4630 9400",
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "Gasthof Frörup",
+          "type": "hotel",
+          "description": "Ländlicher Gasthof in der Nähe von Oeversee. Einfache Unterkunft, regionale Küche.",
+          "addressStreet": "Stapelholmer Weg 43",
+          "addressZip": "24988",
+          "addressCity": "Oeversee",
+          "addressCountry": "germany",
+          "phone": "+49 4638 89450",
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "Pfadfinderhof Tydal (Eggebek)",
+          "type": "hostel",
+          "description": "Dänischer Pfadfinderhof in Eggebek, ca. 10 km von Oeversee. Einfaches Massenlager für Pilger. Abholung nach Vereinbarung möglich. Preiskategorie 1–2 (unter €25).",
+          "addressStreet": null,
+          "addressZip": "24891",
+          "addressCity": "Eggebek",
+          "addressCountry": "germany",
+          "phone": "+49 4609 91030",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 6,
+      "name": "Schleswig",
+      "country": "germany",
+      "slug": "schleswig",
+      "description": "Bedeutender Pilger-Hub und historische Herzogstadt. Dom St. Petri (romanisch-gotischer Dom), Schloss Gottorf mit Entfernungsstein nach Santiago de Compostela (3.199 km), das UNESCO-Welterbe Haithabu/Hedeby unmittelbar südlich der Stadt (bedeutendste Wikingersiedlung Nordeuropas) und der mittelalterliche Fischerkiez Holm. Hier trifft auch die östliche Routenvariante (via Sieverstedt) wieder auf den Hauptweg.",
+      "accommodations": [
+        {
+          "name": "Domhotel Bed & Breakfast",
+          "type": "b_and_b",
+          "description": "Zentrale Unterkunft in Schleswig, 3 Gehminuten vom Schlei-Hafen und 10 Minuten vom Dom entfernt. Einfach und praktisch in der Innenstadt.",
+          "addressStreet": "Domziegelhof 6",
+          "addressZip": "24837",
+          "addressCity": "Schleswig",
+          "addressCountry": "germany",
+          "phone": "+49 4621 977767",
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "Hotel Pension Schleiblick",
+          "type": "hotel",
+          "description": "Pension in der ruhigen Altstadt mit einzigartigen Ausblicken auf die Schlei. Rustikale, praktische Einrichtung; TV und WLAN in allen Zimmern. Nahe Dom St. Petri.",
+          "addressStreet": "Hafengang 4",
+          "addressZip": "24837",
+          "addressCity": "Schleswig",
+          "addressCountry": "germany",
+          "phone": "+49 4621 23468",
+          "website": "https://www.hotel-pension-schleswig.com/",
+          "email": "info@hotel-pension-schleswig.com",
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "Bed & Breakfast am Dom",
+          "type": "b_and_b",
+          "description": "Adults-only B&B in einem 300 Jahre alten Fachwerkhaus nahe Dom, Hafen und Fischerort Holm. 8 individuell eingerichtete Zimmer in zwei Häusern. Frühstück aus regionalen und Bio-Produkten.",
+          "addressStreet": "Töpferstraße 9",
+          "addressZip": "24837",
+          "addressCity": "Schleswig",
+          "addressCountry": "germany",
+          "phone": "+49 4621 485991",
+          "website": "https://www.bb-schleswig.de/",
+          "email": "info@bb-schleswig.de",
+          "priceRange": "comfortable",
+          "verified": false
+        },
+        {
+          "name": "Jugendherberge Schleswig (DJH)",
+          "type": "hostel",
+          "description": "DJH-Jugendherberge in Schleswig, zentral gelegen. Günstiger Basisübernachtung für Pilger direkt in der historischen Herzogstadt.",
+          "addressStreet": "Spielkoppel 1",
+          "addressZip": "24837",
+          "addressCity": "Schleswig",
+          "addressCountry": "germany",
+          "phone": "+49 4621 23893",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Jugendherberge Borgwedel (DJH)",
+          "type": "hostel",
+          "description": "DJH-Jugendherberge am Schlei-Ufer, ca. 14 km von Schleswig-Zentrum. Günstige Alternative, ideal für Pilger, die vom Haithabu-Besuch weiterziehen.",
+          "addressStreet": "Kreisstraße 17",
+          "addressZip": "24857",
+          "addressCity": "Borgwedel",
+          "addressCountry": "germany",
+          "phone": "+49 4354 219",
+          "website": null,
+          "email": "borgwedel@nm-jugendherberge.de",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 7,
+      "name": "Kropp",
+      "country": "germany",
+      "slug": "kropp",
+      "description": "Kleine Gemeinde südlich von Schleswig. Die Dorfkirche stammt aus dem Jahr 1250. Die Etappe von Schleswig nach Kropp führt durch Haddeby am UNESCO-Wikingerdenkmal Haithabu vorbei und entlang des malerischen Haddebyer Noores und Selker Noores auf einem schmalen Landrücken.",
+      "accommodations": [
+        {
+          "name": "Hotel Wikingerhof",
+          "type": "hotel",
+          "description": "69 Zimmer, 4 Studios und ein Ferienhaus. Friesisch geprägtes Hotel mit Restaurant, Bar, Biergarten, 24h kostenlosem Parken und freiem WLAN. Frühstück Mo–Fr 06:30–10:00, Sa–So 08:00–10:00.",
+          "addressStreet": "Tetenhusener Chaussee 1",
+          "addressZip": "24848",
+          "addressCity": "Kropp",
+          "addressCountry": "germany",
+          "phone": "+49 4624 700",
+          "website": "https://www.wikingerhof.de/",
+          "email": "info@wikingerhof.de",
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "Kirchengemeinde Kropp — Gemeindehaus",
+          "type": "church",
+          "description": "Die Kirchengemeinde Kropp ermöglicht Pilgern mit Voranmeldung eine Übernachtung im Gemeindehaus. Dorfkirche datiert auf 1250. Typischer Pilgertarif: €3–12/Nacht mit Pilgerausweis.",
+          "addressStreet": "Hauptstraße 3a",
+          "addressZip": "24848",
+          "addressCity": "Kropp",
+          "addressCountry": "germany",
+          "phone": "+49 4624 1317",
+          "website": "https://www.kirche-kropp.de/",
+          "email": "buero@kirche-kropp.de",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 8,
+      "name": "Rendsburg",
+      "country": "germany",
+      "slug": "rendsburg",
+      "description": "Älteste Grenzstadt Schleswig-Holsteins am Eider-Fluss. Touristisches Highlight: die spektakuläre Eisenbahnhochbrücke über den Nord-Ostsee-Kanal und die weltweit einzigartige Schwebefähre. Der Pilgerweg quert den Kanal durch einen Fußgängertunnel — ein außergewöhnliches Erlebnis.",
+      "accommodations": [
+        {
+          "name": "Hotel Rendsburg",
+          "type": "hotel",
+          "description": "Familiengeführtes Hotel im historischen Neuwerker Viertel, 10 Gehminuten vom Nord-Ostsee-Kanal und der Hochbrücke. Freies Parken, WLAN, klassisches Interieur mit Parkettböden.",
+          "addressStreet": "Herrenstraße 12",
+          "addressZip": "24768",
+          "addressCity": "Rendsburg",
+          "addressCountry": "germany",
+          "phone": "+49 4331 58020",
+          "website": "https://www.hotel-rendsburg.com/",
+          "email": "info@hotel-rendsburg.com",
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 9,
+      "name": "Jevenstedt",
+      "country": "germany",
+      "slug": "jevenstedt",
+      "description": "Dorf an der Eider zwischen Rendsburg und Hohenwestedt. Persönliche Etappenstation mit Gasthausambiente. Jevenstedt dient als praktische Übernachtungsmöglichkeit auf der langen Etappe zwischen Rendsburg und Hohenwestedt, da die offiziellen Zwischenstationen Stafstedt und Jahrsdorf keine Übernachtungen anbieten.",
+      "accommodations": [
+        {
+          "name": "Möhl's Gasthof",
+          "type": "hotel",
+          "description": "Traditionsgasthof in Jevenstedt. Einfache Zimmer, regionale Küche.",
+          "addressStreet": "Dorfstraße 12",
+          "addressZip": "24808",
+          "addressCity": "Jevenstedt",
+          "addressCountry": "germany",
+          "phone": "+49 4337 331",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Kaak — Privatzimmer",
+          "type": "private_room",
+          "description": "Privatzimmer in Jevenstedt. Preiskategorie €15–25/Nacht.",
+          "addressStreet": "Nienkattbeker Straße 47",
+          "addressZip": "24808",
+          "addressCity": "Jevenstedt",
+          "addressCountry": "germany",
+          "phone": "+49 4337 321",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Möller — Privatzimmer",
+          "type": "private_room",
+          "description": "Privatzimmer auf dem Hof Altenkattbek. Ruhige Lage außerhalb des Dorfes.",
+          "addressStreet": "Altenkattbek 5",
+          "addressZip": "24808",
+          "addressCity": "Jevenstedt",
+          "addressCountry": "germany",
+          "phone": "+49 4337 677",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 10,
+      "name": "Hohenwestedt",
+      "country": "germany",
+      "slug": "hohenwestedt",
+      "description": "Marktflecken in der Geestlandschaft. Sehenswert: die Peter-Pauls-Kirche und das berühmte Muschelhaus (muschelverziertes Gebäude). Schnittpunkt mit der historischen Lübschen Handelsstraße.",
+      "accommodations": [
+        {
+          "name": "Landhaus Hohenwestedt",
+          "type": "hotel",
+          "description": "19 rustikal eingerichtete Zimmer im Landhausstil an der Kreuzung B77/B430 im Zentrum. Freies Parken, WLAN in allen Zimmern. Check-in ab 16:30 Uhr. Frühstück €14,50.",
+          "addressStreet": "Itzehoer Straße 39",
+          "addressZip": "24594",
+          "addressCity": "Hohenwestedt",
+          "addressCountry": "germany",
+          "phone": "+49 4871 763753",
+          "website": "https://www.landhaus-hohenwestedt.de/",
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "Lindenpension",
+          "type": "hotel",
+          "description": "Kleine Pension in Hohenwestedt. Persönliche Atmosphäre, ruhige Lage.",
+          "addressStreet": "Lindenstraße 19",
+          "addressZip": "24594",
+          "addressCity": "Hohenwestedt",
+          "addressCountry": "germany",
+          "phone": "+49 171 4425244",
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "Böeck — Privatzimmer",
+          "type": "private_room",
+          "description": "Privatzimmer in Hohenwestedt, Preiskategorie €15–25/Nacht.",
+          "addressStreet": "Itzehoer Straße 8",
+          "addressZip": "24594",
+          "addressCity": "Hohenwestedt",
+          "addressCountry": "germany",
+          "phone": "+49 4871 8226",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Schlüter — Privatzimmer",
+          "type": "private_room",
+          "description": "Privatzimmer in Hohenwestedt, Preiskategorie €15–25/Nacht.",
+          "addressStreet": "Rudolfsweg 16",
+          "addressZip": "24594",
+          "addressCity": "Hohenwestedt",
+          "addressCountry": "germany",
+          "phone": "+49 4871 689",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 11,
+      "name": "Hohenlockstedt",
+      "country": "germany",
+      "slug": "hohenlockstedt",
+      "description": "Kleine Gemeinde in der Geestlandschaft westlich von Itzehoe. Etappenort der Via Jutlandica zwischen Hohenwestedt und Itzehoe auf dem Abstieg in das Störtal.",
+      "accommodations": [
+        {
+          "name": "Hotel zum Landhaus",
+          "type": "hotel",
+          "description": "Hotel in Hohenlockstedt, Zwischenstation auf dem Weg nach Itzehoe.",
+          "addressStreet": null,
+          "addressZip": "25551",
+          "addressCity": "Hohenlockstedt",
+          "addressCountry": "germany",
+          "phone": "+49 4826 2295",
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 12,
+      "name": "Itzehoe",
+      "country": "germany",
+      "slug": "itzehoe",
+      "description": "Stadt an der Stör mit Ursprüngen im 11. Jahrhundert. Pilgerwahrzeichen: die St.-Laurentii-Kirche und das Adelige Kloster Itzehoe (Zisterzienserinnenstift, gegründet 1257).",
+      "accommodations": [
+        {
+          "name": "Jugendherberge Itzehoe (DJH)",
+          "type": "hostel",
+          "description": "DJH-Jugendherberge in Itzehoe. Im originalen Via-Jutlandica-Unterkunftsverzeichnis gelistet. Nahe der St.-Laurentii-Kirche und des Zisterzienserinnenstifts.",
+          "addressStreet": "Juliengardeweg 13",
+          "addressZip": "25524",
+          "addressCity": "Itzehoe",
+          "addressCountry": "germany",
+          "phone": "+49 4821 62270",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 13,
+      "name": "Heiligenstedten",
+      "country": "germany",
+      "slug": "heiligenstedten",
+      "description": "Altes Kirchdorf an der Stör, unmittelbar nördlich von Itzehoe. Die romanische St.-Marien-Kirche gehört zu den ältesten Kirchen Schleswig-Holsteins (Gründung 1141). Die Kirche liegt direkt am Störufer — ein idyllischer Pilgerrast.",
+      "accommodations": [
+        {
+          "name": "Hotel Julianka",
+          "type": "hotel",
+          "description": "Hotel im Ortsteil Julianka, direkt an der Stör. Guter Ausgangspunkt für die letzte Etappe nach Glückstadt entlang des Elbdeiches.",
+          "addressStreet": "Ortsteil Julianka",
+          "addressZip": "25524",
+          "addressCity": "Heiligenstedten",
+          "addressCountry": "germany",
+          "phone": "+49 4821 75052",
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "Gemeindehaus St. Marien — Kirchengemeinde Heiligenstedten",
+          "type": "church",
+          "description": "Pilgerübernachtung im Gemeindehaus der romanischen St.-Marien-Kirche (1141). Einfache Unterkunft mit besonderer Atmosphäre direkt an einem der ältesten Kirchenstandorte Schleswig-Holsteins. Voranmeldung erforderlich.",
+          "addressStreet": "Hauptstraße 1",
+          "addressZip": "25524",
+          "addressCity": "Heiligenstedten",
+          "addressCountry": "germany",
+          "phone": "+49 4821 75120",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 14,
+      "name": "Glückstadt",
+      "country": "germany",
+      "slug": "gluckstadt",
+      "description": "Historische Planstadt an der Elbe mit charakteristischem sechseckigem Marktplatzkern, gegründet 1617 von König Christian IV. von Dänemark. Der Weg folgt dem Stördeich bis zur Mündung in die Elbe. Von hier setzt die Elbfähre nach Wischhafen (Niedersachsen) über — Beginn des niedersächsischen Abschnitts.",
+      "accommodations": [
+        {
+          "name": "Jugendherberge Glückstadt (DJH)",
+          "type": "hostel",
+          "description": "Modernes DJH-Haus direkt am Glückstädter Hafen mit Hafenblick. 115 Betten in 34 Zimmern, viele mit Dusche/WC. Beachvolleyball, Fahrradabstellraum. Bewertung 4,7/5. Geschlossen 30. Nov.–10. Jan.",
+          "addressStreet": "Am Rethövel 14-15",
+          "addressZip": "25348",
+          "addressCity": "Glückstadt",
+          "addressCountry": "germany",
+          "phone": "+49 4124 604455",
+          "website": "https://www.jugendherberge.de/jugendherbergen/glueckstadt/",
+          "email": "glueckstadt@nm-jugendherberge.de",
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hotel Anno 1617",
+          "type": "hotel",
+          "description": "Über 300 Jahre altes Hotel direkt am historischen Sechseck-Marktplatz. 22 Zimmer in zwei Gebäuden. Familiärer Betrieb, saisonales Frühstück, kostenfreies WLAN. Empfang Mo–Sa 07:00–19:00, So 08:00–18:00.",
+          "addressStreet": "Am Markt 5-6",
+          "addressZip": "25348",
+          "addressCity": "Glückstadt",
+          "addressCountry": "germany",
+          "phone": "+49 4124 91690",
+          "website": "https://www.anno1617.de/",
+          "email": "info@anno-1617.de",
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 15,
+      "name": "Drochtersen",
+      "country": "germany",
+      "slug": "drochtersen",
+      "description": "Erste Ortschaft in Niedersachsen nach der Elbfähre Glückstadt–Wischhafen. Beginn des niedersächsischen Abschnitts der Via Jutlandica / Via Baltica. Die Fähre von Glückstadt nach Wischhafen dauert ca. 45 Minuten und ist auch für Fußgänger zugänglich.",
+      "accommodations": [
+        {
+          "name": "Ev. Kirchengemeinde Drochtersen",
+          "type": "church",
+          "description": "Einfache Pilgerübernachtung durch die evangelische Kirchengemeinde Drochtersen. Ansprechperson: Pastorin Kanitz. Voranmeldung erforderlich.",
+          "addressStreet": null,
+          "addressZip": "21706",
+          "addressCity": "Drochtersen",
+          "addressCountry": "germany",
+          "phone": "+49 4143 6868",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Knoop — Privatzimmer",
+          "type": "private_room",
+          "description": "Einfaches Privatzimmer in Drochtersen. Voranmeldung erforderlich.",
+          "addressStreet": null,
+          "addressZip": "21706",
+          "addressCity": "Drochtersen",
+          "addressCountry": "germany",
+          "phone": "+49 4143 6542",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 16,
+      "name": "Stade",
+      "country": "germany",
+      "slug": "stade",
+      "description": "Mittelalterliche Hansestadt mit herrlichem Altstadtflair an der Schwinge, einem Nebenfluss der Elbe. Die Via Jutlandica endet hier und geht in die Via Baltica über, die weiter nach Harsefeld (24 km) und Bremen führt. Sehenswert: der Alte Hafen, das Schwedenspeicher-Museum und die St.-Cosmae-Kirche.",
+      "accommodations": [
+        {
+          "name": "Jugendherberge Stade (DJH)",
+          "type": "hostel",
+          "description": "DJH-Jugendherberge in Stade. Ideale Basisunterkunft am Ende der Via Jutlandica bzw. am Beginn der Via Baltica nach Harsefeld und Bremen.",
+          "addressStreet": "Kehdinger Mühren 11",
+          "addressZip": "21682",
+          "addressCity": "Stade",
+          "addressCountry": "germany",
+          "phone": "+49 4141 46368",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    }
+  ],
+
+  "stages": [
+    {
+      "from": "Harrislee",
+      "to": "Flensburg",
+      "distance": 4,
+      "description": "Kurzstrecke vom deutschen Grenzübergang Krusau-Harrislee zur ersten deutschen Großstadt. Der Wegabschnitt führt durch die Grenzregion, vorbei am Nordkreuz. Flensburg bietet Bahnhof, Versorgungsmöglichkeiten und ist der praktische Ausgangspunkt für alle Pilger, die mit dem Zug anreisen."
+    },
+    {
+      "from": "Flensburg",
+      "to": "Handewitt",
+      "distance": 15,
+      "description": "Verlassen der Flensburger Stadtgrenzen nach Westen durch Neustadt und Weiche. Der Weg taucht in den ausgedehnten Handewitter Forst ein — abwechslungsreiche Waldwege mit zwei bronzezeitlichen Hügelgräbern nahe Handewitt."
+    },
+    {
+      "from": "Handewitt",
+      "to": "Sankelmark",
+      "distance": 12,
+      "description": "Weiter durch den Handewitter Forst und offene Agrarlandschaft Richtung Sankelmark. Ruhige Feldwege mit Knick-Hecken und kleinen Wäldchen. Der Sankelmarker See taucht am Ende der Etappe auf."
+    },
+    {
+      "from": "Sankelmark",
+      "to": "Oeversee",
+      "distance": 5,
+      "description": "Kurze Etappe entlang des Sankelmarker Sees zur historischen Pilgerrast Oeversee. Die romanische St.-Georg-Kirche (12. Jh.) ist eines der bedeutendsten Pilgerziele der gesamten Norddeutschland-Route."
+    },
+    {
+      "from": "Oeversee",
+      "to": "Schleswig",
+      "distance": 22,
+      "description": "Passage durch Süderschmedeby in Richtung Schleswig. Der Weg folgt dem historischen Ochsenweg durch die offene Hügellandschaft. Eintritt in Schleswig über den Stadtpark Königswiesen, Endpunkt am Dom St. Petri und Schloss Gottorf."
+    },
+    {
+      "from": "Schleswig",
+      "to": "Kropp",
+      "distance": 22,
+      "description": "Abmarsch aus Schleswig durch Friedrichsberg und Haddeby. Passage am UNESCO-Wikingerdenkmal Haithabu (Museum mit rekonstruierten Häusern, Freilichtanlage). Entlang des malerischen Haddebyer Noores und Selker Noores auf einem schmalen Landrücken. Endet an der Dorfkirche Kropp (1250)."
+    },
+    {
+      "from": "Kropp",
+      "to": "Rendsburg",
+      "distance": 18,
+      "description": "Diese Etappe folgt dem historischen Ochsenweg besonders treu. Passage durch Lottorf, Boklund und Fockbek. Querung der Eider. Ankunft an der Marienkirche Rendsburg. Flaches Terrain, teils Asphalt."
+    },
+    {
+      "from": "Rendsburg",
+      "to": "Jevenstedt",
+      "distance": 15,
+      "description": "Nach der beeindruckenden Kanalquerung in Rendsburg (Fußgängertunnel — Schiffe passieren über dem Kopf) führt die Etappe durch das Eidertal. Passage durch Westerrönfeld und weiter in Richtung Jevenstedt."
+    },
+    {
+      "from": "Jevenstedt",
+      "to": "Hohenwestedt",
+      "distance": 17,
+      "description": "Durch die typische holsteinische Agrarlandschaft mit Knicks (Wallhecken) und kleinen Wäldchen. Der Weg passiert Nindorf und Tappendorf. Schnittpunkt mit der historischen Lübschen Handelsstraße bei Hohenwestedt."
+    },
+    {
+      "from": "Hohenwestedt",
+      "to": "Hohenlockstedt",
+      "distance": 14,
+      "description": "Durch Schlotfeld und feuchte Niederungen der Geestlandschaft. Abstieg vom Geestrücken in Richtung Störtal."
+    },
+    {
+      "from": "Hohenlockstedt",
+      "to": "Itzehoe",
+      "distance": 15,
+      "description": "Weiterer Abstieg aus der Geest ins Störtal. Passage durch den Itzehoer Forst. Ankunft in Itzehoe an der St.-Laurentii-Kirche und dem Zisterzienserinnenstift (1257)."
+    },
+    {
+      "from": "Itzehoe",
+      "to": "Heiligenstedten",
+      "distance": 5,
+      "description": "Kurze Etappe am Störufer entlang zum kleinen Kirchdorf Heiligenstedten. Die romanische St.-Marien-Kirche (gegründet 1141) ist eine der ältesten Kirchen Schleswig-Holsteins — ein stiller Pilgerrast."
+    },
+    {
+      "from": "Heiligenstedten",
+      "to": "Glückstadt",
+      "distance": 21,
+      "description": "Dem Stördeich nach Süden und Westen bis zur Mündung der Stör in die Elbe, dann am Elbdeich entlang bis Glückstadt. Weite Ausblicke auf Marschland und Elbe. Ankunft am historischen Sechseck-Marktplatz der Planstadt Glückstadt."
+    },
+    {
+      "from": "Glückstadt",
+      "to": "Drochtersen",
+      "distance": 8,
+      "description": "Elbquerung mit der Fähre Glückstadt–Wischhafen (ca. 45 Min., Fußgänger zugelassen; Fahrplan unter www.elbfaehre.de). Beeindruckende Ausblicke auf die Unterelbe. Kurzer Fußweg zur ersten niedersächsischen Etappenstation Drochtersen."
+    },
+    {
+      "from": "Drochtersen",
+      "to": "Stade",
+      "distance": 28,
+      "description": "Durch die Niederelbelandschaft und das Alte Land (Norddeutschlands größtes Obstanbaugebiet) nach Stade. Flache Deichstrecken und Obstplantagen wechseln sich ab. Endpunkt der Via Jutlandica in der mittelalterlichen Hansestadt Stade. Von hier führt die Via Baltica weiter nach Harsefeld (24 km) und Bremen."
+    }
+  ]
+}

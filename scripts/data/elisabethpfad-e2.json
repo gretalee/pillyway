@@ -1,0 +1,812 @@
+{
+  "_meta": {
+    "route": "Elisabethpfad - Variante Eisenach → Marburg",
+    "section": "Eisenach (Thüringen) → Marburg (Hessen)",
+    "distance_km": 193,
+    "stages": 13,
+    "country": "germany",
+    "source": "elisabethpfad.de, pilgerbuero-marburg.de"
+  },
+  "camino": {
+    "name": "Elisabethpfad - Variante Eisenach → Marburg",
+    "description": "Der Elisabethpfad E2 führt auf 193 km von Eisenach nach Marburg und folgt den Stationen im Leben der heiligen Elisabeth von Thüringen (1207–1231). Der Weg beginnt an der Wartburg in Eisenach, wo Elisabeth als Landgrafin lebte, und endet an der Elisabethkirche in Marburg, wo sie 1231 starb und begraben wurde.\n\nDer Weg verläuft durch den Thüringer Wald, das Werratal, die hessische Mittelgebirgsschwelle, den Knüllwald und das Marburger Land. Er führt durch stille Dörfer, vorbei an alten Kirchen, Klöstern und Burgen. Der Elisabethpfad ist Teil des europäischen Kulturwegs und lädt zur inneren Einkehr ein.\n\nPilgerausweis: Der Pilgerausweis (Credencial) ist für €1,20 erhältlich im Pilgershop des Elisabethpfades (https://pilgershop-elisabethpfad.de/). Der Pilgerführer E2 (Eisenach–Marburg) kostet €9,50. Stempel (Sellos) sind in Pfarrämtern, bei Ortsvorstehern, in Kirchen und Pilgerherbergen erhältlich.",
+    "verified": true,
+    "createdBy": "kp_53e76e075e3f41bbaa376eb3ca29e14c"
+  },
+  "points": [
+    {
+      "position": 1,
+      "name": "Eisenach",
+      "country": "germany",
+      "slug": "eisenach",
+      "description": "Eisenach ist die Geburtsstadt Johann Sebastian Bachs und beherbergt die UNESCO-Welterbestätte Wartburg, wo die heilige Elisabeth aufwuchs und wo Martin Luther das Neue Testament ins Deutsche übersetzte. Der Elisabethpfad beginnt traditionell an der Wartburg.",
+      "accommodations": [
+        {
+          "name": "DJH Jugendherberge Eisenach",
+          "type": "hostel",
+          "description": "Jugendherberge am Rande der Eisenacher Altstadt, nah an der Wartburg. Günstige Unterkunft für Pilger.",
+          "addressStreet": "Mariental 24",
+          "addressZip": "99817",
+          "addressCity": "Eisenach",
+          "addressCountry": "germany",
+          "phone": "+4936917743259",
+          "website": "https://www.jugendherberge.de/jugendherbergen/eisenach",
+          "email": "eisenach@djh-thueringen.de",
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Pilgerquartier Roschka",
+          "type": "private_room",
+          "description": "Günstige Unterkunft für Pilger, Spendengrundlage. Direkt in Eisenach.",
+          "addressStreet": "Bernhard-von-Arnswald-Str. 11",
+          "addressZip": "99817",
+          "addressCity": "Eisenach",
+          "addressCountry": "germany",
+          "phone": "+4936917743819",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Pension im Park",
+          "type": "b_and_b",
+          "description": "Ruhige Pension nahe dem Stadtpark, für Pilger geeignet.",
+          "addressStreet": null,
+          "addressZip": "99817",
+          "addressCity": "Eisenach",
+          "addressCountry": "germany",
+          "phone": "+49369177732373",
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "Cityherberge Eisenach",
+          "type": "hostel",
+          "description": "Hostel in zentraler Lage in der Eisenacher Innenstadt.",
+          "addressStreet": null,
+          "addressZip": "99817",
+          "addressCity": "Eisenach",
+          "addressCountry": "germany",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 2,
+      "name": "Hörschel",
+      "country": "germany",
+      "slug": "hoerschel",
+      "description": "Hörschel ist ein kleines Dorf an der Werra, am westlichen Endpunkt des Rennsteigs. Hier endet der Thüringer Höhenweg und der Pilgerpfad trifft das Werratal. Der Ort gilt als traditioneller Beginn der Pilgerwanderung für viele, die den Elisabethpfad vom Rennsteig-Abschluss aus gehen.",
+      "accommodations": [
+        {
+          "name": "Pension Tor zum Rennsteig",
+          "type": "b_and_b",
+          "description": "Familiäre Pension am Eingang des Rennsteigs in Hörschel, ideal für Pilger.",
+          "addressStreet": null,
+          "addressZip": "99819",
+          "addressCity": "Hörschel",
+          "addressCountry": "germany",
+          "phone": "+493692892699",
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "Landhotel Gute Quelle",
+          "type": "hotel",
+          "description": "Landhotel in Hörschel an der Werra, mit regionaler Küche.",
+          "addressStreet": null,
+          "addressZip": "99819",
+          "addressCity": "Hörschel",
+          "addressCountry": "germany",
+          "phone": "+493692890375",
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "Zimmer Bindel",
+          "type": "private_room",
+          "description": "Privates Zimmer zur Vermietung in Hörschel.",
+          "addressStreet": null,
+          "addressZip": "99819",
+          "addressCity": "Hörschel",
+          "addressCountry": "germany",
+          "phone": "+493692890276",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 3,
+      "name": "Creuzburg",
+      "country": "germany",
+      "slug": "creuzburg",
+      "description": "Creuzburg ist eine mittelalterliche Kleinstadt an der Werra mit einer gut erhaltenen Burg und einem historischen Ortskern. Die Stadt hat eine besondere Bedeutung für den Elisabethpfad, da Elisabeth hier auf dem Weg nach Marburg gerastet haben soll.",
+      "accommodations": [
+        {
+          "name": "Pilgerherberge Pfarramt Creuzburg",
+          "type": "hostel",
+          "description": "Einfache Pilgerherberge im Pfarramt, für ca. €10 pro Nacht. Voranmeldung erforderlich.",
+          "addressStreet": "Klosterstr. 12",
+          "addressZip": "99831",
+          "addressCity": "Creuzburg",
+          "addressCountry": "germany",
+          "phone": null,
+          "website": null,
+          "email": "creuzburg@kirchenkreis-eisenach.de",
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hotel Auf der Creuzburg",
+          "type": "hotel",
+          "description": "Hotel direkt an der historischen Creuzburg mit Blick auf die Burg und das Werratal.",
+          "addressStreet": null,
+          "addressZip": "99831",
+          "addressCity": "Creuzburg",
+          "addressCountry": "germany",
+          "phone": "+493692671304",
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "Biohotel Stiftsgut Wilhelmsglücksbrunn",
+          "type": "hotel",
+          "description": "Ökologisches Hotel in einem ehemaligen Stiftsgut nahe Creuzburg, mit Bio-Küche und Naturambiente.",
+          "addressStreet": null,
+          "addressZip": "99831",
+          "addressCity": "Creuzburg",
+          "addressCountry": "germany",
+          "phone": "+4936926710032",
+          "website": null,
+          "email": null,
+          "priceRange": "comfortable",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 4,
+      "name": "Ifta",
+      "country": "germany",
+      "slug": "ifta",
+      "description": "Ifta ist ein kleines Dorf an der Werra, kurz nach der thüringisch-hessischen Grenze. Der Ort liegt im Naturpark Eichsfeld-Hainich-Werratal und bietet Pilgern Ruhe und Einkehr.",
+      "accommodations": [
+        {
+          "name": "Pfarrscheune Ifta",
+          "type": "church",
+          "description": "Einfache Unterkunft in der Pfarrscheune von Ifta. Voranmeldung im Pfarramt erforderlich.",
+          "addressStreet": null,
+          "addressZip": "99831",
+          "addressCity": "Ifta",
+          "addressCountry": "germany",
+          "phone": "+4936926723134",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Gasthaus Roter Hirsch",
+          "type": "hotel",
+          "description": "Traditionelles Gasthaus in Ifta mit einfachen Zimmern für Pilger.",
+          "addressStreet": null,
+          "addressZip": "99831",
+          "addressCity": "Ifta",
+          "addressCountry": "germany",
+          "phone": "+493692690562",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Ferienwohnung Kasdorf",
+          "type": "apartment",
+          "description": "Ferienwohnung in Ifta für Pilger, auf Anfrage buchbar.",
+          "addressStreet": null,
+          "addressZip": "99831",
+          "addressCity": "Ifta",
+          "addressCountry": "germany",
+          "phone": "+493692606050",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 5,
+      "name": "Wichmannshausen",
+      "country": "germany",
+      "slug": "wichmannshausen",
+      "description": "Wichmannshausen liegt im Ringgau, einem ruhigen Mittelgebirgsgebiet im nördlichen Hessen. Die Etappe führt durch mehrere kleine Dörfer mit Fachwerkhäusern, vorbei an alten Kirchen und durch das Netratal. Die Region bietet viele private Pilgerunterkünfte.",
+      "accommodations": [
+        {
+          "name": "Pilgerherberge Evangelisches Gemeindehaus Lüderbach",
+          "type": "hostel",
+          "description": "Einfache Pilgerherberge im evangelischen Gemeindehaus von Lüderbach (Ringgau), für Pilger auf dem Elisabethpfad.",
+          "addressStreet": null,
+          "addressZip": "37296",
+          "addressCity": "Ringgau OT Lüderbach",
+          "addressCountry": "germany",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Privatzimmer Netra",
+          "type": "private_room",
+          "description": "Privates Pilgerquartier in Netra (Ringgau), auf Anfrage buchbar.",
+          "addressStreet": null,
+          "addressZip": "37296",
+          "addressCity": "Ringgau OT Netra",
+          "addressCountry": "germany",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Privatzimmer Datterode",
+          "type": "private_room",
+          "description": "Privates Zimmer für Pilger in Datterode (Ringgau).",
+          "addressStreet": null,
+          "addressZip": "37296",
+          "addressCity": "Ringgau OT Datterode",
+          "addressCountry": "germany",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 6,
+      "name": "Waldkappel",
+      "country": "germany",
+      "slug": "waldkappel",
+      "description": "Waldkappel ist eine Kleinstadt im Werra-Meißner-Kreis mit einer hübschen Altstadt und dem Falkenberg. Der Weg durch diese Region ist geprägt von Fachwerkhäusern und hessischem Mittelgebirge.",
+      "accommodations": [
+        {
+          "name": "Pilgerherberge Gemeindehaus Waldkappel",
+          "type": "hostel",
+          "description": "Einfache Pilgerherberge im evangelischen Gemeindehaus am Kirchplatz, ca. €5 pro Nacht. Voranmeldung beim Pfarramt.",
+          "addressStreet": "Kirchplatz 4",
+          "addressZip": "37284",
+          "addressCity": "Waldkappel",
+          "addressCountry": "germany",
+          "phone": "+495656382",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Privatzimmer Bischhausen",
+          "type": "private_room",
+          "description": "Privates Pilgerquartier im Ortsteil Bischhausen nahe Waldkappel.",
+          "addressStreet": null,
+          "addressZip": "37284",
+          "addressCity": "Waldkappel OT Bischhausen",
+          "addressCountry": "germany",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 7,
+      "name": "Spangenberg",
+      "country": "germany",
+      "slug": "spangenberg",
+      "description": "Spangenberg ist eine Fachwerkstadt mit einer markanten Burg auf einem Bergsporn. Die historische Altstadt und das Schloss laden zur Rast ein. Der Elisabethpfad führt direkt durch das Ortszentrum.",
+      "accommodations": [
+        {
+          "name": "Pilgerherberge Hospitalkapelle Spangenberg",
+          "type": "hostel",
+          "description": "Pilgerherberge in der historischen Hospitalkapelle von Spangenberg. Voranmeldung erforderlich.",
+          "addressStreet": null,
+          "addressZip": "34286",
+          "addressCity": "Spangenberg",
+          "addressCountry": "germany",
+          "phone": "+491743630340",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Schlosshotel Spangenberg",
+          "type": "hotel",
+          "description": "Romantisches Hotel im historischen Spangenberger Schloss mit Blick über die Stadt.",
+          "addressStreet": null,
+          "addressZip": "34286",
+          "addressCity": "Spangenberg",
+          "addressCountry": "germany",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "comfortable",
+          "verified": false
+        },
+        {
+          "name": "Privatzimmer Spangenberg",
+          "type": "private_room",
+          "description": "Privates Pilgerquartier in Spangenberg, auf Anfrage buchbar.",
+          "addressStreet": null,
+          "addressZip": "34286",
+          "addressCity": "Spangenberg",
+          "addressCountry": "germany",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 8,
+      "name": "Homberg (Efze)",
+      "country": "germany",
+      "slug": "homberg-efze",
+      "description": "Homberg (Efze) ist die Kreisstadt des Schwalm-Eder-Kreises mit einem der schönsten Marktplätze Hessens. Hier war Elisabeth auf ihrer letzten Reise nach Marburg. Die gotische Stiftskirche St. Marien ist ein bedeutendes Pilgerziel.",
+      "accommodations": [
+        {
+          "name": "Pilgerherberge Lutherisches Jugendgästehaus",
+          "type": "hostel",
+          "description": "Pilgerherberge des Lutherischen Jugendgästehauses in Homberg (Efze). Günstiger Übernachtungsort für Pilger.",
+          "addressStreet": "Bergstraße 17",
+          "addressZip": "34576",
+          "addressCity": "Homberg (Efze)",
+          "addressCountry": "germany",
+          "phone": "+4956816082388",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hotel Stadt Homberg",
+          "type": "hotel",
+          "description": "Hotel in zentraler Lage am Marktplatz von Homberg (Efze).",
+          "addressStreet": null,
+          "addressZip": "34576",
+          "addressCity": "Homberg (Efze)",
+          "addressCountry": "germany",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "Privatzimmer Malsfeld",
+          "type": "private_room",
+          "description": "Privates Pilgerquartier im nahegelegenen Malsfeld, ca. 4 km von Homberg.",
+          "addressStreet": null,
+          "addressZip": "34323",
+          "addressCity": "Malsfeld",
+          "addressCountry": "germany",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 9,
+      "name": "Frielendorf",
+      "country": "germany",
+      "slug": "frielendorf",
+      "description": "Frielendorf liegt im Knüllwald und ist der Ausgangspunkt zur Wallfahrtskapelle Spieskappel, einer bedeutenden mittelalterlichen Pilgerstation auf dem Elisabethpfad. Die romanische Kapelle war im Mittelalter ein wichtiger Haltepunkt für Pilger nach Marburg.",
+      "accommodations": [
+        {
+          "name": "Pilgerherberge Pfarramt Spieskappel",
+          "type": "church",
+          "description": "Pilgerherberge im Pfarramt der Wallfahrtskapelle Spieskappel, 12 Schlafplätze. Voranmeldung erforderlich.",
+          "addressStreet": null,
+          "addressZip": "34621",
+          "addressCity": "Frielendorf",
+          "addressCountry": "germany",
+          "phone": "+495684421",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Gemeindehaus Bonhoeffer-Haus",
+          "type": "hostel",
+          "description": "Übernachtungsmöglichkeit im Bonhoeffer-Haus der Gemeinde Frielendorf.",
+          "addressStreet": null,
+          "addressZip": "34621",
+          "addressCity": "Frielendorf",
+          "addressCountry": "germany",
+          "phone": "+4956843459854",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Pilgerherberge Allmuthshausen",
+          "type": "hostel",
+          "description": "Pilgerherberge im Ortsteil Allmuthshausen nahe Frielendorf.",
+          "addressStreet": null,
+          "addressZip": "34576",
+          "addressCity": "Frielendorf OT Allmuthshausen",
+          "addressCountry": "germany",
+          "phone": "+4956816563",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 10,
+      "name": "Treysa",
+      "country": "germany",
+      "slug": "treysa",
+      "description": "Treysa ist ein Stadtteil von Schwalmstadt und liegt an der Schwalm. Das diakonische Werk Hephata betreibt hier eine bekannte Pilgerherberge. Die historische Altstadt mit der Stiftskirche ist sehenswert.",
+      "accommodations": [
+        {
+          "name": "Pilgerherberge Hephata",
+          "type": "hostel",
+          "description": "Pilgerherberge des diakonischen Werkes Hephata in Treysa. Einfache, günstige Unterkunft mit Frühstücksmöglichkeit für Pilger.",
+          "addressStreet": null,
+          "addressZip": "34613",
+          "addressCity": "Schwalmstadt-Treysa",
+          "addressCountry": "germany",
+          "phone": "+496691180",
+          "website": "https://www.hephata.de/pilgern",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Zeltkirche Trutzhain",
+          "type": "church",
+          "description": "Übernachtung in der evangelischen Zeltkirche in Trutzhain (Schwalmstadt), für Pilger geöffnet.",
+          "addressStreet": null,
+          "addressZip": "34613",
+          "addressCity": "Schwalmstadt-Trutzhain",
+          "addressCountry": "germany",
+          "phone": "+4966913406",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Altstadt-Hotel Schwalmstadt",
+          "type": "hotel",
+          "description": "Hotel in der Altstadtlage von Schwalmstadt-Treysa.",
+          "addressStreet": null,
+          "addressZip": "34613",
+          "addressCity": "Schwalmstadt-Treysa",
+          "addressCountry": "germany",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "Schwalm-Pension",
+          "type": "b_and_b",
+          "description": "Familiäre Pension in Schwalmstadt-Treysa.",
+          "addressStreet": null,
+          "addressZip": "34613",
+          "addressCity": "Schwalmstadt-Treysa",
+          "addressCountry": "germany",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 11,
+      "name": "Stadtallendorf",
+      "country": "germany",
+      "slug": "stadtallendorf",
+      "description": "Stadtallendorf ist eine Stadt im Landkreis Marburg-Biedenkopf, bekannt durch ihre bewegte Geschichte als Industriestandort. Der Elisabethpfad führt durch die Umgebung der Stadt und bietet eine Pilgerherberge für Übernachtungen.",
+      "accommodations": [
+        {
+          "name": "Pilgerherberge Lücke",
+          "type": "hostel",
+          "description": "Pilgerherberge in Stadtallendorf, Übernachtung für ca. €25 mit gültigem Pilgerausweis. Voranmeldung erforderlich.",
+          "addressStreet": "Kardinal-von-Galen-Str. 4",
+          "addressZip": "35260",
+          "addressCity": "Stadtallendorf",
+          "addressCountry": "germany",
+          "phone": "+491621842447",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Privatzimmer Momberg",
+          "type": "private_room",
+          "description": "Privates Pilgerquartier im Ortsteil Momberg bei Neustadt (Hessen), nahe dem Elisabethpfad.",
+          "addressStreet": null,
+          "addressZip": "35279",
+          "addressCity": "Neustadt (Hessen) OT Momberg",
+          "addressCountry": "germany",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 12,
+      "name": "Kirchhain",
+      "country": "germany",
+      "slug": "kirchhain",
+      "description": "Kirchhain liegt im Landkreis Marburg-Biedenkopf an der Ohm. Die Stadt hat eine hübsche Altstadt mit altem Rathaus und Fachwerkhäusern. Von hier sind es nur noch 20 km bis Marburg.",
+      "accommodations": [
+        {
+          "name": "Unterkunft Kirchhain",
+          "type": "private_room",
+          "description": "Pilgerunterkünfte in Kirchhain auf Anfrage beim Stadtbüro verfügbar.",
+          "addressStreet": null,
+          "addressZip": "35274",
+          "addressCity": "Kirchhain",
+          "addressCountry": "germany",
+          "phone": "+496422808-0",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 13,
+      "name": "Amöneburg",
+      "country": "germany",
+      "slug": "amoeneburg",
+      "description": "Amöneburg ist eine der ältesten Städte Hessens und thront auf einem Basaltkegel. Die mittelalterliche Stiftskirche und die Stadtmauer sind bedeutende historische Zeugnisse. Von hier aus bietet sich ein weiter Blick über das Amöneburger Becken bis nach Marburg.",
+      "accommodations": [
+        {
+          "name": "Privatzimmer Karin Wieber",
+          "type": "private_room",
+          "description": "Privates Pilgerquartier bei Karin Wieber in Amöneburg, auf Voranmeldung.",
+          "addressStreet": null,
+          "addressZip": "35287",
+          "addressCity": "Amöneburg",
+          "addressCountry": "germany",
+          "phone": "+4964224313",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Privatzimmer Familie Meissner",
+          "type": "private_room",
+          "description": "Pilgerquartier auf Spendenbasis bei Familie Meissner in Amöneburg.",
+          "addressStreet": null,
+          "addressZip": "35287",
+          "addressCity": "Amöneburg",
+          "addressCountry": "germany",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Apartment Dina",
+          "type": "apartment",
+          "description": "Ferienwohnung in Amöneburg, auch für Pilger buchbar.",
+          "addressStreet": null,
+          "addressZip": "35287",
+          "addressCity": "Amöneburg",
+          "addressCountry": "germany",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "Gaststätte Balzer",
+          "type": "b_and_b",
+          "description": "Gaststätte mit Zimmer im nahegelegenen Schröck (Marburg-Biedenkopf), ca. 3 km vom Elisabethpfad.",
+          "addressStreet": null,
+          "addressZip": "35287",
+          "addressCity": "Marburg OT Schröck",
+          "addressCountry": "germany",
+          "phone": "+4964249263",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 14,
+      "name": "Marburg",
+      "country": "germany",
+      "slug": "marburg",
+      "description": "Marburg ist das Ziel des Elisabethpfades E2. Die gotische Elisabethkirche (1235–1283), die erste rein gotische Kirche auf deutschem Boden, wurde zu Ehren der heiligen Elisabeth errichtet und beherbergt ihren Schrein. Die Universitätsstadt liegt an der Lahn und bietet eine lebendige Atmosphäre sowie zahlreiche Unterkünfte.",
+      "accommodations": [
+        {
+          "name": "Pilgerherberge Waggonhalle",
+          "type": "hostel",
+          "description": "Pilgerspezifische Unterkunft in der Waggonhalle Marburg, 8 Betten, ca. €10 pro Nacht. Voranmeldung beim Pilgerbüro Marburg.",
+          "addressStreet": "Rudolf-Bultmann-Str. 2a",
+          "addressZip": "35032",
+          "addressCity": "Marburg",
+          "addressCountry": "germany",
+          "phone": "+496421681267",
+          "website": "https://www.pilgerbuero-marburg.de",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "DJH Jugendherberge Marburg",
+          "type": "hostel",
+          "description": "Jugendherberge in Marburg, günstige Unterkunft für Pilger und Reisende.",
+          "addressStreet": null,
+          "addressZip": "35037",
+          "addressCity": "Marburg",
+          "addressCountry": "germany",
+          "phone": "+4964212346115",
+          "website": "https://www.jugendherberge.de/jugendherbergen/marburg",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hostel am Bahnhof Marburg",
+          "type": "hostel",
+          "description": "Zentrales Hostel nahe dem Hauptbahnhof Marburg, günstig und gut erreichbar.",
+          "addressStreet": null,
+          "addressZip": "35037",
+          "addressCity": "Marburg",
+          "addressCountry": "germany",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hotel Zur Sonne Marburg",
+          "type": "hotel",
+          "description": "Stadthotel in der Marburger Innenstadt, nahe der Elisabethkirche.",
+          "addressStreet": null,
+          "addressZip": "35037",
+          "addressCity": "Marburg",
+          "addressCountry": "germany",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    }
+  ],
+  "stages": [
+    {
+      "from": "Eisenach",
+      "to": "Hörschel",
+      "distance": 6,
+      "description": "Kurze Eröffnungsetappe vom Stadtzentrum Eisenach durch die Weststadt und die Werrawiesen hinunter nach Hörschel. Der Weg führt an der Wartburg vorbei und hinab ins Werratal."
+    },
+    {
+      "from": "Hörschel",
+      "to": "Creuzburg",
+      "distance": 14,
+      "description": "Der Weg folgt dem Werratal flussaufwärts durch das Naturschutzgebiet Hainich-Vorland. Vorbei an alten Mühlen und Fachwerkhöfen erreicht man die mittelalterliche Stadt Creuzburg mit ihrer gut erhaltenen Burg."
+    },
+    {
+      "from": "Creuzburg",
+      "to": "Ifta",
+      "distance": 15,
+      "description": "Die Etappe führt weiter das Werratal entlang und überschreitet die Grenze von Thüringen nach Hessen. Nach Querung der Werra bei Treffurt geht es durch waldreiche Höhen zum kleinen Dorf Ifta."
+    },
+    {
+      "from": "Ifta",
+      "to": "Wichmannshausen",
+      "distance": 13,
+      "description": "Die Etappe verlässt das Werratal und führt hinauf in den Ringgau, ein stilles Mittelgebirge im nördlichen Hessen. Durch Wälder und offene Hochflächen gelangt man nach Wichmannshausen."
+    },
+    {
+      "from": "Wichmannshausen",
+      "to": "Waldkappel",
+      "distance": 20,
+      "description": "Eine der wildromantischsten Etappen des Weges führt durch den Ringgau und das Netratal. Der Pfad durchquert mehrere kleine Fachwerkdörfer und sanfte Hügellandschaften bis nach Waldkappel im Werra-Meißner-Kreis."
+    },
+    {
+      "from": "Waldkappel",
+      "to": "Spangenberg",
+      "distance": 23,
+      "description": "Lange Etappe durch den Kaufunger Wald und hessische Mittelgebirgslandschaft. Der Weg führt über Höhenrücken mit weiten Ausblicken und hinab in das Fulda-Zuflussgebiet nach Spangenberg."
+    },
+    {
+      "from": "Spangenberg",
+      "to": "Homberg (Efze)",
+      "distance": 22,
+      "description": "Der Weg überquert den Rücken des Knüllgebirges und führt durch ruhige Waldgebiete und kleine Dörfer nach Homberg (Efze), der Kreisstadt mit einem der schönsten Marktplätze Hessens."
+    },
+    {
+      "from": "Homberg (Efze)",
+      "to": "Frielendorf",
+      "distance": 24,
+      "description": "Die längste Etappe des Weges führt tief durch den Knüllwald. Höhepunkt ist die Wallfahrtskapelle Spieskappel bei Frielendorf, eine romanische Kapelle mit mittelalterlicher Pilgergeschichte."
+    },
+    {
+      "from": "Frielendorf",
+      "to": "Treysa",
+      "distance": 10,
+      "description": "Kurze, erholsame Etappe aus dem Knüllwald hinaus ins Schwalmtal. Treysa mit dem diakonischen Hephata-Stift und der historischen Altstadt ist ein besinnlicher Pilgerort."
+    },
+    {
+      "from": "Treysa",
+      "to": "Stadtallendorf",
+      "distance": 20,
+      "description": "Der Weg führt aus dem Schwalmtal hinaus durch das Amöneburger Becken. Die Etappe quert offene Felder und kleine Waldstücke bis nach Stadtallendorf."
+    },
+    {
+      "from": "Stadtallendorf",
+      "to": "Kirchhain",
+      "distance": 6,
+      "description": "Kurze Etappe durch das sanfte Hügelland des Landkreises Marburg-Biedenkopf nach Kirchhain an der Ohm."
+    },
+    {
+      "from": "Kirchhain",
+      "to": "Amöneburg",
+      "distance": 8,
+      "description": "Der Weg führt hinauf auf den Basaltberg von Amöneburg, einer der ältesten Siedlungsplätze Hessens. Von der mittelalterlichen Stadtmauer genießt man einen weiten Blick bis nach Marburg."
+    },
+    {
+      "from": "Amöneburg",
+      "to": "Marburg",
+      "distance": 12,
+      "description": "Die letzte Etappe führt vom Basaltkegel Amöneburgs durch das Amöneburger Becken hinab ins Lahntal und hinauf in die Universitätsstadt Marburg. Das Ziel ist die gotische Elisabethkirche – Grabstätte und Wallfahrtsziel der heiligen Elisabeth von Thüringen."
+    }
+  ]
+}

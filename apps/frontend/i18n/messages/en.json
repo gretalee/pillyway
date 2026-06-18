@@ -95,7 +95,13 @@
     "verified_icon_aria": "Verified route",
     "verified_tooltip": "Pilgrims have confirmed this route",
     "filter_verified_label": "Show only verified caminos",
-    "filter_no_verified": "No verified caminos found."
+    "filter_no_verified": "No verified caminos found.",
+    "teaser": {
+      "text": "Missing a route you've always wanted to walk? Send us an email!",
+      "text_2": "With AI support, we can quickly generate a new Camino.",
+      "link": "hello@pillyway.de",
+      "aria_label": "Email us at hello@pillyway.de"
+    }
   },
   "caminos_new": {
     "title": "Create New Camino",
@@ -240,7 +246,8 @@
     "first_stage_label": "This is the starting point",
     "last_stage_label": "Last camino point",
     "accommodations_at": "Accommodations at {name}",
-    "no_accommodations": "No accommodations listed yet."
+    "no_accommodations": "No accommodations listed yet.",
+    "add_accommodation": "Add accommodation"
   },
   "stage_edit": {
     "title": "Edit Stage {number}",

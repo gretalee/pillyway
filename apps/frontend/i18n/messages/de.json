@@ -95,7 +95,13 @@
     "verified_icon_aria": "Verifizierter Weg",
     "verified_tooltip": "Pilger haben diesen Weg bestätigt",
     "filter_verified_label": "Nur verifizierte Caminos anzeigen",
-    "filter_no_verified": "Keine verifizierten Caminos gefunden."
+    "filter_no_verified": "Keine verifizierten Caminos gefunden.",
+    "teaser": {
+      "text": "Fehlt dir ein Weg, den du schon immer gehen wolltest? Schreib uns eine Email!",
+      "text_2": "Mit KI-Unterstützung können wir schnell einen neuen Camino erzeugen.",
+      "link": "hello@pillyway.de",
+      "aria_label": "Schreibe uns an hello@pillyway.de"
+    }
   },
   "caminos_new": {
     "title": "Neuen Camino erstellen",
@@ -240,7 +246,8 @@
     "first_stage_label": "Das ist der Startpunkt",
     "last_stage_label": "Letzter Camino-Punkt",
     "accommodations_at": "Unterkünfte in {name}",
-    "no_accommodations": "Noch keine Unterkünfte eingetragen."
+    "no_accommodations": "Noch keine Unterkünfte eingetragen.",
+    "add_accommodation": "Unterkunft hinzufügen"
   },
   "stage_edit": {
     "title": "Etappe {number} bearbeiten",
