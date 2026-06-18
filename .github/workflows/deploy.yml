@@ -26,6 +26,7 @@
 #   SUPABASE_S3_ACCESS_KEY           — S3 access key from Storage → S3 Access.
 #   SUPABASE_S3_SECRET_KEY           — S3 secret key from Storage → S3 Access.
 #   SUPABASE_STORAGE_BUCKET          — Exact name of the public bucket created in Storage.
+#   SUPABASE_STORAGE_BUCKET_GPX      — Exact name of the private bucket for GPX files.
 #
 # No env files need to be created manually on the server. The deploy job writes a
 # fresh .env from GitHub Secrets on every deployment.
@@ -189,11 +190,12 @@ jobs:
           SUPABASE_S3_ACCESS_KEY: ${{ secrets.SUPABASE_S3_ACCESS_KEY }}
           SUPABASE_S3_SECRET_KEY: ${{ secrets.SUPABASE_S3_SECRET_KEY }}
           SUPABASE_STORAGE_BUCKET: ${{ secrets.SUPABASE_STORAGE_BUCKET }}
+          SUPABASE_STORAGE_BUCKET_GPX: ${{ secrets.SUPABASE_STORAGE_BUCKET_GPX }}
         with:
           host: ${{ secrets.HETZNER_HOST }}
           username: ${{ secrets.HETZNER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: GHCR_TOKEN,GHCR_USER,IMAGE_BACKEND,IMAGE_FRONTEND,DATABASE_URL,FRONTEND_URL,KINDE_ISSUER_URL,KINDE_CLIENT_ID,KINDE_CLIENT_SECRET,KINDE_SITE_URL,KINDE_POST_LOGOUT_REDIRECT_URL,KINDE_POST_LOGIN_REDIRECT_URL,SUPABASE_URL,SUPABASE_S3_URL,SUPABASE_S3_REGION,SUPABASE_S3_ACCESS_KEY,SUPABASE_S3_SECRET_KEY,SUPABASE_STORAGE_BUCKET
+          envs: GHCR_TOKEN,GHCR_USER,IMAGE_BACKEND,IMAGE_FRONTEND,DATABASE_URL,FRONTEND_URL,KINDE_ISSUER_URL,KINDE_CLIENT_ID,KINDE_CLIENT_SECRET,KINDE_SITE_URL,KINDE_POST_LOGOUT_REDIRECT_URL,KINDE_POST_LOGIN_REDIRECT_URL,SUPABASE_URL,SUPABASE_S3_URL,SUPABASE_S3_REGION,SUPABASE_S3_ACCESS_KEY,SUPABASE_S3_SECRET_KEY,SUPABASE_STORAGE_BUCKET,SUPABASE_STORAGE_BUCKET_GPX
           script: |
             # Write a fresh .env from GitHub Secrets — docker compose reads it automatically
             mkdir -p /opt/pillyway
@@ -214,6 +216,7 @@ jobs:
             SUPABASE_S3_ACCESS_KEY=$SUPABASE_S3_ACCESS_KEY
             SUPABASE_S3_SECRET_KEY=$SUPABASE_S3_SECRET_KEY
             SUPABASE_STORAGE_BUCKET=$SUPABASE_STORAGE_BUCKET
+            SUPABASE_STORAGE_BUCKET_GPX=$SUPABASE_STORAGE_BUCKET_GPX
             EOF
 
             echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
