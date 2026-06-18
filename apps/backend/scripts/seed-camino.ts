@@ -229,7 +229,10 @@ async function seed(
           select: { id: true },
         });
         if (existing) {
-          await tx.accommodation.update({ where: { id: existing.id }, data: accData });
+          await tx.accommodation.update({
+            where: { id: existing.id },
+            data: { ...accData, verified: undefined, updatedAt: new Date() },
+          });
           counts.accommodationsUpdated++;
         } else {
           await tx.accommodation.create({
