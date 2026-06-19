@@ -10,7 +10,7 @@
   "camino": {
     "name": "Via Francigena",
     "description": "Die Via Francigena ist eine der bedeutendsten Pilgerrouten Europas und führt auf ca. 1.700 km von Canterbury in England durch Frankreich und die Schweiz bis nach Rom in Italien. Der Weg ist benannt nach dem historischen Straßennetz, das Pilger seit dem frühen Mittelalter nach Rom führte. Dokumentiert wurde die Route erstmals im Jahr 990 n. Chr. durch Erzbischof Sigeric von Canterbury, der in seinem Reisetagebuch 79 Etappen von Rom bis Canterbury verzeichnete.\n\nDer Weg führt durch die nordfranzösischen Champagne-Wälder, über den Großen Sankt Bernhard (2.473 m), den höchsten Punkt der Route, durch die Poebene, über den Apennin und durch die toskanische Landschaft bis in die Ewige Stadt. Unterwegs passiert der Pilger bedeutende Kulturstätten wie Canterbury Cathedral, den Kathedralendom von Reims, den Lago di Bolsena und die mittelalterliche Stadt Siena.\n\nPilgerausweis (Credenziale): Die offizielle Credenziale der Via Francigena ist erhältlich bei der AEVF (Associazione Europea delle Vie Francigene) unter https://www.viefrancigene.org/ sowie an der Canterbury Cathedral und bei Pilgervereinen entlang der Route. Am Ziel in Rom erhalten Pilger das Testimonium von der Opera Romana Pellegrinaggi, Via della Conciliazione 34, 00193 Roma (Tel. +39 06 69881480) nach Vorlage der gestempelten Credenziale. Stempel (Timbri) sind in Kirchen, Pfarrämtern, Pilgerherbergen und Touristenbüros erhältlich.",
-    "verified": true,
+    "verified": false,
     "createdBy": "kp_53e76e075e3f41bbaa376eb3ca29e14c"
   },
   "points": [

@@ -1,14 +1,15 @@
 import { getTranslations } from 'next-intl/server';
 import { fetchCaminos } from '@/app/api/caminos/caminos';
 import { getAuthUser } from '@/lib/getAuthUser';
-import { CaminoList } from './components/CaminoList';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '../components/ui/button';
+import { CaminoListFilter } from './components/CaminoListFilter';
 
 export default async function CaminosPage() {
   const t = await getTranslations('caminos');
   const user = await getAuthUser();
+  const isPilgrim = user?.roles.some((r) => r.key === 'pilgrim') ?? false;
 
   let caminos: Awaited<ReturnType<typeof fetchCaminos>>;
   let error: Error | undefined;
@@ -33,8 +34,9 @@ export default async function CaminosPage() {
         })}
       </p>
 
+      {/* Teaser: Email for new camino */}
       <div
-        className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative mt-4"
+        className="mt-4 bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative"
         role="alert">
         {t('teaser.text')}
         <br />
@@ -49,16 +51,32 @@ export default async function CaminosPage() {
         </Link>
       </div>
 
-      {error && (
-        <p role="alert" className="mt-4 text-sm text-destructive">
-          {t('error_loading')}
-        </p>
-      )}
+      {/* Error message */}
+      <section className="mt-8 space-y-4">
+        {error && (
+          <p role="alert" className="text-sm text-destructive">
+            {t('error_loading')}
+          </p>
+        )}
 
-      {caminos.length === 0 && !error ? (
-        <p className="mt-4 text-sm text-muted-foreground">{t('empty')}</p>
-      ) : (
-        <CaminoList caminos={caminos} user={user} />
+        {caminos.length === 0 && !error && (
+          <p className="text-sm text-muted-foreground">{t('empty')}</p>
+        )}
+
+        {isPilgrim && !error && (
+          <div className="">
+            <Link
+              href="/caminos/new"
+              className={cn(buttonVariants({ variant: 'default' }))}>
+              {t('create_link')}
+            </Link>
+          </div>
+        )}
+      </section>
+
+      {/* Caminos list */}
+      {caminos.length > 0 && !error && (
+        <CaminoListFilter caminos={caminos} isPilgrim={isPilgrim} className="mt-8" />
       )}
     </div>
   );

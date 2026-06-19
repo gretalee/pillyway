@@ -8,6 +8,7 @@ import type { CaminoSummary } from '@/app/api/caminos/caminos';
 import { CaminoActionsMenu } from './CaminoActionsMenu';
 import { VerifiedBadge } from './VerifiedBadge';
 import CaminoMainImage from './CaminoMainImage';
+import { cn } from '@/lib/utils';
 
 const DESCRIPTION_MAX = 665;
 
@@ -22,10 +23,14 @@ function truncateAtSentence(text: string): string {
 interface CaminoListFilterProps {
   caminos: CaminoSummary[];
   isPilgrim: boolean;
-  isOwner: boolean;
+  className?: string;
 }
 
-export function CaminoListFilter({ caminos, isPilgrim }: CaminoListFilterProps) {
+export function CaminoListFilter({
+  caminos,
+  isPilgrim,
+  className,
+}: CaminoListFilterProps) {
   const t = useTranslations('caminos');
   const [onlyVerified, setOnlyVerified] = useState(false);
 
@@ -33,7 +38,7 @@ export function CaminoListFilter({ caminos, isPilgrim }: CaminoListFilterProps) 
 
   return (
     <>
-      <div className="mb-4 flex items-center gap-3">
+      <div className={cn('flex items-center gap-3', className)}>
         <ToggleSwitch
           id="filter-verified-switch"
           checked={onlyVerified}
@@ -47,10 +52,11 @@ export function CaminoListFilter({ caminos, isPilgrim }: CaminoListFilterProps) 
       </div>
 
       {onlyVerified && filteredCaminos.length === 0 && (
-        <p className="text-muted-foreground">{t('filter_no_verified')}</p>
+        <p className="mt-4 text-muted-foreground">{t('filter_no_verified')}</p>
       )}
+
       {filteredCaminos.length > 0 && (
-        <ul className="space-y-4" aria-label={t('title')}>
+        <ul className="mt-4 space-y-4" aria-label={t('title')}>
           {filteredCaminos.map((camino) => (
             <li
               key={camino.id}
