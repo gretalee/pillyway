@@ -1,5 +1,6 @@
 export const COUNTRIES: readonly string[] = [
   'denmark',
+  'england',
   'france',
   'germany',
   'italy',
@@ -8,4 +9,5 @@ export const COUNTRIES: readonly string[] = [
   'portugal',
   'spain',
   'sweden',
+  'switzerland',
 ] as const;
