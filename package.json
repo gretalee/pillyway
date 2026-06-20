@@ -37,6 +37,8 @@
     "seed:via-jutlandica:prod": "yarn --cwd apps/backend seed:via-jutlandica:prod",
     "seed:elisabethpfad-e2": "yarn --cwd apps/backend seed:elisabethpfad-e2",
     "seed:elisabethpfad-e2:prod": "yarn --cwd apps/backend seed:elisabethpfad-e2:prod",
+    "seed:via-francigena": "yarn --cwd apps/backend seed:via-francigena",
+    "seed:via-francigena:prod": "yarn --cwd apps/backend seed:via-francigena:prod",
     "db:backup:dev": "yarn --cwd apps/backend db:backup:dev",
     "db:backup:prod": "yarn --cwd apps/backend db:backup:prod",
     "db:restore:dev": "yarn --cwd apps/backend db:restore:dev"

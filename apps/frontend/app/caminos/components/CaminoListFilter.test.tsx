@@ -120,7 +120,7 @@ describe('CaminoListFilter', () => {
   });
 
   it('renders all caminos when the filter is off', () => {
-    render(<CaminoListFilter caminos={allCaminos} isPilgrim={false} isOwner={false} />);
+    render(<CaminoListFilter caminos={allCaminos} isPilgrim={false} />);
 
     expect(
       screen.getByText('Camino Francés'),
@@ -134,7 +134,7 @@ describe('CaminoListFilter', () => {
 
   it('shows only verified caminos after toggling the switch on', async () => {
     const user = userEvent.setup();
-    render(<CaminoListFilter caminos={allCaminos} isPilgrim={false} isOwner={false} />);
+    render(<CaminoListFilter caminos={allCaminos} isPilgrim={false} />);
 
     await user.click(getSwitch());
 
@@ -150,7 +150,7 @@ describe('CaminoListFilter', () => {
 
   it('shows all caminos again after toggling the switch off', async () => {
     const user = userEvent.setup();
-    render(<CaminoListFilter caminos={allCaminos} isPilgrim={false} isOwner={false} />);
+    render(<CaminoListFilter caminos={allCaminos} isPilgrim={false} />);
 
     await user.click(getSwitch()); // on
     await user.click(getSwitch()); // off
@@ -161,9 +161,7 @@ describe('CaminoListFilter', () => {
 
   it('shows the empty-state message when filter is on and no caminos are verified', async () => {
     const user = userEvent.setup();
-    render(
-      <CaminoListFilter caminos={[unverifiedCamino]} isPilgrim={false} isOwner={false} />,
-    );
+    render(<CaminoListFilter caminos={[unverifiedCamino]} isPilgrim={false} />);
 
     await user.click(getSwitch());
 
@@ -176,19 +174,19 @@ describe('CaminoListFilter', () => {
   });
 
   it('does NOT show the empty-state message when the list is non-empty', () => {
-    render(<CaminoListFilter caminos={allCaminos} isPilgrim={false} isOwner={false} />);
+    render(<CaminoListFilter caminos={allCaminos} isPilgrim={false} />);
     expect(screen.queryByText('filter_no_verified')).not.toBeInTheDocument();
   });
 
   it('renders the verified badge only for verified caminos', () => {
-    render(<CaminoListFilter caminos={allCaminos} isPilgrim={false} isOwner={false} />);
+    render(<CaminoListFilter caminos={allCaminos} isPilgrim={false} />);
 
     const badges = screen.getAllByTestId('verified-badge');
     expect(badges, 'exactly one badge for the one verified camino').toHaveLength(1);
   });
 
   it('renders the actions menu for pilgrims', () => {
-    render(<CaminoListFilter caminos={allCaminos} isPilgrim={true} isOwner={false} />);
+    render(<CaminoListFilter caminos={allCaminos} isPilgrim={true} />);
 
     // Our CaminoActionsMenu mock renders a button with aria-label `actions-<name>`.
     expect(screen.getByLabelText(`actions-${verifiedCamino.name}`)).toBeInTheDocument();
@@ -196,22 +194,20 @@ describe('CaminoListFilter', () => {
   });
 
   it('does NOT render actions menus for non-pilgrims', () => {
-    render(<CaminoListFilter caminos={allCaminos} isPilgrim={false} isOwner={false} />);
+    render(<CaminoListFilter caminos={allCaminos} isPilgrim={false} />);
     expect(
       screen.queryByLabelText(`actions-${verifiedCamino.name}`),
     ).not.toBeInTheDocument();
   });
 
   it('renders an empty list gracefully without errors', () => {
-    render(<CaminoListFilter caminos={[]} isPilgrim={false} isOwner={false} />);
+    render(<CaminoListFilter caminos={[]} isPilgrim={false} />);
     // Empty list with filter off should NOT show the no-verified message.
     expect(screen.queryByText('filter_no_verified')).not.toBeInTheDocument();
   });
 
   it('camino names link to their detail pages', () => {
-    render(
-      <CaminoListFilter caminos={[verifiedCamino]} isPilgrim={false} isOwner={false} />,
-    );
+    render(<CaminoListFilter caminos={[verifiedCamino]} isPilgrim={false} />);
 
     const link = screen.getByRole('link', { name: /Camino Francés/i });
     expect(link).toHaveAttribute('href', `/caminos/${verifiedCamino.slug}`);
@@ -224,7 +220,7 @@ describe('CaminoListFilter', () => {
       description: longDescription,
     };
 
-    render(<CaminoListFilter caminos={[longCamino]} isPilgrim={false} isOwner={false} />);
+    render(<CaminoListFilter caminos={[longCamino]} isPilgrim={false} />);
 
     // The truncated text should end with an ellipsis character and not contain
     // the full 700-char string verbatim.
@@ -236,13 +232,13 @@ describe('CaminoListFilter', () => {
   });
 
   it('filter switch has correct initial aria-checked state (false)', () => {
-    render(<CaminoListFilter caminos={allCaminos} isPilgrim={false} isOwner={false} />);
+    render(<CaminoListFilter caminos={allCaminos} isPilgrim={false} />);
     expect(getSwitch()).toHaveAttribute('aria-checked', 'false');
   });
 
   it('filter switch reflects aria-checked=true after being toggled on', async () => {
     const user = userEvent.setup();
-    render(<CaminoListFilter caminos={allCaminos} isPilgrim={false} isOwner={false} />);
+    render(<CaminoListFilter caminos={allCaminos} isPilgrim={false} />);
 
     await user.click(getSwitch());
 
@@ -250,7 +246,7 @@ describe('CaminoListFilter', () => {
   });
 
   it('the switch label is linked to the switch via htmlFor/id', () => {
-    render(<CaminoListFilter caminos={allCaminos} isPilgrim={false} isOwner={false} />);
+    render(<CaminoListFilter caminos={allCaminos} isPilgrim={false} />);
 
     // The label must be associated with the switch by id="filter-verified-switch".
     const label = screen.getByText('filter_verified_label');
@@ -259,21 +255,11 @@ describe('CaminoListFilter', () => {
   });
 
   it('renders caminos in a list element with an accessible name', () => {
-    render(<CaminoListFilter caminos={allCaminos} isPilgrim={false} isOwner={false} />);
+    render(<CaminoListFilter caminos={allCaminos} isPilgrim={false} />);
 
     // The <ul> has aria-label matching the i18n key 'title'.
     const list = screen.getByRole('list', { name: 'title' });
     const items = within(list).getAllByRole('listitem');
     expect(items).toHaveLength(allCaminos.length);
-  });
-
-  it('does NOT render actions menus for owners when isPilgrim is false', () => {
-    render(<CaminoListFilter caminos={allCaminos} isPilgrim={false} isOwner={true} />);
-    expect(
-      screen.queryByLabelText(`actions-${verifiedCamino.name}`),
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByLabelText(`actions-${unverifiedCamino.name}`),
-    ).not.toBeInTheDocument();
   });
 });

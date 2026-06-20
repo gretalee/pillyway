@@ -1,0 +1,2253 @@
+{
+  "_meta": {
+    "route": "Via Francigena",
+    "section": "Canterbury (England) → Rome (Italy)",
+    "distance_km": 1695,
+    "stages": 68,
+    "countries": ["england", "france", "switzerland", "italy"],
+    "source": "viefrancigene.org, wikipedia.org/wiki/Via_Francigena, visittuscany.com"
+  },
+  "camino": {
+    "name": "Via Francigena",
+    "description": "Die Via Francigena ist eine der bedeutendsten Pilgerrouten Europas und führt auf ca. 1.700 km von Canterbury in England durch Frankreich und die Schweiz bis nach Rom in Italien. Der Weg ist benannt nach dem historischen Straßennetz, das Pilger seit dem frühen Mittelalter nach Rom führte. Dokumentiert wurde die Route erstmals im Jahr 990 n. Chr. durch Erzbischof Sigeric von Canterbury, der in seinem Reisetagebuch 79 Etappen von Rom bis Canterbury verzeichnete.\n\nDer Weg führt durch die nordfranzösischen Champagne-Wälder, über den Großen Sankt Bernhard (2.473 m), den höchsten Punkt der Route, durch die Poebene, über den Apennin und durch die toskanische Landschaft bis in die Ewige Stadt. Unterwegs passiert der Pilger bedeutende Kulturstätten wie Canterbury Cathedral, den Kathedralendom von Reims, den Lago di Bolsena und die mittelalterliche Stadt Siena.\n\nPilgerausweis (Credenziale): Die offizielle Credenziale der Via Francigena ist erhältlich bei der AEVF (Associazione Europea delle Vie Francigene) unter https://www.viefrancigene.org/ sowie an der Canterbury Cathedral und bei Pilgervereinen entlang der Route. Am Ziel in Rom erhalten Pilger das Testimonium von der Opera Romana Pellegrinaggi, Via della Conciliazione 34, 00193 Roma (Tel. +39 06 69881480) nach Vorlage der gestempelten Credenziale. Stempel (Timbri) sind in Kirchen, Pfarrämtern, Pilgerherbergen und Touristenbüros erhältlich.",
+    "verified": false,
+    "createdBy": "kp_53e76e075e3f41bbaa376eb3ca29e14c"
+  },
+  "points": [
+    {
+      "position": 1,
+      "name": "Canterbury",
+      "country": "england",
+      "slug": "canterbury",
+      "description": "Canterbury ist die Geburtsstadt der Via Francigena. Die mittelalterliche Stadt in der Grafschaft Kent beherbergt die Canterbury Cathedral (UNESCO-Welterbe), wo Erzbischof Sigeric im Jahr 990 seine legendäre Reise nach Rom begann. Pilger beginnen die Route traditionell an der Westfassade der Kathedrale und erhalten dort den ersten Stempel in ihrer Credenziale.",
+      "accommodations": [
+        {
+          "name": "Kipps Hostel Canterbury",
+          "type": "hostel",
+          "description": "Beliebtes Hostel für Via-Francigena-Pilger in zentraler Lage nahe der Cathedral. Erster Anlaufpunkt für viele Pilger am Beginn der Route.",
+          "addressStreet": "1 Guy's Cliffe Avenue",
+          "addressZip": "CT1 3AJ",
+          "addressCity": "Canterbury",
+          "addressCountry": "england",
+          "phone": "+441227786121",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "YHA Canterbury",
+          "type": "hostel",
+          "description": "Jugendherberge in Canterbury, günstige Unterkunft für Pilger am Routenbeginn.",
+          "addressStreet": "54 New Dover Road",
+          "addressZip": "CT1 3DT",
+          "addressCity": "Canterbury",
+          "addressCountry": "england",
+          "phone": "+441227462911",
+          "website": "https://www.yha.org.uk",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Canterbury Cathedral Lodge",
+          "type": "hotel",
+          "description": "Einzigartiges Hotel innerhalb des Kathedralenbezirks von Canterbury. Historische Atmosphäre direkt am Pilger-Startpunkt.",
+          "addressStreet": "The Precincts",
+          "addressZip": "CT1 2EH",
+          "addressCity": "Canterbury",
+          "addressCountry": "england",
+          "phone": "+441227865350",
+          "website": "https://www.canterburycathedrallodge.org",
+          "email": null,
+          "priceRange": "comfortable",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 2,
+      "name": "Dover",
+      "country": "england",
+      "slug": "dover",
+      "description": "Dover ist der letzte Halt auf englischem Boden. Die berühmten weißen Kreidefelsen (White Cliffs of Dover) und das imposante Dover Castle überblicken den Ärmelkanal nach Frankreich. Von Dover nehmen Pilger die Fähre (ca. 90 Min.) nach Calais, um die kontinentale Route fortzusetzen.",
+      "accommodations": [
+        {
+          "name": "Dover Priory B&B",
+          "type": "b_and_b",
+          "description": "Familiäre Unterkunft nahe dem Bahnhof Dover Priory, bequem für die frühe Fähre nach Calais.",
+          "addressStreet": null,
+          "addressZip": "CT16",
+          "addressCity": "Dover",
+          "addressCountry": "england",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "East Lee Guest House",
+          "type": "b_and_b",
+          "description": "Günstige Unterkunft in Dover, beliebt bei Pilgern vor der Fährüberfahrt.",
+          "addressStreet": "108 Maison Dieu Road",
+          "addressZip": "CT16 1RT",
+          "addressCity": "Dover",
+          "addressCountry": "england",
+          "phone": "+441304210176",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 3,
+      "name": "Calais",
+      "country": "france",
+      "slug": "calais",
+      "description": "Calais ist der erste französische Etappenort nach der Kanalüberquerung. Die Hafenstadt ist bekannt für Rodins berühmte Skulpturengruppe 'Die Bürger von Calais'. Von hier führt die Via Francigena südwärts durch die nordfranzösische Ebene.",
+      "accommodations": [
+        {
+          "name": "Auberge de Jeunesse Calais",
+          "type": "hostel",
+          "description": "Jugendherberge in Calais, günstiger Startpunkt für den französischen Abschnitt der Via Francigena.",
+          "addressStreet": "Avenue Maréchal de Lattre de Tassigny",
+          "addressZip": "62100",
+          "addressCity": "Calais",
+          "addressCountry": "france",
+          "phone": "+33321344977",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hôtel Meurice",
+          "type": "hotel",
+          "description": "Traditionshotel im Stadtzentrum von Calais, bequeme Unterkunft nach der Kanalüberquerung.",
+          "addressStreet": "5-7 Rue Edmond Roche",
+          "addressZip": "62100",
+          "addressCity": "Calais",
+          "addressCountry": "france",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "name": "Guînes",
+      "country": "france",
+      "slug": "guines",
+      "description": "Guînes ist eine Kleinstadt südlich von Calais, bekannt als Schauplatz des 'Camp du Drap d'Or' von 1520, dem historischen Treffen zwischen König Heinrich VIII. von England und König Franz I. von Frankreich. Der Weg führt durch die flache Bocage-Landschaft des Pas-de-Calais.",
+      "accommodations": [],
+      "position": 4
+    },
+    {
+      "name": "Saint-Omer",
+      "country": "france",
+      "slug": "saint-omer",
+      "description": "Saint-Omer ist eine bedeutende mittelalterliche Bischofsstadt im Pas-de-Calais mit einem gotischen Dom aus dem 13.–14. Jahrhundert. Die Stadt war im Mittelalter ein wichtiger Stützpunkt auf dem Weg nach Süden. Das Jesuitenkolleg der Stadt ist historisch bedeutsam.",
+      "accommodations": [],
+      "position": 5
+    },
+    {
+      "name": "Béthune",
+      "country": "france",
+      "slug": "bethune",
+      "description": "Béthune ist eine nordfranzösische Stadt im Artois mit einem der ältesten Glockentürme (Beffroi) Frankreichs auf dem historischen Marktplatz. Die Stadt liegt in der typischen Industrielandschaft des Bergbaugürtels zwischen Saint-Omer und Arras.",
+      "accommodations": [],
+      "position": 6
+    },
+    {
+      "position": 7,
+      "name": "Arras",
+      "country": "france",
+      "slug": "arras",
+      "description": "Arras ist eine historische Festungsstadt mit einem der schönsten flämisch-barocken Marktplätze Frankreichs. Die 'Grand'Place' und die 'Place des Héros' mit dem gotischen Rathaus sind eindrucksvolle Zeugnisse der Stadt, die im Ersten Weltkrieg weitgehend zerstört und originalgetreu wiederaufgebaut wurde.",
+      "accommodations": [
+        {
+          "name": "Auberge de Jeunesse Arras",
+          "type": "hostel",
+          "description": "Jugendherberge in Arras, zentral gelegen nahe der historischen Plätze.",
+          "addressStreet": "59 Grand'Place",
+          "addressZip": "62000",
+          "addressCity": "Arras",
+          "addressCountry": "france",
+          "phone": "+33321225660",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hôtel Les 3 Luppars",
+          "type": "hotel",
+          "description": "Historisches Hotel direkt an der Grand'Place von Arras im flämisch-gotischen Stil.",
+          "addressStreet": "49 Grand'Place",
+          "addressZip": "62000",
+          "addressCity": "Arras",
+          "addressCountry": "france",
+          "phone": "+33321600203",
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "name": "Péronne",
+      "country": "france",
+      "slug": "peronne",
+      "description": "Péronne ist eine Festungsstadt an der Somme in der Picardie, die im Ersten Weltkrieg schwer zerstört wurde. Das Historial de la Grande Guerre ist eines der bedeutendsten Museen über den Ersten Weltkrieg. Die Zitadelle aus dem 13. Jahrhundert ist gut erhalten.",
+      "accommodations": [],
+      "position": 8
+    },
+    {
+      "name": "Saint-Quentin",
+      "country": "france",
+      "slug": "saint-quentin",
+      "description": "Saint-Quentin ist eine Pilger- und Handelsstadt in der Picardie mit einer gotischen Basilika, die dem frühchristlichen Märtyrer Quentin (3. Jh.) geweiht ist. Die Stadt liegt am Canal Saint-Quentin und war ein wichtiger Etappenort auf dem Weg zwischen Arras und Laon.",
+      "accommodations": [],
+      "position": 9
+    },
+    {
+      "position": 10,
+      "name": "Laon",
+      "country": "france",
+      "slug": "laon",
+      "description": "Laon ist eine mittelalterliche Kathedralenstadt auf einem markanten Hügel (Haute-Ville), der 100 Meter über die Champagner Ebene aufragt. Die imposante Notre-Dame de Laon (12.–13. Jh.) mit ihren Ochsenfiguren in den Türmen ist weithin sichtbar und gilt als frühes Meisterwerk der Gotik.",
+      "accommodations": [
+        {
+          "name": "Hôtel de la Bannière de France",
+          "type": "hotel",
+          "description": "Historisches Stadthotel in der Haute-Ville von Laon, nahe der Kathedrale.",
+          "addressStreet": "11 Rue Franklin Roosevelt",
+          "addressZip": "02000",
+          "addressCity": "Laon",
+          "addressCountry": "france",
+          "phone": "+33323230021",
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "Chambre d'hôtes Laon",
+          "type": "private_room",
+          "description": "Privates Pilgerquartier in der Altstadt von Laon, auf Voranmeldung.",
+          "addressStreet": null,
+          "addressZip": "02000",
+          "addressCity": "Laon",
+          "addressCountry": "france",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "name": "Corbeny",
+      "country": "france",
+      "slug": "corbeny",
+      "description": "Corbeny ist ein kleines Dorf in der Champagne-Ardenne, das Sigeric als 'Corbunei' in seinem Reisebericht von 990 n. Chr. erwähnte. Im Mittelalter war die Kirche mit dem Grab des heiligen Marcoul ein bedeutender Pilgerort. Das Dorf liegt auf dem direkten Weg zwischen Laon und Reims.",
+      "accommodations": [],
+      "position": 11
+    },
+    {
+      "position": 12,
+      "name": "Reims",
+      "country": "france",
+      "slug": "reims",
+      "description": "Reims ist die Stadt der Könige Frankreichs, in der fast alle französischen Monarchen von Chlodwig I. bis Karl X. gekrönt wurden. Die gotische Notre-Dame de Reims (13. Jh.) ist eines der bedeutendsten Bauwerke der französischen Gotik. Pilger genießen auch den berühmten Champagner der Region.",
+      "accommodations": [
+        {
+          "name": "Centre International de Séjour Reims",
+          "type": "hostel",
+          "description": "Zentrales Jugend- und Pilgergästehaus in Reims, günstig und gut gelegen.",
+          "addressStreet": "Chaussée Bocquaine 1",
+          "addressZip": "51100",
+          "addressCity": "Reims",
+          "addressCountry": "france",
+          "phone": "+33326405260",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hôtel de la Paix",
+          "type": "hotel",
+          "description": "Klassisches Hotel im Zentrum von Reims nahe der Kathedrale.",
+          "addressStreet": "9 Rue Buirette",
+          "addressZip": "51100",
+          "addressCity": "Reims",
+          "addressCountry": "france",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "comfortable",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "name": "Épernay",
+      "country": "france",
+      "slug": "epernay",
+      "description": "Épernay ist die Champagnerhauptstadt der Welt, gelegen im Herzen der Champagne-Weinberge an der Marne. Die Avenue de Champagne beherbergt die berühmtesten Champagnerhäuser wie Moët & Chandon und Perrier-Jouët. Pilger rasten hier auf dem Weg zwischen Reims und Châlons-en-Champagne.",
+      "accommodations": [],
+      "position": 13
+    },
+    {
+      "position": 14,
+      "name": "Châlons-en-Champagne",
+      "country": "france",
+      "slug": "chalons-en-champagne",
+      "description": "Châlons-en-Champagne ist die Hauptstadt der Champagne-Region und liegt an der Marne. Die Stadt beeindruckt mit ihren gotischen Kirchen, insbesondere der Cathédrale Saint-Étienne mit ihren prächtigen Glasfenstern. Attila, König der Hunnen, wurde hier 451 n. Chr. in der Katalaunischen Feldschlacht geschlagen.",
+      "accommodations": [
+        {
+          "name": "Auberge de Jeunesse Châlons",
+          "type": "hostel",
+          "description": "Jugendherberge in Châlons-en-Champagne, günstige Unterkunft für Via-Francigena-Pilger.",
+          "addressStreet": null,
+          "addressZip": "51000",
+          "addressCity": "Châlons-en-Champagne",
+          "addressCountry": "france",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hôtel du Pot d'Étain",
+          "type": "hotel",
+          "description": "Traditionshotel in Châlons-en-Champagne in der Nähe der Kathedrale.",
+          "addressStreet": "18 Place de la République",
+          "addressZip": "51000",
+          "addressCity": "Châlons-en-Champagne",
+          "addressCountry": "france",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "name": "Vitry-le-François",
+      "country": "france",
+      "slug": "vitry-le-francois",
+      "description": "Vitry-le-François ist eine Renaissanceplanstadt aus dem 16. Jahrhundert an der Marne in der Champagne. Die geometrisch angelegte Stadt wurde nach ihrer Zerstörung durch Kaiser Karl V. im Jahr 1544 als ideale Garnisonsstadt wiederaufgebaut. Sie liegt etwa auf halbem Weg zwischen Châlons und Bar-sur-Aube.",
+      "accommodations": [],
+      "position": 15
+    },
+    {
+      "name": "Brienne-le-Château",
+      "country": "france",
+      "slug": "brienne-le-chateau",
+      "description": "Brienne-le-Château ist eine Kleinstadt in der Champagne am Fluss Aube, berühmt als Bildungsort Napoléon Bonapartes, der hier 1779–1784 die Militärschule besuchte. Das Château de Brienne beherbergt heute ein Napoléon-Museum. Die Stadt liegt zwischen Vitry-le-François und Bar-sur-Aube.",
+      "accommodations": [],
+      "position": 16
+    },
+    {
+      "position": 17,
+      "name": "Bar-sur-Aube",
+      "country": "france",
+      "slug": "bar-sur-aube",
+      "description": "Bar-sur-Aube ist eine charmante Kleinstadt im Herzen der Champagne-Region am Fluss Aube. Die Stadt war im Mittelalter Austragungsort bedeutender Champagnemessen. Die romanisch-gotische Kirche Saint-Pierre mit ihrem umgebenden Holzgalerie-Portikus ist einzigartig.",
+      "accommodations": [
+        {
+          "name": "Gîte d'étape Bar-sur-Aube",
+          "type": "hostel",
+          "description": "Einfaches Pilgerquartier in Bar-sur-Aube, auf Voranmeldung.",
+          "addressStreet": null,
+          "addressZip": "10200",
+          "addressCity": "Bar-sur-Aube",
+          "addressCountry": "france",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hôtel Le Moulin du Landion",
+          "type": "hotel",
+          "description": "Ruhiges Hotel in der Natur nahe Bar-sur-Aube, für Pilger geeignet.",
+          "addressStreet": null,
+          "addressZip": "10200",
+          "addressCity": "Bar-sur-Aube",
+          "addressCountry": "france",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "name": "Chaumont",
+      "country": "france",
+      "slug": "chaumont",
+      "description": "Chaumont ist die Hauptstadt des Départements Haute-Marne auf einem Hochplateau zwischen Aube und Marne. Die gotische Basilika Saint-Jean-Baptiste und das neugotische Viadukt (19. Jh.) prägen das Stadtbild. Chaumont liegt auf dem Weg zwischen Bar-sur-Aube und Langres.",
+      "accommodations": [],
+      "position": 18
+    },
+    {
+      "position": 19,
+      "name": "Langres",
+      "country": "france",
+      "slug": "langres",
+      "description": "Langres ist eine antike befestigte Stadt auf einem Felssporn in der Haute-Marne, die bereits Sigeric bei seiner Reise erwähnte. Die vollständig erhaltenen Stadtmauern aus dem 2.-3. Jahrhundert bieten einen spektakulären Rundweg mit Panoramablick. Der Schriftsteller Denis Diderot wurde hier geboren.",
+      "accommodations": [
+        {
+          "name": "Gîte Les Remparts",
+          "type": "hostel",
+          "description": "Pilger-Gîte in der alten Stadtmauer von Langres, historische Atmosphäre.",
+          "addressStreet": null,
+          "addressZip": "52200",
+          "addressCity": "Langres",
+          "addressCountry": "france",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hôtel du Cheval Blanc",
+          "type": "hotel",
+          "description": "Traditionshotel im Herzen der alten Stadt Langres.",
+          "addressStreet": "4 Rue de l'Estres",
+          "addressZip": "52200",
+          "addressCity": "Langres",
+          "addressCountry": "france",
+          "phone": "+33325870007",
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "name": "Champlitte",
+      "country": "france",
+      "slug": "champlitte",
+      "description": "Champlitte ist ein kleines Städtchen in der Haute-Saône auf dem Hochplateau der Bourgogne Franche-Comté. Das Château mit einem Museum für Volkskunst und Traditionen ist sehenswert. Der Ort liegt auf dem historischen Pilgerweg zwischen Langres und dem Saône-Tal.",
+      "accommodations": [],
+      "position": 20
+    },
+    {
+      "name": "Gray",
+      "country": "france",
+      "slug": "gray",
+      "description": "Gray ist eine mittelalterliche Stadt am Fluss Saône in der Franche-Comté mit einem prachtvollen Renaissancebau des Hôtel de Ville und der Basilika Notre-Dame. Die Stadt war einst ein wichtiger Hafen und Handelsplatz an der Saône. Von hier führt der Weg durch das hügelige Vorland nach Besançon.",
+      "accommodations": [],
+      "position": 21
+    },
+    {
+      "position": 22,
+      "name": "Besançon",
+      "country": "france",
+      "slug": "besancon",
+      "description": "Besançon ist die historische Hauptstadt der Franche-Comté und liegt in einer Flussschleife des Doubs. Die Zitadelle Vauban (UNESCO-Welterbe) thront über der Stadt. Besançon war einst Bischofsstadt und bedeutende Etappe auf dem Weg nach Rom; hier wurde Victor Hugo geboren.",
+      "accommodations": [
+        {
+          "name": "Auberge de Jeunesse Besançon",
+          "type": "hostel",
+          "description": "Jugendherberge von Besançon nahe der Zitadelle, günstige Unterkunft für Pilger.",
+          "addressStreet": "48 Rue des Cras",
+          "addressZip": "25000",
+          "addressCity": "Besançon",
+          "addressCountry": "france",
+          "phone": "+33381401532",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hôtel Ibis Besançon Centre",
+          "type": "hotel",
+          "description": "Modernes Hotel im Zentrum von Besançon, bequem für Pilger.",
+          "addressStreet": null,
+          "addressZip": "25000",
+          "addressCity": "Besançon",
+          "addressCountry": "france",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "name": "Ornans",
+      "country": "france",
+      "slug": "ornans",
+      "description": "Ornans ist eine malerische Kleinstadt am Fluss Loue in der Franche-Comté, Geburtsstadt des Malers Gustave Courbet (1819–1877). Die Häuser der Altstadt spiegeln sich im klaren Wasser der Loue. Das Courbet-Museum in seinem Geburtshaus und die Schlucht der Loue sind beeindruckend.",
+      "accommodations": [],
+      "position": 23
+    },
+    {
+      "position": 24,
+      "name": "Pontarlier",
+      "country": "france",
+      "slug": "pontarlier",
+      "description": "Pontarlier ist das Tor zur Schweiz und liegt im Jura-Hochland nahe der schweizerischen Grenze. Die Stadt war im 19. Jahrhundert berühmt als Zentrum der Absinth-Herstellung. Die umliegende Juralandschaft mit Wäldern und Plateaus ist landschaftlich sehr reizvoll.",
+      "accommodations": [
+        {
+          "name": "Gîte d'étape Pontarlier",
+          "type": "hostel",
+          "description": "Pilger-Gîte in Pontarlier, letzte günstige Unterkunft vor der Schweizer Grenze.",
+          "addressStreet": null,
+          "addressZip": "25300",
+          "addressCity": "Pontarlier",
+          "addressCountry": "france",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hôtel de France",
+          "type": "hotel",
+          "description": "Traditionshotel in Pontarlier für Pilger vor dem Grenzübertritt.",
+          "addressStreet": null,
+          "addressZip": "25300",
+          "addressCity": "Pontarlier",
+          "addressCountry": "france",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "name": "Vallorbe",
+      "country": "switzerland",
+      "slug": "vallorbe",
+      "description": "Vallorbe ist das erste Schweizer Dorf nach dem Grenzübergang von Pontarlier und liegt im Kanton Waadt am Fluss Orbe. Die Grottes de Vallorbe (Tropfsteinhöhlen) und das Eisenbahnmuseum sind Sehenswürdigkeiten. Der Grenzübergang markiert den Eintritt in die Schweiz auf der Via Francigena.",
+      "accommodations": [],
+      "position": 25
+    },
+    {
+      "name": "Cossonay",
+      "country": "switzerland",
+      "slug": "cossonay",
+      "description": "Cossonay ist eine mittelalterliche Kleinstadt auf einem Hügelrücken im Kanton Waadt auf dem Weg von Vallorbe nach Lausanne. Das Château de Cossonay und die gotische Kirche Saint-Nicolas prägen die Oberstadt. Von hier bietet sich ein schöner Ausblick auf die Voralpenlandschaft und den Genfer See.",
+      "accommodations": [],
+      "position": 26
+    },
+    {
+      "position": 27,
+      "name": "Lausanne",
+      "country": "switzerland",
+      "slug": "lausanne",
+      "description": "Lausanne liegt am Genfer See (Lac Léman) auf einer Terrasse zwischen dem See und den Voralpen. Die gotische Kathedrale Notre-Dame ist die bedeutendste gotische Kirche der Schweiz. Die AEVF (Associazione Europea delle Vie Francigene) hat hier ein Büro. Von Lausanne führt der Weg weiter dem Seeufer entlang nach Vevey.",
+      "accommodations": [
+        {
+          "name": "Lausanne Guesthouse & Backpackers",
+          "type": "hostel",
+          "description": "Offizielle HI-Jugendherberge am Rande von Lausanne mit Blick auf den Genfer See. Beliebt bei Via-Francigena-Pilgern.",
+          "addressStreet": "Chemin du Bois-de-Vaux 36",
+          "addressZip": "1007",
+          "addressCity": "Lausanne",
+          "addressCountry": "switzerland",
+          "phone": "+41216260222",
+          "website": "https://www.youthhostel.ch",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hôtel Crystal",
+          "type": "hotel",
+          "description": "Komfortables Hotel im Stadtzentrum von Lausanne, nahe der Kathedrale.",
+          "addressStreet": null,
+          "addressZip": "1003",
+          "addressCity": "Lausanne",
+          "addressCountry": "switzerland",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "comfortable",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 28,
+      "name": "Vevey",
+      "country": "switzerland",
+      "slug": "vevey",
+      "description": "Vevey ist eine charmante Stadt am Genfer See in der Riviera Vaudoise. Charles Chaplin verbrachte hier seine letzten Lebensjahre. Die Promenade entlang des Sees mit Blick auf die Savoyer Alpen ist wunderschön. Sigeric beschrieb diese Station als 'Vivaec'.",
+      "accommodations": [
+        {
+          "name": "Riviera Lodge",
+          "type": "hostel",
+          "description": "Günstiges Hostel in Vevey mit Blick auf den Genfer See, beliebt bei Pilgern und Backpackern.",
+          "addressStreet": "5 Place du Marché",
+          "addressZip": "1800",
+          "addressCity": "Vevey",
+          "addressCountry": "switzerland",
+          "phone": "+41219238040",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hôtel du Lac",
+          "type": "hotel",
+          "description": "Klassisches Seehotel in Vevey mit Blick auf den Genfer See.",
+          "addressStreet": null,
+          "addressZip": "1800",
+          "addressCity": "Vevey",
+          "addressCountry": "switzerland",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "comfortable",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "name": "Aigle",
+      "country": "switzerland",
+      "slug": "aigle",
+      "description": "Aigle ist eine Stadt im Kanton Waadt am Eingang des Rhônetals, umgeben von Weinbergen. Der mittelalterliche Château d'Aigle beherbergt heute das Weinmuseum der Region. Sigeric bezeichnete Aigle als 'Burbulei' und es war ein wichtiger Etappenort auf dem Weg zum Großen Sankt Bernhard.",
+      "accommodations": [],
+      "position": 29
+    },
+    {
+      "position": 30,
+      "name": "Saint-Maurice",
+      "country": "switzerland",
+      "slug": "saint-maurice",
+      "description": "Saint-Maurice im Rhônetal beherbergt eine der ältesten Pilgerkirchen der Welt. Die Abtei Saint-Maurice d'Agaune wurde um 515 n. Chr. über dem Grab des heiligen Mauritius gegründet und ist seit 1.500 Jahren ununterbrochen ein Wallfahrtsziel. Die Schatzkapelle der Abtei bewahrt einzigartige frühchristliche Kunstschätze.",
+      "accommodations": [
+        {
+          "name": "Auberge de Jeunesse Saint-Maurice",
+          "type": "hostel",
+          "description": "Jugendherberge in Saint-Maurice, ideal für Pilger auf dem Weg zum Großen Sankt Bernhard.",
+          "addressStreet": null,
+          "addressZip": "1890",
+          "addressCity": "Saint-Maurice",
+          "addressCountry": "switzerland",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Abbaye de Saint-Maurice (Gastunterkunft)",
+          "type": "monastery",
+          "description": "Gastunterkunft der Abtei Saint-Maurice für Pilger. Spirituelle Atmosphäre in einem der ältesten Klöster Europas.",
+          "addressStreet": "Case Postale 34",
+          "addressZip": "1890",
+          "addressCity": "Saint-Maurice",
+          "addressCountry": "switzerland",
+          "phone": "+41244855185",
+          "website": "https://www.abbaye-saint-maurice.ch",
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 31,
+      "name": "Orsières",
+      "country": "switzerland",
+      "slug": "orsieres",
+      "description": "Orsières liegt im Val d'Entremont auf dem Weg zum Großen Sankt Bernhard. Das malerische Dorf ist der letzte größere Ort vor dem Hochgebirge und ein wichtiger Etappenort für Pilger, die sich auf den Passübergang vorbereiten. Die romanische Kirche von Orsières stammt aus dem 12. Jahrhundert.",
+      "accommodations": [
+        {
+          "name": "Gîte communal d'Orsières",
+          "type": "hostel",
+          "description": "Einfache Gemeindeunterkunft in Orsières für Pilger auf dem Weg zum Großen Sankt Bernhard.",
+          "addressStreet": null,
+          "addressZip": "1937",
+          "addressCity": "Orsières",
+          "addressCountry": "switzerland",
+          "phone": "+41277833415",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hôtel de la Poste",
+          "type": "hotel",
+          "description": "Traditionelles Berghotel in Orsières.",
+          "addressStreet": null,
+          "addressZip": "1937",
+          "addressCity": "Orsières",
+          "addressCountry": "switzerland",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 32,
+      "name": "Bourg-Saint-Pierre",
+      "country": "switzerland",
+      "slug": "bourg-saint-pierre",
+      "description": "Bourg-Saint-Pierre ist das letzte Dorf vor dem Großen Sankt Bernhard (2.473 m), dem höchsten Punkt der Via Francigena. Das Hospiz auf dem Pass wurde 1049 vom heiligen Bernhard von Aosta gegründet und beherbergt seit fast 1.000 Jahren Pilger und Reisende. Der Übergang ist je nach Jahreszeit von Mai bis Oktober möglich.",
+      "accommodations": [
+        {
+          "name": "Gîte du Col du Grand-Saint-Bernard",
+          "type": "hostel",
+          "description": "Historisches Hospiz auf dem Großen Sankt Bernhard (2.473 m), seit fast 1.000 Jahren Pilgerzuflucht. Im Sommer für Pilger geöffnet.",
+          "addressStreet": null,
+          "addressZip": "1945",
+          "addressCity": "Grand-Saint-Bernard",
+          "addressCountry": "switzerland",
+          "phone": "+41277872312",
+          "website": "https://www.gsbernard.com",
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "Auberge Bivouac Bourg-Saint-Pierre",
+          "type": "hotel",
+          "description": "Berghotel in Bourg-Saint-Pierre am Fuß des Passes.",
+          "addressStreet": null,
+          "addressZip": "1946",
+          "addressCity": "Bourg-Saint-Pierre",
+          "addressCountry": "switzerland",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "name": "Etroubles",
+      "country": "italy",
+      "slug": "etroubles",
+      "description": "Etroubles ist ein alpines Dorf im Valle d'Aosta auf 1.270 m Höhe – das erste bewohnte Dorf auf der italienischen Seite des Großen Sankt Bernhard-Passes. Das Dorf wurde seit dem Mittelalter von Pilgern als erster Rastort nach dem anstrengenden Passübergang (2.473 m) genutzt.",
+      "accommodations": [],
+      "position": 33
+    },
+    {
+      "position": 34,
+      "name": "Aosta",
+      "country": "italy",
+      "slug": "aosta",
+      "description": "Aosta ist die Hauptstadt des gleichnamigen Alpentals und eine der besterhaltenen Römerstädte Italiens. Die Augusta Praetoria, wie die Römer sie nannten, besitzt ein Amphitheater, einen Triumphbogen zu Ehren des Augustus, Stadtmauern und Stadttore. Aosta ist der erste große Halt nach dem Großen Sankt Bernhard-Pass auf italienischem Boden.",
+      "accommodations": [
+        {
+          "name": "Ostello della Gioventù Aosta",
+          "type": "hostel",
+          "description": "Jugendherberge in Aosta im Zentrum der Stadt, günstige Unterkunft für Pilger.",
+          "addressStreet": "Via Ponte Suaz 48",
+          "addressZip": "11100",
+          "addressCity": "Aosta",
+          "addressCountry": "italy",
+          "phone": "+39016552579",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hotel Milleluci",
+          "type": "hotel",
+          "description": "Komfortables Hotel in Aosta mit Blick auf die Alpen und die Stadtmauern.",
+          "addressStreet": null,
+          "addressZip": "11100",
+          "addressCity": "Aosta",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "comfortable",
+          "verified": false
+        },
+        {
+          "name": "B&B Maison Favre",
+          "type": "b_and_b",
+          "description": "Familiäres Bed & Breakfast in Aosta, herzliche Atmosphäre für Pilger.",
+          "addressStreet": null,
+          "addressZip": "11100",
+          "addressCity": "Aosta",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "name": "Châtillon",
+      "country": "italy",
+      "slug": "chatillon",
+      "description": "Châtillon ist eine Stadt im mittleren Aostatal auf halbem Weg zwischen Aosta und dem Canavese. Das mittelalterliche Schloss Ussel auf einem Felsvorsprung über dem Tal ist weithin sichtbar. Der Ort liegt im frankophonen Teil Italiens und war ein wichtiger Durchgangsort auf dem historischen Pilgerweg aus den Alpen.",
+      "accommodations": [],
+      "position": 35
+    },
+    {
+      "name": "Pont-Saint-Martin",
+      "country": "italy",
+      "slug": "pont-saint-martin",
+      "description": "Pont-Saint-Martin ist eine Kleinstadt am Unterlauf der Dora Baltea an der Grenze zwischen dem Aostatal und dem Canavese (Piemont). Die historische einbögige Römerbrücke aus dem 1. Jahrhundert v. Chr. ist das Wahrzeichen der Stadt. Sigeric nannte den Ort 'Publei' – ein bedeutender Wegpunkt.",
+      "accommodations": [],
+      "position": 36
+    },
+    {
+      "position": 37,
+      "name": "Ivrea",
+      "country": "italy",
+      "slug": "ivrea",
+      "description": "Ivrea liegt an der Dora Baltea und ist bekannt für seinen farbenprächtigen Karneval ('Battaglia delle Arance') und das quadratische Schloss der Savoyarden aus dem 14. Jahrhundert. Die Stadt war einst Hauptsitz des Olivetti-Konzerns und gilt als UNESCO-Welterbe für ihre Industriearchitektur des 20. Jahrhunderts.",
+      "accommodations": [
+        {
+          "name": "Ostello del Pellegrino Ivrea",
+          "type": "hostel",
+          "description": "Einfaches Pilgerquartier in Ivrea auf dem Weg durch die Poebene.",
+          "addressStreet": null,
+          "addressZip": "10015",
+          "addressCity": "Ivrea",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hotel La Serra",
+          "type": "hotel",
+          "description": "Hotel in Ivrea mit guter Anbindung an die Via Francigena-Route durch das Canavese.",
+          "addressStreet": null,
+          "addressZip": "10015",
+          "addressCity": "Ivrea",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "name": "Santhià",
+      "country": "italy",
+      "slug": "santhia",
+      "description": "Santhià ist eine Kleinstadt in der Provinz Vercelli inmitten der piemontesischen Reisfelder. Sigeric beschrieb sie als 'Sca Agatha'. Der Ort war ein wichtiger Etappenort auf dem Weg durch die endlose Po-Ebene zwischen Ivrea und Vercelli, geprägt von Reisanbau und Kanälen.",
+      "accommodations": [],
+      "position": 38
+    },
+    {
+      "position": 39,
+      "name": "Vercelli",
+      "country": "italy",
+      "slug": "vercelli",
+      "description": "Vercelli liegt inmitten der größten Reisanbauregion Europas. Die frühgotische Basilika Sant'Andrea (1219–1227), die erste gotische Kirche Italiens, ist ein außergewöhnliches Bauwerk. Die Basilika wurde von Kardinal Guala Bicchieri als Symbol seiner Verbindung zum englischen Königshaus errichtet.",
+      "accommodations": [
+        {
+          "name": "Casa del Pellegrino Vercelli",
+          "type": "hostel",
+          "description": "Pilgerhaus in Vercelli, günstige Unterkunft auf der Via Francigena durch die Poebene.",
+          "addressStreet": null,
+          "addressZip": "13100",
+          "addressCity": "Vercelli",
+          "addressCountry": "italy",
+          "phone": "+390161211579",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hotel Cinzia",
+          "type": "hotel",
+          "description": "Bequemes Hotel im Zentrum von Vercelli für Pilger.",
+          "addressStreet": "Viale Garibaldi 22",
+          "addressZip": "13100",
+          "addressCity": "Vercelli",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "name": "Tromello",
+      "country": "italy",
+      "slug": "tromello",
+      "description": "Tromello ist ein Dorf in der Lomellina – dem fruchtbaren Anbaugebiet zwischen Ticino und Po in der Provinz Pavia – das Sigeric als 'Tremel' beschrieb. Der Ort liegt auf dem historischen Pilgerweg durch die Po-Ebene zwischen Vercelli und Pavia, umgeben von Reisfeldern und Kanälen.",
+      "accommodations": [],
+      "position": 40
+    },
+    {
+      "position": 41,
+      "name": "Pavia",
+      "country": "italy",
+      "slug": "pavia",
+      "description": "Pavia war einst Hauptstadt des Lombardischen Königreichs. Die mittelalterliche Stadt am Ticino beeindruckt mit ihrem überdachten Brücke (Ponte Coperto), zahllosen romanischen Kirchen und der berühmten Certosa di Pavia (10 km entfernt). Die Universität Pavia gehört zu den ältesten Italiens.",
+      "accommodations": [
+        {
+          "name": "Ostello della Gioventù Pavia",
+          "type": "hostel",
+          "description": "Jugendherberge in Pavia, günstige Unterkunft nahe dem Ticino für Via-Francigena-Pilger.",
+          "addressStreet": "Corso Cairoli 27",
+          "addressZip": "27100",
+          "addressCity": "Pavia",
+          "addressCountry": "italy",
+          "phone": "+390382302971",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hotel Aurora",
+          "type": "hotel",
+          "description": "Hotel im Zentrum von Pavia nahe der historischen Brücke.",
+          "addressStreet": null,
+          "addressZip": "27100",
+          "addressCity": "Pavia",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "name": "Corte San Andrea",
+      "country": "italy",
+      "slug": "corte-san-andrea",
+      "description": "Corte San Andrea ist ein kleines Dorf am südlichen Ufer des Po, das Sigeric als 'Sce Andrea' beschrieb. Der Ort war seit dem Mittelalter der historische Überquerungspunkt des Po auf der Via Francigena zwischen der Lombardei und der Emilia-Romagna. Die Flusslandschaft des Po ist hier besonders eindrucksvoll.",
+      "accommodations": [],
+      "position": 42
+    },
+    {
+      "position": 43,
+      "name": "Piacenza",
+      "country": "italy",
+      "slug": "piacenza",
+      "description": "Piacenza liegt am Po und ist die erste Stadt der Emilia-Romagna auf dem Weg nach Süden. Die Piazza dei Cavalli mit den bronzenen Reiterstandbildern der Farnese-Herzöge und dem gotischen Palazzo Gotico ist beeindruckend. Piacenza ist bekannt für exzellente Wurst- und Käsespezialitäten.",
+      "accommodations": [
+        {
+          "name": "Casa del Pellegrino Piacenza",
+          "type": "hostel",
+          "description": "Pilgerhaus in Piacenza mit günstigen Schlafmöglichkeiten für Via-Francigena-Pilgern. Voranmeldung empfohlen.",
+          "addressStreet": "Via Torta 15",
+          "addressZip": "29121",
+          "addressCity": "Piacenza",
+          "addressCountry": "italy",
+          "phone": "+390523323023",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hotel Astoria Piacenza",
+          "type": "hotel",
+          "description": "Komfortables Hotel im Zentrum von Piacenza.",
+          "addressStreet": null,
+          "addressZip": "29121",
+          "addressCity": "Piacenza",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "name": "Fiorenzuola d'Arda",
+      "country": "italy",
+      "slug": "fiorenzuola-darda",
+      "description": "Fiorenzuola d'Arda ist eine Kleinstadt in der Emilia-Romagna an der antiken Via Emilia, die Sigeric als 'Floricum' beschrieb. Der Ort liegt in der Padana zwischen Piacenza und Fidenza auf der uralten Römerstraße. Die Stadtkirche und der historische Ortskern zeugen von der langen Geschichte des Ortes.",
+      "accommodations": [],
+      "position": 44
+    },
+    {
+      "position": 45,
+      "name": "Fidenza",
+      "country": "italy",
+      "slug": "fidenza",
+      "description": "Fidenza beherbergt den Dom San Donnino, einen der bedeutendsten romanischen Dome der Emilia-Romagna. San Donnino ist der Schutzpatron der Pilger auf der Via Francigena, und die Kathedrale (12.–13. Jh.) zieht seit dem Mittelalter Pilgerscharen an. Fidenza ist ein wichtiger Stempelort auf der Route.",
+      "accommodations": [
+        {
+          "name": "Ostello del Pellegrino Fidenza",
+          "type": "hostel",
+          "description": "Pilgerherberge in Fidenza nahe dem Dom San Donnino, günstige Unterkunft.",
+          "addressStreet": null,
+          "addressZip": "43036",
+          "addressCity": "Fidenza",
+          "addressCountry": "italy",
+          "phone": "+390524522490",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hotel Il Podestà",
+          "type": "hotel",
+          "description": "Bequemes Hotel im Zentrum von Fidenza für Pilger auf der Via Francigena.",
+          "addressStreet": null,
+          "addressZip": "43036",
+          "addressCity": "Fidenza",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 46,
+      "name": "Fornovo di Taro",
+      "country": "italy",
+      "slug": "fornovo-di-taro",
+      "description": "Fornovo di Taro liegt am Fuß der Apenninen am Fluss Taro und markiert den Beginn des Bergübergangs über die Apenninen nach Toskana und Ligurien. Die romanische Pieve di Santa Maria (11. Jh.) ist ein bedeutendes Baudenkmal. Von Fornovo beginnt die beschwerlichste Etappe der Poebene-Abschnitte.",
+      "accommodations": [
+        {
+          "name": "Ostello del Pellegrino Fornovo",
+          "type": "hostel",
+          "description": "Pilgerherberge in Fornovo di Taro am Beginn des Apenninenaufstiegs.",
+          "addressStreet": null,
+          "addressZip": "43045",
+          "addressCity": "Fornovo di Taro",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Agriturismo Taro",
+          "type": "b_and_b",
+          "description": "Agriturismo am Taro-Fluss, natürliche Umgebung für Pilger vor dem Apenninenübergang.",
+          "addressStreet": null,
+          "addressZip": "43045",
+          "addressCity": "Fornovo di Taro",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 47,
+      "name": "Berceto",
+      "country": "italy",
+      "slug": "berceto",
+      "description": "Berceto ist ein malerisches Bergdorf im Apennin auf ca. 800 m Höhe. Die Kathedrale San Moderanno (11.–12. Jh.) war ein bedeutender Pilgerstopp auf der mittelalterlichen Via Francigena. Das Dorf war der letzte Halt vor dem Passo della Cisa (1.039 m), dem Hauptpass über den Apennin.",
+      "accommodations": [
+        {
+          "name": "Ostello Parrocchiale Berceto",
+          "type": "church",
+          "description": "Einfaches Pilgerquartier des Pfarramts von Berceto im Apennin.",
+          "addressStreet": null,
+          "addressZip": "43042",
+          "addressCity": "Berceto",
+          "addressCountry": "italy",
+          "phone": "+390525629131",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hotel Roma Berceto",
+          "type": "hotel",
+          "description": "Kleines Hotel in Berceto, Ausgangspunkt für den Apenninenpass.",
+          "addressStreet": null,
+          "addressZip": "43042",
+          "addressCity": "Berceto",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 48,
+      "name": "Pontremoli",
+      "country": "italy",
+      "slug": "pontremoli",
+      "description": "Pontremoli ist das Tor zur Lunigiana, einer historischen Landschaft zwischen Apennin und Apuanischen Alpen. Die Stadt am Zusammenfluss von Magra und Verde hat einen charmanten mittelalterlichen Ortskern mit Schloss und Kathedralen. Das Museo delle Statue Stele zeigt prähistorische Steinskulpturen der Region.",
+      "accommodations": [
+        {
+          "name": "Ostello della Gioventù Pontremoli",
+          "type": "hostel",
+          "description": "Jugendherberge in Pontremoli im historischen Zentrum der Lunigiana-Hauptstadt.",
+          "addressStreet": null,
+          "addressZip": "54027",
+          "addressCity": "Pontremoli",
+          "addressCountry": "italy",
+          "phone": "+390187833180",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Albergo Napoleon Pontremoli",
+          "type": "hotel",
+          "description": "Hotel im Zentrum von Pontremoli mit guter Lage für die Via-Francigena-Etappe.",
+          "addressStreet": null,
+          "addressZip": "54027",
+          "addressCity": "Pontremoli",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 49,
+      "name": "Aulla",
+      "country": "italy",
+      "slug": "aulla",
+      "description": "Aulla liegt am Zusammenfluss von Magra und Aulella und ist das strategische Tor zur Lunigiana. Die Fortezza della Brunella aus dem 16. Jahrhundert dominiert die Stadt. Von Aulla führt die Via Francigena weiter nach Sarzana und in die ligurische Küstenregion.",
+      "accommodations": [
+        {
+          "name": "Ostello Aulla",
+          "type": "hostel",
+          "description": "Pilgerherberge in Aulla an der Mündung von Magra und Aulella.",
+          "addressStreet": null,
+          "addressZip": "54011",
+          "addressCity": "Aulla",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hotel Capannina Aulla",
+          "type": "hotel",
+          "description": "Hotel in Aulla, bequeme Unterkunft für Pilger.",
+          "addressStreet": null,
+          "addressZip": "54011",
+          "addressCity": "Aulla",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 50,
+      "name": "Sarzana",
+      "country": "italy",
+      "slug": "sarzana",
+      "description": "Sarzana ist eine gut erhaltene mittelalterliche Festungsstadt in Ligurien. Die imposante Zitadelle (Cittadella) aus dem 15. Jahrhundert und die Kathedrale Santa Maria Assunta sind die Hauptsehenswürdigkeiten. Sarzana war eine wichtige Bischofsstadt auf der Via Francigena und ein bedeutender Handelsplatz der Malaspina.",
+      "accommodations": [
+        {
+          "name": "Ostello Sarzana",
+          "type": "hostel",
+          "description": "Pilgerherberge in Sarzana nahe der historischen Altstadt.",
+          "addressStreet": null,
+          "addressZip": "19038",
+          "addressCity": "Sarzana",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "B&B Il Rifugio del Pellegrino",
+          "type": "b_and_b",
+          "description": "Gemütliches B&B in Sarzana für Via-Francigena-Pilger.",
+          "addressStreet": null,
+          "addressZip": "19038",
+          "addressCity": "Sarzana",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "name": "Massa",
+      "country": "italy",
+      "slug": "massa",
+      "description": "Massa ist die Hauptstadt der Provinz Massa-Carrara an der ligurischen Küste, bekannt für den weißen Marmor der nahen Apuanischen Alpen. Die Via Francigena führt durch die Küstenebene zwischen den Apuanischen Alpen und dem Tyrrhenischen Meer. Der Palazzo Cybo-Malaspina prägt das Stadtbild.",
+      "accommodations": [],
+      "position": 51
+    },
+    {
+      "position": 52,
+      "name": "Lucca",
+      "country": "italy",
+      "slug": "lucca",
+      "description": "Lucca ist eine der schönsten mittelalterlichen Städte der Toskana und seit dem Mittelalter ein wichtiger Halt auf der Via Francigena. Die perfekt erhaltene Renaissance-Stadtmauer (16.–17. Jh.) ist heute ein beliebter Spazierweg. Das Volto Santo, ein aus dem Libanon stammender hölzerner Kruzifixus in der Kathedrale San Martino, war das Hauptziel mittelalterlicher Pilger.",
+      "accommodations": [
+        {
+          "name": "Ostello San Frediano",
+          "type": "hostel",
+          "description": "Pilgerherberge im historischen Zentrum von Lucca nahe der Basilika San Frediano. Einer der bekanntesten Pilger-Stopps der Via Francigena in der Toskana.",
+          "addressStreet": "Via della Cavallerizza 12",
+          "addressZip": "55100",
+          "addressCity": "Lucca",
+          "addressCountry": "italy",
+          "phone": "+390583469957",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "B&B Il Piccolo Cortile",
+          "type": "b_and_b",
+          "description": "Charmantes B&B im historischen Zentrum von Lucca, ideal für Pilger.",
+          "addressStreet": null,
+          "addressZip": "55100",
+          "addressCity": "Lucca",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "Hotel Universo Lucca",
+          "type": "hotel",
+          "description": "Traditionshotel im Zentrum von Lucca nahe der Stadtmauer.",
+          "addressStreet": "Piazza del Giglio 1",
+          "addressZip": "55100",
+          "addressCity": "Lucca",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "comfortable",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "name": "Fucecchio",
+      "country": "italy",
+      "slug": "fucecchio",
+      "description": "Fucecchio ist ein Hügelort im Valdarno zwischen Lucca und San Miniato in der Toskana, auf einem Hügel über dem Arnotal gelegen. Im Mittelalter war Fucecchio ein wichtiger Kreuzungspunkt von Handels- und Pilgerwegen. Die Umgebung zeigt die typische toskanische Landschaft mit Weinbergen und Olivenhainen.",
+      "accommodations": [],
+      "position": 53
+    },
+    {
+      "position": 54,
+      "name": "San Miniato",
+      "country": "italy",
+      "slug": "san-miniato",
+      "description": "San Miniato ist eine Hügelstadt zwischen Florenz und Pisa auf einem Gebirgszug über dem Arnotal. Der imposante Turm Kaiser Friedrichs II. prägt die Silhouette. San Miniato ist bekannt für den weißen Trüffel ('tartufo bianco') und war eine wichtige kaiserliche Residenz auf der Straße nach Rom.",
+      "accommodations": [
+        {
+          "name": "Ostello del Pellegrino San Miniato",
+          "type": "hostel",
+          "description": "Pilgerherberge in San Miniato für Via-Francigena-Pilger nach dem langen Tagesmarsch von Lucca.",
+          "addressStreet": null,
+          "addressZip": "56028",
+          "addressCity": "San Miniato",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hotel Miravalle San Miniato",
+          "type": "hotel",
+          "description": "Hotel mit Panoramablick auf die toskanische Hügellandschaft in San Miniato.",
+          "addressStreet": null,
+          "addressZip": "56028",
+          "addressCity": "San Miniato",
+          "addressCountry": "italy",
+          "phone": "+390571418075",
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 55,
+      "name": "Gambassi Terme",
+      "country": "italy",
+      "slug": "gambassi-terme",
+      "description": "Gambassi Terme liegt auf einem Hügel im Chianti-Gebiet und ist bekannt für seine Thermen. Das nahe gelegene antike Pieve (Landkirche) di Chianni ist eines der bedeutendsten romanischen Kirchengebäude der Toskana. Der Weg durch das Chianti-Gebiet bietet herrliche Ausblicke auf Weinberge und Olivenhaine.",
+      "accommodations": [
+        {
+          "name": "Casa del Pellegrino Gambassi Terme",
+          "type": "hostel",
+          "description": "Pilgerhaus in Gambassi Terme auf dem Weg nach San Gimignano.",
+          "addressStreet": null,
+          "addressZip": "50050",
+          "addressCity": "Gambassi Terme",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Agriturismo Chianti",
+          "type": "b_and_b",
+          "description": "Agriturismo inmitten der Chianti-Weinberge nahe Gambassi Terme.",
+          "addressStreet": null,
+          "addressZip": "50050",
+          "addressCity": "Gambassi Terme",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 56,
+      "name": "San Gimignano",
+      "country": "italy",
+      "slug": "san-gimignano",
+      "description": "San Gimignano (UNESCO-Welterbe) ist berühmt für seine mittelalterlichen Geschlechtertürme – einst 72, heute noch 14. Das 'Manhattan des Mittelalters' war ein wichtiger Pilgerstopp auf der Via Francigena. Das Stadtbild mit seinen Türmen ist eines der ikonischsten in ganz Italien.",
+      "accommodations": [
+        {
+          "name": "Ostello della Gioventù San Gimignano",
+          "type": "hostel",
+          "description": "Jugendherberge in San Gimignano nahe den mittelalterlichen Türmen. Einer der beliebtesten Pilgerstopps in der Toskana.",
+          "addressStreet": "Via delle Fonti 1",
+          "addressZip": "53037",
+          "addressCity": "San Gimignano",
+          "addressCountry": "italy",
+          "phone": "+390577941991",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hotel Leon Bianco",
+          "type": "hotel",
+          "description": "Historisches Hotel im Herzen von San Gimignano an der Piazza della Cisterna.",
+          "addressStreet": "Piazza della Cisterna 13",
+          "addressZip": "53037",
+          "addressCity": "San Gimignano",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "comfortable",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 57,
+      "name": "Monteriggioni",
+      "country": "italy",
+      "slug": "monteriggioni",
+      "description": "Monteriggioni ist ein perfekt erhaltenes mittelalterliches Wehrdorf auf einem Hügel südlich von Siena. Die kreisrunden Stadtmauern mit 14 Türmen wurden von Dante in der Göttlichen Komödie verewigt. Das Dorf ist ein unvergesslicher Anblick auf dem Weg nach Siena.",
+      "accommodations": [
+        {
+          "name": "Casa per Ferie Monteriggioni",
+          "type": "hostel",
+          "description": "Pilgerpension innerhalb der mittelalterlichen Mauern von Monteriggioni.",
+          "addressStreet": null,
+          "addressZip": "53035",
+          "addressCity": "Monteriggioni",
+          "addressCountry": "italy",
+          "phone": "+390577304835",
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "Hotel Monteriggioni",
+          "type": "hotel",
+          "description": "Boutique-Hotel innerhalb der Stadtmauern von Monteriggioni.",
+          "addressStreet": "Via 1 Maggio 4",
+          "addressZip": "53035",
+          "addressCity": "Monteriggioni",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "comfortable",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 58,
+      "name": "Siena",
+      "country": "italy",
+      "slug": "siena",
+      "description": "Siena (UNESCO-Welterbe) ist eine der schönsten mittelalterlichen Städte Italiens. Die muschelförmige Piazza del Campo, Schauplatz des berühmten Palio-Rennens, und der Dom Santa Maria Assunta sind Höhepunkte. Siena rivalisierte im Mittelalter mit Florenz und bewahrt bis heute sein mittelalterliches Stadtbild.",
+      "accommodations": [
+        {
+          "name": "Ostello della Gioventù Guidoriccio",
+          "type": "hostel",
+          "description": "Jugendherberge Siena (Guidoriccio) am Stadtrand von Siena, günstige Unterkunft für Pilger.",
+          "addressStreet": "Via Fiorentina 89",
+          "addressZip": "53100",
+          "addressCity": "Siena",
+          "addressCountry": "italy",
+          "phone": "+390577522120",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Casa del Pellegrino Siena",
+          "type": "hostel",
+          "description": "Pilgerhaus in Siena, günstige Unterkunft für Via-Francigena-Pilger nahe dem Stadtzentrum.",
+          "addressStreet": null,
+          "addressZip": "53100",
+          "addressCity": "Siena",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Pensione Bernini",
+          "type": "b_and_b",
+          "description": "Günstige Pensione im Zentrum von Siena nahe der Piazza del Campo.",
+          "addressStreet": "Via della Sapienza 15",
+          "addressZip": "53100",
+          "addressCity": "Siena",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "name": "Buonconvento",
+      "country": "italy",
+      "slug": "buonconvento",
+      "description": "Buonconvento ist ein mittelalterliches Dorf in den Crete Senesi an der Arbia südlich von Siena, mit vollständig erhaltener Stadtmauer. Kaiser Heinrich VII. starb hier 1313 auf dem Weg von Siena nach Rom – eine historische Begebenheit, die dem Ort Berühmtheit verlieh. Das Museo d'Arte Sacra bewahrt toskanische Meisterwerke.",
+      "accommodations": [],
+      "position": 59
+    },
+    {
+      "position": 60,
+      "name": "San Quirico d'Orcia",
+      "country": "italy",
+      "slug": "san-quirico-dorcia",
+      "description": "San Quirico d'Orcia liegt im UNESCO-geschützten Val d'Orcia und ist eines der schönsten Dörfer der Toskana. Die romanisch-gotische Collegiata (12. Jh.) mit drei Portalen aus verschiedenen Epochen ist bemerkenswert. Die nahe gelegenen Terme di Bagno Vignoni mit dem historischen Naturbad bieten Entspannung für müde Pilgerfüße.",
+      "accommodations": [
+        {
+          "name": "Ostello del Pellegrino San Quirico",
+          "type": "hostel",
+          "description": "Pilgerherberge in San Quirico d'Orcia im Herzen des Val d'Orcia.",
+          "addressStreet": null,
+          "addressZip": "53027",
+          "addressCity": "San Quirico d'Orcia",
+          "addressCountry": "italy",
+          "phone": "+390577897211",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Palazzo del Capitano",
+          "type": "hotel",
+          "description": "Historisches Palasthotel in San Quirico d'Orcia mit toskanischer Atmosphäre.",
+          "addressStreet": "Via Poliziano 18",
+          "addressZip": "53027",
+          "addressCity": "San Quirico d'Orcia",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "comfortable",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 61,
+      "name": "Radicofani",
+      "country": "italy",
+      "slug": "radicofani",
+      "description": "Radicofani ist ein Hügeldorf auf einem Basaltfelsen (896 m) mit einer mächtigen Festung, die weithin sichtbar ist. Es ist der höchste Punkt der toskanischen Via Francigena. Die Festung war im Mittelalter Räuberhochburg und wird mit Ghino di Tacco assoziiert, dem berühmten Straßenräuber aus Boccaccios Decameron.",
+      "accommodations": [
+        {
+          "name": "Ostello di Radicofani",
+          "type": "hostel",
+          "description": "Pilgerherberge in der Festungsanlage von Radicofani.",
+          "addressStreet": null,
+          "addressZip": "53040",
+          "addressCity": "Radicofani",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "La Locanda di Radicofani",
+          "type": "hotel",
+          "description": "Kleines Hotel im historischen Dorf Radicofani mit Panoramablick.",
+          "addressStreet": null,
+          "addressZip": "53040",
+          "addressCity": "Radicofani",
+          "addressCountry": "italy",
+          "phone": "+390578055795",
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 62,
+      "name": "Acquapendente",
+      "country": "italy",
+      "slug": "acquapendente",
+      "description": "Acquapendente ist das Tor zu Lazio und hat seinen Namen von einem Wasserfall ('acqua pendente'). Die Basilica del Santo Sepolcro (12. Jh.) enthielt im Mittelalter Reliquien des Heiligen Grabes aus Jerusalem, die sie zu einem bedeutenden Wallfahrtsziel machten. Die Stadt liegt auf einem Vulkanplateau (Tuff) der etruskischen Civita.",
+      "accommodations": [
+        {
+          "name": "Ostello del Pellegrino Acquapendente",
+          "type": "hostel",
+          "description": "Pilgerherberge in Acquapendente am Eingang zu Lazio.",
+          "addressStreet": null,
+          "addressZip": "01021",
+          "addressCity": "Acquapendente",
+          "addressCountry": "italy",
+          "phone": "+390763730000",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Albergo Toscana Acquapendente",
+          "type": "hotel",
+          "description": "Einfaches Hotel in Acquapendente.",
+          "addressStreet": null,
+          "addressZip": "01021",
+          "addressCity": "Acquapendente",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 63,
+      "name": "Bolsena",
+      "country": "italy",
+      "slug": "bolsena",
+      "description": "Bolsena liegt am größten vulkanischen See Europas (Lago di Bolsena). In der Basilica di Santa Cristina ereignete sich 1263 das 'Wunder von Bolsena': Die Hostienwunder-Legende gab Anlass zur Stiftung des Fronleichnamsfestes durch Papst Urban IV. und inspirierte Raffael zu seinem berühmten Fresko in den Vatikanischen Museen.",
+      "accommodations": [
+        {
+          "name": "Ostello del Pellegrino Bolsena",
+          "type": "hostel",
+          "description": "Pilgerherberge am Lago di Bolsena, günstig und mit herrlicher Seelage.",
+          "addressStreet": null,
+          "addressZip": "01023",
+          "addressCity": "Bolsena",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hotel Lido Bolsena",
+          "type": "hotel",
+          "description": "Hotel direkt am Ufer des Lago di Bolsena.",
+          "addressStreet": null,
+          "addressZip": "01023",
+          "addressCity": "Bolsena",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 64,
+      "name": "Montefiascone",
+      "country": "italy",
+      "slug": "montefiascone",
+      "description": "Montefiascone liegt auf einem Vulkanhügel über dem Lago di Bolsena und ist bekannt für den Weißwein 'Est! Est!! Est!!!', dessen Name laut Legende auf einen deutschen Bischof zurückgeht, der hier auf dem Weg nach Rom ein außergewöhnlich gutes Weinlokal fand. Der Dom Santa Margherita mit seiner großen Kuppel ist weithin sichtbar.",
+      "accommodations": [
+        {
+          "name": "Ostello Est Est Est",
+          "type": "hostel",
+          "description": "Pilgerherberge in Montefiascone, benannt nach dem berühmten Wein der Stadt.",
+          "addressStreet": null,
+          "addressZip": "01027",
+          "addressCity": "Montefiascone",
+          "addressCountry": "italy",
+          "phone": "+390761826026",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hotel Urbano V",
+          "type": "hotel",
+          "description": "Traditionshotel in Montefiascone mit Blick auf den See.",
+          "addressStreet": null,
+          "addressZip": "01027",
+          "addressCity": "Montefiascone",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "position": 65,
+      "name": "Viterbo",
+      "country": "italy",
+      "slug": "viterbo",
+      "description": "Viterbo ist eine der besterhaltenen mittelalterlichen Städte Italiens mit vollständig erhaltener Stadtmauer. Das Quartier San Pellegrino ist ein eindrucksvolles Ensemble mittelalterlicher Gassen und Türme. Viterbo war im 13. Jahrhundert päpstliche Residenzstadt und bietet eine der besten Pilgerinfrastrukturen auf der gesamten Via Francigena.",
+      "accommodations": [
+        {
+          "name": "Casa Francigena",
+          "type": "hostel",
+          "description": "Bekanntes Pilgerhostel in Viterbo, eines der besten auf der gesamten Via Francigena. Günstige Unterkunft im historischen Stadtzentrum. Voranmeldung empfohlen.",
+          "addressStreet": "Via della Cava 7",
+          "addressZip": "01100",
+          "addressCity": "Viterbo",
+          "addressCountry": "italy",
+          "phone": "+390761304406",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hotel Mini Palace",
+          "type": "hotel",
+          "description": "Komfortables Hotel im Zentrum von Viterbo nahe dem Palazzo dei Papi.",
+          "addressStreet": "Via Santa Maria della Grotticella 2",
+          "addressZip": "01100",
+          "addressCity": "Viterbo",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "comfortable",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "name": "Vetralla",
+      "country": "italy",
+      "slug": "vetralla",
+      "description": "Vetralla ist ein mittelalterliches Städtchen auf einem Tuffhügel in der Provinz Viterbo, das Sigeric als 'Furcari' in seinem Reisebericht von 990 n. Chr. verzeichnete. Der Ort liegt auf dem Weg durch die etruskische Tuff-Landschaft des nördlichen Latiums zwischen Viterbo und Sutri.",
+      "accommodations": [],
+      "position": 66
+    },
+    {
+      "position": 67,
+      "name": "Sutri",
+      "country": "italy",
+      "slug": "sutri",
+      "description": "Sutri ist eine uralte etruskische und römische Stadt auf einem Tuffhügel, ca. 50 km nördlich von Rom. Das in den Tuffstein gehauene Amphitheater aus dem 1. Jahrhundert und die frühmittelalterliche Kirche della Madonna del Parto in einer antiken Grabkammer sind außergewöhnliche Sehenswürdigkeiten. Sutri ist der vorletzte Etappenort vor Rom.",
+      "accommodations": [
+        {
+          "name": "Casa del Pellegrino Sutri",
+          "type": "hostel",
+          "description": "Pilgerhaus in Sutri nahe dem antiken Amphitheater.",
+          "addressStreet": null,
+          "addressZip": "01015",
+          "addressCity": "Sutri",
+          "addressCountry": "italy",
+          "phone": "+390761600021",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "B&B Sutri Storica",
+          "type": "b_and_b",
+          "description": "Gemütliches B&B in der Altstadt von Sutri.",
+          "addressStreet": null,
+          "addressZip": "01015",
+          "addressCity": "Sutri",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ]
+    },
+    {
+      "name": "Campagnano di Roma",
+      "country": "italy",
+      "slug": "campagnano-di-roma",
+      "description": "Campagnano di Roma ist ein Hügeldorf auf dem Weg von Sutri nach Rom, das Sigeric als 'Bacane' beschrieb. Der Ort ist der letzte bedeutende Halt vor der Ewigen Stadt auf der Via Francigena. Bei guter Sicht können Pilger von hier die Kuppel des Petersdoms am Horizont erkennen.",
+      "accommodations": [],
+      "position": 68
+    },
+    {
+      "position": 69,
+      "name": "Rome",
+      "country": "italy",
+      "slug": "rome",
+      "description": "Rom ist das Ziel der Via Francigena. Der Pilger endet traditionell am Petersplatz und in der Petersbasilika im Vatikan, wo die sterblichen Überreste des Apostels Petrus ruhen. Das Testimonium (Abschluss-Zertifikat der Via Francigena) wird von der Opera Romana Pellegrinaggi an der Via della Conciliazione 34 ausgestellt, nach Vorlage der gestempelten Credenziale. Pilger besuchen auch die Basilika San Giovanni in Laterano und San Paolo fuori le Mura.",
+      "accommodations": [
+        {
+          "name": "Fraterna Domus",
+          "type": "hostel",
+          "description": "Günstigstes Pilgergästehaus in der Nähe des Vatikans, betrieben von einer religiösen Gemeinschaft. Traditioneller Anlaufpunkt für Via-Francigena-Pilger am Ziel in Rom.",
+          "addressStreet": "Via Monte Brianzo 62",
+          "addressZip": "00186",
+          "addressCity": "Roma",
+          "addressCountry": "italy",
+          "phone": "+390668802727",
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "Casa per Ferie Don Orione",
+          "type": "monastery",
+          "description": "Gästehaus der Don-Orione-Congregation nahe dem Vatikan, günstig für Pilger am Ende der Via Francigena.",
+          "addressStreet": null,
+          "addressZip": "00165",
+          "addressCity": "Roma",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        },
+        {
+          "name": "Ostello Fatebenefratelli Roma",
+          "type": "hostel",
+          "description": "Hostel nahe dem Vatikan, günstige Unterkunft für Pilger am Ende der Via Francigena.",
+          "addressStreet": null,
+          "addressZip": "00193",
+          "addressCity": "Roma",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Hotel Prati Roma",
+          "type": "hotel",
+          "description": "Hotel im Viertel Prati nahe dem Vatikan und der Engelsburg.",
+          "addressStreet": null,
+          "addressZip": "00193",
+          "addressCity": "Roma",
+          "addressCountry": "italy",
+          "phone": null,
+          "website": null,
+          "email": null,
+          "priceRange": "comfortable",
+          "verified": false
+        }
+      ]
+    }
+  ],
+  "stages": [
+    {
+      "from": "Canterbury",
+      "to": "Dover",
+      "distance": 28,
+      "description": "Die erste Etappe der Via Francigena führt von der Canterbury Cathedral westwärts durch die Weiler Barham und Shepherdswell. Der Weg überquert die North Downs und bietet erste Ausblicke auf die englische Landschaft. In Dover ragen die berühmten weißen Kreidefelsen über dem Kanal auf."
+    },
+    {
+      "from": "Dover",
+      "to": "Calais",
+      "distance": 56,
+      "description": "Der Ärmelkanal wird per Fähre (ca. 90 Min.) oder Eurostar-Tunnel überquert. Die Fähre verbindet das anglikanische Canterbury mit dem kontinentalen Frankreich und symbolisiert den Beginn der langen Pilgerwanderung durch Europa. Die Überfahrt bietet auf klaren Tagen Ausblicke auf beide Küsten."
+    },
+    {
+      "from": "Calais",
+      "to": "Guînes",
+      "distance": 15,
+      "description": "Die erste Teiletappe nach Calais führt durch die flache Bocage-Landschaft des Pas-de-Calais nach Guînes. Im Jahr 1520 fand hier das legendäre 'Camp du Drap d'Or' statt – das historische Treffen zwischen den Königen Heinrichs VIII. und Franz I. Der Weg führt durch ruhige Acker- und Wiesenflächen südlich von Calais."
+    },
+    {
+      "from": "Guînes",
+      "to": "Saint-Omer",
+      "distance": 30,
+      "description": "Von Guînes führt der Weg durch die typische nordfranzösische Bocage-Landschaft des Pas-de-Calais nach Saint-Omer. Der Weg überquert die Hügel des Artois und passiert Thérouanne, ein ehemaliges bedeutendes Bistum. Saint-Omer mit seinem gotischen Dom ist das Ziel dieser Teiletappe."
+    },
+    {
+      "from": "Saint-Omer",
+      "to": "Béthune",
+      "distance": 30,
+      "description": "Von Saint-Omer führt der Weg durch die Marschlandschaft der Flandres mit ihrem Netz von Wasserkanälen (Canal de Neuffossé) nach Béthune. Die Landschaft ist geprägt von der bergbaulichen Geschichte der Region. Béthune empfängt Pilger mit seinem historischen Beffroi (Glockenturm) am alten Marktplatz."
+    },
+    {
+      "from": "Béthune",
+      "to": "Arras",
+      "distance": 24,
+      "description": "Die letzte Teiletappe von Béthune nach Arras führt durch die Schlachtfelder des Ersten Weltkriegs der Artois. Die Erinnerung an die Kriegsgeschichte ist in dieser Landschaft allgegenwärtig. Arras mit seinen beeindruckenden flämisch-barocken Plätzen ist das Ziel."
+    },
+    {
+      "from": "Arras",
+      "to": "Péronne",
+      "distance": 30,
+      "description": "Von Arras führt der Weg südwärts durch die Picardie zum Fluss Somme. Die Landschaft ist geprägt von weiten Feldern und der Erinnerung an die Schlachten des Ersten Weltkriegs. Péronne ist eine Festungsstadt an der Somme mit dem bedeutenden Historial de la Grande Guerre."
+    },
+    {
+      "from": "Péronne",
+      "to": "Saint-Quentin",
+      "distance": 30,
+      "description": "Von Péronne führt der Weg dem Canal Saint-Quentin entlang nach Süden. Die flache Picardie-Landschaft mit ihren Kanälen und Teichen ist typisch für diesen Abschnitt. Saint-Quentin am Kanal ist eine bedeutende Stadt mit gotischer Basilika aus dem Mittelalter."
+    },
+    {
+      "from": "Saint-Quentin",
+      "to": "Laon",
+      "distance": 28,
+      "description": "Die letzte Teiletappe führt aus der Picardie-Ebene aufwärts nach Laon. Der Weg steigt schließlich auf den markanten Hügelrücken von Laon hinauf. Die gotische Notre-Dame de Laon ist von weitem sichtbar und kündigt das Ziel dieser Etappe an."
+    },
+    {
+      "from": "Laon",
+      "to": "Corbeny",
+      "distance": 22,
+      "description": "Von Laon führt der Weg südwärts durch die Champagne-Ebene nach Corbeny. Das Dorf Corbeny war im Mittelalter ein bedeutender Pilgerort mit dem Grab des heiligen Marcoul. Sigeric erwähnte 'Corbunei' ausdrücklich in seinem Reisebericht von 990 n. Chr."
+    },
+    {
+      "from": "Corbeny",
+      "to": "Reims",
+      "distance": 25,
+      "description": "Von Corbeny führt die Via Francigena durch die Champagner Ebene in die Kathedralenstadt Reims. Der Weg überquert die sanften Hügel der Champagne. In Reims empfängt die gotische Notre-Dame – Krönungskirche der französischen Könige – die Pilger."
+    },
+    {
+      "from": "Reims",
+      "to": "Épernay",
+      "distance": 26,
+      "description": "Von Reims führt die Via Francigena durch die berühmten Champagner-Weinberge südwärts nach Épernay. Der Weg bietet Ausblicke auf die Rebhänge der Montagne de Reims. Épernay, die Champagnerhauptstadt, ist das Ziel dieser Teiletappe."
+    },
+    {
+      "from": "Épernay",
+      "to": "Châlons-en-Champagne",
+      "distance": 20,
+      "description": "Von Épernay führt der Weg ost-südöstlich der Marne entlang nach Châlons-en-Champagne. Die flache Champagner Ebene mit Getreidefeldern und vereinzelten Wäldchen prägt die Landschaft. Châlons war bereits bei Sigeric als 'Chateluns' eine wichtige Etappenstation."
+    },
+    {
+      "from": "Châlons-en-Champagne",
+      "to": "Vitry-le-François",
+      "distance": 32,
+      "description": "Von Châlons führt der Weg durch die weite Champagner Ebene nach Vitry-le-François. Die Landschaft ist offen und weit, geprägt von Getreidefeldern und vereinzelten Waldstreifen. Vitry-le-François, die Renaissanceplanstadt an der Marne, ist das Ziel dieser Teiletappe."
+    },
+    {
+      "from": "Vitry-le-François",
+      "to": "Brienne-le-Château",
+      "distance": 28,
+      "description": "Von Vitry-le-François führt der Weg südostwärts nach Brienne-le-Château. Die Champagner Landschaft wechselt von offener Ebene zu Wäldchen und Flussniederungen. Brienne ist bekannt als Schulort Napoléons und liegt am Fluss Aube."
+    },
+    {
+      "from": "Brienne-le-Château",
+      "to": "Bar-sur-Aube",
+      "distance": 28,
+      "description": "Von Brienne führt der Weg dem Aube-Tal entlang nach Bar-sur-Aube. Die Landschaft der Champagner Wälder und Flussauen bietet angenehme Wanderbedingungen. Bar-sur-Aube mit seiner Kirche Saint-Pierre und dem Holzgalerie-Portikus war ein wichtiger mittelalterlicher Champagnemesseort."
+    },
+    {
+      "from": "Bar-sur-Aube",
+      "to": "Chaumont",
+      "distance": 30,
+      "description": "Von Bar-sur-Aube führt der Weg aufwärts auf das Hochplateau der Haute-Marne nach Chaumont. Der Aufstieg durch dichte Wälder bietet weite Panoramen über die burgundische Landschaft. Chaumont mit seiner gotischen Basilika und dem neugotischen Viadukt ist das Ziel."
+    },
+    {
+      "from": "Chaumont",
+      "to": "Langres",
+      "distance": 24,
+      "description": "Von Chaumont führt der Weg weiter südwärts auf dem Hochplateau der Haute-Marne nach Langres. Die Landschaft ist geprägt von Wäldern und weiten Feldern. Langres auf seinem markanten Felssporn ist bereits von weitem an seinen Stadtmauern aus dem 2.–3. Jahrhundert erkennbar."
+    },
+    {
+      "from": "Langres",
+      "to": "Champlitte",
+      "distance": 25,
+      "description": "Von Langres führt die Route südwärts durch die Wälder und Hochflächen der Haute-Marne. Der Weg überquert das Plateau und bietet weite Ausblicke. Champlitte in der Haute-Saône mit seinem Schloss und Volkskunstmuseum ist das Ziel dieser ersten Teiletappe."
+    },
+    {
+      "from": "Champlitte",
+      "to": "Gray",
+      "distance": 27,
+      "description": "Von Champlitte führt der Weg ostwärts durch die sanfte Hügellandschaft der Haute-Saône nach Gray am Fluss Saône, vorbei an Seveux. Die Franche-Comté Landschaft wechselt von Ackerflächen zu Weinbergen. Gray mit seinem Renaissancebau des Hôtel de Ville ist der Halt dieser Teiletappe."
+    },
+    {
+      "from": "Gray",
+      "to": "Besançon",
+      "distance": 24,
+      "description": "Von Gray führt der Weg durch Cussey-sur-l'Ognon nach Besançon. Die Franche-Comté Landschaft wird hügeliger. Am Ende liegt Besançon eindrucksvoll in einer Flussschleife des Doubs – die Stadt mit ihrer Zitadelle Vauban (UNESCO-Welterbe) empfängt die Pilger."
+    },
+    {
+      "from": "Besançon",
+      "to": "Ornans",
+      "distance": 24,
+      "description": "Von Besançon führt der Weg dem Loue-Tal aufwärts nach Ornans. Die Schlucht der Loue mit ihren türkisblauen Wassern und Felswänden ist eine der schönsten Naturlandschaften der Franche-Comté. Ornans, Geburtsort des Malers Gustave Courbet, ist das malerische Ziel."
+    },
+    {
+      "from": "Ornans",
+      "to": "Pontarlier",
+      "distance": 25,
+      "description": "Von Ornans steigt der Weg weiter durch das Jura-Gebirge auf. Die Landschaft wird zunehmend bergiger und waldreicher. Pontarlier liegt bereits in Sichtweite der Schweizer Alpen und war einst das Zentrum der Absinthherstellung."
+    },
+    {
+      "from": "Pontarlier",
+      "to": "Vallorbe",
+      "distance": 17,
+      "description": "Die letzte Etappe auf französischem Boden führt über den Jougne-Pass nach Vallorbe in der Schweiz. Der Grenzübergang markiert einen wichtigen Wendepunkt der Pilgerreise. Das erste Schweizer Dorf Vallorbe liegt am Fluss Orbe."
+    },
+    {
+      "from": "Vallorbe",
+      "to": "Cossonay",
+      "distance": 20,
+      "description": "Von Vallorbe führt der Weg durch das Mittelland des Kantons Waadt aufwärts nach Cossonay. Die Landschaft des Waadtländer Mittellandes mit Feldern und Wäldern ist typisch für diesen Abschnitt. Cossonay auf seinem Hügelrücken bietet erste Ausblicke auf den Genfer See."
+    },
+    {
+      "from": "Cossonay",
+      "to": "Lausanne",
+      "distance": 15,
+      "description": "Von Cossonay führt der Weg hinunter nach Lausanne am Genfer See. Die erste Sicht auf den Lac Léman und die Savoyer Alpen ist ein unvergesslicher Moment der Pilgerreise. Lausanne mit seiner gotischen Kathedrale Notre-Dame ist das Ziel."
+    },
+    {
+      "from": "Lausanne",
+      "to": "Vevey",
+      "distance": 20,
+      "description": "Kurze, wunderschöne Etappe entlang der Promenade des Genfersees durch das Weinanbaugebiet Lavaux (UNESCO-Welterbe). Die Route führt durch malerische Winzerdörfer mit Terrassenweinbergen. Vevey war bei Sigeric als 'Vivaec' bekannt."
+    },
+    {
+      "from": "Vevey",
+      "to": "Aigle",
+      "distance": 22,
+      "description": "Von Vevey führt der Weg dem südlichen Genfersee-Ufer entlang durch das UNESCO-Welterbe der Lavaux-Weinberge nach Aigle. Der Weg passiert malerische Winzerdörfer mit Terrassenweinbergen. Aigle am Eingang des Rhônetals mit seinem Château ist das Ziel."
+    },
+    {
+      "from": "Aigle",
+      "to": "Saint-Maurice",
+      "distance": 16,
+      "description": "Von Aigle führt der Weg südwärts ins enger werdende Rhônetal nach Saint-Maurice. Die imposanten Felswände des Rhônetals türmen sich auf. Saint-Maurice (Sigeric: 'Sce Maurici') mit seiner über 1.500 Jahre alten Pilgerabtei ist das Ziel."
+    },
+    {
+      "from": "Saint-Maurice",
+      "to": "Orsières",
+      "distance": 28,
+      "description": "Das Rhônetal verengt sich immer mehr, und der Weg führt steil aufwärts ins Val d'Entremont. Orsières (Sigeric: 'Ursiores') liegt auf 900 m Höhe und ist ein wichtiges Alpendorf auf dem Weg zum Großen Sankt Bernhard."
+    },
+    {
+      "from": "Orsières",
+      "to": "Bourg-Saint-Pierre",
+      "distance": 24,
+      "description": "Der Aufstieg wird steiler, die Landschaft alpiner. Bourg-Saint-Pierre (Sigeric: 'Petrecastel', 1.632 m) ist das letzte bewohnte Dorf vor dem Großen Sankt Bernhard-Pass. Die Straße ist seit der Römerzeit eine der wichtigsten Alpenübergänge."
+    },
+    {
+      "from": "Bourg-Saint-Pierre",
+      "to": "Etroubles",
+      "distance": 24,
+      "description": "Die dramatischste Etappe führt über den Großen Sankt Bernhard (2.473 m), den höchsten Punkt der gesamten Via Francigena. Das legendäre Hospiz auf dem Pass – seit fast 1.000 Jahren Pilgerherberge – empfängt die Wanderer. Der Abstieg durch die wilde alpine Landschaft führt nach Etroubles auf der italienischen Seite."
+    },
+    {
+      "from": "Etroubles",
+      "to": "Aosta",
+      "distance": 12,
+      "description": "Von Etroubles führt der Weg durch das obere Aostatal hinunter in die Römerstadt Aosta. Die weite Öffnung des Aostatals nach dem engen Bergpass ist beeindruckend. Aosta mit seinen antiken Stadtmauern, dem Triumphbogen des Augustus und dem Amphitheater empfängt die Pilger."
+    },
+    {
+      "from": "Aosta",
+      "to": "Châtillon",
+      "distance": 20,
+      "description": "Von Aosta führt der Weg das Aostatal ostwärts entlang der Dora Baltea. Die Landschaft wechselt von der breiten Talaue zu engeren Passagen mit Burgen und Weinbergen. Châtillon ist eine wichtige Stadt im mittleren Aostatal."
+    },
+    {
+      "from": "Châtillon",
+      "to": "Pont-Saint-Martin",
+      "distance": 25,
+      "description": "Das Aostatal verengt sich zunehmend. Der Weg führt durch mehrere mittelalterliche Dörfer mit Burgen der Savoyarden. Pont-Saint-Martin mit seiner römischen Bogenbrücke aus dem 1. Jahrhundert v. Chr. – von Sigeric als 'Publei' beschrieben – markiert den Austritt aus dem Aostatal."
+    },
+    {
+      "from": "Pont-Saint-Martin",
+      "to": "Ivrea",
+      "distance": 25,
+      "description": "Von Pont-Saint-Martin führt der Weg aus den Alpen hinab ins Hügelland des Canavese und weiter in die Po-Ebene nach Ivrea. Die Landschaft wechselt von alpinem Charakter zu sanften piemontesischen Hügeln. Ivrea (Sigeric: 'Everi') mit seinem Savoyardenschloss empfängt die Pilger."
+    },
+    {
+      "from": "Ivrea",
+      "to": "Santhià",
+      "distance": 32,
+      "description": "Von Ivrea führt die Via Francigena in die flache Po-Ebene. Der Weg durch das Canavese und dann durch die Reisfelder der Provinz Vercelli ist meditativ und weit. Santhià (Sigeric: 'Sca Agatha') ist der Etappenort auf halbem Weg nach Vercelli."
+    },
+    {
+      "from": "Santhià",
+      "to": "Vercelli",
+      "distance": 30,
+      "description": "Von Santhià führt der Weg weiter durch die großen Reisfelder der Lombardei nach Vercelli. Die endlose Ebene mit Reisfeldern und Kanälen ist prägend für diesen Abschnitt. Vercelli mit der frühgotischen Basilika Sant'Andrea (1219–1227), der ersten gotischen Kirche Italiens, ist das Ziel."
+    },
+    {
+      "from": "Vercelli",
+      "to": "Tromello",
+      "distance": 28,
+      "description": "Von Vercelli führt die Route durch die flache Lomellina – das Reisanbaugebiet der Provinz Pavia. Der Weg passiert zahlreiche Kanäle und Reisfelder. Tromello (Sigeric: 'Tremel') liegt auf halbem Weg nach Pavia."
+    },
+    {
+      "from": "Tromello",
+      "to": "Pavia",
+      "distance": 19,
+      "description": "Von Tromello führt der Weg südostwärts durch die Lomellina nach Pavia. Der Ticino wird in Pavia auf dem historischen Ponte Coperto – der überdachten Brücke – überquert. Pavia, einst Hauptstadt des Lombardischen Königreichs, empfängt die Pilger."
+    },
+    {
+      "from": "Pavia",
+      "to": "Corte San Andrea",
+      "distance": 30,
+      "description": "Von Pavia führt die Via Francigena durch die flache Po-Ebene in Richtung Po-Fluss. Der Weg passiert Santa Cristina e Bissone (Sigeric: 'Sce Cristine') in der Lomellina. Corte San Andrea (Sigeric: 'Sce Andrea') am Südufer des Po ist der historische Überquerungspunkt des größten Flusses Italiens."
+    },
+    {
+      "from": "Corte San Andrea",
+      "to": "Piacenza",
+      "distance": 30,
+      "description": "Von Corte San Andrea überquert der Weg den Po und tritt in die Emilia-Romagna ein. Der Fluss ist hier breit und majestätisch. Piacenza am Südufer des Po empfängt die Pilger mit der beeindruckenden Piazza dei Cavalli."
+    },
+    {
+      "from": "Piacenza",
+      "to": "Fiorenzuola d'Arda",
+      "distance": 27,
+      "description": "Von Piacenza führt die Via Francigena entlang der Via Emilia – der antiken Römerstraße – nach Südosten. Der Weg durch die fruchtbare Emilia-Romagna ist geprägt von Weinbergen und Obstgärten. Fiorenzuola d'Arda (Sigeric: 'Floricum') liegt auf halbem Weg nach Fidenza."
+    },
+    {
+      "from": "Fiorenzuola d'Arda",
+      "to": "Fidenza",
+      "distance": 27,
+      "description": "Von Fiorenzuola d'Arda führt der Weg weiter der Via Emilia entlang nach Fidenza. Die Emilia-Romagna-Landschaft mit Parmaschinken-Betrieben und Weinbergen ist charakteristisch für diesen Abschnitt. Fidenza mit dem Dom San Donnino – dem Schutzpatron der Via-Francigena-Pilger – ist das Ziel."
+    },
+    {
+      "from": "Fidenza",
+      "to": "Fornovo di Taro",
+      "distance": 28,
+      "description": "Die letzte Etappe durch die Emilia-Romagna-Ebene führt über Medesano (Sigeric: 'Metane') nach Fornovo di Taro, wo die Apenninen beginnen. Der Wechsel von der flachen Poebene zur Berglandschaft des Apennin ist deutlich spürbar."
+    },
+    {
+      "from": "Fornovo di Taro",
+      "to": "Berceto",
+      "distance": 24,
+      "description": "Der Aufstieg durch den Apennin beginnt. Der Weg folgt dem Taro-Tal aufwärts durch dichte Kastanienwälder. Berceto (Sigeric: 'Sce Benedicte', 800 m) ist der erste Ort hoch im Apennin, bekannt für seine romanische Kathedrale."
+    },
+    {
+      "from": "Berceto",
+      "to": "Pontremoli",
+      "distance": 30,
+      "description": "Die Route überquert den Passo della Cisa (1.039 m), den Hauptpass über den Nordapennin. Von hier führt der Weg steil hinab in die Lunigiana, vorbei an Montelungo (Sigeric: 'Sce Benedicte') nach Pontremoli. Der Übergang markiert den Eintritt in die Toskana-Ligurien-Region."
+    },
+    {
+      "from": "Pontremoli",
+      "to": "Aulla",
+      "distance": 24,
+      "description": "Das Magra-Tal öffnet sich für den Weg nach Aulla. Die Lunigiana ist geprägt von mittelalterlichen Burgen (Malaspina) und einem dichten Netz von Jakobswegen und Handelswegen. Aulla (Sigeric: 'Aguilla') war ein wichtiger Kreuzungspunkt mittelalterlicher Routen."
+    },
+    {
+      "from": "Aulla",
+      "to": "Sarzana",
+      "distance": 25,
+      "description": "Das Magra-Tal führt zur Küste und nach Sarzana. Die Route passiert die ligurischen Vorhügel. Sarzana ist die historische Festungsstadt, die als Schutzwall des ligurischen Territoriums diente."
+    },
+    {
+      "from": "Sarzana",
+      "to": "Massa",
+      "distance": 25,
+      "description": "Von Sarzana führt die Via Francigena durch Luni (antike Römerstadt) und die Versilia-Küstenebene nach Massa. Der Weg bietet Ausblicke auf die weißen Gipfel der Apuanischen Alpen. Massa mit dem Palazzo Cybo-Malaspina liegt am Fuß dieser beeindruckenden Berggruppe."
+    },
+    {
+      "from": "Massa",
+      "to": "Lucca",
+      "distance": 30,
+      "description": "Von Massa führt die Route durch Camaiore und die Hügel des Versilia hinauf und dann hinunter nach Lucca. Der Weg vereint Küstenlandschaft, Apuanische Alpen und toskanische Hügel. Lucca mit seiner perfekt erhaltenen Renaissance-Stadtmauer und dem Volto Santo empfängt die Pilger."
+    },
+    {
+      "from": "Lucca",
+      "to": "Fucecchio",
+      "distance": 32,
+      "description": "Von Lucca führt der Weg durch Altopascio (Sigeric: 'Forcri'), wo einst ein Ritterorden für Pilgerfürsorge bekannt war, und weiter durch die toskanische Hügellandschaft ins Valdarno. Fucecchio auf einem Hügel über dem Arno ist das Ziel dieser Teiletappe."
+    },
+    {
+      "from": "Fucecchio",
+      "to": "San Miniato",
+      "distance": 15,
+      "description": "Von Fucecchio führt der Weg aufwärts zum Hügeldorf San Miniato mit dem Turm Kaiser Friedrichs II. Die toskanische Kulturlandschaft aus Olivenhainen, Weinbergen und Zypressen ist auf diesem kurzen Abschnitt besonders schön. San Miniato ist bekannt für seinen weißen Trüffel ('tartufo bianco')."
+    },
+    {
+      "from": "San Miniato",
+      "to": "Gambassi Terme",
+      "distance": 28,
+      "description": "Der Weg führt vom Arnotal aufwärts in das Chianti-Hügelland. Castelfiorentino mit seiner mittelalterlichen Kirche ist ein wichtiger Zwischenhalt. Gambassi Terme liegt auf einem Hügelrücken mit weiten Ausblicken über die toskanische Landschaft."
+    },
+    {
+      "from": "Gambassi Terme",
+      "to": "San Gimignano",
+      "distance": 15,
+      "description": "Kurze, aber eindrucksvolle Etappe durch den Chianti zu den weltberühmten mittelalterlichen Türmen von San Gimignano. Die Silhouette von San Gimignano mit ihren 14 Geschlechtertürmen ist von weitem sichtbar und wurde im Mittelalter von Pilgergruppen schon von Ferne gejubelt."
+    },
+    {
+      "from": "San Gimignano",
+      "to": "Monteriggioni",
+      "distance": 27,
+      "description": "Der Weg führt durch das Elsa-Tal und die Crete Senesi – eine faszinierende Mondlandschaft aus kahlen Tuffhügeln und Weizenfeldern. Monteriggioni erscheint plötzlich auf einem Hügel, seine kreisrunden Mauern von Dante im Inferno verewigt."
+    },
+    {
+      "from": "Monteriggioni",
+      "to": "Siena",
+      "distance": 15,
+      "description": "Die letzte kurze Etappe führt von Monteriggioni durch das vorgelagerte Hügelland direkt nach Siena. Die romanisch-gotische Silhouette der Stadt mit dem Dom-Campanile und dem Torre del Mangia erscheint am Horizont. Pilger betreten Siena durch das historische Stadttor."
+    },
+    {
+      "from": "Siena",
+      "to": "Buonconvento",
+      "distance": 25,
+      "description": "Von Siena führt die Via Francigena durch die weltberühmten Crete Senesi – die einzigartige Mondlandschaft aus kahlen Tuffhügeln und Weizenfeldern. Der Weg passiert Monteroni d'Arbia (Sigeric: 'Arbia'). Buonconvento am Fluss Arbia mit seiner mittelalterlichen Stadtmauer ist das Ziel."
+    },
+    {
+      "from": "Buonconvento",
+      "to": "San Quirico d'Orcia",
+      "distance": 20,
+      "description": "Von Buonconvento führt die Etappe durch das Val d'Orcia (UNESCO-Welterbe) nach San Quirico. Der Weg passiert Torrenieri (Sigeric: 'Turreiner'). Die Landschaft aus sanften Hügeln, einsamen Bauernhöfen und Zypressenalleen ist ein Inbegriff der Toskana."
+    },
+    {
+      "from": "San Quirico d'Orcia",
+      "to": "Radicofani",
+      "distance": 27,
+      "description": "Der Weg führt durch das Val d'Orcia aufwärts zur Festung Radicofani. Die Kulisse des Val d'Orcia mit seinen runden Hügeln, Zypressen und dem fernen Vulkanmassiv des Monte Amiata ist atemberaubend. Radicofani ist der höchste Punkt des toskanischen Abschnitts."
+    },
+    {
+      "from": "Radicofani",
+      "to": "Acquapendente",
+      "distance": 29,
+      "description": "Steiler Abstieg vom Festungsberg Radicofani in das Paglia-Tal und weiter nach Acquapendente, dem ersten Ort in Lazio. Die Landschaft wechselt vom toskanischen Hügelland zur Vulkangeologie des Latium mit Tuff-Plateaus und wilden Schluchten."
+    },
+    {
+      "from": "Acquapendente",
+      "to": "Bolsena",
+      "distance": 27,
+      "description": "Der Weg führt durch San Pietro in Paglia (Sigeric: 'Sce Petir in Pail') und hinunter zum Lago di Bolsena, dem größten Vulkansee Europas. Die erste Sicht auf den See ist ein besonderer Moment der Pilgerreise."
+    },
+    {
+      "from": "Bolsena",
+      "to": "Montefiascone",
+      "distance": 15,
+      "description": "Kurze Etappe entlang des westlichen Seeufers des Lago di Bolsena hinauf nach Montefiascone. Die Route bietet herrliche Ausblicke auf den See und die umliegenden Vulkankrater. In Montefiascone erwartet Pilger seit dem Mittelalter der Est! Est!! Est!!!-Wein."
+    },
+    {
+      "from": "Montefiascone",
+      "to": "Viterbo",
+      "distance": 18,
+      "description": "Kurze Etappe vom Seehochplateau hinunter ins Viterbese. Viterbo empfängt Pilger mit der besterhaltenen mittelalterlichen Stadtmauer Italiens und dem einzigartigen Quartier San Pellegrino."
+    },
+    {
+      "from": "Viterbo",
+      "to": "Vetralla",
+      "distance": 20,
+      "description": "Von Viterbo führt der Weg durch den etruskischen Tuffstein-Landschaft nach Vetralla. Die Cimini-Wälder und tiefen Tuff-Schluchten des nördlichen Latiums prägen diesen Abschnitt. Vetralla (Sigeric: 'Furcari') auf einem Tuffhügel ist das Ziel der Teiletappe."
+    },
+    {
+      "from": "Vetralla",
+      "to": "Sutri",
+      "distance": 20,
+      "description": "Von Vetralla führt der Weg weiter durch die etruskische Landschaft des Latiums nach Sutri. Mittelalterliche Dörfer und weite Weidegründe säumen den Weg. Sutri – mit seinem in den Tuffstein gehauenen Amphitheater aus dem 1. Jahrhundert – ist der letzte bedeutende historische Halt vor Rom."
+    },
+    {
+      "from": "Sutri",
+      "to": "Campagnano di Roma",
+      "distance": 27,
+      "description": "Von Sutri führt der letzte große Abschnitt der Via Francigena durch Campagnano di Roma (Sigeric: 'Bacane'). Der Weg führt durch die römische Campagna. Bei guter Sicht kann der Pilger von Campagnano erstmals die Kuppel des Petersdoms am Horizont erkennen."
+    },
+    {
+      "from": "Campagnano di Roma",
+      "to": "Rome",
+      "distance": 27,
+      "description": "Die letzte Teiletappe führt durch La Storta (Sigeric: 'Johannis VIIII') in die Ewige Stadt. Auf den letzten Kilometern wird die Kuppel des Petersdoms immer größer. Das Ziel ist der Petersplatz im Vatikan – das Ende der langen Pilgerreise von Canterbury nach Rom."
+    }
+  ]
+}

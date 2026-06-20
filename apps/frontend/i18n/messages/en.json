@@ -97,8 +97,8 @@
     "filter_verified_label": "Show only verified caminos",
     "filter_no_verified": "No verified caminos found.",
     "teaser": {
-      "text": "Missing a route you've always wanted to walk? Send us an email!",
-      "text_2": "With AI support, we can quickly generate a new Camino.",
+      "text": "Missing a route you've always wanted to walk? With AI support, we can quickly generate a new Camino.",
+      "text_2": "Send us an email at",
       "link": "hello@pillyway.de",
       "aria_label": "Email us at hello@pillyway.de"
     }
@@ -268,6 +268,7 @@
   },
   "countries": {
     "denmark": "Denmark",
+    "england": "England",
     "france": "France",
     "germany": "Germany",
     "italy": "Italy",
@@ -275,10 +276,12 @@
     "poland": "Poland",
     "portugal": "Portugal",
     "spain": "Spain",
-    "sweden": "Sweden"
+    "sweden": "Sweden",
+    "switzerland": "Switzerland"
   },
   "country_codes": {
     "denmark": "DK",
+    "england": "GB",
     "france": "FR",
     "germany": "DE",
     "italy": "IT",
@@ -286,7 +289,8 @@
     "poland": "PL",
     "portugal": "PT",
     "spain": "ES",
-    "sweden": "SE"
+    "sweden": "SE",
+    "switzerland": "CH"
   },
   "auth_error": {
     "meta_title": "Login failed",
