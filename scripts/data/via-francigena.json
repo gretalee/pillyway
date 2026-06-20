@@ -3,8 +3,13 @@
     "route": "Via Francigena",
     "section": "Canterbury (England) → Rome (Italy)",
     "distance_km": 1695,
-    "stages": 40,
-    "countries": ["england", "france", "switzerland", "italy"],
+    "stages": 68,
+    "countries": [
+      "england",
+      "france",
+      "switzerland",
+      "italy"
+    ],
     "source": "viefrancigene.org, wikipedia.org/wiki/Via_Francigena, visittuscany.com"
   },
   "camino": {
@@ -140,7 +145,31 @@
       ]
     },
     {
-      "position": 4,
+      "name": "Guînes",
+      "country": "france",
+      "slug": "guines",
+      "description": "Guînes ist eine Kleinstadt südlich von Calais, bekannt als Schauplatz des 'Camp du Drap d'Or' von 1520, dem historischen Treffen zwischen König Heinrich VIII. von England und König Franz I. von Frankreich. Der Weg führt durch die flache Bocage-Landschaft des Pas-de-Calais.",
+      "accommodations": [],
+      "position": 4
+    },
+    {
+      "name": "Saint-Omer",
+      "country": "france",
+      "slug": "saint-omer",
+      "description": "Saint-Omer ist eine bedeutende mittelalterliche Bischofsstadt im Pas-de-Calais mit einem gotischen Dom aus dem 13.–14. Jahrhundert. Die Stadt war im Mittelalter ein wichtiger Stützpunkt auf dem Weg nach Süden. Das Jesuitenkolleg der Stadt ist historisch bedeutsam.",
+      "accommodations": [],
+      "position": 5
+    },
+    {
+      "name": "Béthune",
+      "country": "france",
+      "slug": "bethune",
+      "description": "Béthune ist eine nordfranzösische Stadt im Artois mit einem der ältesten Glockentürme (Beffroi) Frankreichs auf dem historischen Marktplatz. Die Stadt liegt in der typischen Industrielandschaft des Bergbaugürtels zwischen Saint-Omer und Arras.",
+      "accommodations": [],
+      "position": 6
+    },
+    {
+      "position": 7,
       "name": "Arras",
       "country": "france",
       "slug": "arras",
@@ -177,7 +206,23 @@
       ]
     },
     {
-      "position": 5,
+      "name": "Péronne",
+      "country": "france",
+      "slug": "peronne",
+      "description": "Péronne ist eine Festungsstadt an der Somme in der Picardie, die im Ersten Weltkrieg schwer zerstört wurde. Das Historial de la Grande Guerre ist eines der bedeutendsten Museen über den Ersten Weltkrieg. Die Zitadelle aus dem 13. Jahrhundert ist gut erhalten.",
+      "accommodations": [],
+      "position": 8
+    },
+    {
+      "name": "Saint-Quentin",
+      "country": "france",
+      "slug": "saint-quentin",
+      "description": "Saint-Quentin ist eine Pilger- und Handelsstadt in der Picardie mit einer gotischen Basilika, die dem frühchristlichen Märtyrer Quentin (3. Jh.) geweiht ist. Die Stadt liegt am Canal Saint-Quentin und war ein wichtiger Etappenort auf dem Weg zwischen Arras und Laon.",
+      "accommodations": [],
+      "position": 9
+    },
+    {
+      "position": 10,
       "name": "Laon",
       "country": "france",
       "slug": "laon",
@@ -214,7 +259,15 @@
       ]
     },
     {
-      "position": 6,
+      "name": "Corbeny",
+      "country": "france",
+      "slug": "corbeny",
+      "description": "Corbeny ist ein kleines Dorf in der Champagne-Ardenne, das Sigeric als 'Corbunei' in seinem Reisebericht von 990 n. Chr. erwähnte. Im Mittelalter war die Kirche mit dem Grab des heiligen Marcoul ein bedeutender Pilgerort. Das Dorf liegt auf dem direkten Weg zwischen Laon und Reims.",
+      "accommodations": [],
+      "position": 11
+    },
+    {
+      "position": 12,
       "name": "Reims",
       "country": "france",
       "slug": "reims",
@@ -251,7 +304,15 @@
       ]
     },
     {
-      "position": 7,
+      "name": "Épernay",
+      "country": "france",
+      "slug": "epernay",
+      "description": "Épernay ist die Champagnerhauptstadt der Welt, gelegen im Herzen der Champagne-Weinberge an der Marne. Die Avenue de Champagne beherbergt die berühmtesten Champagnerhäuser wie Moët & Chandon und Perrier-Jouët. Pilger rasten hier auf dem Weg zwischen Reims und Châlons-en-Champagne.",
+      "accommodations": [],
+      "position": 13
+    },
+    {
+      "position": 14,
       "name": "Châlons-en-Champagne",
       "country": "france",
       "slug": "chalons-en-champagne",
@@ -288,7 +349,23 @@
       ]
     },
     {
-      "position": 8,
+      "name": "Vitry-le-François",
+      "country": "france",
+      "slug": "vitry-le-francois",
+      "description": "Vitry-le-François ist eine Renaissanceplanstadt aus dem 16. Jahrhundert an der Marne in der Champagne. Die geometrisch angelegte Stadt wurde nach ihrer Zerstörung durch Kaiser Karl V. im Jahr 1544 als ideale Garnisonsstadt wiederaufgebaut. Sie liegt etwa auf halbem Weg zwischen Châlons und Bar-sur-Aube.",
+      "accommodations": [],
+      "position": 15
+    },
+    {
+      "name": "Brienne-le-Château",
+      "country": "france",
+      "slug": "brienne-le-chateau",
+      "description": "Brienne-le-Château ist eine Kleinstadt in der Champagne am Fluss Aube, berühmt als Bildungsort Napoléon Bonapartes, der hier 1779–1784 die Militärschule besuchte. Das Château de Brienne beherbergt heute ein Napoléon-Museum. Die Stadt liegt zwischen Vitry-le-François und Bar-sur-Aube.",
+      "accommodations": [],
+      "position": 16
+    },
+    {
+      "position": 17,
       "name": "Bar-sur-Aube",
       "country": "france",
       "slug": "bar-sur-aube",
@@ -325,7 +402,15 @@
       ]
     },
     {
-      "position": 9,
+      "name": "Chaumont",
+      "country": "france",
+      "slug": "chaumont",
+      "description": "Chaumont ist die Hauptstadt des Départements Haute-Marne auf einem Hochplateau zwischen Aube und Marne. Die gotische Basilika Saint-Jean-Baptiste und das neugotische Viadukt (19. Jh.) prägen das Stadtbild. Chaumont liegt auf dem Weg zwischen Bar-sur-Aube und Langres.",
+      "accommodations": [],
+      "position": 18
+    },
+    {
+      "position": 19,
       "name": "Langres",
       "country": "france",
       "slug": "langres",
@@ -362,7 +447,23 @@
       ]
     },
     {
-      "position": 10,
+      "name": "Champlitte",
+      "country": "france",
+      "slug": "champlitte",
+      "description": "Champlitte ist ein kleines Städtchen in der Haute-Saône auf dem Hochplateau der Bourgogne Franche-Comté. Das Château mit einem Museum für Volkskunst und Traditionen ist sehenswert. Der Ort liegt auf dem historischen Pilgerweg zwischen Langres und dem Saône-Tal.",
+      "accommodations": [],
+      "position": 20
+    },
+    {
+      "name": "Gray",
+      "country": "france",
+      "slug": "gray",
+      "description": "Gray ist eine mittelalterliche Stadt am Fluss Saône in der Franche-Comté mit einem prachtvollen Renaissancebau des Hôtel de Ville und der Basilika Notre-Dame. Die Stadt war einst ein wichtiger Hafen und Handelsplatz an der Saône. Von hier führt der Weg durch das hügelige Vorland nach Besançon.",
+      "accommodations": [],
+      "position": 21
+    },
+    {
+      "position": 22,
       "name": "Besançon",
       "country": "france",
       "slug": "besancon",
@@ -399,7 +500,15 @@
       ]
     },
     {
-      "position": 11,
+      "name": "Ornans",
+      "country": "france",
+      "slug": "ornans",
+      "description": "Ornans ist eine malerische Kleinstadt am Fluss Loue in der Franche-Comté, Geburtsstadt des Malers Gustave Courbet (1819–1877). Die Häuser der Altstadt spiegeln sich im klaren Wasser der Loue. Das Courbet-Museum in seinem Geburtshaus und die Schlucht der Loue sind beeindruckend.",
+      "accommodations": [],
+      "position": 23
+    },
+    {
+      "position": 24,
       "name": "Pontarlier",
       "country": "france",
       "slug": "pontarlier",
@@ -436,7 +545,23 @@
       ]
     },
     {
-      "position": 12,
+      "name": "Vallorbe",
+      "country": "switzerland",
+      "slug": "vallorbe",
+      "description": "Vallorbe ist das erste Schweizer Dorf nach dem Grenzübergang von Pontarlier und liegt im Kanton Waadt am Fluss Orbe. Die Grottes de Vallorbe (Tropfsteinhöhlen) und das Eisenbahnmuseum sind Sehenswürdigkeiten. Der Grenzübergang markiert den Eintritt in die Schweiz auf der Via Francigena.",
+      "accommodations": [],
+      "position": 25
+    },
+    {
+      "name": "Cossonay",
+      "country": "switzerland",
+      "slug": "cossonay",
+      "description": "Cossonay ist eine mittelalterliche Kleinstadt auf einem Hügelrücken im Kanton Waadt auf dem Weg von Vallorbe nach Lausanne. Das Château de Cossonay und die gotische Kirche Saint-Nicolas prägen die Oberstadt. Von hier bietet sich ein schöner Ausblick auf die Voralpenlandschaft und den Genfer See.",
+      "accommodations": [],
+      "position": 26
+    },
+    {
+      "position": 27,
       "name": "Lausanne",
       "country": "switzerland",
       "slug": "lausanne",
@@ -473,7 +598,7 @@
       ]
     },
     {
-      "position": 13,
+      "position": 28,
       "name": "Vevey",
       "country": "switzerland",
       "slug": "vevey",
@@ -510,7 +635,15 @@
       ]
     },
     {
-      "position": 14,
+      "name": "Aigle",
+      "country": "switzerland",
+      "slug": "aigle",
+      "description": "Aigle ist eine Stadt im Kanton Waadt am Eingang des Rhônetals, umgeben von Weinbergen. Der mittelalterliche Château d'Aigle beherbergt heute das Weinmuseum der Region. Sigeric bezeichnete Aigle als 'Burbulei' und es war ein wichtiger Etappenort auf dem Weg zum Großen Sankt Bernhard.",
+      "accommodations": [],
+      "position": 29
+    },
+    {
+      "position": 30,
       "name": "Saint-Maurice",
       "country": "switzerland",
       "slug": "saint-maurice",
@@ -547,7 +680,7 @@
       ]
     },
     {
-      "position": 15,
+      "position": 31,
       "name": "Orsières",
       "country": "switzerland",
       "slug": "orsieres",
@@ -584,7 +717,7 @@
       ]
     },
     {
-      "position": 16,
+      "position": 32,
       "name": "Bourg-Saint-Pierre",
       "country": "switzerland",
       "slug": "bourg-saint-pierre",
@@ -621,7 +754,15 @@
       ]
     },
     {
-      "position": 17,
+      "name": "Etroubles",
+      "country": "italy",
+      "slug": "etroubles",
+      "description": "Etroubles ist ein alpines Dorf im Valle d'Aosta auf 1.270 m Höhe – das erste bewohnte Dorf auf der italienischen Seite des Großen Sankt Bernhard-Passes. Das Dorf wurde seit dem Mittelalter von Pilgern als erster Rastort nach dem anstrengenden Passübergang (2.473 m) genutzt.",
+      "accommodations": [],
+      "position": 33
+    },
+    {
+      "position": 34,
       "name": "Aosta",
       "country": "italy",
       "slug": "aosta",
@@ -672,7 +813,23 @@
       ]
     },
     {
-      "position": 18,
+      "name": "Châtillon",
+      "country": "italy",
+      "slug": "chatillon",
+      "description": "Châtillon ist eine Stadt im mittleren Aostatal auf halbem Weg zwischen Aosta und dem Canavese. Das mittelalterliche Schloss Ussel auf einem Felsvorsprung über dem Tal ist weithin sichtbar. Der Ort liegt im frankophonen Teil Italiens und war ein wichtiger Durchgangsort auf dem historischen Pilgerweg aus den Alpen.",
+      "accommodations": [],
+      "position": 35
+    },
+    {
+      "name": "Pont-Saint-Martin",
+      "country": "italy",
+      "slug": "pont-saint-martin",
+      "description": "Pont-Saint-Martin ist eine Kleinstadt am Unterlauf der Dora Baltea an der Grenze zwischen dem Aostatal und dem Canavese (Piemont). Die historische einbögige Römerbrücke aus dem 1. Jahrhundert v. Chr. ist das Wahrzeichen der Stadt. Sigeric nannte den Ort 'Publei' – ein bedeutender Wegpunkt.",
+      "accommodations": [],
+      "position": 36
+    },
+    {
+      "position": 37,
       "name": "Ivrea",
       "country": "italy",
       "slug": "ivrea",
@@ -709,7 +866,15 @@
       ]
     },
     {
-      "position": 19,
+      "name": "Santhià",
+      "country": "italy",
+      "slug": "santhia",
+      "description": "Santhià ist eine Kleinstadt in der Provinz Vercelli inmitten der piemontesischen Reisfelder. Sigeric beschrieb sie als 'Sca Agatha'. Der Ort war ein wichtiger Etappenort auf dem Weg durch die endlose Po-Ebene zwischen Ivrea und Vercelli, geprägt von Reisanbau und Kanälen.",
+      "accommodations": [],
+      "position": 38
+    },
+    {
+      "position": 39,
       "name": "Vercelli",
       "country": "italy",
       "slug": "vercelli",
@@ -746,7 +911,15 @@
       ]
     },
     {
-      "position": 20,
+      "name": "Tromello",
+      "country": "italy",
+      "slug": "tromello",
+      "description": "Tromello ist ein Dorf in der Lomellina – dem fruchtbaren Anbaugebiet zwischen Ticino und Po in der Provinz Pavia – das Sigeric als 'Tremel' beschrieb. Der Ort liegt auf dem historischen Pilgerweg durch die Po-Ebene zwischen Vercelli und Pavia, umgeben von Reisfeldern und Kanälen.",
+      "accommodations": [],
+      "position": 40
+    },
+    {
+      "position": 41,
       "name": "Pavia",
       "country": "italy",
       "slug": "pavia",
@@ -783,7 +956,15 @@
       ]
     },
     {
-      "position": 21,
+      "name": "Corte San Andrea",
+      "country": "italy",
+      "slug": "corte-san-andrea",
+      "description": "Corte San Andrea ist ein kleines Dorf am südlichen Ufer des Po, das Sigeric als 'Sce Andrea' beschrieb. Der Ort war seit dem Mittelalter der historische Überquerungspunkt des Po auf der Via Francigena zwischen der Lombardei und der Emilia-Romagna. Die Flusslandschaft des Po ist hier besonders eindrucksvoll.",
+      "accommodations": [],
+      "position": 42
+    },
+    {
+      "position": 43,
       "name": "Piacenza",
       "country": "italy",
       "slug": "piacenza",
@@ -820,7 +1001,15 @@
       ]
     },
     {
-      "position": 22,
+      "name": "Fiorenzuola d'Arda",
+      "country": "italy",
+      "slug": "fiorenzuola-darda",
+      "description": "Fiorenzuola d'Arda ist eine Kleinstadt in der Emilia-Romagna an der antiken Via Emilia, die Sigeric als 'Floricum' beschrieb. Der Ort liegt in der Padana zwischen Piacenza und Fidenza auf der uralten Römerstraße. Die Stadtkirche und der historische Ortskern zeugen von der langen Geschichte des Ortes.",
+      "accommodations": [],
+      "position": 44
+    },
+    {
+      "position": 45,
       "name": "Fidenza",
       "country": "italy",
       "slug": "fidenza",
@@ -857,7 +1046,7 @@
       ]
     },
     {
-      "position": 23,
+      "position": 46,
       "name": "Fornovo di Taro",
       "country": "italy",
       "slug": "fornovo-di-taro",
@@ -894,7 +1083,7 @@
       ]
     },
     {
-      "position": 24,
+      "position": 47,
       "name": "Berceto",
       "country": "italy",
       "slug": "berceto",
@@ -931,7 +1120,7 @@
       ]
     },
     {
-      "position": 25,
+      "position": 48,
       "name": "Pontremoli",
       "country": "italy",
       "slug": "pontremoli",
@@ -968,7 +1157,7 @@
       ]
     },
     {
-      "position": 26,
+      "position": 49,
       "name": "Aulla",
       "country": "italy",
       "slug": "aulla",
@@ -1005,7 +1194,7 @@
       ]
     },
     {
-      "position": 27,
+      "position": 50,
       "name": "Sarzana",
       "country": "italy",
       "slug": "sarzana",
@@ -1042,7 +1231,15 @@
       ]
     },
     {
-      "position": 28,
+      "name": "Massa",
+      "country": "italy",
+      "slug": "massa",
+      "description": "Massa ist die Hauptstadt der Provinz Massa-Carrara an der ligurischen Küste, bekannt für den weißen Marmor der nahen Apuanischen Alpen. Die Via Francigena führt durch die Küstenebene zwischen den Apuanischen Alpen und dem Tyrrhenischen Meer. Der Palazzo Cybo-Malaspina prägt das Stadtbild.",
+      "accommodations": [],
+      "position": 51
+    },
+    {
+      "position": 52,
       "name": "Lucca",
       "country": "italy",
       "slug": "lucca",
@@ -1093,7 +1290,15 @@
       ]
     },
     {
-      "position": 29,
+      "name": "Fucecchio",
+      "country": "italy",
+      "slug": "fucecchio",
+      "description": "Fucecchio ist ein Hügelort im Valdarno zwischen Lucca und San Miniato in der Toskana, auf einem Hügel über dem Arnotal gelegen. Im Mittelalter war Fucecchio ein wichtiger Kreuzungspunkt von Handels- und Pilgerwegen. Die Umgebung zeigt die typische toskanische Landschaft mit Weinbergen und Olivenhainen.",
+      "accommodations": [],
+      "position": 53
+    },
+    {
+      "position": 54,
       "name": "San Miniato",
       "country": "italy",
       "slug": "san-miniato",
@@ -1130,7 +1335,7 @@
       ]
     },
     {
-      "position": 30,
+      "position": 55,
       "name": "Gambassi Terme",
       "country": "italy",
       "slug": "gambassi-terme",
@@ -1167,7 +1372,7 @@
       ]
     },
     {
-      "position": 31,
+      "position": 56,
       "name": "San Gimignano",
       "country": "italy",
       "slug": "san-gimignano",
@@ -1204,7 +1409,7 @@
       ]
     },
     {
-      "position": 32,
+      "position": 57,
       "name": "Monteriggioni",
       "country": "italy",
       "slug": "monteriggioni",
@@ -1241,7 +1446,7 @@
       ]
     },
     {
-      "position": 33,
+      "position": 58,
       "name": "Siena",
       "country": "italy",
       "slug": "siena",
@@ -1292,7 +1497,15 @@
       ]
     },
     {
-      "position": 34,
+      "name": "Buonconvento",
+      "country": "italy",
+      "slug": "buonconvento",
+      "description": "Buonconvento ist ein mittelalterliches Dorf in den Crete Senesi an der Arbia südlich von Siena, mit vollständig erhaltener Stadtmauer. Kaiser Heinrich VII. starb hier 1313 auf dem Weg von Siena nach Rom – eine historische Begebenheit, die dem Ort Berühmtheit verlieh. Das Museo d'Arte Sacra bewahrt toskanische Meisterwerke.",
+      "accommodations": [],
+      "position": 59
+    },
+    {
+      "position": 60,
       "name": "San Quirico d'Orcia",
       "country": "italy",
       "slug": "san-quirico-dorcia",
@@ -1329,7 +1542,7 @@
       ]
     },
     {
-      "position": 35,
+      "position": 61,
       "name": "Radicofani",
       "country": "italy",
       "slug": "radicofani",
@@ -1366,7 +1579,7 @@
       ]
     },
     {
-      "position": 36,
+      "position": 62,
       "name": "Acquapendente",
       "country": "italy",
       "slug": "acquapendente",
@@ -1403,7 +1616,7 @@
       ]
     },
     {
-      "position": 37,
+      "position": 63,
       "name": "Bolsena",
       "country": "italy",
       "slug": "bolsena",
@@ -1440,7 +1653,7 @@
       ]
     },
     {
-      "position": 38,
+      "position": 64,
       "name": "Montefiascone",
       "country": "italy",
       "slug": "montefiascone",
@@ -1477,7 +1690,7 @@
       ]
     },
     {
-      "position": 39,
+      "position": 65,
       "name": "Viterbo",
       "country": "italy",
       "slug": "viterbo",
@@ -1514,7 +1727,15 @@
       ]
     },
     {
-      "position": 40,
+      "name": "Vetralla",
+      "country": "italy",
+      "slug": "vetralla",
+      "description": "Vetralla ist ein mittelalterliches Städtchen auf einem Tuffhügel in der Provinz Viterbo, das Sigeric als 'Furcari' in seinem Reisebericht von 990 n. Chr. verzeichnete. Der Ort liegt auf dem Weg durch die etruskische Tuff-Landschaft des nördlichen Latiums zwischen Viterbo und Sutri.",
+      "accommodations": [],
+      "position": 66
+    },
+    {
+      "position": 67,
       "name": "Sutri",
       "country": "italy",
       "slug": "sutri",
@@ -1551,7 +1772,15 @@
       ]
     },
     {
-      "position": 41,
+      "name": "Campagnano di Roma",
+      "country": "italy",
+      "slug": "campagnano-di-roma",
+      "description": "Campagnano di Roma ist ein Hügeldorf auf dem Weg von Sutri nach Rom, das Sigeric als 'Bacane' beschrieb. Der Ort ist der letzte bedeutende Halt vor der Ewigen Stadt auf der Via Francigena. Bei guter Sicht können Pilger von hier die Kuppel des Petersdoms am Horizont erkennen.",
+      "accommodations": [],
+      "position": 68
+    },
+    {
+      "position": 69,
       "name": "Rome",
       "country": "italy",
       "slug": "rome",
@@ -1631,57 +1860,147 @@
     },
     {
       "from": "Calais",
+      "to": "Guînes",
+      "distance": 15,
+      "description": "Die erste Teiletappe nach Calais führt durch die flache Bocage-Landschaft des Pas-de-Calais nach Guînes. Im Jahr 1520 fand hier das legendäre 'Camp du Drap d'Or' statt – das historische Treffen zwischen den Königen Heinrichs VIII. und Franz I. Der Weg führt durch ruhige Acker- und Wiesenflächen südlich von Calais."
+    },
+    {
+      "from": "Guînes",
+      "to": "Saint-Omer",
+      "distance": 30,
+      "description": "Von Guînes führt der Weg durch die typische nordfranzösische Bocage-Landschaft des Pas-de-Calais nach Saint-Omer. Der Weg überquert die Hügel des Artois und passiert Thérouanne, ein ehemaliges bedeutendes Bistum. Saint-Omer mit seinem gotischen Dom ist das Ziel dieser Teiletappe."
+    },
+    {
+      "from": "Saint-Omer",
+      "to": "Béthune",
+      "distance": 30,
+      "description": "Von Saint-Omer führt der Weg durch die Marschlandschaft der Flandres mit ihrem Netz von Wasserkanälen (Canal de Neuffossé) nach Béthune. Die Landschaft ist geprägt von der bergbaulichen Geschichte der Region. Béthune empfängt Pilger mit seinem historischen Beffroi (Glockenturm) am alten Marktplatz."
+    },
+    {
+      "from": "Béthune",
       "to": "Arras",
-      "distance": 99,
-      "description": "Langer Abschnitt durch die nordfranzösischen Schlachtfelder des Ersten Weltkriegs und die sanften Hügel des Artois. Der Weg führt durch Guînes, Thérouanne (Sigeric: 'Teranburh') und Bruay-la-Buissière. Die Landschaft ist weit und offen, geprägt von Getreidefeldern und Bachtälern."
+      "distance": 24,
+      "description": "Die letzte Teiletappe von Béthune nach Arras führt durch die Schlachtfelder des Ersten Weltkriegs der Artois. Die Erinnerung an die Kriegsgeschichte ist in dieser Landschaft allgegenwärtig. Arras mit seinen beeindruckenden flämisch-barocken Plätzen ist das Ziel."
     },
     {
       "from": "Arras",
+      "to": "Péronne",
+      "distance": 30,
+      "description": "Von Arras führt der Weg südwärts durch die Picardie zum Fluss Somme. Die Landschaft ist geprägt von weiten Feldern und der Erinnerung an die Schlachten des Ersten Weltkriegs. Péronne ist eine Festungsstadt an der Somme mit dem bedeutenden Historial de la Grande Guerre."
+    },
+    {
+      "from": "Péronne",
+      "to": "Saint-Quentin",
+      "distance": 30,
+      "description": "Von Péronne führt der Weg dem Canal Saint-Quentin entlang nach Süden. Die flache Picardie-Landschaft mit ihren Kanälen und Teichen ist typisch für diesen Abschnitt. Saint-Quentin am Kanal ist eine bedeutende Stadt mit gotischer Basilika aus dem Mittelalter."
+    },
+    {
+      "from": "Saint-Quentin",
       "to": "Laon",
-      "distance": 88,
-      "description": "Von Arras führt die Route südwärts durch die Champagne-Ardenne. Der Weg passiert Doingt, Seraucourt-le-Grand und Laon. Die Picardie-Landschaft wechselt von Ackerflächen zu sanften Waldstreifen und kleinen Flüssen. Am Ende des Abschnitts erhebt sich Laon auf seinem markanten Felsrücken."
+      "distance": 28,
+      "description": "Die letzte Teiletappe führt aus der Picardie-Ebene aufwärts nach Laon. Der Weg steigt schließlich auf den markanten Hügelrücken von Laon hinauf. Die gotische Notre-Dame de Laon ist von weitem sichtbar und kündigt das Ziel dieser Etappe an."
     },
     {
       "from": "Laon",
+      "to": "Corbeny",
+      "distance": 22,
+      "description": "Von Laon führt der Weg südwärts durch die Champagne-Ebene nach Corbeny. Das Dorf Corbeny war im Mittelalter ein bedeutender Pilgerort mit dem Grab des heiligen Marcoul. Sigeric erwähnte 'Corbunei' ausdrücklich in seinem Reisebericht von 990 n. Chr."
+    },
+    {
+      "from": "Corbeny",
       "to": "Reims",
-      "distance": 47,
-      "description": "Von Laon führt die Via Francigena durch den Ort Corbeny (Sigeric: 'Corbunei'), wo einst das Grab des heiligen Marcoul Pilger anzog. Der Weg überquert die Ebene der Champagne und mündet in Reims, der Kathedralenstadt der französischen Könige."
+      "distance": 25,
+      "description": "Von Corbeny führt die Via Francigena durch die Champagner Ebene in die Kathedralenstadt Reims. Der Weg überquert die sanften Hügel der Champagne. In Reims empfängt die gotische Notre-Dame – Krönungskirche der französischen Könige – die Pilger."
     },
     {
       "from": "Reims",
+      "to": "Épernay",
+      "distance": 26,
+      "description": "Von Reims führt die Via Francigena durch die berühmten Champagner-Weinberge südwärts nach Épernay. Der Weg bietet Ausblicke auf die Rebhänge der Montagne de Reims. Épernay, die Champagnerhauptstadt, ist das Ziel dieser Teiletappe."
+    },
+    {
+      "from": "Épernay",
       "to": "Châlons-en-Champagne",
-      "distance": 46,
-      "description": "Der Weg führt durch die flache Champagner Ebene am Marne-Fluss entlang. Die weiten Weinberge der Champagne und die kleinen Winzerdörfer prägen die Landschaft. Châlons war bereits bei Sigeric als 'Chateluns' eine wichtige Etappenstation."
+      "distance": 20,
+      "description": "Von Épernay führt der Weg ost-südöstlich der Marne entlang nach Châlons-en-Champagne. Die flache Champagner Ebene mit Getreidefeldern und vereinzelten Wäldchen prägt die Landschaft. Châlons war bereits bei Sigeric als 'Chateluns' eine wichtige Etappenstation."
     },
     {
       "from": "Châlons-en-Champagne",
+      "to": "Vitry-le-François",
+      "distance": 32,
+      "description": "Von Châlons führt der Weg durch die weite Champagner Ebene nach Vitry-le-François. Die Landschaft ist offen und weit, geprägt von Getreidefeldern und vereinzelten Waldstreifen. Vitry-le-François, die Renaissanceplanstadt an der Marne, ist das Ziel dieser Teiletappe."
+    },
+    {
+      "from": "Vitry-le-François",
+      "to": "Brienne-le-Château",
+      "distance": 28,
+      "description": "Von Vitry-le-François führt der Weg südostwärts nach Brienne-le-Château. Die Champagner Landschaft wechselt von offener Ebene zu Wäldchen und Flussniederungen. Brienne ist bekannt als Schulort Napoléons und liegt am Fluss Aube."
+    },
+    {
+      "from": "Brienne-le-Château",
       "to": "Bar-sur-Aube",
-      "distance": 88,
-      "description": "Langer Abschnitt durch die Haute-Marne, vorbei an Coole, Donnement und Brienne-le-Château (Geburtsort Napoleons). Der Weg führt durch den südöstlichen Teil der Champagne mit Wäldern, Teichen und Flussniederungen. Bar-sur-Aube wurde bei Sigeric als 'Bar' bezeichnet."
+      "distance": 28,
+      "description": "Von Brienne führt der Weg dem Aube-Tal entlang nach Bar-sur-Aube. Die Landschaft der Champagner Wälder und Flussauen bietet angenehme Wanderbedingungen. Bar-sur-Aube mit seiner Kirche Saint-Pierre und dem Holzgalerie-Portikus war ein wichtiger mittelalterlicher Champagnemesseort."
     },
     {
       "from": "Bar-sur-Aube",
+      "to": "Chaumont",
+      "distance": 30,
+      "description": "Von Bar-sur-Aube führt der Weg aufwärts auf das Hochplateau der Haute-Marne nach Chaumont. Der Aufstieg durch dichte Wälder bietet weite Panoramen über die burgundische Landschaft. Chaumont mit seiner gotischen Basilika und dem neugotischen Viadukt ist das Ziel."
+    },
+    {
+      "from": "Chaumont",
       "to": "Langres",
-      "distance": 54,
-      "description": "Die Route folgt dem Aube-Tal aufwärts und steigt dann durch dichte Wälder auf das Hochplateau der Haute-Marne hinauf. Sigeric beschrieb diese Etappe als 'Oisma'. Der Aufstieg nach Langres bietet weite Panoramen über die burgundischen Wälder."
+      "distance": 24,
+      "description": "Von Chaumont führt der Weg weiter südwärts auf dem Hochplateau der Haute-Marne nach Langres. Die Landschaft ist geprägt von Wäldern und weiten Feldern. Langres auf seinem markanten Felssporn ist bereits von weitem an seinen Stadtmauern aus dem 2.–3. Jahrhundert erkennbar."
     },
     {
       "from": "Langres",
+      "to": "Champlitte",
+      "distance": 25,
+      "description": "Von Langres führt die Route südwärts durch die Wälder und Hochflächen der Haute-Marne. Der Weg überquert das Plateau und bietet weite Ausblicke. Champlitte in der Haute-Saône mit seinem Schloss und Volkskunstmuseum ist das Ziel dieser ersten Teiletappe."
+    },
+    {
+      "from": "Champlitte",
+      "to": "Gray",
+      "distance": 27,
+      "description": "Von Champlitte führt der Weg ostwärts durch die sanfte Hügellandschaft der Haute-Saône nach Gray am Fluss Saône, vorbei an Seveux. Die Franche-Comté Landschaft wechselt von Ackerflächen zu Weinbergen. Gray mit seinem Renaissancebau des Hôtel de Ville ist der Halt dieser Teiletappe."
+    },
+    {
+      "from": "Gray",
       "to": "Besançon",
-      "distance": 76,
-      "description": "Von Langres führt die Route durch die Côte d'Or und Franche-Comté, vorbei an Grenant, Seveux am Saône-Fluss und Cussey-sur-l'Ognon. Die Landschaft wechselt von Hochflächen zu sanften Flusstälern. Am Ende des Abschnitts liegt Besançon in einer Flussschleife des Doubs."
+      "distance": 24,
+      "description": "Von Gray führt der Weg durch Cussey-sur-l'Ognon nach Besançon. Die Franche-Comté Landschaft wird hügeliger. Am Ende liegt Besançon eindrucksvoll in einer Flussschleife des Doubs – die Stadt mit ihrer Zitadelle Vauban (UNESCO-Welterbe) empfängt die Pilger."
     },
     {
       "from": "Besançon",
+      "to": "Ornans",
+      "distance": 24,
+      "description": "Von Besançon führt der Weg dem Loue-Tal aufwärts nach Ornans. Die Schlucht der Loue mit ihren türkisblauen Wassern und Felswänden ist eine der schönsten Naturlandschaften der Franche-Comté. Ornans, Geburtsort des Malers Gustave Courbet, ist das malerische Ziel."
+    },
+    {
+      "from": "Ornans",
       "to": "Pontarlier",
-      "distance": 49,
-      "description": "Der Weg steigt durch das Jura-Gebirge auf, vorbei an Nods (Sigeric: 'Nos') auf dem Jura-Plateau. Die Landschaft wird zunehmend bergiger und waldreicher. Pontarlier liegt bereits in Sichtweite der Schweizer Alpen."
+      "distance": 25,
+      "description": "Von Ornans steigt der Weg weiter durch das Jura-Gebirge auf. Die Landschaft wird zunehmend bergiger und waldreicher. Pontarlier liegt bereits in Sichtweite der Schweizer Alpen und war einst das Zentrum der Absinthherstellung."
     },
     {
       "from": "Pontarlier",
+      "to": "Vallorbe",
+      "distance": 17,
+      "description": "Die letzte Etappe auf französischem Boden führt über den Jougne-Pass nach Vallorbe in der Schweiz. Der Grenzübergang markiert einen wichtigen Wendepunkt der Pilgerreise. Das erste Schweizer Dorf Vallorbe liegt am Fluss Orbe."
+    },
+    {
+      "from": "Vallorbe",
+      "to": "Cossonay",
+      "distance": 20,
+      "description": "Von Vallorbe führt der Weg durch das Mittelland des Kantons Waadt aufwärts nach Cossonay. Die Landschaft des Waadtländer Mittellandes mit Feldern und Wäldern ist typisch für diesen Abschnitt. Cossonay auf seinem Hügelrücken bietet erste Ausblicke auf den Genfer See."
+    },
+    {
+      "from": "Cossonay",
       "to": "Lausanne",
-      "distance": 52,
-      "description": "Die letzte französische Etappe führt über den Jougne-Pass in die Schweiz. Der Weg passiert Jougne, das erste Schweizer Dorf Vallorbe, und überquert das Mittelland bis Lausanne. Der erste Blick auf den Genfer See und die Alpen ist ein unvergesslicher Moment der Pilgerreise."
+      "distance": 15,
+      "description": "Von Cossonay führt der Weg hinunter nach Lausanne am Genfer See. Die erste Sicht auf den Lac Léman und die Savoyer Alpen ist ein unvergesslicher Moment der Pilgerreise. Lausanne mit seiner gotischen Kathedrale Notre-Dame ist das Ziel."
     },
     {
       "from": "Lausanne",
@@ -1691,9 +2010,15 @@
     },
     {
       "from": "Vevey",
+      "to": "Aigle",
+      "distance": 22,
+      "description": "Von Vevey führt der Weg dem südlichen Genfersee-Ufer entlang durch das UNESCO-Welterbe der Lavaux-Weinberge nach Aigle. Der Weg passiert malerische Winzerdörfer mit Terrassenweinbergen. Aigle am Eingang des Rhônetals mit seinem Château ist das Ziel."
+    },
+    {
+      "from": "Aigle",
       "to": "Saint-Maurice",
-      "distance": 38,
-      "description": "Von Vevey führt der Weg weiter dem See entlang nach Aigle (Sigeric: 'Burbulei') und dann südwärts ins Rhônetal nach Saint-Maurice. Die imposanten Felswände des Rhônetals beginnen sich aufzutürmen. Saint-Maurice (Sigeric: 'Sce Maurici') ist eine der ältesten Pilgerstationen Europas."
+      "distance": 16,
+      "description": "Von Aigle führt der Weg südwärts ins enger werdende Rhônetal nach Saint-Maurice. Die imposanten Felswände des Rhônetals türmen sich auf. Saint-Maurice (Sigeric: 'Sce Maurici') mit seiner über 1.500 Jahre alten Pilgerabtei ist das Ziel."
     },
     {
       "from": "Saint-Maurice",
@@ -1709,39 +2034,81 @@
     },
     {
       "from": "Bourg-Saint-Pierre",
+      "to": "Etroubles",
+      "distance": 24,
+      "description": "Die dramatischste Etappe führt über den Großen Sankt Bernhard (2.473 m), den höchsten Punkt der gesamten Via Francigena. Das legendäre Hospiz auf dem Pass – seit fast 1.000 Jahren Pilgerherberge – empfängt die Wanderer. Der Abstieg durch die wilde alpine Landschaft führt nach Etroubles auf der italienischen Seite."
+    },
+    {
+      "from": "Etroubles",
       "to": "Aosta",
-      "distance": 36,
-      "description": "Die dramatischste Etappe der Via Francigena führt über den Großen Sankt Bernhard (2.473 m), den höchsten Punkt der gesamten Route. Das legendäre Hospiz auf dem Pass (gegr. 1049) empfängt Pilger seit fast 1.000 Jahren. Der Abstieg durch das wilde Valle del Gran San Bernardo führt zur römischen Stadt Aosta."
+      "distance": 12,
+      "description": "Von Etroubles führt der Weg durch das obere Aostatal hinunter in die Römerstadt Aosta. Die weite Öffnung des Aostatals nach dem engen Bergpass ist beeindruckend. Aosta mit seinen antiken Stadtmauern, dem Triumphbogen des Augustus und dem Amphitheater empfängt die Pilger."
     },
     {
       "from": "Aosta",
+      "to": "Châtillon",
+      "distance": 20,
+      "description": "Von Aosta führt der Weg das Aostatal ostwärts entlang der Dora Baltea. Die Landschaft wechselt von der breiten Talaue zu engeren Passagen mit Burgen und Weinbergen. Châtillon ist eine wichtige Stadt im mittleren Aostatal."
+    },
+    {
+      "from": "Châtillon",
+      "to": "Pont-Saint-Martin",
+      "distance": 25,
+      "description": "Das Aostatal verengt sich zunehmend. Der Weg führt durch mehrere mittelalterliche Dörfer mit Burgen der Savoyarden. Pont-Saint-Martin mit seiner römischen Bogenbrücke aus dem 1. Jahrhundert v. Chr. – von Sigeric als 'Publei' beschrieben – markiert den Austritt aus dem Aostatal."
+    },
+    {
+      "from": "Pont-Saint-Martin",
       "to": "Ivrea",
-      "distance": 70,
-      "description": "Die Route verlässt das Bergtal und steigt ins Vorland der Po-Ebene hinab. Der Weg führt durch Pont-Saint-Martin (Sigeric: 'Publei') und folgt dem Tal der Dora Baltea. Ivrea (Sigeric: 'Everi') markiert den Eintritt in das Canavese und die Poebene."
+      "distance": 25,
+      "description": "Von Pont-Saint-Martin führt der Weg aus den Alpen hinab ins Hügelland des Canavese und weiter in die Po-Ebene nach Ivrea. Die Landschaft wechselt von alpinem Charakter zu sanften piemontesischen Hügeln. Ivrea (Sigeric: 'Everi') mit seinem Savoyardenschloss empfängt die Pilger."
     },
     {
       "from": "Ivrea",
+      "to": "Santhià",
+      "distance": 32,
+      "description": "Von Ivrea führt die Via Francigena in die flache Po-Ebene. Der Weg durch das Canavese und dann durch die Reisfelder der Provinz Vercelli ist meditativ und weit. Santhià (Sigeric: 'Sca Agatha') ist der Etappenort auf halbem Weg nach Vercelli."
+    },
+    {
+      "from": "Santhià",
       "to": "Vercelli",
-      "distance": 62,
-      "description": "Von Ivrea führt die Via Francigena durch die flache Po-Ebene mit endlosen Reisfeldern. Der Weg passiert Santhià (Sigeric: 'Sca Agatha'). Die weite Ebene, der Blick auf die fernen Alpen im Norden und die monotone, meditative Landschaft sind typisch für diesen langen Abschnitt."
+      "distance": 30,
+      "description": "Von Santhià führt der Weg weiter durch die großen Reisfelder der Lombardei nach Vercelli. Die endlose Ebene mit Reisfeldern und Kanälen ist prägend für diesen Abschnitt. Vercelli mit der frühgotischen Basilika Sant'Andrea (1219–1227), der ersten gotischen Kirche Italiens, ist das Ziel."
     },
     {
       "from": "Vercelli",
+      "to": "Tromello",
+      "distance": 28,
+      "description": "Von Vercelli führt die Route durch die flache Lomellina – das Reisanbaugebiet der Provinz Pavia. Der Weg passiert zahlreiche Kanäle und Reisfelder. Tromello (Sigeric: 'Tremel') liegt auf halbem Weg nach Pavia."
+    },
+    {
+      "from": "Tromello",
       "to": "Pavia",
-      "distance": 47,
-      "description": "Der Weg durch die Poebene führt von Vercelli über Tromello (Sigeric: 'Tremel') nach Pavia. Die Route quert mehrere Kanäle und Reisfelder-Landschaften der Lomellina. Der Ticino wird auf dem überdachten Ponte Coperto in Pavia überquert."
+      "distance": 19,
+      "description": "Von Tromello führt der Weg südostwärts durch die Lomellina nach Pavia. Der Ticino wird in Pavia auf dem historischen Ponte Coperto – der überdachten Brücke – überquert. Pavia, einst Hauptstadt des Lombardischen Königreichs, empfängt die Pilger."
     },
     {
       "from": "Pavia",
+      "to": "Corte San Andrea",
+      "distance": 30,
+      "description": "Von Pavia führt die Via Francigena durch die flache Po-Ebene in Richtung Po-Fluss. Der Weg passiert Santa Cristina e Bissone (Sigeric: 'Sce Cristine') in der Lomellina. Corte San Andrea (Sigeric: 'Sce Andrea') am Südufer des Po ist der historische Überquerungspunkt des größten Flusses Italiens."
+    },
+    {
+      "from": "Corte San Andrea",
       "to": "Piacenza",
-      "distance": 60,
-      "description": "Die Via Francigena überquert den Po auf dem Weg nach Piacenza. Der Weg führt durch Santa Cristina e Bissone (Sigeric: 'Sce Cristine') und Corte San Andrea (Sigeric: 'Sce Andrea'). Die Überquerung des Po markiert den Übergang von der Lombardei nach Emilia-Romagna."
+      "distance": 30,
+      "description": "Von Corte San Andrea überquert der Weg den Po und tritt in die Emilia-Romagna ein. Der Fluss ist hier breit und majestätisch. Piacenza am Südufer des Po empfängt die Pilger mit der beeindruckenden Piazza dei Cavalli."
     },
     {
       "from": "Piacenza",
+      "to": "Fiorenzuola d'Arda",
+      "distance": 27,
+      "description": "Von Piacenza führt die Via Francigena entlang der Via Emilia – der antiken Römerstraße – nach Südosten. Der Weg durch die fruchtbare Emilia-Romagna ist geprägt von Weinbergen und Obstgärten. Fiorenzuola d'Arda (Sigeric: 'Floricum') liegt auf halbem Weg nach Fidenza."
+    },
+    {
+      "from": "Fiorenzuola d'Arda",
       "to": "Fidenza",
-      "distance": 54,
-      "description": "Die Via Emilia, die antike Römerstraße, prägt diesen Abschnitt durch die Emilia-Romagna. Der Weg führt durch Fiorenzuola d'Arda (Sigeric: 'Floricum') nach Fidenza. Die flache Landschaft mit Weinbergen und Obstgärten ist typisch für die Region."
+      "distance": 27,
+      "description": "Von Fiorenzuola d'Arda führt der Weg weiter der Via Emilia entlang nach Fidenza. Die Emilia-Romagna-Landschaft mit Parmaschinken-Betrieben und Weinbergen ist charakteristisch für diesen Abschnitt. Fidenza mit dem Dom San Donnino – dem Schutzpatron der Via-Francigena-Pilger – ist das Ziel."
     },
     {
       "from": "Fidenza",
@@ -1775,15 +2142,27 @@
     },
     {
       "from": "Sarzana",
+      "to": "Massa",
+      "distance": 25,
+      "description": "Von Sarzana führt die Via Francigena durch Luni (antike Römerstadt) und die Versilia-Küstenebene nach Massa. Der Weg bietet Ausblicke auf die weißen Gipfel der Apuanischen Alpen. Massa mit dem Palazzo Cybo-Malaspina liegt am Fuß dieser beeindruckenden Berggruppe."
+    },
+    {
+      "from": "Massa",
       "to": "Lucca",
-      "distance": 55,
-      "description": "Von Sarzana führt die Via Francigena durch Luni (antike Römerstadt, heute Fosdinovo) und das Versilia-Küstengebiet. Der Weg passiert Massa und Camaiore und steigt durch die Seravezza-Hügel nach Lucca. Dieser Abschnitt vereint Küstenlandschaft, Apuanische Alpen und toskanische Hügel."
+      "distance": 30,
+      "description": "Von Massa führt die Route durch Camaiore und die Hügel des Versilia hinauf und dann hinunter nach Lucca. Der Weg vereint Küstenlandschaft, Apuanische Alpen und toskanische Hügel. Lucca mit seiner perfekt erhaltenen Renaissance-Stadtmauer und dem Volto Santo empfängt die Pilger."
     },
     {
       "from": "Lucca",
+      "to": "Fucecchio",
+      "distance": 32,
+      "description": "Von Lucca führt der Weg durch Altopascio (Sigeric: 'Forcri'), wo einst ein Ritterorden für Pilgerfürsorge bekannt war, und weiter durch die toskanische Hügellandschaft ins Valdarno. Fucecchio auf einem Hügel über dem Arno ist das Ziel dieser Teiletappe."
+    },
+    {
+      "from": "Fucecchio",
       "to": "San Miniato",
-      "distance": 47,
-      "description": "Malerische Etappe durch das toskanische Hügelland. Der Weg führt durch Altopascio (Sigeric: 'Forcri'), ein Dorf, das einst von einem Ritterorden für Pilgerfürsorge gegründet wurde, und weiter über Fucecchio nach San Miniato. Die Toskana zeigt hier ihre typische Kulturlandschaft aus Zypressen, Olivenhainen und Weinbergen."
+      "distance": 15,
+      "description": "Von Fucecchio führt der Weg aufwärts zum Hügeldorf San Miniato mit dem Turm Kaiser Friedrichs II. Die toskanische Kulturlandschaft aus Olivenhainen, Weinbergen und Zypressen ist auf diesem kurzen Abschnitt besonders schön. San Miniato ist bekannt für seinen weißen Trüffel ('tartufo bianco')."
     },
     {
       "from": "San Miniato",
@@ -1811,9 +2190,15 @@
     },
     {
       "from": "Siena",
+      "to": "Buonconvento",
+      "distance": 25,
+      "description": "Von Siena führt die Via Francigena durch die weltberühmten Crete Senesi – die einzigartige Mondlandschaft aus kahlen Tuffhügeln und Weizenfeldern. Der Weg passiert Monteroni d'Arbia (Sigeric: 'Arbia'). Buonconvento am Fluss Arbia mit seiner mittelalterlichen Stadtmauer ist das Ziel."
+    },
+    {
+      "from": "Buonconvento",
       "to": "San Quirico d'Orcia",
-      "distance": 45,
-      "description": "Die Etappe führt durch die weltberühmten Crete Senesi in das Val d'Orcia (UNESCO-Welterbe). Der Weg passiert Monteroni d'Arbia (Sigeric: 'Arbia') und Torrenieri (Sigeric: 'Turreiner'). Die Landschaft aus sanften Hügeln, einsamen Bauernhöfen und Zypressen ist ein Inbegriff der Toskana."
+      "distance": 20,
+      "description": "Von Buonconvento führt die Etappe durch das Val d'Orcia (UNESCO-Welterbe) nach San Quirico. Der Weg passiert Torrenieri (Sigeric: 'Turreiner'). Die Landschaft aus sanften Hügeln, einsamen Bauernhöfen und Zypressenalleen ist ein Inbegriff der Toskana."
     },
     {
       "from": "San Quirico d'Orcia",
@@ -1847,15 +2232,27 @@
     },
     {
       "from": "Viterbo",
+      "to": "Vetralla",
+      "distance": 20,
+      "description": "Von Viterbo führt der Weg durch den etruskischen Tuffstein-Landschaft nach Vetralla. Die Cimini-Wälder und tiefen Tuff-Schluchten des nördlichen Latiums prägen diesen Abschnitt. Vetralla (Sigeric: 'Furcari') auf einem Tuffhügel ist das Ziel der Teiletappe."
+    },
+    {
+      "from": "Vetralla",
       "to": "Sutri",
-      "distance": 40,
-      "description": "Die Route führt durch die Cimini-Wälder und das toskanische Latium vorbei an Vetralla (Sigeric: 'Furcari') nach Sutri. Die Landschaft des Latium zeigt etruskische Tuff-Schluchten, mittelalterliche Dörfer und weite Weidegründe. Sutri ist der letzte bedeutende historische Halt vor Rom."
+      "distance": 20,
+      "description": "Von Vetralla führt der Weg weiter durch die etruskische Landschaft des Latiums nach Sutri. Mittelalterliche Dörfer und weite Weidegründe säumen den Weg. Sutri – mit seinem in den Tuffstein gehauenen Amphitheater aus dem 1. Jahrhundert – ist der letzte bedeutende historische Halt vor Rom."
     },
     {
       "from": "Sutri",
+      "to": "Campagnano di Roma",
+      "distance": 27,
+      "description": "Von Sutri führt der letzte große Abschnitt der Via Francigena durch Campagnano di Roma (Sigeric: 'Bacane'). Der Weg führt durch die römische Campagna. Bei guter Sicht kann der Pilger von Campagnano erstmals die Kuppel des Petersdoms am Horizont erkennen."
+    },
+    {
+      "from": "Campagnano di Roma",
       "to": "Rome",
-      "distance": 54,
-      "description": "Die letzte große Etappe der Via Francigena führt durch Campagnano di Roma (Sigeric: 'Bacane') und La Storta (Sigeric: 'Johannis VIIII') nach Rom. Auf den letzten Kilometern kann der Pilger erstmals die Kuppel von Sankt Peter sehen – ein bewegender Moment nach fast 1.700 km Pilgerweg. Das Ziel ist der Petersplatz im Vatikan."
+      "distance": 27,
+      "description": "Die letzte Teiletappe führt durch La Storta (Sigeric: 'Johannis VIIII') in die Ewige Stadt. Auf den letzten Kilometern wird die Kuppel des Petersdoms immer größer. Das Ziel ist der Petersplatz im Vatikan – das Ende der langen Pilgerreise von Canterbury nach Rom."
     }
   ]
 }
