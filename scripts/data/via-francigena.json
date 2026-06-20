@@ -4,12 +4,7 @@
     "section": "Canterbury (England) → Rome (Italy)",
     "distance_km": 1695,
     "stages": 68,
-    "countries": [
-      "england",
-      "france",
-      "switzerland",
-      "italy"
-    ],
+    "countries": ["england", "france", "switzerland", "italy"],
     "source": "viefrancigene.org, wikipedia.org/wiki/Via_Francigena, visittuscany.com"
   },
   "camino": {
@@ -1856,7 +1851,7 @@
       "from": "Dover",
       "to": "Calais",
       "distance": 56,
-      "description": "Der Ärmelkanal wird per Fähre (ca. 90 Min.) oder Eurostar-Tunnel überquert. Der Fähre verbindet das anglikanische Canterbury mit dem kontinentalen Frankreich und symbolisiert den Beginn der langen Pilgerwanderung durch Europa. Die Überfahrt bietet auf klaren Tagen Ausblicke auf beide Küsten."
+      "description": "Der Ärmelkanal wird per Fähre (ca. 90 Min.) oder Eurostar-Tunnel überquert. Die Fähre verbindet das anglikanische Canterbury mit dem kontinentalen Frankreich und symbolisiert den Beginn der langen Pilgerwanderung durch Europa. Die Überfahrt bietet auf klaren Tagen Ausblicke auf beide Küsten."
     },
     {
       "from": "Calais",

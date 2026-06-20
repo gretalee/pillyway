@@ -62,7 +62,7 @@ export default async function CaminosPage() {
         )}
 
         {isPilgrim && !error && (
-          <div className="">
+          <div>
             <Link
               href="/caminos/new"
               className={cn(buttonVariants({ variant: 'default' }))}>
