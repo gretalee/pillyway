@@ -38,9 +38,7 @@ export default async function CaminosPage() {
       <div
         className="mt-4 bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative"
         role="alert">
-        {t('teaser.text')}
-        <br />
-        {t('teaser.text_2')}
+        {t('teaser.text')} {t('teaser.text_2')}
         <Link
           href="mailto:hello@pillyway.de"
           aria-label={t('teaser.aria_label')}
