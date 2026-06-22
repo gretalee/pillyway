@@ -43,6 +43,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - Node.js 24.14.0 (see `.node-version`). Activate with `nodenv` or `fnm` before installing.
 - Use **yarn** exclusively — never `npm` or `pnpm`. Enable via `corepack enable` if yarn is missing.
+- The root `package.json` has **no `"workspaces"` field** — never use `yarn workspace @pillyway/backend <script>`. Use the root proxy scripts (e.g. `yarn dev:backend`) or `yarn --cwd apps/backend <script>` for direct invocation.
 
 ## Commands
 
@@ -61,9 +62,9 @@ yarn build:frontend       # production build
 # E2E tests (Playwright)
 yarn test:e2e
 
-# Target a specific workspace
-yarn workspace @pillyway/backend <script>
-yarn workspace @pillyway/frontend <script>
+# Target a specific workspace directly
+yarn --cwd apps/backend <script>
+yarn --cwd apps/frontend <script>
 
 # Add a shadcn/ui component (run from app/frontend/)
 npx shadcn@latest add <component>
@@ -153,6 +154,23 @@ git checkout -b feature/<short-description>
 - After merge, `nestjs-backend-developer` updates API docs and `senior-frontend-dev` updates frontend documentation to reflect the changes.
 - Agent memory files under `.claude/agent-memory/` are updated with any new patterns, conventions, or decisions discovered during the iteration.
 
+## Seed Data Conventions
+
+Seed files live in `/scripts/data/` at the **repo root** — not in `apps/backend/scripts/data/`.
+
+The `country` field on every waypoint/point record must be the **full lowercase English country name** (e.g. `"germany"`, `"denmark"`, `"italy"`), never an ISO code. `StageList.tsx` calls `tCodes(stage.startPoint.country.toLowerCase())` which looks up keys in the `country_codes` i18n namespace — the DB value must match exactly.
+
+**Accommodation `priceRange` values** use these bands (price per person per night):
+
+| Value | Range |
+|---|---|
+| `budget` | €0–30 |
+| `moderate` | €31–60 |
+| `comfortable` | €61–120 |
+| `luxury` | €121+ |
+
+When the exact price is unknown, use the most likely band for the property type (DJH hostels → `budget`, monastery pilgrim rooms → `budget`/`moderate`, rural 3-star hotels → `comfortable`).
+
 ## Backend Conventions (NestJS)
 
 - Use `ConfigService` for all env access — never `process.env` directly in services
@@ -208,6 +226,19 @@ The following actions corrupt the migration history and must never happen:
 
 **Iteration during development:**
 If you need to tweak the schema while still on a feature branch (before committing the migration), do **not** run `prisma migrate dev` multiple times on a partially-changed schema. Instead, delete the draft migration directory, revert `schema.prisma` to its last committed state, make all schema changes at once, then run `prisma migrate dev --name <description>` a single time.
+
+**Backward-compatible migrations (required):**
+
+Migrations run inside the container entrypoint before the app starts (`entrypoint.sh`). This means a migration can reach production while the previous container version is still handling traffic during a rolling restart. Every migration must therefore be backward-compatible with the currently deployed code:
+
+| Change type | Rule |
+|---|---|
+| Adding a column | Always nullable (`?`) or with a `DEFAULT` — old code ignores unknown columns |
+| Renaming a column | Expand-contract: add the new column → deploy code that writes both → drop the old column in the *next* release |
+| Removing a column | Stop referencing it in code first → deploy → drop in a follow-up migration |
+| Changing a column type | Almost always requires expand-contract across two releases |
+
+Before writing any schema change, ask: *"Can the current production code handle this migrated schema without modification?"* If no, split the change across two releases.
 
 ## Frontend Conventions (Next.js)
 
