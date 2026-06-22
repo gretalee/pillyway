@@ -29,6 +29,8 @@ interface CaminoPointFormItem {
   name: string;
   country: string;
   description: string;
+  lat: string;
+  lng: string;
 }
 
 interface CaminoFormValues {
@@ -65,7 +67,7 @@ export function CreateCaminoForm() {
     defaultValues: {
       name: '',
       description: '',
-      caminoPoints: [{ caminoPointId: null, name: '', country: '', description: '' }],
+      caminoPoints: [{ caminoPointId: null, name: '', country: '', description: '', lat: '', lng: '' }],
     },
   });
   const { fields, append, remove, move } = useFieldArray({
@@ -100,7 +102,7 @@ export function CreateCaminoForm() {
   );
 
   const onAddCaminoPoint = () => {
-    append({ caminoPointId: null, name: '', country: '', description: '' });
+    append({ caminoPointId: null, name: '', country: '', description: '', lat: '', lng: '' });
   };
 
   const onSubmit = (values: CaminoFormValues) => {
@@ -114,6 +116,10 @@ export function CreateCaminoForm() {
       if (p.description.trim() !== '') {
         newPoint.description = p.description.trim();
       }
+      const lat = p.lat.trim() !== '' ? parseFloat(p.lat) : undefined;
+      const lng = p.lng.trim() !== '' ? parseFloat(p.lng) : undefined;
+      if (lat !== undefined) newPoint.lat = lat;
+      if (lng !== undefined) newPoint.lng = lng;
       return newPoint;
     });
 

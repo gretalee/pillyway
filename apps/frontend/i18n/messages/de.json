@@ -134,7 +134,10 @@
       "prompt": "Meintest du diesen Ort?",
       "yes": "Ja, diesen Ort verwenden",
       "no": "Nein, neuen Ort erstellen"
-    }
+    },
+    "point_lat": "Breitengrad (optional)",
+    "point_lng": "Längengrad (optional)",
+    "error_lat_lng_incomplete": "Bitte gib entweder beide Koordinaten ein oder lass beide leer."
   },
   "common": {
     "cancel": "Abbrechen",

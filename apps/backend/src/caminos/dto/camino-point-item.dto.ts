@@ -1,9 +1,12 @@
 import {
   IsIn,
+  IsNumber,
   IsOptional,
   IsString,
   IsUUID,
+  Max,
   MaxLength,
+  Min,
   registerDecorator,
   ValidationArguments,
   ValidatorConstraint,
@@ -102,4 +105,16 @@ export class CaminoPointItemDto {
   @MaxLength(2000)
   @IsOptional()
   description?: string;
+
+  @IsNumber()
+  @Min(-90)
+  @Max(90)
+  @IsOptional()
+  lat?: number;
+
+  @IsNumber()
+  @Min(-180)
+  @Max(180)
+  @IsOptional()
+  lng?: number;
 }

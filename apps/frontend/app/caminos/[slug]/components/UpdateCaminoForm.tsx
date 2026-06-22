@@ -42,6 +42,8 @@ interface CaminoPointFormItem {
   name: string;
   country: string;
   description: string;
+  lat: string;
+  lng: string;
 }
 
 interface CaminoFormValues {
@@ -97,7 +99,7 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
     defaultValues: {
       name: '',
       description: '',
-      caminoPoints: [{ caminoPointId: null, name: '', country: '', description: '' }],
+      caminoPoints: [{ caminoPointId: null, name: '', country: '', description: '', lat: '', lng: '' }],
     },
   });
 
@@ -119,6 +121,8 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
           name: p.name,
           country: p.country,
           description: p.description ?? '',
+          lat: '',
+          lng: '',
         })),
       });
     }
@@ -177,6 +181,10 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
       if (p.description.trim() !== '') {
         newPoint.description = p.description.trim();
       }
+      const lat = p.lat.trim() !== '' ? parseFloat(p.lat) : undefined;
+      const lng = p.lng.trim() !== '' ? parseFloat(p.lng) : undefined;
+      if (lat !== undefined) newPoint.lat = lat;
+      if (lng !== undefined) newPoint.lng = lng;
       return newPoint;
     });
 
@@ -371,7 +379,7 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
           <button
             type="button"
             onClick={() =>
-              append({ caminoPointId: null, name: '', country: '', description: '' })
+              append({ caminoPointId: null, name: '', country: '', description: '', lat: '', lng: '' })
             }
             className={cn(
               'mt-3 inline-flex items-center gap-1.5 rounded-lg border border-dashed border-border px-4 py-2',

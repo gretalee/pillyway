@@ -314,6 +314,8 @@ export class CaminosService {
                 country: item.country!,
                 description: item.description ?? null,
                 slug,
+                lat: item.lat ?? null,
+                lng: item.lng ?? null,
               },
               update: {}, // slug is immutable — never update it
             });
@@ -539,6 +541,8 @@ export class CaminosService {
                     country: item.country!,
                     description: item.description ?? null,
                     slug,
+                    lat: item.lat ?? null,
+                    lng: item.lng ?? null,
                   },
                   update: {}, // slug is immutable — never update it
                 });
