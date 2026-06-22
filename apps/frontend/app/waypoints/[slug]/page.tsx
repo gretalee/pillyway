@@ -25,8 +25,11 @@ export async function generateMetadata({ params }: Props) {
       getTranslations('waypoint_detail'),
       sharedOpenGraph(),
     ]);
-    const title = t('meta_title', { name: waypoint.name });
-    const description = t('meta_description', { name: waypoint.name, country: waypoint.country });
+    const name = waypoint.name ?? '';
+    const country = waypoint.country ?? '';
+    if (!name) return {};
+    const title = t('meta_title', { name });
+    const description = t('meta_description', { name, country });
     return { title, description, openGraph: { ...og, url: `/waypoints/${slug}` } };
   } catch {
     return {};

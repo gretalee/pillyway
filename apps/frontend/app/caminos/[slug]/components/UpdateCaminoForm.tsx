@@ -122,8 +122,8 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
           name: p.name,
           country: p.country,
           description: p.description ?? '',
-          lat: p.lat !== null ? String(p.lat) : '',
-          lng: p.lng !== null ? String(p.lng) : '',
+          lat: p.lat != null ? String(p.lat) : '',
+          lng: p.lng != null ? String(p.lng) : '',
         })),
       });
     }
