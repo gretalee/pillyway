@@ -16,6 +16,7 @@ import { cn } from '@/lib/utils';
 import { useCountries } from '@/app/api/use-countries';
 import {
   CaminoPointPayload,
+  ExistingPointPayload,
   NewPointPayload,
   useCreateCamino,
 } from '@/app/api/caminos/use-create-camino';
@@ -61,6 +62,7 @@ export function CreateCaminoForm() {
     handleSubmit,
     setValue,
     reset,
+    setError,
     formState: { errors, isValid },
   } = useForm<CaminoFormValues>({
     mode: 'onChange',
@@ -108,9 +110,27 @@ export function CreateCaminoForm() {
   const onSubmit = (values: CaminoFormValues) => {
     setFormError(null);
 
+    // Cross-validate: lat and lng must both be filled or both empty
+    let hasLatLngError = false;
+    values.caminoPoints.forEach((p, i) => {
+      const hasLat = p.lat.trim() !== '';
+      const hasLng = p.lng.trim() !== '';
+      if (hasLat !== hasLng) {
+        hasLatLngError = true;
+        if (!hasLat) setError(`caminoPoints.${i}.lat`, { message: t('error_lat_lng_incomplete') });
+        if (!hasLng) setError(`caminoPoints.${i}.lng`, { message: t('error_lat_lng_incomplete') });
+      }
+    });
+    if (hasLatLngError) return;
+
     const caminoPoints: CaminoPointPayload[] = values.caminoPoints.map((p) => {
       if (p.caminoPointId) {
-        return { caminoPointId: p.caminoPointId };
+        const existing: ExistingPointPayload = { caminoPointId: p.caminoPointId };
+        const lat = p.lat.trim() !== '' ? parseFloat(p.lat) : undefined;
+        const lng = p.lng.trim() !== '' ? parseFloat(p.lng) : undefined;
+        if (lat !== undefined) existing.lat = lat;
+        if (lng !== undefined) existing.lng = lng;
+        return existing;
       }
       const newPoint: NewPointPayload = { name: p.name, country: p.country };
       if (p.description.trim() !== '') {

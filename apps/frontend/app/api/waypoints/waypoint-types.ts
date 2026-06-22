@@ -7,6 +7,13 @@ export interface WaypointDetail {
   country: string;
   slug: string;
   description: string | null;
+  lat: number | null;
+  lng: number | null;
+}
+
+export interface UpdateWaypointPayload {
+  lat?: number | null;
+  lng?: number | null;
 }
 
 export interface CreateAccommodationPayload {

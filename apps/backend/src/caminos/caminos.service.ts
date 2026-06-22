@@ -295,6 +295,16 @@ export class CaminosService {
                 `CaminoPoint not found: ${item.caminoPointId}`,
               );
             }
+            // Update coordinates if explicitly provided
+            if (item.lat !== undefined || item.lng !== undefined) {
+              await tx.caminoPoint.update({
+                where: { id: found.id },
+                data: {
+                  ...(item.lat !== undefined ? { lat: item.lat } : {}),
+                  ...(item.lng !== undefined ? { lng: item.lng } : {}),
+                },
+              });
+            }
             pointId = found.id;
             pointName = found.name;
             pointCountry = found.country;
@@ -521,6 +531,16 @@ export class CaminosService {
                   throw new BadRequestException(
                     `CaminoPoint not found: ${item.caminoPointId}`,
                   );
+                }
+                // Update coordinates if explicitly provided
+                if (item.lat !== undefined || item.lng !== undefined) {
+                  await tx.caminoPoint.update({
+                    where: { id: found.id },
+                    data: {
+                      ...(item.lat !== undefined ? { lat: item.lat } : {}),
+                      ...(item.lng !== undefined ? { lng: item.lng } : {}),
+                    },
+                  });
                 }
                 pointId = found.id;
               } else {

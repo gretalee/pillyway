@@ -346,7 +346,16 @@
     "delete_confirm_action": "Löschen",
     "delete_cancel_action": "Abbrechen",
     "delete_error": "Löschen fehlgeschlagen. Bitte versuche es erneut.",
-    "delete_error_forbidden": "Du bist nicht berechtigt, dieses Element zu löschen. Nur der Ersteller (innerhalb von 1 Stunde nach der Erstellung) oder ein Administrator kann es löschen."
+    "delete_error_forbidden": "Du bist nicht berechtigt, dieses Element zu löschen. Nur der Ersteller (innerhalb von 1 Stunde nach der Erstellung) oder ein Administrator kann es löschen.",
+    "coordinates_heading": "Koordinaten",
+    "coordinates_none": "Noch keine Koordinaten eingetragen.",
+    "edit_coordinates_label": "Koordinaten bearbeiten",
+    "field_lat": "Breitengrad",
+    "field_lng": "Längengrad",
+    "save_coordinates": "Speichern",
+    "cancel_coordinates": "Abbrechen",
+    "error_lat_lng_incomplete": "Bitte gib entweder beide Koordinaten ein oder lass beide leer.",
+    "error_save_coordinates": "Koordinaten konnten nicht gespeichert werden. Bitte versuche es erneut."
   },
   "accommodation_detail": {
     "meta_title": "{name}",

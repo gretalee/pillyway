@@ -26,7 +26,7 @@ import {
 import { cn } from '@/lib/utils';
 
 import { useCountries } from '@/app/api/use-countries';
-import { CaminoPointPayload, NewPointPayload } from '@/app/api/caminos/use-create-camino';
+import { CaminoPointPayload, ExistingPointPayload, NewPointPayload } from '@/app/api/caminos/use-create-camino';
 import { CaminoPointSearchResult } from '@/app/api/caminos/use-camino-points-search';
 import {
   useUpdateCamino,
@@ -93,6 +93,7 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
     handleSubmit,
     setValue,
     reset,
+    setError,
     formState: { errors, isValid },
   } = useForm<CaminoFormValues>({
     mode: 'onChange',
@@ -121,8 +122,8 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
           name: p.name,
           country: p.country,
           description: p.description ?? '',
-          lat: '',
-          lng: '',
+          lat: p.lat !== null ? String(p.lat) : '',
+          lng: p.lng !== null ? String(p.lng) : '',
         })),
       });
     }
@@ -173,9 +174,27 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
   const onSubmit = (values: CaminoFormValues) => {
     setFormError(null);
 
+    // Cross-validate: lat and lng must both be filled or both empty
+    let hasLatLngError = false;
+    values.caminoPoints.forEach((p, i) => {
+      const hasLat = p.lat.trim() !== '';
+      const hasLng = p.lng.trim() !== '';
+      if (hasLat !== hasLng) {
+        hasLatLngError = true;
+        if (!hasLat) setError(`caminoPoints.${i}.lat`, { message: tNew('error_lat_lng_incomplete') });
+        if (!hasLng) setError(`caminoPoints.${i}.lng`, { message: tNew('error_lat_lng_incomplete') });
+      }
+    });
+    if (hasLatLngError) return;
+
     const caminoPoints: CaminoPointPayload[] = values.caminoPoints.map((p) => {
       if (p.caminoPointId) {
-        return { caminoPointId: p.caminoPointId };
+        const existing: ExistingPointPayload = { caminoPointId: p.caminoPointId };
+        const lat = p.lat.trim() !== '' ? parseFloat(p.lat) : undefined;
+        const lng = p.lng.trim() !== '' ? parseFloat(p.lng) : undefined;
+        if (lat !== undefined) existing.lat = lat;
+        if (lng !== undefined) existing.lng = lng;
+        return existing;
       }
       const newPoint: NewPointPayload = { name: p.name, country: p.country };
       if (p.description.trim() !== '') {

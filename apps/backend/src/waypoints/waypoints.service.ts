@@ -1,4 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { KindeRole } from '../auth/kinde-jwt.strategy';
+import { UpdateWaypointDto } from './dto/update-waypoint.dto';
 
 import { EventLogService } from '../event-log/event-log.service';
 import { EventType } from '../event-log/event-type.enum';
@@ -39,6 +41,56 @@ export class WaypointsService {
       country: point.country,
       slug: point.slug,
       description: point.description,
+      lat: point.lat,
+      lng: point.lng,
+    };
+  }
+
+  // ── updateCoordinates ────────────────────────────────────────────────────────
+
+  async updateCoordinates(
+    slug: string,
+    dto: UpdateWaypointDto,
+    userId: string,
+    roles: KindeRole[],
+  ): Promise<WaypointDetailDto> {
+    if (!roles.some((r) => r.key === 'pilgrim')) {
+      throw new ForbiddenException('Requires pilgrim role.');
+    }
+
+    const hasLat = dto.lat !== undefined && dto.lat !== null;
+    const hasLng = dto.lng !== undefined && dto.lng !== null;
+    if (hasLat !== hasLng) {
+      throw new BadRequestException(
+        'Both lat and lng must be provided together, or both omitted to clear.',
+      );
+    }
+
+    const point = await this.prisma.caminoPoint.findUnique({ where: { slug } });
+    if (!point) throw new NotFoundException('Waypoint not found.');
+
+    const updated = await this.prisma.caminoPoint.update({
+      where: { slug },
+      data: {
+        ...(dto.lat !== undefined ? { lat: dto.lat } : {}),
+        ...(dto.lng !== undefined ? { lng: dto.lng } : {}),
+      },
+    });
+
+    this.eventLog.logEvent(EventType.WAYPOINT_COORDINATES_UPDATED, userId, {
+      waypoint_slug: slug,
+      lat: dto.lat,
+      lng: dto.lng,
+    });
+
+    return {
+      id: updated.id,
+      name: updated.name,
+      country: updated.country,
+      slug: updated.slug,
+      description: updated.description,
+      lat: updated.lat,
+      lng: updated.lng,
     };
   }
 

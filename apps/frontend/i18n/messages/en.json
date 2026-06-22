@@ -346,7 +346,16 @@
     "delete_confirm_action": "Delete",
     "delete_cancel_action": "Cancel",
     "delete_error": "Failed to delete. Please try again.",
-    "delete_error_forbidden": "You are not authorized to delete this item. Only the creator (within 1 hour of creation) or an administrator can delete it."
+    "delete_error_forbidden": "You are not authorized to delete this item. Only the creator (within 1 hour of creation) or an administrator can delete it.",
+    "coordinates_heading": "Coordinates",
+    "coordinates_none": "No coordinates set yet.",
+    "edit_coordinates_label": "Edit coordinates",
+    "field_lat": "Latitude",
+    "field_lng": "Longitude",
+    "save_coordinates": "Save",
+    "cancel_coordinates": "Cancel",
+    "error_lat_lng_incomplete": "Please enter both latitude and longitude, or leave both empty.",
+    "error_save_coordinates": "Failed to save coordinates. Please try again."
   },
   "accommodation_detail": {
     "meta_title": "{name}",

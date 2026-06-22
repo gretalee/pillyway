@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils';
 import { BackButton } from './components/BackButton';
 import { AccommodationCard } from './components/AccommodationCard';
 import { SightCard } from './components/SightCard';
+import { WaypointCoordinates } from './components/WaypointCoordinates';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -84,6 +85,13 @@ export default async function WaypointDetailPage({ params }: Props) {
       {waypoint.description && (
         <p className="mt-4 whitespace-pre-wrap">{waypoint.description}</p>
       )}
+
+      <WaypointCoordinates
+        slug={slug}
+        lat={waypoint.lat}
+        lng={waypoint.lng}
+        canContribute={canContribute}
+      />
 
       {/* Accommodations */}
       <section className="mt-10" aria-labelledby="accommodations-heading">

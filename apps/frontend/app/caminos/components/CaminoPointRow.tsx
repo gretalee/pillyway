@@ -238,69 +238,59 @@ export function CaminoPointRow({
         </div>
       </div>
 
-      {/* Coordinates — only for new (unlinked) points */}
-      {!isLinked && (
-        <div className="grid grid-cols-2 gap-3 mt-3">
-          <div>
-            <Label htmlFor={latId}>{t('point_lat')}</Label>
-            <div className="mt-1">
-              <Input
-                id={latId}
-                type="number"
-                step="any"
-                aria-describedby={pointLatError ? `${latId}-error` : undefined}
-                aria-invalid={pointLatError ? 'true' : undefined}
-                {...register(`caminoPoints.${index}.lat`, {
-                  validate: (val) => {
-                    if (val.trim() === '') return true;
-                    const num = parseFloat(val);
-                    if (isNaN(num) || num < -90 || num > 90)
-                      return t('error_lat_lng_incomplete');
-                    return true;
-                  },
-                })}
-              />
-            </div>
-            {pointLatError && (
-              <p
-                id={`${latId}-error`}
-                role="alert"
-                className="mt-1 text-xs text-destructive">
-                {pointLatError.message}
-              </p>
-            )}
+      {/* Coordinates */}
+      <div className="mt-3 grid grid-cols-2 gap-3">
+        <div>
+          <Label htmlFor={latId}>{t('point_lat')}</Label>
+          <div className="mt-1">
+            <Input
+              id={latId}
+              type="number"
+              step="any"
+              aria-describedby={pointLatError ? `${latId}-error` : undefined}
+              aria-invalid={pointLatError ? 'true' : undefined}
+              {...register(`caminoPoints.${index}.lat`, {
+                validate: (val) => {
+                  if (val.trim() === '') return true;
+                  const num = parseFloat(val);
+                  if (isNaN(num) || num < -90 || num > 90) return t('error_lat_lng_incomplete');
+                  return true;
+                },
+              })}
+            />
           </div>
-          <div>
-            <Label htmlFor={lngId}>{t('point_lng')}</Label>
-            <div className="mt-1">
-              <Input
-                id={lngId}
-                type="number"
-                step="any"
-                aria-describedby={pointLngError ? `${lngId}-error` : undefined}
-                aria-invalid={pointLngError ? 'true' : undefined}
-                {...register(`caminoPoints.${index}.lng`, {
-                  validate: (val) => {
-                    if (val.trim() === '') return true;
-                    const num = parseFloat(val);
-                    if (isNaN(num) || num < -180 || num > 180)
-                      return t('error_lat_lng_incomplete');
-                    return true;
-                  },
-                })}
-              />
-            </div>
-            {pointLngError && (
-              <p
-                id={`${lngId}-error`}
-                role="alert"
-                className="mt-1 text-xs text-destructive">
-                {pointLngError.message}
-              </p>
-            )}
-          </div>
+          {pointLatError && (
+            <p id={`${latId}-error`} role="alert" className="mt-1 text-xs text-destructive">
+              {pointLatError.message}
+            </p>
+          )}
         </div>
-      )}
+        <div>
+          <Label htmlFor={lngId}>{t('point_lng')}</Label>
+          <div className="mt-1">
+            <Input
+              id={lngId}
+              type="number"
+              step="any"
+              aria-describedby={pointLngError ? `${lngId}-error` : undefined}
+              aria-invalid={pointLngError ? 'true' : undefined}
+              {...register(`caminoPoints.${index}.lng`, {
+                validate: (val) => {
+                  if (val.trim() === '') return true;
+                  const num = parseFloat(val);
+                  if (isNaN(num) || num < -180 || num > 180) return t('error_lat_lng_incomplete');
+                  return true;
+                },
+              })}
+            />
+          </div>
+          {pointLngError && (
+            <p id={`${lngId}-error`} role="alert" className="mt-1 text-xs text-destructive">
+              {pointLngError.message}
+            </p>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
