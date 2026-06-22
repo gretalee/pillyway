@@ -76,6 +76,8 @@ export interface CaminoDetailFull {
     slug: string;
     description: string | null;
     position: number;
+    lat: number | null;
+    lng: number | null;
   }>;
 }
 
@@ -225,6 +227,8 @@ export class CaminosService {
         slug: order.caminoPoint.slug,
         description: order.caminoPoint.description,
         position: order.position,
+        lat: order.caminoPoint.lat,
+        lng: order.caminoPoint.lng,
       })),
     };
   }

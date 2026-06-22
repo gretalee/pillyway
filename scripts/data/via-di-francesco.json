@@ -82,7 +82,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 43.6987,
+      "lng": 11.9336
     },
     {
       "position": 2,
@@ -117,7 +119,9 @@
           "priceRange": "moderate",
           "verified": false
         }
-      ]
+      ],
+      "lat": 43.6803,
+      "lng": 12.0416
     },
     {
       "position": 3,
@@ -152,7 +156,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 43.62,
+      "lng": 12.1
     },
     {
       "position": 4,
@@ -200,7 +206,9 @@
           "priceRange": "moderate",
           "verified": false
         }
-      ]
+      ],
+      "lat": 43.5728,
+      "lng": 12.1424
     },
     {
       "position": 5,
@@ -235,7 +243,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 43.4997,
+      "lng": 12.1174
     },
     {
       "position": 6,
@@ -283,7 +293,9 @@
           "priceRange": "moderate",
           "verified": false
         }
-      ]
+      ],
+      "lat": 43.457,
+      "lng": 12.2388
     },
     {
       "position": 7,
@@ -331,7 +343,9 @@
           "priceRange": "moderate",
           "verified": false
         }
-      ]
+      ],
+      "lat": 43.4393,
+      "lng": 12.3163
     },
     {
       "position": 8,
@@ -379,7 +393,9 @@
           "priceRange": "moderate",
           "verified": false
         }
-      ]
+      ],
+      "lat": 43.354,
+      "lng": 12.578
     },
     {
       "position": 9,
@@ -401,7 +417,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 43.235,
+      "lng": 12.54
     },
     {
       "position": 10,
@@ -462,7 +480,9 @@
           "priceRange": "moderate",
           "verified": false
         }
-      ]
+      ],
+      "lat": 43.2169,
+      "lng": 12.5955
     },
     {
       "position": 11,
@@ -536,7 +556,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 43.0705,
+      "lng": 12.6197
     },
     {
       "position": 12,
@@ -558,7 +580,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 42.9913,
+      "lng": 12.6711
     },
     {
       "position": 13,
@@ -580,7 +604,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 42.9559,
+      "lng": 12.7033
     },
     {
       "position": 14,
@@ -628,7 +654,9 @@
           "priceRange": "moderate",
           "verified": false
         }
-      ]
+      ],
+      "lat": 42.8763,
+      "lng": 12.7471
     },
     {
       "position": 15,
@@ -650,7 +678,9 @@
           "priceRange": "moderate",
           "verified": false
         }
-      ]
+      ],
+      "lat": 42.787,
+      "lng": 12.749
     },
     {
       "position": 16,
@@ -685,7 +715,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 42.7344,
+      "lng": 12.7378
     },
     {
       "position": 17,
@@ -707,7 +739,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 42.62,
+      "lng": 12.735
     },
     {
       "position": 18,
@@ -729,7 +763,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 42.5844,
+      "lng": 12.7644
     },
     {
       "position": 19,
@@ -764,7 +800,9 @@
           "priceRange": "moderate",
           "verified": false
         }
-      ]
+      ],
+      "lat": 42.5286,
+      "lng": 12.757
     },
     {
       "position": 20,
@@ -812,7 +850,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 42.5013,
+      "lng": 12.9173
     },
     {
       "position": 21,
@@ -860,7 +900,9 @@
           "priceRange": "moderate",
           "verified": false
         }
-      ]
+      ],
+      "lat": 42.404,
+      "lng": 12.862
     },
     {
       "position": 22,
@@ -882,7 +924,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 42.238,
+      "lng": 12.932
     },
     {
       "position": 23,
@@ -890,7 +934,9 @@
       "country": "italy",
       "slug": "ponticelli-sabino",
       "description": "Kleines Sabina-Dorf nahe Scandriglia in den Latium-Hügeln. Die Route führt durch sanfte Hügellandschaft vor dem langen Abstieg ins Tibertal. Begrenzte Pilgerunterkünfte vor Ort.",
-      "accommodations": []
+      "accommodations": [],
+      "lat": 42.15,
+      "lng": 12.99
     },
     {
       "position": 24,
@@ -925,7 +971,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 42.0522,
+      "lng": 12.6129
     },
     {
       "position": 25,
@@ -973,7 +1021,9 @@
           "priceRange": "moderate",
           "verified": false
         }
-      ]
+      ],
+      "lat": 41.9028,
+      "lng": 12.4964
     }
   ],
   "stages": [
