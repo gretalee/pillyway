@@ -167,6 +167,7 @@ jobs:
           script: |
             # Write a fresh .env from GitHub Secrets — docker compose reads it automatically
             mkdir -p /opt/pillyway
+            umask 077
             cat > /opt/pillyway/.env << EOF
             IMAGE_BACKEND=$IMAGE_BACKEND
             IMAGE_FRONTEND=$IMAGE_FRONTEND
@@ -187,8 +188,23 @@ jobs:
             SUPABASE_STORAGE_BUCKET=$SUPABASE_STORAGE_BUCKET
             SUPABASE_STORAGE_BUCKET_GPX=$SUPABASE_STORAGE_BUCKET_GPX
             EOF
+            chmod 600 /opt/pillyway/.env
 
             echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
             docker compose -f /opt/pillyway/docker-compose.prod.yml pull
             docker compose -f /opt/pillyway/docker-compose.prod.yml up -d --remove-orphans
+
+            echo "Waiting for backend to start (migrations may take a moment)..."
+            RETRIES=0
+            until docker compose -f /opt/pillyway/docker-compose.prod.yml ps --status running --services 2>/dev/null | grep -q "^backend$"; do
+              RETRIES=$((RETRIES + 1))
+              if [ $RETRIES -ge 12 ]; then
+                echo "Backend did not reach running state after 60 s. Recent logs:"
+                docker compose -f /opt/pillyway/docker-compose.prod.yml logs --tail=50 backend
+                exit 1
+              fi
+              sleep 5
+            done
+            echo "Backend is running."
+
             docker image prune -f

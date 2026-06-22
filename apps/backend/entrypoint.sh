@@ -1,4 +1,4 @@
 #!/bin/sh
 set -e
-npx prisma migrate deploy
-exec node dist/src/main
+./node_modules/.bin/prisma migrate deploy
+exec node dist/main
