@@ -7,6 +7,7 @@ import { PathTracker } from '@/app/components/PathTracker';
 import { getAuthUser } from '@/lib/getAuthUser';
 import type { Locale } from '@/i18n/detectLocale';
 import '../assets/styles/global.css';
+import 'maplibre-gl/dist/maplibre-gl.css';
 import { SUPPORTED_LOCALES } from '@/i18n/detectLocale';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pillyway.de';

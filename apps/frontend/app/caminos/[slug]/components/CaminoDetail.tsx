@@ -8,6 +8,7 @@ import { VerifiedBadge } from '@/app/caminos/components/VerifiedBadge';
 import { VerificationSection } from './VerificationSection';
 import { CaminoGpxFiles } from './CaminoGpxFiles';
 import { CaminoPictures } from './CaminoPictures';
+import { CaminoRouteMap } from './CaminoRouteMap';
 
 import { Input } from '@/app/components/ui/input';
 import { Textarea } from '@/app/components/ui/textarea';
@@ -241,6 +242,7 @@ export function CaminoDetail({
       {/* Stages */}
       <section className="mt-8">
         <h2 className="mb-4 text-xl font-semibold">{t('stages_heading')}</h2>
+        <CaminoRouteMap points={camino.caminoPoints} className="mb-6" />
         {children}
       </section>
 

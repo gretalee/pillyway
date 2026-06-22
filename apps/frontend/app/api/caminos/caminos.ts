@@ -16,6 +16,8 @@ export interface CaminoPointDetail {
   country: string;
   description: string | null;
   position: number;
+  lat: number | null;
+  lng: number | null;
 }
 
 export interface CaminoDetailFull {

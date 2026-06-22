@@ -27,6 +27,8 @@ interface PointData {
   country: string;
   slug: string;
   description: string | null;
+  lat?: number | null;
+  lng?: number | null;
   accommodations: AccommodationData[];
 }
 
@@ -192,8 +194,8 @@ async function seed(
 
       const point = await tx.caminoPoint.upsert({
         where: { slug: pd.slug },
-        create: { name: pd.name, country: pd.country, slug: pd.slug, description: pd.description },
-        update: { name: pd.name, country: pd.country, description: pd.description },
+        create: { name: pd.name, country: pd.country, slug: pd.slug, description: pd.description, lat: pd.lat ?? null, lng: pd.lng ?? null },
+        update: { name: pd.name, country: pd.country, description: pd.description, lat: pd.lat ?? null, lng: pd.lng ?? null },
       });
       pointIdByName.set(pd.name, point.id);
       counts.points++;
