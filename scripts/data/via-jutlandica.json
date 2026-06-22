@@ -15,14 +15,12 @@
     ],
     "note": "Replace createdBy with your Kinde user sub. Stages 6+7 of the official route are merged because Stafstedt and Jahrsdorf have no overnight accommodation — Jevenstedt serves as the practical overnight base. The route described here follows the western variant via Handewitter Forst; an eastern variant runs Flensburg → Sieverstedt → Schleswig (32+22 km)."
   },
-
   "camino": {
     "name": "Via Jutlandica",
     "description": "Die Via Jutlandica ist die älteste der norddeutschen Jakobswege und Teil der transeuropäischen Kulturroute, die St. Olavs Grab in Trondheim (Norwegen) mit dem Apostelgrab in Santiago de Compostela verbindet. Sie wurde am 20. Oktober 2007 nach rund 500 Jahren neu eröffnet.\n\nDer Weg folgt dem historischen Ochsenweg (dänisch: Hærvejen), einer der ältesten Landrouten Nordeuropas. Von der deutsch-dänischen Grenze bei Krusau/Harrislee führt er ca. 227 km durch Schleswig-Holstein und Niedersachsen bis nach Stade an der Elbe. Von dort geht es weiter nach Harsefeld und Bremen.\n\nDie Landschaft ist flach bis leicht hügelig — typisch norddeutsch mit Wiesen, Knicks (Wallhecken), Wäldern, Seen und Deichläufen. Der Weg ist ruhig und einsam; eine Voranmeldung in den Unterkünften wird empfohlen.\n\nHistorische Höhepunkte: UNESCO-Welterbe Haithabu/Hedeby und Danevirke bei Schleswig; Schloss Gottorf (Entfernungsstein nach Santiago: 3.199 km); Schwebefähre und Fußgängertunnel unter dem Nord-Ostsee-Kanal bei Rendsburg; Zisterzienserkloster Itzehoe; historische Planstadt Glückstadt; mittelalterliche Hansestadt Stade.\n\n**Pilgerpass (Credencial):**\nEdition caminotogo: https://caminotogo.de/produkt/321-pilgerausweis-jutlandica/ (€7,00 + Versand). Alternativ: Pilgerzentrum im Norden, St. Jacobi Hamburg (040 30 37 37 23); Deutsche St. Jakobus-Gesellschaft Aachen (0241 4790127).",
     "verified": false,
     "createdBy": "kp_53e76e075e3f41bbaa376eb3ca29e14c"
   },
-
   "points": [
     {
       "position": 1,
@@ -59,7 +57,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 54.8103,
+      "lng": 9.405
     },
     {
       "position": 2,
@@ -82,7 +82,9 @@
           "priceRange": "moderate",
           "verified": false
         }
-      ]
+      ],
+      "lat": 54.7868,
+      "lng": 9.4363
     },
     {
       "position": 3,
@@ -147,7 +149,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 54.7569,
+      "lng": 9.3338
     },
     {
       "position": 4,
@@ -170,7 +174,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 54.693,
+      "lng": 9.447
     },
     {
       "position": 5,
@@ -249,7 +255,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 54.65,
+      "lng": 9.45
     },
     {
       "position": 6,
@@ -328,7 +336,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 54.5182,
+      "lng": 9.5671
     },
     {
       "position": 7,
@@ -365,7 +375,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 54.409,
+      "lng": 9.528
     },
     {
       "position": 8,
@@ -388,7 +400,9 @@
           "priceRange": "moderate",
           "verified": false
         }
-      ]
+      ],
+      "lat": 54.3055,
+      "lng": 9.6607
     },
     {
       "position": 9,
@@ -439,7 +453,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 54.243,
+      "lng": 9.664
     },
     {
       "position": 10,
@@ -504,7 +520,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 54.0879,
+      "lng": 9.6693
     },
     {
       "position": 11,
@@ -527,7 +545,9 @@
           "priceRange": "moderate",
           "verified": false
         }
-      ]
+      ],
+      "lat": 53.9792,
+      "lng": 9.5768
     },
     {
       "position": 12,
@@ -550,7 +570,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 53.9225,
+      "lng": 9.5132
     },
     {
       "position": 13,
@@ -587,7 +609,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 53.896,
+      "lng": 9.482
     },
     {
       "position": 14,
@@ -624,7 +648,9 @@
           "priceRange": "moderate",
           "verified": false
         }
-      ]
+      ],
+      "lat": 53.7888,
+      "lng": 9.4241
     },
     {
       "position": 15,
@@ -661,7 +687,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 53.711,
+      "lng": 9.3812
     },
     {
       "position": 16,
@@ -684,10 +712,11 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 53.5951,
+      "lng": 9.4768
     }
   ],
-
   "stages": [
     {
       "from": "Harrislee",

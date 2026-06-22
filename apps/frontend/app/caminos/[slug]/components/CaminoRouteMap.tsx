@@ -27,6 +27,8 @@ export function CaminoRouteMap({ points, className }: Props) {
     async function initMap() {
       const maplibregl = (await import('maplibre-gl')).default;
 
+      if (!containerRef.current) return;
+
       const lngs = coords.map((c) => c[0]);
       const lats = coords.map((c) => c[1]);
       const bounds: [number, number, number, number] = [
@@ -37,7 +39,7 @@ export function CaminoRouteMap({ points, className }: Props) {
       ];
 
       map = new maplibregl.Map({
-        container: containerRef.current!,
+        container: containerRef.current,
         // style: 'https://tiles.openfreemap.org/styles/bright',
         style: 'https://tiles.openfreemap.org/styles/liberty',
         bounds,

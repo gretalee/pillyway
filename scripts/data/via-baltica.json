@@ -41,7 +41,9 @@
       "country": "poland",
       "slug": "swinemuende",
       "description": "Polnische Hafenstadt Świnoujście an der Mündung der Swine. Ausgangspunkt der Via Baltica; Fährverbindungen von Kopenhagen und Ystad.",
-      "accommodations": []
+      "accommodations": [],
+      "lat": 53.91,
+      "lng": 14.2523
     },
     {
       "position": 2,
@@ -63,7 +65,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 53.894,
+      "lng": 14.12
     },
     {
       "position": 3,
@@ -85,7 +89,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 53.868,
+      "lng": 13.918
     },
     {
       "position": 4,
@@ -93,7 +99,9 @@
       "country": "germany",
       "slug": "lassan",
       "description": null,
-      "accommodations": []
+      "accommodations": [],
+      "lat": 53.946,
+      "lng": 13.72
     },
     {
       "position": 5,
@@ -101,7 +109,9 @@
       "country": "germany",
       "slug": "hohendorf",
       "description": null,
-      "accommodations": []
+      "accommodations": [],
+      "lat": 53.9697,
+      "lng": 13.6422
     },
     {
       "position": 6,
@@ -109,7 +119,9 @@
       "country": "germany",
       "slug": "hanshagen",
       "description": null,
-      "accommodations": []
+      "accommodations": [],
+      "lat": 54.07,
+      "lng": 13.54
     },
     {
       "position": 7,
@@ -131,7 +143,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 54.0939,
+      "lng": 13.3837
     },
     {
       "position": 8,
@@ -153,7 +167,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 54.1133,
+      "lng": 13.0427
     },
     {
       "position": 9,
@@ -175,7 +191,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 54.0919,
+      "lng": 12.7609
     },
     {
       "position": 10,
@@ -183,7 +201,9 @@
       "country": "germany",
       "slug": "sanitz",
       "description": null,
-      "accommodations": []
+      "accommodations": [],
+      "lat": 54.08,
+      "lng": 12.35
     },
     {
       "position": 11,
@@ -205,7 +225,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 54.0924,
+      "lng": 12.0991
     },
     {
       "position": 12,
@@ -227,7 +249,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 54.1003,
+      "lng": 11.8989
     },
     {
       "position": 13,
@@ -249,7 +273,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 53.9901,
+      "lng": 11.6772
     },
     {
       "position": 14,
@@ -271,7 +297,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 53.8934,
+      "lng": 11.4674
     },
     {
       "position": 15,
@@ -293,7 +321,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 53.8617,
+      "lng": 11.1879
     },
     {
       "position": 16,
@@ -315,7 +345,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 53.848,
+      "lng": 10.9375
     },
     {
       "position": 17,
@@ -337,7 +369,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 53.8655,
+      "lng": 10.6866
     },
     {
       "position": 18,
@@ -359,7 +393,9 @@
           "priceRange": "comfortable",
           "verified": false
         }
-      ]
+      ],
+      "lat": 53.8115,
+      "lng": 10.3713
     },
     {
       "position": 19,
@@ -381,7 +417,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 53.7556,
+      "lng": 10.175
     },
     {
       "position": 20,
@@ -389,7 +427,9 @@
       "country": "germany",
       "slug": "poppenbuettel",
       "description": "Nördlicher Hamburger Stadtteil, Endpunkt der Etappe vor der Einfahrt ins Hamburger Zentrum.",
-      "accommodations": []
+      "accommodations": [],
+      "lat": 53.676,
+      "lng": 10.099
     },
     {
       "position": 21,
@@ -424,7 +464,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 53.5753,
+      "lng": 10.0153
     },
     {
       "position": 22,
@@ -446,7 +488,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 53.4511,
+      "lng": 9.5043
     },
     {
       "position": 23,
@@ -468,7 +512,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 53.2986,
+      "lng": 9.2794
     },
     {
       "position": 24,
@@ -490,7 +536,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 53.1127,
+      "lng": 9.1453
     },
     {
       "position": 25,
@@ -512,7 +560,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 53.0793,
+      "lng": 8.8017
     },
     {
       "position": 26,
@@ -520,7 +570,9 @@
       "country": "germany",
       "slug": "barrien",
       "description": null,
-      "accommodations": []
+      "accommodations": [],
+      "lat": 52.959,
+      "lng": 8.744
     },
     {
       "position": 27,
@@ -528,7 +580,9 @@
       "country": "germany",
       "slug": "harpstedt",
       "description": null,
-      "accommodations": []
+      "accommodations": [],
+      "lat": 52.9074,
+      "lng": 8.5893
     },
     {
       "position": 28,
@@ -536,7 +590,9 @@
       "country": "germany",
       "slug": "wildeshausen",
       "description": null,
-      "accommodations": []
+      "accommodations": [],
+      "lat": 52.8968,
+      "lng": 8.4328
     },
     {
       "position": 29,
@@ -597,7 +653,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 52.8386,
+      "lng": 8.3067
     },
     {
       "position": 30,
@@ -619,7 +677,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 52.6645,
+      "lng": 8.2396
     },
     {
       "position": 31,
@@ -627,7 +687,9 @@
       "country": "germany",
       "slug": "neuenkirchen",
       "description": null,
-      "accommodations": []
+      "accommodations": [],
+      "lat": 52.5989,
+      "lng": 8.1958
     },
     {
       "position": 32,
@@ -635,7 +697,9 @@
       "country": "germany",
       "slug": "steinfeld",
       "description": null,
-      "accommodations": []
+      "accommodations": [],
+      "lat": 52.5861,
+      "lng": 8.2154
     },
     {
       "position": 33,
@@ -657,7 +721,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 52.5231,
+      "lng": 8.1979
     },
     {
       "position": 34,
@@ -679,7 +745,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 52.5087,
+      "lng": 8.2645
     },
     {
       "position": 35,
@@ -687,7 +755,9 @@
       "country": "germany",
       "slug": "engter",
       "description": null,
-      "accommodations": []
+      "accommodations": [],
+      "lat": 52.4486,
+      "lng": 8.2272
     },
     {
       "position": 36,
@@ -695,7 +765,9 @@
       "country": "germany",
       "slug": "rulle",
       "description": "Kleines Dorf mit Wallfahrtskirche kurz vor Osnabrück.",
-      "accommodations": []
+      "accommodations": [],
+      "lat": 52.3711,
+      "lng": 8.1
     },
     {
       "position": 37,
@@ -717,7 +789,9 @@
           "priceRange": "comfortable",
           "verified": false
         }
-      ]
+      ],
+      "lat": 52.2799,
+      "lng": 8.0472
     }
   ],
   "stages": [

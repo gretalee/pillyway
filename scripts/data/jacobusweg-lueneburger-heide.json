@@ -49,7 +49,9 @@
       "country": "germany",
       "slug": "hamburg",
       "description": "Ausgangspunkt des Jacobuswegs ist die Hauptkirche St. Jacobi, Jakobikirchhof 22, 20095 Hamburg — eine der fünf Hamburger Hauptkirchen und seit dem Mittelalter Patronatskirche der Jakobspilger. Hier befindet sich das Pilgerbüro (Tel. 040/30 37 37 23, Di 15–17 Uhr, Do 14–16 Uhr), wo der Pilgerausweis erworben und der erste Stempel geholt werden kann. Der Weg verlässt die Hamburger Innenstadt durch HafenCity, Veddel, Wilhelmsburg und Harburg in Richtung Süden.",
-      "accommodations": []
+      "accommodations": [],
+      "lat": 53.5753,
+      "lng": 10.0153
     },
     {
       "position": 2,
@@ -84,7 +86,9 @@
           "priceRange": "comfortable",
           "verified": false
         }
-      ]
+      ],
+      "lat": 53.3741,
+      "lng": 9.9706
     },
     {
       "position": 3,
@@ -106,7 +110,9 @@
           "priceRange": "moderate",
           "verified": false
         }
-      ]
+      ],
+      "lat": 53.2906,
+      "lng": 9.8664
     },
     {
       "position": 4,
@@ -128,7 +134,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 53.2142,
+      "lng": 9.9528
     },
     {
       "position": 5,
@@ -176,7 +184,9 @@
           "priceRange": "moderate",
           "verified": false
         }
-      ]
+      ],
+      "lat": 53.1617,
+      "lng": 9.9375
     },
     {
       "position": 6,
@@ -198,7 +208,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 53.1195,
+      "lng": 9.7968
     },
     {
       "position": 7,
@@ -259,7 +271,9 @@
           "priceRange": "comfortable",
           "verified": false
         }
-      ]
+      ],
+      "lat": 52.9841,
+      "lng": 9.8411
     },
     {
       "position": 8,
@@ -281,7 +295,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 52.8635,
+      "lng": 9.695
     },
     {
       "position": 9,
@@ -316,7 +332,9 @@
           "priceRange": "comfortable",
           "verified": false
         }
-      ]
+      ],
+      "lat": 52.8672,
+      "lng": 9.5939
     },
     {
       "position": 10,
@@ -338,7 +356,9 @@
           "priceRange": "moderate",
           "verified": true
         }
-      ]
+      ],
+      "lat": 52.7826,
+      "lng": 9.6007
     },
     {
       "position": 11,
@@ -360,7 +380,9 @@
           "priceRange": "comfortable",
           "verified": false
         }
-      ]
+      ],
+      "lat": 52.682,
+      "lng": 9.627
     },
     {
       "position": 12,
@@ -395,26 +417,28 @@
           "priceRange": "moderate",
           "verified": false
         }
-      ]
+      ],
+      "lat": 52.5402,
+      "lng": 9.4969
     }
   ],
   "stages": [
     {
       "from": "Hamburg",
       "to": "Hittfeld",
-      "distance": 25.0,
+      "distance": 25,
       "description": "Die erste Etappe führt von der Hauptkirche St. Jacobi durch die südlichen Stadtteile Hamburgs: HafenCity, Veddel, Wilhelmsburg, Harburg, Marmstorf, Langenbek und Sinstorf (offizieller Etappenpunkt ohne Unterkunft) nach Hittfeld. Der Weg verlässt die Großstadt schrittweise und wechselt gegen Ende in das ruhige Umland. Stempel in St. Jacobi am Start und in der St.-Mauritius-Kirche Hittfeld."
     },
     {
       "from": "Hittfeld",
       "to": "Hanstedt",
-      "distance": 20.0,
+      "distance": 20,
       "description": "Die zweite Etappe führt von Hittfeld über das historische Klosterdorf Ramelsloh (Damenstift ca. 950 n. Chr., Stempelstelle; das Hotel Pharos zur Seeve liegt dort ca. 2 km abseits als Alternativübernachtung) weiter durch die Hügellandschaft des Landkreises Harburg nach Hanstedt. Ab Hanstedt beginnt die charakteristische Heide-Atmosphäre. Hinweis: Der Ramelsloher Hof in Ramelsloh ist dauerhaft geschlossen (Stand 2026)."
     },
     {
       "from": "Hanstedt",
       "to": "Undeloh",
-      "distance": 13.0,
+      "distance": 13,
       "description": "Die dritte Etappe führt von Hanstedt durch Kiefernwälder und Heidehügel nach Undeloh, dem 'Tor zur Lüneburger Heide'. Der Weg passiert Töps-Heide und erreicht schließlich Undeloh am Nordrand des Naturschutzgebiets. Undeloh ist der letzte Ort mit regulären Einkaufsmöglichkeiten vor dem motorfreien Naturparkkern."
     },
     {
@@ -426,25 +450,25 @@
     {
       "from": "Niederhaverbeck",
       "to": "Schneverdingen",
-      "distance": 10.0,
+      "distance": 10,
       "description": "Die fünfte Etappe führt aus dem Naturschutzgebiet heraus nach Schneverdingen. Der Weg quert Kiefernwälder und offene Heidehänge. Schneverdingen bietet die ersten Einkaufs- und Versorgungsmöglichkeiten seit Undeloh: Supermarkt, Apotheke, Bäcker."
     },
     {
       "from": "Schneverdingen",
       "to": "Soltau",
-      "distance": 21.0,
+      "distance": 21,
       "description": "Die sechste Etappe führt durch Wolterdingen und weiteres Heideland nach Soltau, der Kreisstadt des Heidekreises. Soltau markiert die Entscheidungsstation: Pilger wählen hier die westliche Aller-Leine-Tal-Variante (über Bad Fallingbostel) oder die östliche Naturpark-Südheide-Variante (über Wietzendorf und Bergen). Soltau bietet die umfangreichste Unterkunftsauswahl auf dem gesamten Weg."
     },
     {
       "from": "Soltau",
       "to": "Bad Fallingbostel",
-      "distance": 23.0,
+      "distance": 23,
       "description": "Beginn des westlichen Aller-Leine-Tal-Abschnitts. Die siebte Etappe führt über Dorfmark (Stempelstelle, Campingplatz Böhmeschlucht mit Unterkunft, Tel. 05163/902000) nach Bad Fallingbostel. Der Weg wechselt von Heidelandschaft in das Flusstal der Böhme. Bad Fallingbostel ist ein Kneipp-Kurort; die DJH-Jugendherberge liegt direkt auf dem Weg."
     },
     {
       "from": "Bad Fallingbostel",
       "to": "Walsrode",
-      "distance": 15.0,
+      "distance": 15,
       "description": "Die achte Etappe (erster Teil) führt über Meinerdingen nach Walsrode. Das Kloster Walsrode — ältestes der sechs Lüneburger Klöster, gegründet ca. 986 n. Chr. — ist einer der eindrucksvollsten Übernachtungsorte auf dem gesamten Jacobusweg. Pilgerstempel und Unterkunft im Kloster; Buchung vorab empfohlen (Tel. +49 151 54 39 76 88)."
     },
     {

@@ -77,7 +77,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 50.9746,
+      "lng": 10.3229
     },
     {
       "position": 2,
@@ -128,7 +130,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 51.0053,
+      "lng": 10.1931
     },
     {
       "position": 3,
@@ -179,7 +183,9 @@
           "priceRange": "comfortable",
           "verified": false
         }
-      ]
+      ],
+      "lat": 51.0571,
+      "lng": 10.2453
     },
     {
       "position": 4,
@@ -230,7 +236,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 51.0821,
+      "lng": 10.1691
     },
     {
       "position": 5,
@@ -281,7 +289,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 51.15,
+      "lng": 9.983
     },
     {
       "position": 6,
@@ -318,7 +328,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 51.2003,
+      "lng": 9.865
     },
     {
       "position": 7,
@@ -369,7 +381,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 51.1103,
+      "lng": 9.66
     },
     {
       "position": 8,
@@ -420,7 +434,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 51.034,
+      "lng": 9.3931
     },
     {
       "position": 9,
@@ -471,7 +487,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 51.05,
+      "lng": 9.33
     },
     {
       "position": 10,
@@ -536,7 +554,9 @@
           "priceRange": "moderate",
           "verified": false
         }
-      ]
+      ],
+      "lat": 50.923,
+      "lng": 9.198
     },
     {
       "position": 11,
@@ -573,7 +593,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 50.822,
+      "lng": 9.03
     },
     {
       "position": 12,
@@ -596,7 +618,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 50.823,
+      "lng": 8.919
     },
     {
       "position": 13,
@@ -661,7 +685,9 @@
           "priceRange": "budget",
           "verified": false
         }
-      ]
+      ],
+      "lat": 50.79,
+      "lng": 8.915
     },
     {
       "position": 14,
@@ -726,7 +752,9 @@
           "priceRange": "moderate",
           "verified": false
         }
-      ]
+      ],
+      "lat": 50.8045,
+      "lng": 8.7653
     }
   ],
   "stages": [
