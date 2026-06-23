@@ -92,6 +92,7 @@ export function CaminoDetail({
 }: CaminoDetailProps) {
   const t = useTranslations('camino_detail');
   const tCaminos = useTranslations('caminos');
+  const tCodes = useTranslations('country_codes');
   const mutation = useUpdateCamino();
 
   const canEdit = user?.roles.some((r) => r.key === 'pilgrim') ?? false;
@@ -179,6 +180,11 @@ export function CaminoDetail({
             )}>
             <div className="">
               <h1 className="text-3xl font-bold tracking-tight inline">{camino.name}</h1>
+              {camino.countries.length > 0 && (
+                <span className="ml-2 text-base font-normal text-muted-foreground">
+                  {camino.countries.map((c) => tCodes(c)).join(' · ')}
+                </span>
+              )}
               {camino.verified && <VerifiedBadge className="inline-block pl-2 lg:pl-3" />}
             </div>
             {canEdit && (

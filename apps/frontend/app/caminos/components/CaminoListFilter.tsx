@@ -32,6 +32,7 @@ export function CaminoListFilter({
   className,
 }: CaminoListFilterProps) {
   const t = useTranslations('caminos');
+  const tCodes = useTranslations('country_codes');
   const [onlyVerified, setOnlyVerified] = useState(false);
 
   const filteredCaminos = onlyVerified ? caminos.filter((c) => c.verified) : caminos;
@@ -68,6 +69,11 @@ export function CaminoListFilter({
                       {camino.name}
                     </h2>
                   </Link>
+                  {camino.countries.length > 0 && (
+                    <span className="ml-2 text-sm text-muted-foreground">
+                      {camino.countries.map((c) => tCodes(c)).join(' · ')}
+                    </span>
+                  )}
                   {camino.verified && (
                     <VerifiedBadge className="inline-block pl-2 translate-y-0.5" />
                   )}

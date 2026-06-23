@@ -29,6 +29,7 @@ export interface CaminoSummary {
   name: string;
   description: string | null;
   verified: boolean;
+  countries: string[];
   createdBy: string;
   createdAt: Date;
 }
@@ -53,6 +54,7 @@ export interface CaminoDetail {
   name: string;
   description: string | null;
   verified: boolean;
+  countries: string[];
   caminoPoints: CaminoPointInResponse[];
 }
 
@@ -66,6 +68,7 @@ export interface CaminoDetailFull {
   name: string;
   description: string | null;
   verified: boolean;
+  countries: string[];
   createdBy: string;
   createdAt: Date;
   updatedAt: Date;
@@ -97,6 +100,19 @@ function assertCoordPair(
       `${label}: lat and lng must both be provided or both omitted.`,
     );
   }
+}
+
+/** Deduplicate countries preserving first-occurrence order. */
+function extractOrderedCountries(orderedCountries: string[]): string[] {
+  const seen = new Set<string>();
+  const result: string[] = [];
+  for (const c of orderedCountries) {
+    if (!seen.has(c)) {
+      seen.add(c);
+      result.push(c);
+    }
+  }
+  return result;
 }
 
 // ─── Service ─────────────────────────────────────────────────────────────────
@@ -181,6 +197,7 @@ export class CaminosService {
           name: true,
           description: true,
           verified: true,
+          countries: true,
           createdBy: true,
           createdAt: true,
         },
@@ -235,6 +252,7 @@ export class CaminosService {
       name: camino.name,
       description: camino.description,
       verified: camino.verified,
+      countries: camino.countries,
       createdBy: camino.createdBy,
       createdAt: camino.createdAt,
       updatedAt: camino.updatedAt,
@@ -375,6 +393,12 @@ export class CaminosService {
         const orderedPointIds = caminoPoints.map((p) => p.id);
         await this.stagesService.upsertStagePairs(orderedPointIds, tx);
 
+        const countries = extractOrderedCountries(caminoPoints.map((p) => p.country));
+        await tx.camino.update({
+          where: { id: camino.id },
+          data: { countries },
+        });
+
         this.logger.debug('Camino created successfully with ID: ' + camino.id);
 
         return {
@@ -383,6 +407,7 @@ export class CaminosService {
           name: camino.name,
           description: camino.description,
           verified: camino.verified,
+          countries,
           caminoPoints,
         };
       });
@@ -536,9 +561,11 @@ export class CaminosService {
 
             // 4d. Re-insert using the same create-or-link logic as create()
             const newOrderedPointIds: string[] = [];
+            const resolvedCountries: string[] = [];
             for (let i = 0; i < dto.caminoPoints.length; i++) {
               const item = dto.caminoPoints[i];
               let pointId: string;
+              let pointCountry: string;
 
               if (item.caminoPointId) {
                 const found = await tx.caminoPoint.findUnique({
@@ -558,6 +585,7 @@ export class CaminosService {
                   });
                 }
                 pointId = found.id;
+                pointCountry = found.country;
               } else {
                 assertCoordPair(item.lat, item.lng, `New point "${item.name}"`);
                 const slug = await this.generateSlug(
@@ -583,17 +611,25 @@ export class CaminosService {
                   update: {}, // slug is immutable — never update it
                 });
                 pointId = upserted.id;
+                pointCountry = upserted.country;
               }
 
               await tx.caminoPointOrder.create({
                 data: { caminoId: id, caminoPointId: pointId, position: i + 1 },
               });
               newOrderedPointIds.push(pointId);
+              resolvedCountries.push(pointCountry);
             }
 
             // Eagerly upsert Stage rows for the new ordering inside the same
             // transaction — old pairs that left the sequence are NOT deleted.
             await this.stagesService.upsertStagePairs(newOrderedPointIds, tx);
+
+            // Persist the ordered, deduplicated country list on the camino row.
+            await tx.camino.update({
+              where: { id },
+              data: { countries: extractOrderedCountries(resolvedCountries) },
+            });
           }
 
           // 5. Update scalar fields on the camino row.

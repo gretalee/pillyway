@@ -90,6 +90,7 @@ const verifiedCamino: CaminoSummary = {
   name: 'Camino Francés',
   description: 'The classic route.',
   verified: true,
+  countries: ['france', 'spain'],
   createdBy: 'user-1',
   createdAt: '2024-01-01T00:00:00.000Z',
 };
@@ -100,6 +101,7 @@ const unverifiedCamino: CaminoSummary = {
   name: 'Via de la Plata',
   description: 'Southern route.',
   verified: false,
+  countries: ['spain'],
   createdBy: 'user-2',
   createdAt: '2024-01-01T00:00:00.000Z',
 };
