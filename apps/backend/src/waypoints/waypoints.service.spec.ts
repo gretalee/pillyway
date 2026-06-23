@@ -1,9 +1,16 @@
-import { LoggerService, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  LoggerService,
+  NotFoundException,
+} from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AccommodationType } from '@prisma/client';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
+import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { EventLogService } from '../event-log/event-log.service';
+import { EventType } from '../event-log/event-type.enum';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateAccommodationDto } from './dto/create-accommodation.dto';
 import { CreateSightDto } from './dto/create-sight.dto';
@@ -108,6 +115,186 @@ describe('WaypointsService.findBySlug()', () => {
 
     await expect(service.findBySlug('unknown-slug')).rejects.toBeInstanceOf(
       NotFoundException,
+    );
+  });
+});
+
+// ─── WaypointsService.update() ───────────────────────────────────────────────
+
+describe('WaypointsService.update()', () => {
+  afterEach(() => vi.restoreAllMocks());
+
+  const pilgrimRoles: KindeRole[] = [{ id: 'r1', key: 'pilgrim', name: 'Pilgrim' }];
+  const noRoles: KindeRole[] = [];
+
+  const basePointWithCoords = { ...basePoint, lat: 43.163, lng: -1.238, description: null };
+
+  function buildUpdateMock(returnValue = basePointWithCoords) {
+    return {
+      caminoPoint: {
+        findUnique: vi.fn().mockResolvedValue(basePointWithCoords),
+        update: vi.fn().mockResolvedValue(returnValue),
+      },
+    };
+  }
+
+  function buildValidationMock() {
+    return {
+      caminoPoint: {
+        findUnique: vi.fn(),
+        update: vi.fn(),
+      },
+    };
+  }
+
+  it('throws ForbiddenException when caller lacks the pilgrim role', async () => {
+    const module = await buildModule(buildValidationMock());
+    const service = module.get(WaypointsService);
+
+    await expect(
+      service.update(WAYPOINT_SLUG, { name: 'Rome' }, USER_ID, noRoles),
+    ).rejects.toBeInstanceOf(ForbiddenException);
+  });
+
+  it('throws BadRequestException when the body has no fields', async () => {
+    const module = await buildModule(buildValidationMock());
+    const service = module.get(WaypointsService);
+
+    await expect(
+      service.update(WAYPOINT_SLUG, {}, USER_ID, pilgrimRoles),
+    ).rejects.toBeInstanceOf(BadRequestException);
+  });
+
+  it('throws BadRequestException when name is a blank string', async () => {
+    const module = await buildModule(buildValidationMock());
+    const service = module.get(WaypointsService);
+
+    await expect(
+      service.update(WAYPOINT_SLUG, { name: '   ' }, USER_ID, pilgrimRoles),
+    ).rejects.toBeInstanceOf(BadRequestException);
+  });
+
+  it('throws BadRequestException when only lat is provided', async () => {
+    const module = await buildModule(buildValidationMock());
+    const service = module.get(WaypointsService);
+
+    await expect(
+      service.update(WAYPOINT_SLUG, { lat: 43.163 }, USER_ID, pilgrimRoles),
+    ).rejects.toBeInstanceOf(BadRequestException);
+  });
+
+  it('throws BadRequestException when only lng is provided', async () => {
+    const module = await buildModule(buildValidationMock());
+    const service = module.get(WaypointsService);
+
+    await expect(
+      service.update(WAYPOINT_SLUG, { lng: -1.238 }, USER_ID, pilgrimRoles),
+    ).rejects.toBeInstanceOf(BadRequestException);
+  });
+
+  it('throws BadRequestException when lat is null but lng is a value (mixed pair)', async () => {
+    const module = await buildModule(buildValidationMock());
+    const service = module.get(WaypointsService);
+
+    await expect(
+      service.update(WAYPOINT_SLUG, { lat: null, lng: -1.238 }, USER_ID, pilgrimRoles),
+    ).rejects.toBeInstanceOf(BadRequestException);
+  });
+
+  it('throws NotFoundException when no CaminoPoint matches the slug', async () => {
+    const prismaMock = {
+      caminoPoint: {
+        findUnique: vi.fn().mockResolvedValue(null),
+        update: vi.fn(),
+      },
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(WaypointsService);
+
+    await expect(
+      service.update(WAYPOINT_SLUG, { name: 'Rome' }, USER_ID, pilgrimRoles),
+    ).rejects.toBeInstanceOf(NotFoundException);
+
+    expect(prismaMock.caminoPoint.update).not.toHaveBeenCalled();
+  });
+
+  it('sets both coordinates and returns the updated waypoint', async () => {
+    const prismaMock = buildUpdateMock({ ...basePoint, lat: 43.163, lng: -1.238, description: null });
+    const module = await buildModule(prismaMock);
+    const service = module.get(WaypointsService);
+
+    const result = await service.update(
+      WAYPOINT_SLUG,
+      { lat: 43.163, lng: -1.238 },
+      USER_ID,
+      pilgrimRoles,
+    );
+
+    expect(result.lat).toBe(43.163);
+    expect(result.lng).toBe(-1.238);
+    expect(prismaMock.caminoPoint.update).toHaveBeenCalledWith({
+      where: { slug: WAYPOINT_SLUG },
+      data: expect.objectContaining({ lat: 43.163, lng: -1.238 }),
+    });
+  });
+
+  it('clears coordinates when both lat and lng are sent as null', async () => {
+    const prismaMock = buildUpdateMock({ ...basePoint, lat: null, lng: null, description: null });
+    const module = await buildModule(prismaMock);
+    const service = module.get(WaypointsService);
+
+    const result = await service.update(
+      WAYPOINT_SLUG,
+      { lat: null, lng: null },
+      USER_ID,
+      pilgrimRoles,
+    );
+
+    expect(result.lat).toBeNull();
+    expect(result.lng).toBeNull();
+    expect(prismaMock.caminoPoint.update).toHaveBeenCalledWith({
+      where: { slug: WAYPOINT_SLUG },
+      data: expect.objectContaining({ lat: null, lng: null }),
+    });
+  });
+
+  it('does not include lat/lng in the update data when both are omitted', async () => {
+    const prismaMock = buildUpdateMock({ ...basePoint, lat: null, lng: null, description: null });
+    const module = await buildModule(prismaMock);
+    const service = module.get(WaypointsService);
+
+    await service.update(WAYPOINT_SLUG, { name: 'Rome' }, USER_ID, pilgrimRoles);
+
+    const updateData = prismaMock.caminoPoint.update.mock.calls[0][0].data as Record<string, unknown>;
+    expect(updateData).not.toHaveProperty('lat');
+    expect(updateData).not.toHaveProperty('lng');
+  });
+
+  it('trims whitespace from the name before saving', async () => {
+    const prismaMock = buildUpdateMock({ ...basePoint, name: 'Rome', lat: null, lng: null, description: null });
+    const module = await buildModule(prismaMock);
+    const service = module.get(WaypointsService);
+
+    await service.update(WAYPOINT_SLUG, { name: '  Rome  ' }, USER_ID, pilgrimRoles);
+
+    expect(prismaMock.caminoPoint.update).toHaveBeenCalledWith({
+      where: { slug: WAYPOINT_SLUG },
+      data: expect.objectContaining({ name: 'Rome' }),
+    });
+  });
+
+  it('logs a WAYPOINT_UPDATED event on success', async () => {
+    const prismaMock = buildUpdateMock();
+    const module = await buildModule(prismaMock);
+    const service = module.get(WaypointsService);
+    const eventLog = module.get(EventLogService);
+
+    await service.update(WAYPOINT_SLUG, { lat: 43.163, lng: -1.238 }, USER_ID, pilgrimRoles);
+
+    expect(eventLog.logEvent).toHaveBeenCalledWith(
+      EventType.WAYPOINT_UPDATED,
+      USER_ID,
+      expect.objectContaining({ waypoint_slug: WAYPOINT_SLUG }),
     );
   });
 });
