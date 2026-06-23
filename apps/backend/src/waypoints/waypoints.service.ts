@@ -58,16 +58,26 @@ export class WaypointsService {
       throw new ForbiddenException('Requires pilgrim role.');
     }
 
+    const hasAnyField =
+      dto.name !== undefined ||
+      dto.description !== undefined ||
+      dto.lat !== undefined ||
+      dto.lng !== undefined;
+    if (!hasAnyField) {
+      throw new BadRequestException('No fields to update.');
+    }
+
     if (dto.name !== undefined && dto.name.trim() === '') {
       throw new BadRequestException('Name cannot be empty.');
     }
 
-    const hasLat = dto.lat !== undefined && dto.lat !== null;
-    const hasLng = dto.lng !== undefined && dto.lng !== null;
-    if (hasLat !== hasLng) {
-      throw new BadRequestException(
-        'Both lat and lng must be provided together, or both omitted to clear.',
-      );
+    const latSent = dto.lat !== undefined;
+    const lngSent = dto.lng !== undefined;
+    if (latSent !== lngSent) {
+      throw new BadRequestException('lat and lng must both be provided or both omitted.');
+    }
+    if (latSent && (dto.lat === null) !== (dto.lng === null)) {
+      throw new BadRequestException('To clear coordinates, set both lat and lng to null.');
     }
 
     const point = await this.prisma.caminoPoint.findUnique({ where: { slug } });

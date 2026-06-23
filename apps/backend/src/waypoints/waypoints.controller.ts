@@ -9,6 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiForbiddenResponse,
@@ -53,6 +54,7 @@ export class WaypointsController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update a waypoint (name, description, coordinates) — pilgrim role required' })
   @ApiOkResponse({ description: 'Updated waypoint.' })
+  @ApiBadRequestResponse({ description: 'Empty body, name is blank, or partial/inconsistent coordinates.' })
   @ApiUnauthorizedResponse({ description: 'Missing or invalid JWT.' })
   @ApiForbiddenResponse({ description: 'Requires pilgrim role.' })
   @ApiNotFoundResponse({ description: 'Waypoint not found.' })

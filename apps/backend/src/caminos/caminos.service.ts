@@ -81,6 +81,24 @@ export interface CaminoDetailFull {
   }>;
 }
 
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+/**
+ * Coordinates must be treated as an atomic pair: both provided or both omitted.
+ * Partial updates (only lat or only lng) would leave the DB in an inconsistent state.
+ */
+function assertCoordPair(
+  lat: number | null | undefined,
+  lng: number | null | undefined,
+  label: string,
+): void {
+  if ((lat === undefined) !== (lng === undefined)) {
+    throw new BadRequestException(
+      `${label}: lat and lng must both be provided or both omitted.`,
+    );
+  }
+}
+
 // ─── Service ─────────────────────────────────────────────────────────────────
 
 /** Creators may delete their own caminos within this period after creation. */
@@ -295,14 +313,12 @@ export class CaminosService {
                 `CaminoPoint not found: ${item.caminoPointId}`,
               );
             }
-            // Update coordinates if explicitly provided
-            if (item.lat !== undefined || item.lng !== undefined) {
+            // Update coordinates only when both are explicitly provided
+            assertCoordPair(item.lat, item.lng, `Point ${item.caminoPointId}`);
+            if (item.lat !== undefined && item.lng !== undefined) {
               await tx.caminoPoint.update({
                 where: { id: found.id },
-                data: {
-                  ...(item.lat !== undefined ? { lat: item.lat } : {}),
-                  ...(item.lng !== undefined ? { lng: item.lng } : {}),
-                },
+                data: { lat: item.lat, lng: item.lng },
               });
             }
             pointId = found.id;
@@ -311,6 +327,7 @@ export class CaminosService {
             pointSlug = found.slug;
           } else {
             // New point — upsert by name+country composite unique key
+            assertCoordPair(item.lat, item.lng, `New point "${item.name}"`);
             const slug = await this.generateSlug(item.name!, item.country!, tx);
             const upserted = await tx.caminoPoint.upsert({
               where: {
@@ -532,18 +549,17 @@ export class CaminosService {
                     `CaminoPoint not found: ${item.caminoPointId}`,
                   );
                 }
-                // Update coordinates if explicitly provided
-                if (item.lat !== undefined || item.lng !== undefined) {
+                // Update coordinates only when both are explicitly provided
+                assertCoordPair(item.lat, item.lng, `Point ${item.caminoPointId}`);
+                if (item.lat !== undefined && item.lng !== undefined) {
                   await tx.caminoPoint.update({
                     where: { id: found.id },
-                    data: {
-                      ...(item.lat !== undefined ? { lat: item.lat } : {}),
-                      ...(item.lng !== undefined ? { lng: item.lng } : {}),
-                    },
+                    data: { lat: item.lat, lng: item.lng },
                   });
                 }
                 pointId = found.id;
               } else {
+                assertCoordPair(item.lat, item.lng, `New point "${item.name}"`);
                 const slug = await this.generateSlug(
                   item.name!,
                   item.country!,
