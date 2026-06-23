@@ -129,7 +129,7 @@ describe('WaypointsService.update()', () => {
 
   const basePointWithCoords = { ...basePoint, lat: 43.163, lng: -1.238, description: null };
 
-  function buildUpdateMock(returnValue = basePointWithCoords) {
+  function buildUpdateMock(returnValue: object = basePointWithCoords) {
     return {
       caminoPoint: {
         findUnique: vi.fn().mockResolvedValue(basePointWithCoords),

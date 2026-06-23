@@ -29,14 +29,14 @@ export function EditConfirmDialog({ open, onConfirm, onCancel }: Props) {
       }}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle className="text-red-600 font-semibold">
+          <AlertDialogTitle className="text-destructive font-semibold">
             {t('shared_confirm_title')}
           </AlertDialogTitle>
           <AlertDialogDescription>
             {t('shared_confirm_description')}
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter className="bg-white">
+        <AlertDialogFooter>
           <AlertDialogCancel onClick={onCancel}>
             {t('shared_confirm_cancel')}
           </AlertDialogCancel>

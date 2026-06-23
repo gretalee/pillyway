@@ -12,6 +12,7 @@ export interface CaminoSummary {
 
 export interface CaminoPointDetail {
   id: string;
+  slug: string;
   name: string;
   country: string;
   description: string | null;
