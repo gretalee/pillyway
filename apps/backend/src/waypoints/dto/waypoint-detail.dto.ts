@@ -4,4 +4,6 @@ export interface WaypointDetailDto {
   country: string;
   slug: string;
   description: string | null;
+  lat: number | null;
+  lng: number | null;
 }

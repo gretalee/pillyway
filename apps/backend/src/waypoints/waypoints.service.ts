@@ -1,4 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { KindeRole } from '../auth/kinde-jwt.strategy';
+import { UpdateWaypointDto } from './dto/update-waypoint.dto';
 
 import { EventLogService } from '../event-log/event-log.service';
 import { EventType } from '../event-log/event-type.enum';
@@ -39,6 +41,70 @@ export class WaypointsService {
       country: point.country,
       slug: point.slug,
       description: point.description,
+      lat: point.lat,
+      lng: point.lng,
+    };
+  }
+
+  // ── update ───────────────────────────────────────────────────────────────────
+
+  async update(
+    slug: string,
+    dto: UpdateWaypointDto,
+    userId: string,
+    roles: KindeRole[],
+  ): Promise<WaypointDetailDto> {
+    if (!roles.some((r) => r.key === 'pilgrim')) {
+      throw new ForbiddenException('Requires pilgrim role.');
+    }
+
+    const hasAnyField =
+      dto.name !== undefined ||
+      dto.description !== undefined ||
+      dto.lat !== undefined ||
+      dto.lng !== undefined;
+    if (!hasAnyField) {
+      throw new BadRequestException('No fields to update.');
+    }
+
+    if (dto.name !== undefined && dto.name.trim() === '') {
+      throw new BadRequestException('Name cannot be empty.');
+    }
+
+    const latSent = dto.lat !== undefined;
+    const lngSent = dto.lng !== undefined;
+    if (latSent !== lngSent) {
+      throw new BadRequestException('lat and lng must both be provided or both omitted.');
+    }
+    if (latSent && (dto.lat === null) !== (dto.lng === null)) {
+      throw new BadRequestException('To clear coordinates, set both lat and lng to null.');
+    }
+
+    const point = await this.prisma.caminoPoint.findUnique({ where: { slug } });
+    if (!point) throw new NotFoundException('Waypoint not found.');
+
+    const updated = await this.prisma.caminoPoint.update({
+      where: { slug },
+      data: {
+        ...(dto.name !== undefined ? { name: dto.name.trim() } : {}),
+        ...(dto.description !== undefined ? { description: dto.description?.trim() || null } : {}),
+        ...(dto.lat !== undefined ? { lat: dto.lat } : {}),
+        ...(dto.lng !== undefined ? { lng: dto.lng } : {}),
+      },
+    });
+
+    this.eventLog.logEvent(EventType.WAYPOINT_UPDATED, userId, {
+      waypoint_slug: slug,
+    });
+
+    return {
+      id: updated.id,
+      name: updated.name,
+      country: updated.country,
+      slug: updated.slug,
+      description: updated.description,
+      lat: updated.lat,
+      lng: updated.lng,
     };
   }
 

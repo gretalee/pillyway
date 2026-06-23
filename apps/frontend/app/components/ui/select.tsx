@@ -17,7 +17,10 @@ const Select = React.forwardRef<HTMLSelectElement, React.ComponentProps<'select'
           {children}
         </select>
         <i
-          className="icon-chevron-down text-sm pointer-events-none absolute right-2.5 top-[50%] -translate-y-1/2"
+          className={cn(
+            'icon-chevron-down text-sm pointer-events-none absolute right-2.5 top-[50%] -translate-y-1/2',
+            props.disabled && 'text-muted-foreground',
+          )}
           aria-hidden="true"
         />
       </div>

@@ -11,6 +11,8 @@ import { cn } from '@/lib/utils';
 import { BackButton } from './components/BackButton';
 import { AccommodationCard } from './components/AccommodationCard';
 import { SightCard } from './components/SightCard';
+import { WaypointCoordinates } from './components/WaypointCoordinates';
+import { WaypointInfo } from './components/WaypointInfo';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -24,8 +26,11 @@ export async function generateMetadata({ params }: Props) {
       getTranslations('waypoint_detail'),
       sharedOpenGraph(),
     ]);
-    const title = t('meta_title', { name: waypoint.name });
-    const description = t('meta_description', { name: waypoint.name, country: waypoint.country });
+    const name = waypoint.name ?? '';
+    const country = waypoint.country ?? '';
+    if (!name) return {};
+    const title = t('meta_title', { name });
+    const description = t('meta_description', { name, country });
     return { title, description, openGraph: { ...og, url: `/waypoints/${slug}` } };
   } catch {
     return {};
@@ -79,11 +84,20 @@ export default async function WaypointDetailPage({ params }: Props) {
         <BackButton />
       </div>
 
-      <h1 className="text-3xl font-bold tracking-tight">{waypoint.name}</h1>
-      <p className="mt-1 text-sm text-muted-foreground">{countryLabel}</p>
-      {waypoint.description && (
-        <p className="mt-4 whitespace-pre-wrap">{waypoint.description}</p>
-      )}
+      <WaypointInfo
+        slug={slug}
+        initialName={waypoint.name}
+        initialDescription={waypoint.description}
+        countryLabel={countryLabel}
+        canContribute={canContribute}
+      />
+
+      <WaypointCoordinates
+        slug={slug}
+        lat={waypoint.lat}
+        lng={waypoint.lng}
+        canContribute={canContribute}
+      />
 
       {/* Accommodations */}
       <section className="mt-10" aria-labelledby="accommodations-heading">

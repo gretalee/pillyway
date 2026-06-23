@@ -198,6 +198,9 @@ describe('Field array controls', () => {
     const removeButtons = screen.getAllByRole('button', { name: 'remove_point' });
     await user.click(removeButtons[1]!);
 
+    // Confirm removal in the AlertDialog
+    await user.click(await screen.findByRole('button', { name: 'remove_point_confirm_action' }));
+
     expect(screen.getAllByLabelText('point_name').length).toBe(1);
     expect(screen.getByDisplayValue('First Point')).toBeInTheDocument();
   });

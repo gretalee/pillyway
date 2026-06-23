@@ -5,8 +5,8 @@ import { useMutation } from '@tanstack/react-query';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? '';
 
-export type ExistingPointPayload = { caminoPointId: string };
-export type NewPointPayload = { name: string; country: string; description?: string };
+export type ExistingPointPayload = { caminoPointId: string; lat?: number; lng?: number };
+export type NewPointPayload = { name: string; country: string; description?: string; lat?: number; lng?: number };
 export type CaminoPointPayload = ExistingPointPayload | NewPointPayload;
 
 export interface CreateCaminoPayload {
