@@ -103,18 +103,21 @@ export function WaypointCoordinates({ slug, lat, lng, canContribute }: Props) {
       />
 
       <section className="mt-6" aria-labelledby="coordinates-heading">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between gap-2">
           <h2 id="coordinates-heading" className="text-base font-semibold">
             {t('coordinates_heading')}
           </h2>
           {canContribute && !isEditing && (
-            <button
-              type="button"
-              onClick={onRequestEdit}
+            <Button
+              variant="ghost"
+              size="icon-sm"
               aria-label={t('edit_coordinates_label')}
-              className="rounded p-0.5 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-              <i className="icon-pencil text-sm" aria-hidden="true" />
-            </button>
+              onClick={onRequestEdit}>
+              <i
+                className="icon-pencil text-muted-foreground hover:text-accent-foreground"
+                aria-hidden="true"
+              />
+            </Button>
           )}
         </div>
 
@@ -131,8 +134,8 @@ export function WaypointCoordinates({ slug, lat, lng, canContribute }: Props) {
                 <div className="mt-1">
                   <Input
                     id={latId}
-                    type="number"
-                    step="any"
+                    type="text"
+                    inputMode="decimal"
                     aria-invalid={errors.lat !== undefined}
                     aria-describedby={errors.lat ? `${latId}-error` : undefined}
                     {...register('lat', {
@@ -160,8 +163,8 @@ export function WaypointCoordinates({ slug, lat, lng, canContribute }: Props) {
                 <div className="mt-1">
                   <Input
                     id={lngId}
-                    type="number"
-                    step="any"
+                    type="text"
+                    inputMode="decimal"
                     aria-invalid={errors.lng !== undefined}
                     aria-describedby={errors.lng ? `${lngId}-error` : undefined}
                     {...register('lng', {

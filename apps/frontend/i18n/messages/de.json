@@ -138,14 +138,14 @@
       "yes": "Ja, diesen Ort verwenden",
       "no": "Nein, neuen Ort erstellen"
     },
-    "point_lat": "Breitengrad (optional)",
-    "point_lng": "Längengrad (optional)",
+    "point_lat": "Latitude (optional)",
+    "point_lng": "Longitude (optional)",
     "point_coordinates_label": "Koordinaten",
     "point_coordinates_none": "Noch keine Koordinaten hinterlegt.",
     "point_waypoint_link": "Wegpunkt-Seite öffnen",
     "error_lat_lng_incomplete": "Bitte gib entweder beide Koordinaten ein oder lass beide leer.",
-    "error_lat_invalid": "Der Breitengrad muss eine Zahl zwischen -90 und 90 sein.",
-    "error_lng_invalid": "Der Längengrad muss eine Zahl zwischen -180 und 180 sein."
+    "error_lat_invalid": "Latitude muss eine Zahl zwischen -90 und 90 sein.",
+    "error_lng_invalid": "Longitude muss eine Zahl zwischen -180 und 180 sein."
   },
   "common": {
     "cancel": "Abbrechen",
@@ -366,13 +366,13 @@
     "coordinates_heading": "Koordinaten",
     "coordinates_none": "Noch keine Koordinaten eingetragen.",
     "edit_coordinates_label": "Koordinaten bearbeiten",
-    "field_lat": "Breitengrad",
-    "field_lng": "Längengrad",
+    "field_lat": "Latitude",
+    "field_lng": "Longitude",
     "save_coordinates": "Speichern",
     "cancel_coordinates": "Abbrechen",
     "error_lat_lng_incomplete": "Bitte gib entweder beide Koordinaten ein oder lass beide leer.",
-    "error_lat_invalid": "Der Breitengrad muss eine Zahl zwischen -90 und 90 sein.",
-    "error_lng_invalid": "Der Längengrad muss eine Zahl zwischen -180 und 180 sein.",
+    "error_lat_invalid": "Latitude muss eine Zahl zwischen -90 und 90 sein.",
+    "error_lng_invalid": "Longitude muss eine Zahl zwischen -180 und 180 sein.",
     "error_save_coordinates": "Koordinaten konnten nicht gespeichert werden. Bitte versuche es erneut."
   },
   "accommodation_detail": {
@@ -418,8 +418,8 @@
     "field_description": "Beschreibung (optional)",
     "field_images": "Fotos (optional)",
     "field_address": "Adresse",
-    "field_latitude": "Breitengrad",
-    "field_longitude": "Längengrad",
+    "field_latitude": "Latitude",
+    "field_longitude": "Longitude",
     "upload_hint": "Max. 10 MB pro Foto. Bis zu 10 Fotos.",
     "upload_button": "Bilder auswählen",
     "uploading": "Wird hochgeladen…",
@@ -427,7 +427,7 @@
     "submitting": "Wird gespeichert…",
     "cancel": "Abbrechen",
     "error_name_required": "Der Name ist erforderlich.",
-    "error_lat_lon_incomplete": "Bitte gib sowohl Breiten- als auch Längengrad ein oder lass beide leer.",
+    "error_lat_lon_incomplete": "Bitte gib sowohl Latitude als auch Longitude ein oder lass beide leer.",
     "error_generic": "Sehenswürdigkeit konnte nicht hinzugefügt werden. Bitte versuche es erneut.",
     "error_upload": "Bild-Upload fehlgeschlagen. Bitte versuche es erneut.",
     "error_upload_size": "Eine oder mehrere Dateien überschreiten das Limit von 10 MB."

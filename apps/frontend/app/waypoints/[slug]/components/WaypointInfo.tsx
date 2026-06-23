@@ -174,17 +174,18 @@ export function WaypointInfo({
       ) : (
         <div
           className={cn(
-            'flex items-center justify-between gap-4 w-full',
-            canContribute && 'hover:bg-accent/50 rounded-md pr-1',
+            'flex items-center justify-between gap-4',
+            canContribute && 'hover:bg-accent/50 rounded-md',
           )}>
           <h1 className="text-3xl font-bold tracking-tight">{name}</h1>
           {canContribute && (
             <Button
               variant="ghost"
+              size="icon-sm"
               aria-label={t('edit_name_aria')}
               onClick={() => requestEdit('name')}>
               <i
-                className="icon-pencil text-xl text-muted-foreground hover:text-accent-foreground"
+                className="icon-pencil text-muted-foreground hover:text-accent-foreground"
                 aria-hidden="true"
               />
             </Button>
@@ -211,20 +212,24 @@ export function WaypointInfo({
             onCancel={cancelEdit}
           />
         ) : (
-          <div className={cn(canContribute && 'hover:bg-accent/50 rounded-md pr-1')}>
+          <div
+            className={cn(
+              'flex items-center justify-between',
+              canContribute && 'hover:bg-accent/50 rounded-md ',
+            )}>
+            <p className="whitespace-pre-wrap">{description ?? t('no_description')}</p>
             {canContribute && (
               <Button
                 variant="ghost"
+                size="icon-sm"
                 aria-label={t('edit_description_aria')}
-                onClick={() => requestEdit('description')}
-                className="float-right ml-2">
+                onClick={() => requestEdit('description')}>
                 <i
-                  className="icon-pencil text-xl text-muted-foreground hover:text-accent-foreground"
+                  className="icon-pencil text-muted-foreground hover:text-accent-foreground"
                   aria-hidden="true"
                 />
               </Button>
             )}
-            <p className="whitespace-pre-wrap">{description ?? t('no_description')}</p>
           </div>
         )}
       </div>
