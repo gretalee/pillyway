@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { Input } from '@/app/components/ui/input';
 import { Select } from '@/app/components/ui/select';
 import { Label } from '@/app/components/ui/label';
@@ -13,7 +14,7 @@ import {
 } from '@/app/api/caminos/use-camino-points-search';
 import { useDebounce } from '@/lib/use-debounce';
 import { SuggestionCard } from './SuggestionCard';
-import { Button } from '@/app/components/ui/button';
+import { Button, buttonVariants } from '@/app/components/ui/button';
 
 interface CaminoPointFormItem {
   caminoPointId: string | null;
@@ -43,6 +44,7 @@ export interface CaminoPointRowProps {
   onUnlink: (index: number) => void;
   watchedPoints: CaminoPointFormItem[];
   canRemove?: boolean;
+  waypointSlug?: string;
 }
 
 export function CaminoPointRow({
@@ -58,6 +60,7 @@ export function CaminoPointRow({
   onUnlink,
   watchedPoints,
   canRemove = true,
+  waypointSlug,
 }: CaminoPointRowProps) {
   const t = useTranslations('caminos_new');
   const tCountries = useTranslations('countries');
@@ -92,13 +95,9 @@ export function CaminoPointRow({
 
   const pointNameError = errors.caminoPoints?.[index]?.name;
   const pointCountryError = errors.caminoPoints?.[index]?.country;
-  const pointLatError = errors.caminoPoints?.[index]?.lat;
-  const pointLngError = errors.caminoPoints?.[index]?.lng;
   const nameId = `point-name-${index}`;
   const countryId = `point-country-${index}`;
   const descriptionId = `point-description-${index}`;
-  const latId = `point-lat-${index}`;
-  const lngId = `point-lng-${index}`;
 
   return (
     <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
@@ -107,27 +106,35 @@ export function CaminoPointRow({
           {index + 1}.
         </span>
         <div className="flex items-center">
+          <Link
+            href={`/waypoints/${waypointSlug}`}
+            className={cn(buttonVariants({ variant: 'ghost', size: 'icon-sm' }))}>
+            {/* {t('point_waypoint_link')}yyyy */}
+            <i className="icon-pencil" aria-hidden="true" />
+          </Link>
+
           <Button
             variant="ghost"
+            size="icon-sm"
             onClick={() => onMoveUp(index)}
             disabled={index === 0}
             aria-label={t('move_up')}>
-            <i className="icon-chevron-up text-sm" aria-hidden="true" />
+            <i className="icon-chevron-up" aria-hidden="true" />
           </Button>
 
           <Button
             variant="ghost"
-            size="icon"
+            size="icon-sm"
             onClick={() => onMoveDown(index)}
             disabled={index === totalCount - 1}
             aria-label={t('move_down')}>
-            <i className="icon-chevron-down text-sm" aria-hidden="true" />
+            <i className="icon-chevron-down" aria-hidden="true" />
           </Button>
 
           {canRemove && (
             <Button
               variant="ghost"
-              size="icon"
+              size="icon-sm"
               onClick={() => onRemove(index)}
               disabled={totalCount === 1}
               aria-label={t('remove_point')}>
@@ -239,58 +246,15 @@ export function CaminoPointRow({
       </div>
 
       {/* Coordinates */}
-      <div className="mt-3 grid grid-cols-2 gap-3">
-        <div>
-          <Label htmlFor={latId}>{t('point_lat')}</Label>
-          <div className="mt-1">
-            <Input
-              id={latId}
-              type="number"
-              step="any"
-              aria-describedby={pointLatError ? `${latId}-error` : undefined}
-              aria-invalid={pointLatError ? 'true' : undefined}
-              {...register(`caminoPoints.${index}.lat`, {
-                validate: (val) => {
-                  if (val.trim() === '') return true;
-                  const num = parseFloat(val);
-                  if (isNaN(num) || num < -90 || num > 90) return t('error_lat_invalid');
-                  return true;
-                },
-              })}
-            />
-          </div>
-          {pointLatError && (
-            <p id={`${latId}-error`} role="alert" className="mt-1 text-xs text-destructive">
-              {pointLatError.message}
-            </p>
-          )}
-        </div>
-        <div>
-          <Label htmlFor={lngId}>{t('point_lng')}</Label>
-          <div className="mt-1">
-            <Input
-              id={lngId}
-              type="number"
-              step="any"
-              aria-describedby={pointLngError ? `${lngId}-error` : undefined}
-              aria-invalid={pointLngError ? 'true' : undefined}
-              {...register(`caminoPoints.${index}.lng`, {
-                validate: (val) => {
-                  if (val.trim() === '') return true;
-                  const num = parseFloat(val);
-                  if (isNaN(num) || num < -180 || num > 180) return t('error_lng_invalid');
-                  return true;
-                },
-              })}
-            />
-          </div>
-          {pointLngError && (
-            <p id={`${lngId}-error`} role="alert" className="mt-1 text-xs text-destructive">
-              {pointLngError.message}
-            </p>
-          )}
-        </div>
-      </div>
+
+      <p className="text-sm mt-4">
+        {t('point_coordinates_label')}:{' '}
+        <span className="ml-4">
+          {currentPoint?.lat && currentPoint?.lng
+            ? `${currentPoint.lat}, ${currentPoint.lng}`
+            : t('point_coordinates_none')}
+        </span>
+      </p>
     </div>
   );
 }

@@ -104,9 +104,7 @@ export function WaypointCoordinates({ slug, lat, lng, canContribute }: Props) {
 
       <section className="mt-6" aria-labelledby="coordinates-heading">
         <div className="flex items-center gap-2">
-          <h2
-            id="coordinates-heading"
-            className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+          <h2 id="coordinates-heading" className="text-base font-semibold">
             {t('coordinates_heading')}
           </h2>
           {canContribute && !isEditing && (
@@ -114,7 +112,7 @@ export function WaypointCoordinates({ slug, lat, lng, canContribute }: Props) {
               type="button"
               onClick={onRequestEdit}
               aria-label={t('edit_coordinates_label')}
-              className="rounded p-0.5 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+              className="rounded p-0.5 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
               <i className="icon-pencil text-sm" aria-hidden="true" />
             </button>
           )}
@@ -201,7 +199,7 @@ export function WaypointCoordinates({ slug, lat, lng, canContribute }: Props) {
             </div>
           </form>
         ) : (
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="mt-1 text-base">
             {lat !== null && lng !== null ? `${lat}, ${lng}` : t('coordinates_none')}
           </p>
         )}

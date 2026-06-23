@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
@@ -67,6 +67,11 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
   const { data: camino, isLoading, isError: caminoError } = useCamino(caminoId);
   const { data: stages } = useStages(caminoId);
   const mutation = useUpdateCamino();
+
+  const slugByPointId = useMemo(
+    () => Object.fromEntries(camino?.caminoPoints.map((p) => [p.id, p.slug]) ?? []),
+    [camino],
+  );
 
   const { user, accessToken } = useKindeBrowserClient();
   const roleKeys = accessToken?.roles?.map((r) => r.key) ?? [];
@@ -174,9 +179,10 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
   const onSubmit = (values: CaminoFormValues) => {
     setFormError(null);
 
-    // Cross-validate: lat and lng must both be filled or both empty
+    // Cross-validate lat and lng for newly added waypoints (existing waypoints' coords are not editable here)
     let hasLatLngError = false;
     values.caminoPoints.forEach((p, i) => {
+      if (p.caminoPointId) return;
       const hasLat = p.lat.trim() !== '';
       const hasLng = p.lng.trim() !== '';
       if (hasLat !== hasLng) {
@@ -189,12 +195,7 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
 
     const caminoPoints: CaminoPointPayload[] = values.caminoPoints.map((p) => {
       if (p.caminoPointId) {
-        const existing: ExistingPointPayload = { caminoPointId: p.caminoPointId };
-        const lat = p.lat.trim() !== '' ? parseFloat(p.lat) : undefined;
-        const lng = p.lng.trim() !== '' ? parseFloat(p.lng) : undefined;
-        if (lat !== undefined) existing.lat = lat;
-        if (lng !== undefined) existing.lng = lng;
-        return existing;
+        return { caminoPointId: p.caminoPointId } satisfies ExistingPointPayload;
       }
       const newPoint: NewPointPayload = { name: p.name, country: p.country };
       if (p.description.trim() !== '') {
@@ -391,6 +392,11 @@ export function UpdateCaminoForm({ caminoId }: UpdateCaminoFormProps) {
                 onUnlink={onUnlinkCaminoPoints}
                 watchedPoints={watchedPoints ?? []}
                 canRemove={canRemoveWaypoints}
+                waypointSlug={
+                  watchedPoints?.[index]?.caminoPointId
+                    ? slugByPointId[watchedPoints[index].caminoPointId!]
+                    : undefined
+                }
               />
             ))}
           </div>
