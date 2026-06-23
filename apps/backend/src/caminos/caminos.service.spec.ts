@@ -39,6 +39,7 @@ function makeTx() {
         verified: false,
         createdBy: 'kinde-user-001',
       }),
+      update: vi.fn().mockResolvedValue({}),
     },
     caminoPoint: {
       findUnique: vi.fn(),
@@ -840,6 +841,7 @@ describe('CaminosService — generateSlug() slug generation', () => {
           verified: false,
           createdBy: 'kinde-user-001',
         }),
+        update: vi.fn().mockResolvedValue({}),
       },
       caminoPoint: {
         findUnique: vi.fn().mockImplementation(({ where }) => {
