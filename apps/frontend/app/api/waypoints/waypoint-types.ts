@@ -12,6 +12,8 @@ export interface WaypointDetail {
 }
 
 export interface UpdateWaypointPayload {
+  name?: string;
+  description?: string | null;
   lat?: number | null;
   lng?: number | null;
 }

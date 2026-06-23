@@ -1,7 +1,18 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNumber, IsOptional, Max, Min } from 'class-validator';
+import { IsNumber, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
 
 export class UpdateWaypointDto {
+  @IsOptional()
+  @IsString()
+  @MaxLength(200)
+  @ApiPropertyOptional({ type: String })
+  name?: string;
+
+  @IsOptional()
+  @IsString()
+  @ApiPropertyOptional({ type: String, nullable: true })
+  description?: string | null;
+
   @IsOptional()
   @IsNumber()
   @Min(-90)

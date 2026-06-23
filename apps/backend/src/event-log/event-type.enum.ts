@@ -10,6 +10,7 @@ export const EventType = {
   CAMINO_GPX_UPLOADED: 'camino_gpx_uploaded',
   CAMINO_GPX_DELETED: 'camino_gpx_deleted',
   WAYPOINT_COORDINATES_UPDATED: 'waypoint_coordinates_updated',
+  WAYPOINT_UPDATED: 'waypoint_updated',
 } as const;
 
 export type EventType = (typeof EventType)[keyof typeof EventType];

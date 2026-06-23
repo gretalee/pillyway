@@ -51,22 +51,17 @@ export class WaypointsController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('pilgrim')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Update waypoint coordinates (pilgrim role required)' })
+  @ApiOperation({ summary: 'Update a waypoint (name, description, coordinates) — pilgrim role required' })
   @ApiOkResponse({ description: 'Updated waypoint.' })
   @ApiUnauthorizedResponse({ description: 'Missing or invalid JWT.' })
   @ApiForbiddenResponse({ description: 'Requires pilgrim role.' })
   @ApiNotFoundResponse({ description: 'Waypoint not found.' })
-  async updateCoordinates(
+  async update(
     @Param('slug') slug: string,
     @Body() dto: UpdateWaypointDto,
     @Req() req: Request & { user: KindeJwtPayload },
   ): Promise<WaypointDetailDto> {
-    return this.waypointsService.updateCoordinates(
-      slug,
-      dto,
-      req.user.sub,
-      req.user.roles ?? [],
-    );
+    return this.waypointsService.update(slug, dto, req.user.sub, req.user.roles ?? []);
   }
 
   @Post(':slug/accommodations')

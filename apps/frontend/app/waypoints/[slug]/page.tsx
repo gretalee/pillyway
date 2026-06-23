@@ -12,6 +12,7 @@ import { BackButton } from './components/BackButton';
 import { AccommodationCard } from './components/AccommodationCard';
 import { SightCard } from './components/SightCard';
 import { WaypointCoordinates } from './components/WaypointCoordinates';
+import { WaypointInfo } from './components/WaypointInfo';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -83,11 +84,13 @@ export default async function WaypointDetailPage({ params }: Props) {
         <BackButton />
       </div>
 
-      <h1 className="text-3xl font-bold tracking-tight">{waypoint.name}</h1>
-      <p className="mt-1 text-sm text-muted-foreground">{countryLabel}</p>
-      {waypoint.description && (
-        <p className="mt-4 whitespace-pre-wrap">{waypoint.description}</p>
-      )}
+      <WaypointInfo
+        slug={slug}
+        initialName={waypoint.name}
+        initialDescription={waypoint.description}
+        countryLabel={countryLabel}
+        canContribute={canContribute}
+      />
 
       <WaypointCoordinates
         slug={slug}

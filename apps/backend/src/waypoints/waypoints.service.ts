@@ -46,9 +46,9 @@ export class WaypointsService {
     };
   }
 
-  // ── updateCoordinates ────────────────────────────────────────────────────────
+  // ── update ───────────────────────────────────────────────────────────────────
 
-  async updateCoordinates(
+  async update(
     slug: string,
     dto: UpdateWaypointDto,
     userId: string,
@@ -56,6 +56,10 @@ export class WaypointsService {
   ): Promise<WaypointDetailDto> {
     if (!roles.some((r) => r.key === 'pilgrim')) {
       throw new ForbiddenException('Requires pilgrim role.');
+    }
+
+    if (dto.name !== undefined && dto.name.trim() === '') {
+      throw new BadRequestException('Name cannot be empty.');
     }
 
     const hasLat = dto.lat !== undefined && dto.lat !== null;
@@ -72,15 +76,15 @@ export class WaypointsService {
     const updated = await this.prisma.caminoPoint.update({
       where: { slug },
       data: {
+        ...(dto.name !== undefined ? { name: dto.name.trim() } : {}),
+        ...(dto.description !== undefined ? { description: dto.description?.trim() || null } : {}),
         ...(dto.lat !== undefined ? { lat: dto.lat } : {}),
         ...(dto.lng !== undefined ? { lng: dto.lng } : {}),
       },
     });
 
-    this.eventLog.logEvent(EventType.WAYPOINT_COORDINATES_UPDATED, userId, {
+    this.eventLog.logEvent(EventType.WAYPOINT_UPDATED, userId, {
       waypoint_slug: slug,
-      lat: dto.lat,
-      lng: dto.lng,
     });
 
     return {
