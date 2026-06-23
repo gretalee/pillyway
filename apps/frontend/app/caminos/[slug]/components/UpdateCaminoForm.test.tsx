@@ -476,6 +476,9 @@ describe('UpdateCaminoForm — reorder warning', () => {
     const removeButtons = screen.getAllByRole('button', { name: 'remove_point' });
     await user.click(removeButtons[1]!);
 
+    // Confirm removal in the AlertDialog
+    await user.click(await screen.findByRole('button', { name: 'remove_point_confirm_action' }));
+
     // Submit — should trigger the reorder warning.
     submitForm();
 
