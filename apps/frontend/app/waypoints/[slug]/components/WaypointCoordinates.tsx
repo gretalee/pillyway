@@ -142,7 +142,7 @@ export function WaypointCoordinates({ slug, lat, lng, canContribute }: Props) {
                         if (val.trim() === '') return true;
                         const num = parseFloat(val);
                         if (isNaN(num) || num < -90 || num > 90)
-                          return t('error_lat_lng_incomplete');
+                          return t('error_lat_invalid');
                         return true;
                       },
                     })}
@@ -171,7 +171,7 @@ export function WaypointCoordinates({ slug, lat, lng, canContribute }: Props) {
                         if (val.trim() === '') return true;
                         const num = parseFloat(val);
                         if (isNaN(num) || num < -180 || num > 180)
-                          return t('error_lat_lng_incomplete');
+                          return t('error_lng_invalid');
                         return true;
                       },
                     })}

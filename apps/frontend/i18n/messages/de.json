@@ -137,7 +137,9 @@
     },
     "point_lat": "Breitengrad (optional)",
     "point_lng": "Längengrad (optional)",
-    "error_lat_lng_incomplete": "Bitte gib entweder beide Koordinaten ein oder lass beide leer."
+    "error_lat_lng_incomplete": "Bitte gib entweder beide Koordinaten ein oder lass beide leer.",
+    "error_lat_invalid": "Der Breitengrad muss eine Zahl zwischen -90 und 90 sein.",
+    "error_lng_invalid": "Der Längengrad muss eine Zahl zwischen -180 und 180 sein."
   },
   "common": {
     "cancel": "Abbrechen",
@@ -363,6 +365,8 @@
     "save_coordinates": "Speichern",
     "cancel_coordinates": "Abbrechen",
     "error_lat_lng_incomplete": "Bitte gib entweder beide Koordinaten ein oder lass beide leer.",
+    "error_lat_invalid": "Der Breitengrad muss eine Zahl zwischen -90 und 90 sein.",
+    "error_lng_invalid": "Der Längengrad muss eine Zahl zwischen -180 und 180 sein.",
     "error_save_coordinates": "Koordinaten konnten nicht gespeichert werden. Bitte versuche es erneut."
   },
   "accommodation_detail": {

@@ -137,7 +137,9 @@
     },
     "point_lat": "Latitude (optional)",
     "point_lng": "Longitude (optional)",
-    "error_lat_lng_incomplete": "Please enter both latitude and longitude, or leave both empty."
+    "error_lat_lng_incomplete": "Please enter both latitude and longitude, or leave both empty.",
+    "error_lat_invalid": "Latitude must be a number between -90 and 90.",
+    "error_lng_invalid": "Longitude must be a number between -180 and 180."
   },
   "common": {
     "cancel": "Cancel",
@@ -363,6 +365,8 @@
     "save_coordinates": "Save",
     "cancel_coordinates": "Cancel",
     "error_lat_lng_incomplete": "Please enter both latitude and longitude, or leave both empty.",
+    "error_lat_invalid": "Latitude must be a number between -90 and 90.",
+    "error_lng_invalid": "Longitude must be a number between -180 and 180.",
     "error_save_coordinates": "Failed to save coordinates. Please try again."
   },
   "accommodation_detail": {
