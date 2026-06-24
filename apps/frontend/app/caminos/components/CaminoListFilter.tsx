@@ -33,7 +33,6 @@ export function CaminoListFilter({
   className,
 }: CaminoListFilterProps) {
   const t = useTranslations('caminos');
-  const tCodes = useTranslations('country_codes');
   const [onlyVerified, setOnlyVerified] = useState(false);
 
   const filteredCaminos = onlyVerified ? caminos.filter((c) => c.verified) : caminos;
@@ -58,11 +57,18 @@ export function CaminoListFilter({
       )}
 
       {filteredCaminos.length > 0 && (
-        <ul className="mt-4 space-y-4" aria-label={t('title')}>
+        <div className="mt-4 grid gap-4 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
           {filteredCaminos.map((camino) => (
-            <li
-              key={camino.id}
-              className="rounded-xl border border-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md">
+            <div
+              className={cn(
+                'border border-border shadow-sm rounded-lg p-4',
+                'flex flex-col gap-2',
+              )}
+              key={camino.id}>
+              <Link href={`/caminos/${camino.slug}`}>
+                <CaminoMainImage caminoId={camino.id} title={camino.name} />
+              </Link>
+
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1 space-x-2">
                   <Link href={`/caminos/${camino.slug}`} className="inline ">
@@ -78,21 +84,16 @@ export function CaminoListFilter({
                 {isPilgrim && <CaminoActionsMenu camino={camino} />}
               </div>
 
-              <Link href={`/caminos/${camino.slug}`} className="flex-1">
+              <Link href={`/caminos/${camino.slug}`}>
                 {camino.description && (
-                  <p className="mt-1 whitespace-pre-wrap text-sm text-muted-foreground">
+                  <p className="whitespace-pre-wrap text-sm text-muted-foreground">
                     {truncateAtSentence(camino.description)}
                   </p>
                 )}
-                <CaminoMainImage
-                  caminoId={camino.id}
-                  title={camino.name}
-                  className="mt-1"
-                />
               </Link>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </>
   );
