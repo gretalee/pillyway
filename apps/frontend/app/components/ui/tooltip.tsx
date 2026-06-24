@@ -10,6 +10,9 @@ interface TooltipProps {
   delay?: number;
   'aria-label'?: string;
   triggerClassName?: string;
+  /** Render the trigger as a <span> instead of a <button> for inline contexts. */
+  inline?: boolean;
+  offset?: number;
   children: React.ReactNode;
 }
 
@@ -18,6 +21,8 @@ export function Tooltip({
   delay = 20,
   'aria-label': ariaLabel,
   triggerClassName,
+  inline = false,
+  offset = 4,
   children,
 }: TooltipProps) {
   const [open, setOpen] = useState(false);
@@ -68,18 +73,20 @@ export function Tooltip({
         <TooltipPrimitive.Trigger
           aria-label={ariaLabel}
           onTouchStart={handleTouchStart}
+          render={inline ? <span tabIndex={0} /> : undefined}
           className={cn(
-            'inline-flex cursor-default items-center rounded',
+            'cursor-help rounded',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+            inline ? '' : 'inline-flex items-center',
             triggerClassName,
           )}>
           {children}
         </TooltipPrimitive.Trigger>
         <TooltipPrimitive.Portal>
-          <TooltipPrimitive.Positioner sideOffset={4}>
+          <TooltipPrimitive.Positioner sideOffset={offset}>
             <TooltipPrimitive.Popup
               className={cn(
-                'z-50 rounded-xs bg-black px-3 py-3 text-base text-white antialiased',
+                'z-50 rounded-sm bg-black px-3 py-3 text-base text-white antialiased',
                 'ring-1 ring-foreground/10 shadow-sm',
                 'origin-(--transform-origin)',
                 'data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95',

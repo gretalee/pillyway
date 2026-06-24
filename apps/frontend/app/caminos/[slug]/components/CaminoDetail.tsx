@@ -17,6 +17,7 @@ import { useUpdateCamino } from '@/app/api/caminos/use-update-camino';
 import type { AuthUser } from '@/lib/getAuthUser';
 import { Button, buttonVariants } from '@/app/components/ui/button';
 import { cn } from '@/lib/utils';
+import Countries from '../../components/Countries';
 
 type EditingField = 'name' | 'description' | null;
 
@@ -92,6 +93,7 @@ export function CaminoDetail({
 }: CaminoDetailProps) {
   const t = useTranslations('camino_detail');
   const tCaminos = useTranslations('caminos');
+  const tCountries = useTranslations('countries');
   const tCodes = useTranslations('country_codes');
   const mutation = useUpdateCamino();
 
@@ -101,6 +103,13 @@ export function CaminoDetail({
   const [editingField, setEditingField] = useState<EditingField>(null);
   const [inlineError, setInlineError] = useState<string | null>(null);
   const prevValueRef = useRef<string>('');
+
+  const countriesString = camino.countries.length
+    ? camino.countries.map((c) => tCodes(c)).join(' · ')
+    : undefined;
+  const countriesStringTooltip = camino.countries.length
+    ? camino.countries.map((c) => tCountries(c)).join(', ')
+    : undefined;
 
   function startEdit(field: EditingField) {
     prevValueRef.current = field === 'name' ? camino.name : (camino.description ?? '');
@@ -175,23 +184,20 @@ export function CaminoDetail({
         ) : (
           <div
             className={cn(
-              'flex items-center justify-between gap-4 w-full',
+              'flex items-start justify-between gap-4 w-full',
               canEdit && 'hover:bg-accent/50 rounded-md pr-1 ',
             )}>
-            <div className="">
+            <div className="space-x-4">
               <h1 className="text-3xl font-bold tracking-tight inline">{camino.name}</h1>
-              {camino.countries.length > 0 && (
-                <span className="ml-2 text-base font-normal text-muted-foreground">
-                  {camino.countries.map((c) => tCodes(c)).join(' · ')}
-                </span>
-              )}
+              <Countries countries={camino.countries} className="inline" />
               {camino.verified && <VerifiedBadge className="inline-block pl-2 lg:pl-3" />}
             </div>
             {canEdit && (
               <Button
                 variant={'ghost'}
                 aria-label={tCaminos('edit_name_aria')}
-                onClick={() => startEdit('name')}>
+                onClick={() => startEdit('name')}
+                className="mt-[1px]">
                 <i
                   className="icon-pencil text-xl text-muted-foreground hover:text-accent-foreground"
                   aria-hidden="true"

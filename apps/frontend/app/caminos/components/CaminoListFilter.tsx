@@ -9,6 +9,7 @@ import { CaminoActionsMenu } from './CaminoActionsMenu';
 import { VerifiedBadge } from './VerifiedBadge';
 import CaminoMainImage from './CaminoMainImage';
 import { cn } from '@/lib/utils';
+import Countries from './Countries';
 
 const DESCRIPTION_MAX = 665;
 
@@ -63,19 +64,15 @@ export function CaminoListFilter({
               key={camino.id}
               className="rounded-xl border border-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md">
               <div className="flex items-start justify-between gap-2">
-                <div className="">
-                  <Link href={`/caminos/${camino.slug}`}>
+                <div className="flex-1 space-x-2">
+                  <Link href={`/caminos/${camino.slug}`} className="inline ">
                     <h2 className="text-lg font-semibold text-foreground inline">
                       {camino.name}
                     </h2>
                   </Link>
-                  {camino.countries.length > 0 && (
-                    <span className="ml-2 text-sm text-muted-foreground">
-                      {camino.countries.map((c) => tCodes(c)).join(' · ')}
-                    </span>
-                  )}
+                  <Countries countries={camino.countries} className="inline" />
                   {camino.verified && (
-                    <VerifiedBadge className="inline-block pl-2 translate-y-0.5" />
+                    <VerifiedBadge className="inline-block translate-y-0.5" />
                   )}
                 </div>
                 {isPilgrim && <CaminoActionsMenu camino={camino} />}
