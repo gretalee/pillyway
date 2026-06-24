@@ -6,6 +6,7 @@ export interface CaminoSummary {
   name: string;
   description: string | null;
   verified: boolean;
+  countries: string[];
   createdBy: string;
   createdAt: string;
 }
@@ -27,6 +28,7 @@ export interface CaminoDetailFull {
   name: string;
   description: string | null;
   verified: boolean;
+  countries: string[];
   createdBy: string;
   createdAt: string;
   updatedAt: string;

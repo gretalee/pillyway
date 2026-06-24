@@ -4,7 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const basicStyles = cn(
-  'group/button shrink-0 transition-all select-none',
+  'group/button shrink-0 transition-all select-none cursor-pointer',
   'pt-1 inline-flex items-center justify-start',
   'rounded-sm outline-none text-sm font-medium whitespace-nowrap',
   'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
