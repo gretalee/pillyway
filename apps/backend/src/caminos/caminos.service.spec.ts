@@ -964,44 +964,98 @@ describe('CaminosService — generateSlug() slug generation', () => {
 // ─── CaminosService.findAll() ────────────────────────────────────────────────
 
 describe('CaminosService.findAll()', () => {
-  it('returns an array of camino summaries ordered by created_at desc', async () => {
-    const summaries = [
-      {
-        id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-        name: 'Camino Francés',
-        description: null,
-        verified: true,
-        createdBy: 'kinde-user-001',
-        createdAt: new Date('2026-01-01'),
+  const summary = {
+    id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    name: 'Camino Francés',
+    description: null,
+    verified: true,
+    countries: ['france', 'spain'],
+    createdBy: 'kinde-user-001',
+    createdAt: new Date('2026-01-01'),
+  };
+
+  function buildFindAllMock(data: object[], total = data.length) {
+    return {
+      camino: {
+        findMany: vi.fn()
+          .mockResolvedValueOnce(data)   // paginated result
+          .mockResolvedValueOnce(data),  // availableCountries query
+        count: vi.fn().mockResolvedValue(total),
       },
-    ];
-    const prismaMock = {
-      camino: { findMany: vi.fn().mockResolvedValue(summaries) },
     };
+  }
+
+  it('returns paginated data with total and availableCountries', async () => {
+    const prismaMock = buildFindAllMock([summary]);
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
     const result = await service.findAll();
 
-    expect(result).toEqual(summaries);
-    expect(prismaMock.camino.findMany).toHaveBeenCalledOnce();
+    expect(result.data).toEqual([summary]);
+    expect(result.total).toBe(1);
+    expect(result.page).toBe(1);
+    expect(result.totalPages).toBe(1);
+    expect(result.availableCountries).toEqual(['france', 'spain']);
   });
 
-  it('returns an empty array when no caminos exist', async () => {
-    const prismaMock = {
-      camino: { findMany: vi.fn().mockResolvedValue([]) },
-    };
+  it('returns empty data with totalPages=1 when no caminos exist', async () => {
+    const prismaMock = buildFindAllMock([]);
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
     const result = await service.findAll();
 
-    expect(result).toEqual([]);
+    expect(result.data).toEqual([]);
+    expect(result.total).toBe(0);
+    expect(result.totalPages).toBe(1);
+    expect(result.availableCountries).toEqual([]);
+  });
+
+  it('passes verified filter to prisma where clause', async () => {
+    const prismaMock = buildFindAllMock([summary]);
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
+
+    await service.findAll({ verified: true });
+
+    expect(prismaMock.camino.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({ where: expect.objectContaining({ verified: true }) }),
+    );
+  });
+
+  it('passes countries hasSome filter to prisma where clause', async () => {
+    const prismaMock = buildFindAllMock([summary]);
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
+
+    await service.findAll({ countries: ['france', 'spain'] });
+
+    expect(prismaMock.camino.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({ countries: { hasSome: ['france', 'spain'] } }),
+      }),
+    );
+  });
+
+  it('calculates correct skip for page 2', async () => {
+    const prismaMock = buildFindAllMock([summary], 10);
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
+
+    await service.findAll({ page: 2 });
+
+    expect(prismaMock.camino.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({ skip: 6, take: 6 }),
+    );
   });
 
   it('throws InternalServerErrorException when DB query fails', async () => {
     const prismaMock = {
-      camino: { findMany: vi.fn().mockRejectedValue(new Error('timeout')) },
+      camino: {
+        findMany: vi.fn().mockRejectedValue(new Error('timeout')),
+        count: vi.fn().mockRejectedValue(new Error('timeout')),
+      },
     };
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);

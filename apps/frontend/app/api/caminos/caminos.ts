@@ -35,10 +35,31 @@ export interface CaminoDetailFull {
   caminoPoints: CaminoPointDetail[];
 }
 
-export async function fetchCaminos(): Promise<CaminoSummary[]> {
-  const response = await fetch(`${API_URL}/caminos`);
+export interface PaginatedCaminosResponse {
+  data: CaminoSummary[];
+  total: number;
+  page: number;
+  totalPages: number;
+  availableCountries: string[];
+}
+
+export interface FetchCaminosParams {
+  verified?: boolean;
+  countries?: string[];
+  page?: number;
+}
+
+export async function fetchCaminos(
+  params?: FetchCaminosParams,
+): Promise<PaginatedCaminosResponse> {
+  const qs = new URLSearchParams();
+  if (params?.verified !== undefined) qs.set('verified', String(params.verified));
+  if (params?.countries?.length) qs.set('countries', params.countries.join(','));
+  if (params?.page && params.page > 1) qs.set('page', String(params.page));
+  const query = qs.toString();
+  const response = await fetch(`${API_URL}/caminos${query ? `?${query}` : ''}`);
   if (!response.ok) throw new Error('Failed to fetch caminos');
-  return response.json() as Promise<CaminoSummary[]>;
+  return response.json() as Promise<PaginatedCaminosResponse>;
 }
 
 export async function fetchCamino(id: string): Promise<CaminoDetailFull> {

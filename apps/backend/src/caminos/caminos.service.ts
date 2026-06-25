@@ -19,9 +19,20 @@ import { PrismaService } from '../prisma/prisma.service';
 import { StagesService } from '../stages/stages.service';
 import { UploadsService } from '../uploads/uploads.service';
 import { CreateCaminoDto } from './dto/create-camino.dto';
+import { FindAllCaminosQueryDto } from './dto/find-all-caminos-query.dto';
 import { UpdateCaminoDto } from './dto/update-camino.dto';
 
 // ─── Response interfaces ──────────────────────────────────────────────────────
+
+const CAMINOS_PER_PAGE = 6;
+
+export interface PaginatedCaminosResponse {
+  data: CaminoSummary[];
+  total: number;
+  page: number;
+  totalPages: number;
+  availableCountries: string[];
+}
 
 export interface CaminoSummary {
   id: string;
@@ -188,21 +199,49 @@ export class CaminosService {
 
   // ── findAll ─────────────────────────────────────────────────────────────────
 
-  async findAll(): Promise<CaminoSummary[]> {
+  async findAll(query: FindAllCaminosQueryDto = {}): Promise<PaginatedCaminosResponse> {
+    const page = query.page ?? 1;
+    const skip = (page - 1) * CAMINOS_PER_PAGE;
+
+    const where: Prisma.CaminoWhereInput = {};
+    if (query.verified !== undefined) where.verified = query.verified;
+    if (query.countries?.length) where.countries = { hasSome: query.countries };
+
+    const select = {
+      id: true,
+      slug: true,
+      name: true,
+      description: true,
+      verified: true,
+      countries: true,
+      createdBy: true,
+      createdAt: true,
+    } as const;
+
     try {
-      return await this.prisma.camino.findMany({
-        select: {
-          id: true,
-          slug: true,
-          name: true,
-          description: true,
-          verified: true,
-          countries: true,
-          createdBy: true,
-          createdAt: true,
-        },
-        orderBy: { createdAt: 'desc' },
-      });
+      const [data, total, allRows] = await Promise.all([
+        this.prisma.camino.findMany({
+          where,
+          select,
+          orderBy: { createdAt: 'desc' },
+          skip,
+          take: CAMINOS_PER_PAGE,
+        }),
+        this.prisma.camino.count({ where }),
+        this.prisma.camino.findMany({ select: { countries: true } }),
+      ]);
+
+      const availableCountries = [
+        ...new Set(allRows.flatMap((c) => c.countries)),
+      ].sort();
+
+      return {
+        data,
+        total,
+        page,
+        totalPages: Math.max(1, Math.ceil(total / CAMINOS_PER_PAGE)),
+        availableCountries,
+      };
     } catch (err) {
       this.logger.error('Failed to fetch caminos', err);
       throw new InternalServerErrorException('Failed to fetch caminos.');

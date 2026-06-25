@@ -9,6 +9,7 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -34,9 +35,10 @@ import {
   CaminosService,
   CaminoDetail,
   CaminoDetailFull,
-  CaminoSummary,
+  PaginatedCaminosResponse,
 } from './caminos.service';
 import { CreateCaminoDto } from './dto/create-camino.dto';
+import { FindAllCaminosQueryDto } from './dto/find-all-caminos-query.dto';
 import { SetCaminoVerifiedDto } from './dto/set-camino-verified.dto';
 import { UpdateCaminoDto } from './dto/update-camino.dto';
 
@@ -46,10 +48,10 @@ export class CaminosController {
   constructor(private readonly caminosService: CaminosService) {}
 
   @Get()
-  @ApiOperation({ summary: 'List all caminos (public)' })
-  @ApiOkResponse({ description: 'Array of camino summaries.' })
-  async findAll(): Promise<CaminoSummary[]> {
-    return this.caminosService.findAll();
+  @ApiOperation({ summary: 'List caminos with optional filtering and pagination (public)' })
+  @ApiOkResponse({ description: 'Paginated list of camino summaries.' })
+  async findAll(@Query() query: FindAllCaminosQueryDto): Promise<PaginatedCaminosResponse> {
+    return this.caminosService.findAll(query);
   }
 
   @Get(':slug')

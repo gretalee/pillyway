@@ -6,6 +6,6 @@ import { fetchCaminos } from './caminos';
 export function useCaminos() {
   return useQuery({
     queryKey: ['caminos'],
-    queryFn: fetchCaminos,
+    queryFn: () => fetchCaminos(),
   });
 }

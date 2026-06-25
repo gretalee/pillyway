@@ -96,6 +96,12 @@
     "verified_tooltip": "Pilger haben diesen Weg bestätigt",
     "filter_verified_label": "Nur verifizierte Caminos anzeigen",
     "filter_no_verified": "Keine verifizierten Caminos gefunden.",
+    "filter_empty": "Keine Caminos für die gewählten Filter gefunden.",
+    "filter_country_aria": "Nach Land filtern",
+    "filter_reset": "Filter zurücksetzen",
+    "pagination_previous": "Zurück",
+    "pagination_next": "Weiter",
+    "pagination_page_info": "Seite {page} von {totalPages}",
     "teaser": {
       "text": "Fehlt dir ein Weg, den du schon immer gehen wolltest? Mit KI-Unterstützung können wir schnell einen neuen Camino erzeugen.",
       "text_2": "Schreib uns eine Email an",
