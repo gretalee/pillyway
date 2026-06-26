@@ -11,6 +11,10 @@ vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: mockPush }),
 }));
 
+vi.mock('nprogress', () => ({
+  default: { start: vi.fn(), done: vi.fn() },
+}));
+
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string, params?: Record<string, unknown>) => {
     if (params) {
