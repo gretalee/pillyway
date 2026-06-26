@@ -1,7 +1,9 @@
 'use client';
 
+import { useTransition, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import NProgress from 'nprogress';
 import Link from 'next/link';
 import { ToggleSwitch } from '@/app/components/ui/toggle-switch';
 import { Button, buttonVariants } from '@/app/components/ui/button';
@@ -43,6 +45,12 @@ export function CaminoListFilter({
   const tCodes = useTranslations('country_codes');
   const tCountries = useTranslations('countries');
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    if (isPending) NProgress.start();
+    else NProgress.done();
+  }, [isPending]);
 
   function buildUrl(verified: boolean, countries: string[], page: number) {
     const params = new URLSearchParams();
@@ -54,22 +62,22 @@ export function CaminoListFilter({
   }
 
   function toggleVerified() {
-    router.push(buildUrl(!currentVerified, currentCountries, 1));
+    startTransition(() => router.push(buildUrl(!currentVerified, currentCountries, 1)));
   }
 
   function toggleCountry(country: string) {
     const next = currentCountries.includes(country)
       ? currentCountries.filter((c) => c !== country)
       : [...currentCountries, country];
-    router.push(buildUrl(currentVerified, next, 1));
+    startTransition(() => router.push(buildUrl(currentVerified, next, 1)));
   }
 
   function resetFilters() {
-    router.push('/caminos');
+    startTransition(() => router.push('/caminos'));
   }
 
   function goToPage(page: number) {
-    router.push(buildUrl(currentVerified, currentCountries, page));
+    startTransition(() => router.push(buildUrl(currentVerified, currentCountries, page)));
   }
 
   const hasActiveFilter = currentVerified || currentCountries.length > 0;

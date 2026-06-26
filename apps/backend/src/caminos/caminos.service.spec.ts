@@ -1038,12 +1038,24 @@ describe('CaminosService.findAll()', () => {
     );
   });
 
-  it('calculates correct skip for page 2', async () => {
+  it('calculates correct skip for page 2 using the default page size', async () => {
     const prismaMock = buildFindAllMock([summary], 10);
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
     await service.findAll({ page: 2 });
+
+    expect(prismaMock.camino.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({ skip: 10, take: 10 }),
+    );
+  });
+
+  it('respects a caller-supplied limit', async () => {
+    const prismaMock = buildFindAllMock([summary], 30);
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
+
+    await service.findAll({ page: 2, limit: 6 });
 
     expect(prismaMock.camino.findMany).toHaveBeenCalledWith(
       expect.objectContaining({ skip: 6, take: 6 }),

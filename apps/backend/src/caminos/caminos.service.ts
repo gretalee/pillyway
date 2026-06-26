@@ -24,7 +24,7 @@ import { UpdateCaminoDto } from './dto/update-camino.dto';
 
 // ─── Response interfaces ──────────────────────────────────────────────────────
 
-const CAMINOS_PER_PAGE = 6;
+const DEFAULT_PAGE_SIZE = 10;
 
 export interface PaginatedCaminosResponse {
   data: CaminoSummary[];
@@ -201,7 +201,8 @@ export class CaminosService {
 
   async findAll(query: FindAllCaminosQueryDto = {}): Promise<PaginatedCaminosResponse> {
     const page = query.page ?? 1;
-    const skip = (page - 1) * CAMINOS_PER_PAGE;
+    const limit = query.limit ?? DEFAULT_PAGE_SIZE;
+    const skip = (page - 1) * limit;
 
     const where: Prisma.CaminoWhereInput = {};
     if (query.verified !== undefined) where.verified = query.verified;
@@ -225,7 +226,7 @@ export class CaminosService {
           select,
           orderBy: { createdAt: 'desc' },
           skip,
-          take: CAMINOS_PER_PAGE,
+          take: limit,
         }),
         this.prisma.camino.count({ where }),
         this.prisma.camino.findMany({ select: { countries: true } }),
@@ -239,7 +240,7 @@ export class CaminosService {
         data,
         total,
         page,
-        totalPages: Math.max(1, Math.ceil(total / CAMINOS_PER_PAGE)),
+        totalPages: Math.max(1, Math.ceil(total / limit)),
         availableCountries,
       };
     } catch (err) {
