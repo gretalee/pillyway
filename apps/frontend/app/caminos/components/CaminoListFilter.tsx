@@ -111,6 +111,7 @@ export function CaminoListFilter({
 
         {result.availableCountries.length > 0 && (
           <div
+            role="group"
             className="flex flex-wrap items-center bg-white gap-1 border rounded-sm h-9 px-2"
             aria-label={t('filter_country_aria')}>
             {result.availableCountries.map((country) => {
