@@ -229,7 +229,7 @@ export class CaminosService {
           take: limit,
         }),
         this.prisma.camino.count({ where }),
-        this.prisma.camino.findMany({ select: { countries: true } }),
+        this.prisma.camino.findMany({ where, select: { countries: true } }),
       ]);
 
       const availableCountries = [
