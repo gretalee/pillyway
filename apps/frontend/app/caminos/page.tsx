@@ -1,27 +1,58 @@
 import { getTranslations } from 'next-intl/server';
-import { fetchCaminos } from '@/app/api/caminos/caminos';
+import { fetchCaminos, type PaginatedCaminosResponse } from '@/app/api/caminos/caminos';
 import { getAuthUser } from '@/lib/getAuthUser';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '../components/ui/button';
 import { CaminoListFilter } from './components/CaminoListFilter';
 
-export default async function CaminosPage() {
+const EMPTY_RESULT: PaginatedCaminosResponse = {
+  data: [],
+  total: 0,
+  page: 1,
+  totalPages: 0,
+  availableCountries: [],
+};
+
+interface PageProps {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}
+
+export default async function CaminosPage({ searchParams }: PageProps) {
   const t = await getTranslations('caminos');
   const user = await getAuthUser();
   const isPilgrim = user?.roles.some((r) => r.key === 'pilgrim') ?? false;
 
-  let caminos: Awaited<ReturnType<typeof fetchCaminos>>;
+  const params = await searchParams;
+  const currentVerified = params['verified'] === 'true';
+  const rawCountries = params['countries'];
+  const currentCountries =
+    typeof rawCountries === 'string' && rawCountries
+      ? rawCountries
+          .split(',')
+          .map((c) => c.trim())
+          .filter(Boolean)
+      : [];
+  const rawPage = params['page'];
+  const currentPage =
+    typeof rawPage === 'string' ? Math.max(1, parseInt(rawPage, 10) || 1) : 1;
+
+  let result: PaginatedCaminosResponse;
   let error: Error | undefined;
   try {
-    caminos = await fetchCaminos();
+    result = await fetchCaminos({
+      verified: currentVerified || undefined,
+      countries: currentCountries.length ? currentCountries : undefined,
+      page: currentPage,
+      limit: 12,
+    });
   } catch (e) {
-    caminos = [];
+    result = EMPTY_RESULT;
     error = e instanceof Error ? e : new Error('Unknown error');
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-4 py-6 lg:py-16 sm:px-6 lg:px-8">
+    <div className="mx-auto flex w-full max-w-[1800px] flex-1 flex-col px-4 py-6 lg:py-16 sm:px-6 lg:px-8">
       <h1 className="text-3xl font-bold tracking-tight">{t('title')}</h1>
       <p className="mt-2 text-muted-foreground">{t('browse')}</p>
       <p className="mt-2 text-muted-foreground">
@@ -49,16 +80,11 @@ export default async function CaminosPage() {
         </Link>
       </div>
 
-      {/* Error message */}
       <section className="mt-8 space-y-4">
         {error && (
           <p role="alert" className="text-sm text-destructive">
             {t('error_loading')}
           </p>
-        )}
-
-        {caminos.length === 0 && !error && (
-          <p className="text-sm text-muted-foreground">{t('empty')}</p>
         )}
 
         {isPilgrim && !error && (
@@ -72,9 +98,15 @@ export default async function CaminosPage() {
         )}
       </section>
 
-      {/* Caminos list */}
-      {caminos.length > 0 && !error && (
-        <CaminoListFilter caminos={caminos} isPilgrim={isPilgrim} className="mt-8" />
+      {!error && (
+        <CaminoListFilter
+          result={result}
+          isPilgrim={isPilgrim}
+          currentVerified={currentVerified}
+          currentCountries={currentCountries}
+          currentPage={currentPage}
+          className="mt-8"
+        />
       )}
     </div>
   );

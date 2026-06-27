@@ -19,9 +19,20 @@ import { PrismaService } from '../prisma/prisma.service';
 import { StagesService } from '../stages/stages.service';
 import { UploadsService } from '../uploads/uploads.service';
 import { CreateCaminoDto } from './dto/create-camino.dto';
+import { FindAllCaminosQueryDto } from './dto/find-all-caminos-query.dto';
 import { UpdateCaminoDto } from './dto/update-camino.dto';
 
 // ─── Response interfaces ──────────────────────────────────────────────────────
+
+const DEFAULT_PAGE_SIZE = 10;
+
+export interface PaginatedCaminosResponse {
+  data: CaminoSummary[];
+  total: number;
+  page: number;
+  totalPages: number;
+  availableCountries: string[];
+}
 
 export interface CaminoSummary {
   id: string;
@@ -173,7 +184,9 @@ export class CaminosService {
   ): Promise<string> {
     const base = slugify(name);
     if (base === '') {
-      throw new BadRequestException('Camino name cannot be converted into a valid slug.');
+      throw new BadRequestException(
+        'Camino name cannot be converted into a valid slug.',
+      );
     }
 
     const exists = async (slug: string): Promise<boolean> =>
@@ -188,21 +201,52 @@ export class CaminosService {
 
   // ── findAll ─────────────────────────────────────────────────────────────────
 
-  async findAll(): Promise<CaminoSummary[]> {
+  async findAll(
+    query: FindAllCaminosQueryDto = {},
+  ): Promise<PaginatedCaminosResponse> {
+    const page = query.page ?? 1;
+    const limit = query.limit ?? DEFAULT_PAGE_SIZE;
+    const skip = (page - 1) * limit;
+
+    const where: Prisma.CaminoWhereInput = {};
+    if (query.verified !== undefined) where.verified = query.verified;
+    if (query.countries?.length) where.countries = { hasSome: query.countries };
+
+    const select = {
+      id: true,
+      slug: true,
+      name: true,
+      description: true,
+      verified: true,
+      countries: true,
+      createdBy: true,
+      createdAt: true,
+    } as const;
+
     try {
-      return await this.prisma.camino.findMany({
-        select: {
-          id: true,
-          slug: true,
-          name: true,
-          description: true,
-          verified: true,
-          countries: true,
-          createdBy: true,
-          createdAt: true,
-        },
-        orderBy: { createdAt: 'desc' },
-      });
+      const [data, total, allRows] = await Promise.all([
+        this.prisma.camino.findMany({
+          where,
+          select,
+          orderBy: { createdAt: 'desc' },
+          skip,
+          take: limit,
+        }),
+        this.prisma.camino.count({ where }),
+        this.prisma.camino.findMany({ select: { countries: true } }),
+      ]);
+
+      const availableCountries = [
+        ...new Set(allRows.flatMap((c) => c.countries)),
+      ].sort();
+
+      return {
+        data,
+        total,
+        page,
+        totalPages: Math.max(1, Math.ceil(total / limit)),
+        availableCountries,
+      };
     } catch (err) {
       this.logger.error('Failed to fetch caminos', err);
       throw new InternalServerErrorException('Failed to fetch caminos.');
@@ -393,7 +437,9 @@ export class CaminosService {
         const orderedPointIds = caminoPoints.map((p) => p.id);
         await this.stagesService.upsertStagePairs(orderedPointIds, tx);
 
-        const countries = extractOrderedCountries(caminoPoints.map((p) => p.country));
+        const countries = extractOrderedCountries(
+          caminoPoints.map((p) => p.country),
+        );
         await tx.camino.update({
           where: { id: camino.id },
           data: { countries },
@@ -577,7 +623,11 @@ export class CaminosService {
                   );
                 }
                 // Update coordinates only when both are explicitly provided
-                assertCoordPair(item.lat, item.lng, `Point ${item.caminoPointId}`);
+                assertCoordPair(
+                  item.lat,
+                  item.lng,
+                  `Point ${item.caminoPointId}`,
+                );
                 if (item.lat !== undefined && item.lng !== undefined) {
                   await tx.caminoPoint.update({
                     where: { id: found.id },

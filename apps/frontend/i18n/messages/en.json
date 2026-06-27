@@ -96,6 +96,12 @@
     "verified_tooltip": "Pilgrims have confirmed this route",
     "filter_verified_label": "Show only verified caminos",
     "filter_no_verified": "No verified caminos found.",
+    "filter_empty": "No caminos found for the selected filters.",
+    "filter_country_aria": "Filter by country",
+    "filter_reset": "Reset filters",
+    "pagination_previous": "Previous",
+    "pagination_next": "Next",
+    "pagination_page_info": "Page {page} of {totalPages}",
     "teaser": {
       "text": "Missing a route you've always wanted to walk? With AI support, we can quickly generate a new Camino.",
       "text_2": "Send us an email at",

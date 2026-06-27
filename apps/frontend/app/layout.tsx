@@ -1,5 +1,6 @@
 import { getLocale, getMessages, getTimeZone, getTranslations } from 'next-intl/server';
 import type { Metadata } from 'next';
+import NextTopLoader from 'nextjs-toploader';
 import { Providers } from '@/providers/providers';
 import { Header } from '@/app/components/layout/Header';
 import { Footer } from '@/app/components/layout/Footer';
@@ -53,6 +54,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} className="h-full antialiased">
       <body className="min-h-full flex flex-col">
+        <NextTopLoader color="var(--primary)" height={2} showSpinner={false} />
         <Providers locale={locale} messages={messages} timeZone={timeZone}>
           <PathTracker />
           <Header user={authUser} />
