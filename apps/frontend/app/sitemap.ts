@@ -14,7 +14,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   let caminoRoutes: MetadataRoute.Sitemap = [];
   try {
-    const { data: caminos } = await fetchCaminos();
+    const { data: caminos } = await fetchCaminos({ limit: 1000 });
     caminoRoutes = caminos.map((camino) => ({
       url: `${SITE_URL}/caminos/${camino.slug}`,
       lastModified: new Date(camino.createdAt),

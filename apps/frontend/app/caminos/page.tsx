@@ -34,7 +34,8 @@ export default async function CaminosPage({ searchParams }: PageProps) {
           .filter(Boolean)
       : [];
   const rawPage = params['page'];
-  const currentPage = typeof rawPage === 'string' ? Math.max(1, parseInt(rawPage, 10) || 1) : 1;
+  const currentPage =
+    typeof rawPage === 'string' ? Math.max(1, parseInt(rawPage, 10) || 1) : 1;
 
   let result: PaginatedCaminosResponse;
   let error: Error | undefined;
@@ -43,6 +44,7 @@ export default async function CaminosPage({ searchParams }: PageProps) {
       verified: currentVerified || undefined,
       countries: currentCountries.length ? currentCountries : undefined,
       page: currentPage,
+      limit: 12,
     });
   } catch (e) {
     result = EMPTY_RESULT;
@@ -87,7 +89,9 @@ export default async function CaminosPage({ searchParams }: PageProps) {
 
         {isPilgrim && !error && (
           <div>
-            <Link href="/caminos/new" className={cn(buttonVariants({ variant: 'default' }))}>
+            <Link
+              href="/caminos/new"
+              className={cn(buttonVariants({ variant: 'default' }))}>
               {t('create_link')}
             </Link>
           </div>

@@ -48,9 +48,13 @@ export class CaminosController {
   constructor(private readonly caminosService: CaminosService) {}
 
   @Get()
-  @ApiOperation({ summary: 'List caminos with optional filtering and pagination (public)' })
+  @ApiOperation({
+    summary: 'List caminos with optional filtering and pagination (public)',
+  })
   @ApiOkResponse({ description: 'Paginated list of camino summaries.' })
-  async findAll(@Query() query: FindAllCaminosQueryDto): Promise<PaginatedCaminosResponse> {
+  async findAll(
+    @Query() query: FindAllCaminosQueryDto,
+  ): Promise<PaginatedCaminosResponse> {
     return this.caminosService.findAll(query);
   }
 
