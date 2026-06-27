@@ -184,7 +184,9 @@ export class CaminosService {
   ): Promise<string> {
     const base = slugify(name);
     if (base === '') {
-      throw new BadRequestException('Camino name cannot be converted into a valid slug.');
+      throw new BadRequestException(
+        'Camino name cannot be converted into a valid slug.',
+      );
     }
 
     const exists = async (slug: string): Promise<boolean> =>
@@ -199,7 +201,9 @@ export class CaminosService {
 
   // ── findAll ─────────────────────────────────────────────────────────────────
 
-  async findAll(query: FindAllCaminosQueryDto = {}): Promise<PaginatedCaminosResponse> {
+  async findAll(
+    query: FindAllCaminosQueryDto = {},
+  ): Promise<PaginatedCaminosResponse> {
     const page = query.page ?? 1;
     const limit = query.limit ?? DEFAULT_PAGE_SIZE;
     const skip = (page - 1) * limit;
@@ -229,7 +233,7 @@ export class CaminosService {
           take: limit,
         }),
         this.prisma.camino.count({ where }),
-        this.prisma.camino.findMany({ where, select: { countries: true } }),
+        this.prisma.camino.findMany({ select: { countries: true } }),
       ]);
 
       const availableCountries = [
@@ -433,7 +437,9 @@ export class CaminosService {
         const orderedPointIds = caminoPoints.map((p) => p.id);
         await this.stagesService.upsertStagePairs(orderedPointIds, tx);
 
-        const countries = extractOrderedCountries(caminoPoints.map((p) => p.country));
+        const countries = extractOrderedCountries(
+          caminoPoints.map((p) => p.country),
+        );
         await tx.camino.update({
           where: { id: camino.id },
           data: { countries },
@@ -617,7 +623,11 @@ export class CaminosService {
                   );
                 }
                 // Update coordinates only when both are explicitly provided
-                assertCoordPair(item.lat, item.lng, `Point ${item.caminoPointId}`);
+                assertCoordPair(
+                  item.lat,
+                  item.lng,
+                  `Point ${item.caminoPointId}`,
+                );
                 if (item.lat !== undefined && item.lng !== undefined) {
                   await tx.caminoPoint.update({
                     where: { id: found.id },
