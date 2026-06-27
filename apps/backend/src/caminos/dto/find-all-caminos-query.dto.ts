@@ -6,7 +6,7 @@ export class FindAllCaminosQueryDto {
   @Transform(({ value }) => {
     if (value === 'true') return true;
     if (value === 'false') return false;
-    return undefined;
+    return value; // preserve unknown so @IsBoolean can reject it
   })
   @IsBoolean()
   verified?: boolean;
