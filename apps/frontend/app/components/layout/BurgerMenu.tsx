@@ -17,6 +17,10 @@ const menuLinkClassName = cn(
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
 );
 
+const allCaminosLinkClassName = cn(menuLinkClassName, 'font-semibold');
+
+const caminoLinkClassName = cn(menuLinkClassName, 'pl-4 font-normal');
+
 export function BurgerMenu() {
   const [open, setOpen] = useState(false);
   const t = useTranslations('burger_menu');
@@ -76,6 +80,10 @@ export function BurgerMenu() {
               {t('caminos_heading')}
             </p>
 
+            <Link href="/caminos" onClick={handleNavigate} className={allCaminosLinkClassName}>
+              {t('all_caminos')}
+            </Link>
+
             {isLoading && (
               <p className="px-2 py-1.5 text-sm text-muted-foreground">{t('loading')}</p>
             )}
@@ -96,7 +104,7 @@ export function BurgerMenu() {
                   <Link
                     href={`/caminos/${camino.slug}`}
                     onClick={handleNavigate}
-                    className={menuLinkClassName}>
+                    className={caminoLinkClassName}>
                     {camino.name}
                   </Link>
                 </li>

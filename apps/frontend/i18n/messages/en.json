@@ -23,6 +23,7 @@
     "title": "Menu",
     "close_aria": "Close menu",
     "caminos_heading": "Caminos",
+    "all_caminos": "All caminos",
     "contact": "Contact",
     "loading": "Loading caminos…",
     "error_loading": "Failed to load caminos.",
