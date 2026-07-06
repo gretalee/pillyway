@@ -4,6 +4,7 @@ import { buttonVariants } from '../ui/button';
 import { cn } from '@/lib/utils';
 import { UserMenu } from './UserMenu';
 import { LanguageSwitcher } from './LanguageSwitcher';
+import { BurgerMenu } from './BurgerMenu';
 import type { AuthUser } from '@/lib/getAuthUser';
 
 interface HeaderProps {
@@ -21,12 +22,16 @@ export async function Header({ user }: HeaderProps) {
         'bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60',
       )}>
       <div className="mx-auto max-w-full overflow-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link
-          href="/"
-          className="text-lg font-semibold hover:opacity-80 transition-opacity"
-          aria-label={t('aria_home')}>
-          {t('home_label')}
-        </Link>
+        <div className="flex items-center gap-1">
+          <BurgerMenu />
+
+          <Link
+            href="/"
+            className="text-lg font-semibold hover:opacity-80 transition-opacity"
+            aria-label={t('aria_home')}>
+            {t('home_label')}
+          </Link>
+        </div>
 
         <div className="flex items-center gap-1 md:gap-4">
           {isOwner && (

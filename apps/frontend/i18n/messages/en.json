@@ -16,7 +16,23 @@
     "aria_login": "Log in",
     "aria_user_menu": "User menu",
     "aria_account_nav": "Account navigation",
-    "aria_language_switcher": "Select language"
+    "aria_language_switcher": "Select language",
+    "aria_burger_menu": "Main menu"
+  },
+  "burger_menu": {
+    "title": "Menu",
+    "close_aria": "Close menu",
+    "caminos_heading": "Caminos",
+    "contact": "Contact",
+    "loading": "Loading caminos…",
+    "error_loading": "Failed to load caminos.",
+    "empty": "No caminos found."
+  },
+  "contact": {
+    "meta_title": "Contact",
+    "meta_description": "Get in touch with the Pillyway team.",
+    "title": "Contact",
+    "body": "This page is coming soon."
   },
   "user_menu": {
     "greeting": "Hi, {name}!",
