@@ -56,7 +56,7 @@ export function BurgerMenu() {
             'fixed inset-y-0 left-0 z-50 flex h-full w-4/5 max-w-xs flex-col',
             'bg-popover text-popover-foreground shadow-lg outline-none ring-1 ring-foreground/10',
             'sm:inset-y-auto sm:top-14 sm:h-auto sm:max-h-[70vh] sm:w-72 sm:rounded-r-xl',
-            'duration-200',
+            'duration-150',
             'data-open:animate-in data-open:slide-in-from-left data-open:fade-in-0',
             'data-closed:animate-out data-closed:slide-out-to-left data-closed:fade-out-0',
           )}>
