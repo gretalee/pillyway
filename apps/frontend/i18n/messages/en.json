@@ -94,7 +94,7 @@
     "no_description": "No description provided.",
     "verified_icon_aria": "Verified route",
     "verified_tooltip": "Pilgrims have confirmed this route",
-    "filter_verified_label": "Show only verified caminos",
+    "filter_verified_label": "Only verified caminos",
     "filter_no_verified": "No verified caminos found.",
     "filter_empty": "No caminos found for the selected filters.",
     "filter_country_aria": "Filter by country",

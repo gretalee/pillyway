@@ -94,25 +94,30 @@ export function CaminoListFilter({
           className={cn(
             buttonVariants({ variant: 'outline', size: 'lg' }),
             'flex items-center gap-2',
+            'max-w-full overflow-hidden h-auto py-2',
           )}>
           <ToggleSwitch
             id="filter-verified-switch"
             checked={currentVerified}
             onCheckedChange={toggleVerified}
-            className="-translate-y-0.5"
+            className="shrink-0"
           />
           <label
             htmlFor="filter-verified-switch"
-            className="cursor-pointer select-none text-sm text-foreground flex items-center gap-2">
+            className={cn(
+              'cursor-pointer select-none text-sm text-foreground',
+              'flex-1 overflow-hidden',
+              'flex items-center gap-2 translate-y-0.5',
+            )}>
             <i className="icon-award1 text-xl" aria-hidden="true" />
-            {t('filter_verified_label')}
+            <span className="truncate">{t('filter_verified_label')}</span>
           </label>
         </div>
 
         {result.availableCountries.length > 0 && (
           <div
             role="group"
-            className="flex flex-wrap items-center bg-white gap-1 border rounded-sm h-9 px-2"
+            className="flex flex-wrap items-center bg-white gap-1 border rounded-sm px-2 py-1"
             aria-label={t('filter_country_aria')}>
             {result.availableCountries.map((country) => {
               const selected = currentCountries.includes(country);
@@ -123,6 +128,7 @@ export function CaminoListFilter({
                   size="sm"
                   aria-pressed={selected}
                   title={tCountries(country)}
+                  className="border border-border"
                   onClick={() => toggleCountry(country)}>
                   {tCodes(country)}
                 </Button>

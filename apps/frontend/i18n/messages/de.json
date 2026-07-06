@@ -94,7 +94,7 @@
     "no_description": "Keine Beschreibung vorhanden.",
     "verified_icon_aria": "Verifizierter Weg",
     "verified_tooltip": "Pilger haben diesen Weg bestätigt",
-    "filter_verified_label": "Nur verifizierte Caminos anzeigen",
+    "filter_verified_label": "Nur verifizierte Caminos",
     "filter_no_verified": "Keine verifizierten Caminos gefunden.",
     "filter_empty": "Keine Caminos für die gewählten Filter gefunden.",
     "filter_country_aria": "Nach Land filtern",
