@@ -204,8 +204,14 @@ describe('CaminoListFilter', () => {
       />,
     );
 
-    expect(screen.getByText('Camino Francés'), 'verified camino must appear').toBeInTheDocument();
-    expect(screen.getByText('Via de la Plata'), 'unverified camino must appear').toBeInTheDocument();
+    expect(
+      screen.getByText('Camino Francés'),
+      'verified camino must appear',
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('Via de la Plata'),
+      'unverified camino must appear',
+    ).toBeInTheDocument();
   });
 
   it('calls router.push with verified=true when switch is toggled on', async () => {
@@ -222,9 +228,10 @@ describe('CaminoListFilter', () => {
 
     await user.click(getSwitch());
 
-    expect(mockPush, 'router.push must be called with verified filter').toHaveBeenCalledWith(
-      '/caminos?verified=true',
-    );
+    expect(
+      mockPush,
+      'router.push must be called with verified filter',
+    ).toHaveBeenCalledWith('/caminos?verified=true');
   });
 
   it('calls router.push without verified when switch is toggled off', async () => {
@@ -241,7 +248,9 @@ describe('CaminoListFilter', () => {
 
     await user.click(getSwitch());
 
-    expect(mockPush, 'router.push must remove verified from URL').toHaveBeenCalledWith('/caminos');
+    expect(mockPush, 'router.push must remove verified from URL').toHaveBeenCalledWith(
+      '/caminos',
+    );
   });
 
   it('shows filter_empty when result is empty with active filter', () => {
@@ -320,8 +329,14 @@ describe('CaminoListFilter', () => {
       />,
     );
 
-    expect(screen.getByRole('button', { name: 'france' })).toHaveAttribute('aria-pressed', 'true');
-    expect(screen.getByRole('button', { name: 'spain' })).toHaveAttribute('aria-pressed', 'false');
+    expect(screen.getByRole('button', { name: 'france' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+    expect(screen.getByRole('button', { name: 'spain' })).toHaveAttribute(
+      'aria-pressed',
+      'false',
+    );
   });
 
   it('clicking a country chip calls router.push with that country added', async () => {
@@ -528,7 +543,9 @@ describe('CaminoListFilter', () => {
       />,
     );
 
-    expect(screen.queryByLabelText(`actions-${verifiedCamino.name}`)).not.toBeInTheDocument();
+    expect(
+      screen.queryByLabelText(`actions-${verifiedCamino.name}`),
+    ).not.toBeInTheDocument();
   });
 
   it('camino names link to their detail pages', () => {
@@ -603,9 +620,15 @@ describe('CaminoListFilter', () => {
       />,
     );
 
-    const label = screen.getByText('filter_verified_label');
+    const labelText = screen.getByText('filter_verified_label');
+    const label = labelText.closest('label');
+    expect(label, 'label element for verified filter must exist').toBeTruthy();
     expect(label).toHaveAttribute('for', 'filter-verified-switch');
-    expect(getSwitch()).toHaveAttribute('id', 'filter-verified-switch');
+    const switchEl = getSwitch();
+    expect(
+      switchEl,
+      'switch element must have id "filter-verified-switch"',
+    ).toHaveAttribute('id', 'filter-verified-switch');
   });
 
   it('renders caminos in a list element with an accessible name', () => {
@@ -638,6 +661,8 @@ describe('CaminoListFilter', () => {
 
     await user.click(screen.getByLabelText('pagination_next'));
 
-    expect(mockPush).toHaveBeenCalledWith('/caminos?verified=true&countries=spain&page=2');
+    expect(mockPush).toHaveBeenCalledWith(
+      '/caminos?verified=true&countries=spain&page=2',
+    );
   });
 });
