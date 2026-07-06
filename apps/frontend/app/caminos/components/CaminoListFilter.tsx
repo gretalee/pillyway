@@ -109,7 +109,7 @@ export function CaminoListFilter({
               'flex-1 overflow-hidden',
               'flex items-center gap-2 translate-y-0.5',
             )}>
-            <i className="icon-award1 text-xl" aria-hidden="true" />
+            <i className="icon-award1 text-xl -mb-[2px]" aria-hidden="true" />
             <span className="truncate">{t('filter_verified_label')}</span>
           </label>
         </div>

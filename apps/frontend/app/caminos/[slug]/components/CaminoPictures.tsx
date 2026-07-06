@@ -2,7 +2,6 @@
 
 import { useRef, useState } from 'react';
 import Image from 'next/image';
-import { Pencil, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 
@@ -269,7 +268,7 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
                   'bg-black/60 text-white transition-colors',
                   'hover:bg-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white',
                 )}>
-                <Trash2 size={15} aria-hidden="true" />
+                <i className="icon-trash text-[15px]" aria-hidden="true" />
               </button>
             )}
           </div>
@@ -342,7 +341,7 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
                     className={cn(
                       'flex size-7 items-center justify-center rounded-md bg-black/60 text-white transition-colors hover:bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white',
                     )}>
-                    <Pencil size={13} aria-hidden="true" />
+                    <i className="icon-pencil text-[13px]" aria-hidden="true" />
                   </button>
                   <button
                     type="button"
@@ -351,7 +350,7 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
                     className={cn(
                       'flex size-7 items-center justify-center rounded-md bg-black/60 text-white transition-colors hover:bg-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white',
                     )}>
-                    <Trash2 size={13} aria-hidden="true" />
+                    <i className="icon-trash text-[13px]" aria-hidden="true" />
                   </button>
                 </div>
               );

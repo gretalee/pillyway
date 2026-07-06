@@ -112,11 +112,6 @@ vi.mock('@base-ui/react/button', () => ({
   ),
 }));
 
-// lucide-react icons.
-vi.mock('lucide-react', () => ({
-  X: () => <span data-testid="icon-x" />,
-}));
-
 // TanStack Query hooks.
 vi.mock('@/app/api/backoffice/use-backoffice-caminos', async (importOriginal) => {
   const original = await importOriginal<typeof import('@/app/api/backoffice/use-backoffice-caminos')>();

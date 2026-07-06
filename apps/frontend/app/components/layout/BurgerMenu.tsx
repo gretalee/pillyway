@@ -3,11 +3,11 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Dialog as DialogPrimitive } from '@base-ui/react/dialog';
-import { Menu as MenuIcon, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '../ui/button';
 import { useCaminos } from '@/app/api/caminos/use-caminos';
+import BurgerIcon from '../ui/icons/BurgerIcon';
 
 const CAMINO_MENU_LIMIT = 50;
 
@@ -44,7 +44,7 @@ export function BurgerMenu() {
           'text-foreground transition-colors',
           'hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
         )}>
-        <MenuIcon className="size-5" aria-hidden="true" />
+        <BurgerIcon />
       </DialogPrimitive.Trigger>
 
       <DialogPrimitive.Portal>
@@ -71,7 +71,7 @@ export function BurgerMenu() {
             <DialogPrimitive.Close
               className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }))}
               aria-label={t('close_aria')}>
-              <X className="size-4" aria-hidden="true" />
+              <i className="icon-times" aria-hidden="true" />
             </DialogPrimitive.Close>
           </div>
 
@@ -80,7 +80,10 @@ export function BurgerMenu() {
               {t('caminos_heading')}
             </p>
 
-            <Link href="/caminos" onClick={handleNavigate} className={allCaminosLinkClassName}>
+            <Link
+              href="/caminos"
+              onClick={handleNavigate}
+              className={allCaminosLinkClassName}>
               {t('all_caminos')}
             </Link>
 
