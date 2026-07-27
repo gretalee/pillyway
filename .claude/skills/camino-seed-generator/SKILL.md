@@ -128,6 +128,25 @@ accommodations) in German, regardless of which country the route runs through.
   values from `accommodation-types.ts`. Include phone number when you have it
   (add a `phone` field alongside the others — it's used in practice even though
   the bare template doesn't show it).
+- `phone`: always in full international format — country calling code plus
+  area/subscriber number, e.g. `"+34 980 534 097"` for Spain or `"+49 931 79407760"`
+  for Germany. Never write a bare national-format number like `"980 534 097"`.
+  If your source gives a national-format number, add the country's calling code
+  yourself based on the accommodation's `addressCountry` (or the point's
+  `country`) — don't guess the country from the area code.
+- `website`: if the accommodation has no website of its own, don't leave this
+  `null` — fall back to that place's page on a country-appropriate pilgrim-guide
+  site that lists per-town accommodation, ideally one you already used during
+  Step 2 research so you know it actually has a page for this place. For
+  Spanish/Portuguese routes this is usually gronze.com, e.g.
+  `https://www.gronze.com/castilla-y-leon/zamora/tabara` (search
+  `site:gronze.com "<Ort>" "Albergues y Hoteles"` to find the right page). For
+  other countries, use whichever equivalent site you identified in Step 1 as
+  the authoritative source for that route (e.g. a national Jakobsweg/Camino
+  association's town listing) — don't reuse gronze.com outside Spain/Portugal,
+  and don't invent a URL for a site you haven't actually verified has a page
+  for that specific place. If no such per-town listing exists for this route's
+  country, leave `website` `null` and note that in `_meta.note`.
 
 **`stages` array**, one per day/leg between consecutive points:
 - `distance`: in whole kilometers, from your sources (don't estimate from

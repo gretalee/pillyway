@@ -41,6 +41,8 @@
     "seed:via-francigena:prod": "yarn --cwd apps/backend seed:via-francigena:prod",
     "seed:jakobsweg-franken-schwaben": "yarn --cwd apps/backend seed:jakobsweg-franken-schwaben",
     "seed:jakobsweg-franken-schwaben:prod": "yarn --cwd apps/backend seed:jakobsweg-franken-schwaben:prod",
+    "seed:camino-sanabres": "yarn --cwd apps/backend seed:camino-sanabres",
+    "seed:camino-sanabres:prod": "yarn --cwd apps/backend seed:camino-sanabres:prod",
     "db:backup:dev": "yarn --cwd apps/backend db:backup:dev",
     "db:backup:prod": "yarn --cwd apps/backend db:backup:prod",
     "db:restore:dev": "yarn --cwd apps/backend db:restore:dev"
