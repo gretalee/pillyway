@@ -231,7 +231,7 @@ describe('CaminoListFilter', () => {
     expect(
       mockPush,
       'router.push must be called with verified filter',
-    ).toHaveBeenCalledWith('/caminos?verified=true');
+    ).toHaveBeenCalledWith('/caminos?verified=true', { scroll: false });
   });
 
   it('calls router.push without verified when switch is toggled off', async () => {
@@ -250,6 +250,7 @@ describe('CaminoListFilter', () => {
 
     expect(mockPush, 'router.push must remove verified from URL').toHaveBeenCalledWith(
       '/caminos',
+      { scroll: false },
     );
   });
 
@@ -353,7 +354,7 @@ describe('CaminoListFilter', () => {
 
     await user.click(screen.getByRole('button', { name: 'france' }));
 
-    expect(mockPush).toHaveBeenCalledWith('/caminos?countries=france');
+    expect(mockPush).toHaveBeenCalledWith('/caminos?countries=france', { scroll: false });
   });
 
   it('clicking an already-selected country chip removes it from the URL', async () => {
@@ -370,7 +371,7 @@ describe('CaminoListFilter', () => {
 
     await user.click(screen.getByRole('button', { name: 'france' }));
 
-    expect(mockPush).toHaveBeenCalledWith('/caminos?countries=spain');
+    expect(mockPush).toHaveBeenCalledWith('/caminos?countries=spain', { scroll: false });
   });
 
   it('filter changes reset page to 1 in the URL', async () => {
@@ -388,7 +389,7 @@ describe('CaminoListFilter', () => {
     await user.click(getSwitch());
 
     // page must not appear (page 1 is default, omitted)
-    expect(mockPush).toHaveBeenCalledWith('/caminos?verified=true');
+    expect(mockPush).toHaveBeenCalledWith('/caminos?verified=true', { scroll: false });
   });
 
   it('does not render pagination when there is only one page', () => {
