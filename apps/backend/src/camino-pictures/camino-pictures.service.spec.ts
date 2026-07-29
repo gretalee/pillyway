@@ -525,7 +525,11 @@ describe('CaminoPicturesService.uploadPicture()', () => {
     });
     const uploadsServiceMock = makeUploadsServiceMock();
     const imageMock = {
-      processForUpload: vi.fn().mockRejectedValue(new Error('Input buffer contains unsupported image format')),
+      processForUpload: vi
+        .fn()
+        .mockRejectedValue(
+          new Error('Input buffer contains unsupported image format'),
+        ),
     };
     const module = await buildModule(prismaMock, uploadsServiceMock, imageMock);
     const service = module.get(CaminoPicturesService);
@@ -564,7 +568,11 @@ describe('CaminoPicturesService.uploadPicture()', () => {
       pictureCount: vi.fn().mockResolvedValue(50),
     });
     const imageMock = makeImageProcessingServiceMock();
-    const module = await buildModule(prismaMock, makeUploadsServiceMock(), imageMock);
+    const module = await buildModule(
+      prismaMock,
+      makeUploadsServiceMock(),
+      imageMock,
+    );
     const service = module.get(CaminoPicturesService);
 
     await expect(

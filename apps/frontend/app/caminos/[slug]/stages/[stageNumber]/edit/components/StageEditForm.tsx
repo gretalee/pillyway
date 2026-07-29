@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
@@ -29,24 +29,19 @@ export function StageEditForm({ caminoId, stageNumber }: StageEditFormProps) {
   const { data: stage, isLoading, isError } = useStage(caminoId, stageNumber);
   const mutation = useUpdateStage();
   const [formError, setFormError] = useState<string | null>(null);
-  const [initialized, setInitialized] = useState(false);
 
-  const { register, handleSubmit, reset } = useForm<StageFormValues>({
+  const { register, handleSubmit } = useForm<StageFormValues>({
     defaultValues: {
       distance: '',
       description: '',
     },
+    values: stage
+      ? {
+          distance: stage.distance !== null ? String(stage.distance) : '',
+          description: stage.description ?? '',
+        }
+      : undefined,
   });
-
-  useEffect(() => {
-    if (stage && !initialized) {
-      reset({
-        distance: stage.distance !== null ? String(stage.distance) : '',
-        description: stage.description ?? '',
-      });
-      setInitialized(true);
-    }
-  }, [stage, initialized, reset]);
 
   const onSubmit = (values: StageFormValues) => {
     setFormError(null);

@@ -103,7 +103,8 @@ export class CaminoPicturesController {
         file: {
           type: 'string',
           format: 'binary',
-          description: 'Image file (JPEG, PNG, or WebP, max 30 MB — automatically resized and converted to WebP)',
+          description:
+            'Image file (JPEG, PNG, or WebP, max 30 MB — automatically resized and converted to WebP)',
         },
         isPrimary: {
           type: 'string',

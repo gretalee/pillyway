@@ -36,7 +36,9 @@ export class GpxStorageService {
         secretAccessKey: config.getOrThrow<string>('SUPABASE_S3_SECRET_KEY'),
       },
       forcePathStyle: true,
-      requestHandler: new NodeHttpHandler({ requestTimeout: GPX_REQUEST_TIMEOUT_MS }),
+      requestHandler: new NodeHttpHandler({
+        requestTimeout: GPX_REQUEST_TIMEOUT_MS,
+      }),
     });
   }
 
@@ -51,7 +53,9 @@ export class GpxStorageService {
         }),
       );
     } catch (err) {
-      this.logger.error(`S3 GPX upload failed for key "${storageKey}": ${String(err)}`);
+      this.logger.error(
+        `S3 GPX upload failed for key "${storageKey}": ${String(err)}`,
+      );
       throw new InternalServerErrorException('Failed to upload the GPX file.');
     }
   }
@@ -67,12 +71,17 @@ export class GpxStorageService {
     } catch (err: unknown) {
       if (
         err instanceof Error &&
-        (err.name === 'NoSuchKey' || (err as { Code?: string }).Code === 'NoSuchKey')
+        (err.name === 'NoSuchKey' ||
+          (err as { Code?: string }).Code === 'NoSuchKey')
       ) {
         throw new NotFoundException('GPX file not found in storage.');
       }
-      this.logger.error(`S3 GPX stream failed for key "${storageKey}": ${String(err)}`);
-      throw new InternalServerErrorException('Failed to retrieve the GPX file.');
+      this.logger.error(
+        `S3 GPX stream failed for key "${storageKey}": ${String(err)}`,
+      );
+      throw new InternalServerErrorException(
+        'Failed to retrieve the GPX file.',
+      );
     }
 
     if (!output.Body) {
@@ -98,10 +107,10 @@ export class GpxStorageService {
         }),
       );
     } catch (err) {
-      this.logger.error(
-        'GPX S3 delete SDK error',
-        { storageKey, error: String(err) },
-      );
+      this.logger.error('GPX S3 delete SDK error', {
+        storageKey,
+        error: String(err),
+      });
       throw new BadGatewayException(
         'Failed to delete the GPX file from storage. The record has been preserved.',
       );

@@ -93,8 +93,6 @@ export function CaminoDetail({
 }: CaminoDetailProps) {
   const t = useTranslations('camino_detail');
   const tCaminos = useTranslations('caminos');
-  const tCountries = useTranslations('countries');
-  const tCodes = useTranslations('country_codes');
   const mutation = useUpdateCamino();
 
   const canEdit = user?.roles.some((r) => r.key === 'pilgrim') ?? false;
@@ -103,13 +101,6 @@ export function CaminoDetail({
   const [editingField, setEditingField] = useState<EditingField>(null);
   const [inlineError, setInlineError] = useState<string | null>(null);
   const prevValueRef = useRef<string>('');
-
-  const countriesString = camino.countries.length
-    ? camino.countries.map((c) => tCodes(c)).join(' · ')
-    : undefined;
-  const countriesStringTooltip = camino.countries.length
-    ? camino.countries.map((c) => tCountries(c)).join(', ')
-    : undefined;
 
   function startEdit(field: EditingField) {
     prevValueRef.current = field === 'name' ? camino.name : (camino.description ?? '');

@@ -91,13 +91,17 @@ function makeOrderRows(points: (typeof PT_A)[]) {
 function makeCaminoMock(...caminoIds: string[]) {
   const ids = new Set(caminoIds);
   return {
-    findUnique: vi.fn().mockImplementation(({ where }: { where: { slug?: string; id?: string } }) => {
-      if ('slug' in where) return Promise.resolve(null);
-      if ('id' in where && where.id !== undefined && ids.has(where.id)) {
-        return Promise.resolve({ id: where.id });
-      }
-      return Promise.resolve(null);
-    }),
+    findUnique: vi
+      .fn()
+      .mockImplementation(
+        ({ where }: { where: { slug?: string; id?: string } }) => {
+          if ('slug' in where) return Promise.resolve(null);
+          if ('id' in where && where.id !== undefined && ids.has(where.id)) {
+            return Promise.resolve({ id: where.id });
+          }
+          return Promise.resolve(null);
+        },
+      ),
   };
 }
 

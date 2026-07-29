@@ -50,7 +50,9 @@ export class CaminoGpxFilesService {
     });
 
     return records.map((r) =>
-      plainToInstance(CaminoGpxFileResponseDto, r, { excludeExtraneousValues: true }),
+      plainToInstance(CaminoGpxFileResponseDto, r, {
+        excludeExtraneousValues: true,
+      }),
     );
   }
 
@@ -69,7 +71,9 @@ export class CaminoGpxFilesService {
       throw new NotFoundException('Camino not found.');
     }
 
-    const count = await this.prisma.caminoGpxFile.count({ where: { caminoId } });
+    const count = await this.prisma.caminoGpxFile.count({
+      where: { caminoId },
+    });
     if (count >= MAX_GPX_FILES) {
       throw new ConflictException(
         'This camino has reached the maximum of 20 GPX files.',
@@ -120,7 +124,11 @@ export class CaminoGpxFilesService {
   async downloadGpxFile(
     caminoId: string,
     gpxFileId: string,
-  ): Promise<{ stream: Readable; contentLength: number | undefined; fileName: string }> {
+  ): Promise<{
+    stream: Readable;
+    contentLength: number | undefined;
+    fileName: string;
+  }> {
     // Both id AND caminoId required — IDOR prevention
     const record = await this.prisma.caminoGpxFile.findFirst({
       where: { id: gpxFileId, caminoId },
@@ -129,7 +137,9 @@ export class CaminoGpxFilesService {
       throw new NotFoundException('GPX file not found.');
     }
 
-    const { stream, contentLength } = await this.gpxStorage.streamGpxFile(record.storageKey);
+    const { stream, contentLength } = await this.gpxStorage.streamGpxFile(
+      record.storageKey,
+    );
     return { stream, contentLength, fileName: record.fileName };
   }
 
@@ -150,7 +160,9 @@ export class CaminoGpxFilesService {
     const isUploader = record.uploadedBy === userId;
     const isOwner = userRoles.some((r) => r.key === 'owner');
     if (!isUploader && !isOwner) {
-      throw new ForbiddenException('You do not have permission to delete this GPX file.');
+      throw new ForbiddenException(
+        'You do not have permission to delete this GPX file.',
+      );
     }
 
     // S3 first — BadGatewayException propagates; DB record is NOT touched on failure
@@ -180,7 +192,9 @@ export class CaminoGpxFilesService {
         if (level === 'warning') {
           this.logger.warn(`GPX XML warning: ${msg}`);
         } else {
-          throw new UnprocessableEntityException(`The file is not valid XML: ${msg}`);
+          throw new UnprocessableEntityException(
+            `The file is not valid XML: ${msg}`,
+          );
         }
       },
     });
@@ -195,14 +209,18 @@ export class CaminoGpxFilesService {
     const root = doc.documentElement;
 
     if (!root || root.localName !== 'gpx') {
-      throw new UnprocessableEntityException('The file is not a valid GPX file.');
+      throw new UnprocessableEntityException(
+        'The file is not a valid GPX file.',
+      );
     }
 
     // Support both default xmlns= and prefixed namespace (e.g. OsmAnd/Garmin exports)
     const ns = root.getAttribute('xmlns') ?? root.namespaceURI;
 
     if (!ns || !VALID_GPX_NAMESPACES.includes(ns)) {
-      throw new UnprocessableEntityException('The file is not a valid GPX file.');
+      throw new UnprocessableEntityException(
+        'The file is not a valid GPX file.',
+      );
     }
 
     const hasContent = VALID_GPX_NAMESPACES.some(

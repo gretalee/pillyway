@@ -19,7 +19,9 @@ vi.mock('@aws-sdk/client-s3', async (importOriginal) => {
   return {
     ...actual,
     // Must be a regular function (not arrow) to support `new S3Client()`
-    S3Client: vi.fn().mockImplementation(function (this: { send: typeof mockSend }) {
+    S3Client: vi.fn().mockImplementation(function (this: {
+      send: typeof mockSend;
+    }) {
       this.send = mockSend;
     }),
   };
@@ -86,9 +88,9 @@ describe('GpxStorageService', () => {
     it('throws InternalServerErrorException on S3 SDK error', async () => {
       mockSend.mockRejectedValue(new Error('Network failure'));
 
-      await expect(service.uploadGpxFile(STORAGE_KEY, GPX_BUFFER)).rejects.toThrow(
-        InternalServerErrorException,
-      );
+      await expect(
+        service.uploadGpxFile(STORAGE_KEY, GPX_BUFFER),
+      ).rejects.toThrow(InternalServerErrorException);
     });
   });
 
@@ -109,14 +111,18 @@ describe('GpxStorageService', () => {
       const err = Object.assign(new Error('Not found'), { name: 'NoSuchKey' });
       mockSend.mockRejectedValue(err);
 
-      await expect(service.streamGpxFile(STORAGE_KEY)).rejects.toThrow(NotFoundException);
+      await expect(service.streamGpxFile(STORAGE_KEY)).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('throws NotFoundException when S3 returns NoSuchKey error (Code)', async () => {
       const err = Object.assign(new Error('Not found'), { Code: 'NoSuchKey' });
       mockSend.mockRejectedValue(err);
 
-      await expect(service.streamGpxFile(STORAGE_KEY)).rejects.toThrow(NotFoundException);
+      await expect(service.streamGpxFile(STORAGE_KEY)).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('throws InternalServerErrorException when Body is null', async () => {
@@ -155,7 +161,9 @@ describe('GpxStorageService', () => {
     it('throws BadGatewayException when SDK throws', async () => {
       mockSend.mockRejectedValue(new Error('S3 unavailable'));
 
-      await expect(service.deleteGpxFile(STORAGE_KEY)).rejects.toThrow(BadGatewayException);
+      await expect(service.deleteGpxFile(STORAGE_KEY)).rejects.toThrow(
+        BadGatewayException,
+      );
     });
 
     it('throws BadGatewayException when response.Errors is non-empty', async () => {
@@ -163,7 +171,9 @@ describe('GpxStorageService', () => {
         Errors: [{ Key: STORAGE_KEY, Code: 'AccessDenied', Message: 'denied' }],
       });
 
-      await expect(service.deleteGpxFile(STORAGE_KEY)).rejects.toThrow(BadGatewayException);
+      await expect(service.deleteGpxFile(STORAGE_KEY)).rejects.toThrow(
+        BadGatewayException,
+      );
     });
   });
 });

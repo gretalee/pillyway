@@ -114,7 +114,10 @@ export class CaminoGpxFilesController {
   @ApiNotFoundResponse({ description: 'Camino not found.' })
   @ApiResponse({ status: 413, description: 'File exceeds 5 MB.' })
   @ApiResponse({ status: 415, description: 'Declared MIME type not accepted.' })
-  @ApiResponse({ status: 409, description: 'Per-camino file limit (20) reached.' })
+  @ApiResponse({
+    status: 409,
+    description: 'Per-camino file limit (20) reached.',
+  })
   @ApiUnprocessableEntityResponse({ description: 'Invalid GPX content.' })
   async uploadGpxFile(
     @Param('caminoId', ParseUUIDPipe) caminoId: string,
@@ -201,7 +204,9 @@ export class CaminoGpxFilesController {
     const { stream, contentLength, fileName } =
       await this.caminoGpxFilesService.downloadGpxFile(caminoId, gpxFileId);
 
-    const baseName = fileName.endsWith('.gpx') ? fileName.slice(0, -4) : fileName;
+    const baseName = fileName.endsWith('.gpx')
+      ? fileName.slice(0, -4)
+      : fileName;
     const safeAscii = baseName
       .replace(/[\r\n"\\]/g, '')
       .replace(/[^\x20-\x7E]/g, '_');

@@ -490,7 +490,7 @@ describe('CaminosService.findBySlugOrId()', () => {
       camino: {
         findUnique: vi
           .fn()
-          .mockResolvedValueOnce(caminoWithOrder)  // slug lookup succeeds
+          .mockResolvedValueOnce(caminoWithOrder) // slug lookup succeeds
           .mockResolvedValue(null),
       },
     };
@@ -510,7 +510,7 @@ describe('CaminosService.findBySlugOrId()', () => {
       camino: {
         findUnique: vi
           .fn()
-          .mockResolvedValueOnce(null)           // slug lookup misses
+          .mockResolvedValueOnce(null) // slug lookup misses
           .mockResolvedValueOnce(caminoWithOrder), // UUID lookup hits
       },
     };
@@ -530,9 +530,9 @@ describe('CaminosService.findBySlugOrId()', () => {
     const module = await buildModule(prismaMock);
     const service = module.get(CaminosService);
 
-    await expect(service.findBySlugOrId('camino-frances')).rejects.toBeInstanceOf(
-      NotFoundException,
-    );
+    await expect(
+      service.findBySlugOrId('camino-frances'),
+    ).rejects.toBeInstanceOf(NotFoundException);
   });
 });
 
@@ -560,8 +560,8 @@ describe('CaminosService.update()', () => {
     const caminoMock = {
       findUnique: vi
         .fn()
-        .mockResolvedValueOnce(firstResult)  // update(): existence check
-        .mockResolvedValueOnce(null)          // findBySlugOrId: slug lookup (miss — id is a UUID)
+        .mockResolvedValueOnce(firstResult) // update(): existence check
+        .mockResolvedValueOnce(null) // findBySlugOrId: slug lookup (miss — id is a UUID)
         .mockResolvedValueOnce(secondResult), // findBySlugOrId: UUID fallback
       findFirst: vi.fn().mockResolvedValue(null),
       update: vi.fn().mockResolvedValue(baseCamino),
@@ -977,9 +977,10 @@ describe('CaminosService.findAll()', () => {
   function buildFindAllMock(data: object[], total = data.length) {
     return {
       camino: {
-        findMany: vi.fn()
-          .mockResolvedValueOnce(data)   // paginated result
-          .mockResolvedValueOnce(data),  // availableCountries query
+        findMany: vi
+          .fn()
+          .mockResolvedValueOnce(data) // paginated result
+          .mockResolvedValueOnce(data), // availableCountries query
         count: vi.fn().mockResolvedValue(total),
       },
     };
@@ -1020,7 +1021,9 @@ describe('CaminosService.findAll()', () => {
     await service.findAll({ verified: true });
 
     expect(prismaMock.camino.findMany).toHaveBeenCalledWith(
-      expect.objectContaining({ where: expect.objectContaining({ verified: true }) }),
+      expect.objectContaining({
+        where: expect.objectContaining({ verified: true }),
+      }),
     );
   });
 
@@ -1033,7 +1036,9 @@ describe('CaminosService.findAll()', () => {
 
     expect(prismaMock.camino.findMany).toHaveBeenCalledWith(
       expect.objectContaining({
-        where: expect.objectContaining({ countries: { hasSome: ['france', 'spain'] } }),
+        where: expect.objectContaining({
+          countries: { hasSome: ['france', 'spain'] },
+        }),
       }),
     );
   });

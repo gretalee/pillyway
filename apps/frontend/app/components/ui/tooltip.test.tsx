@@ -11,7 +11,10 @@ import { Tooltip } from './tooltip';
 describe('Tooltip', () => {
   it('renders children inside the trigger', () => {
     render(<Tooltip content="Tooltip text">Help icon</Tooltip>);
-    expect(screen.getByText('Help icon'), 'trigger children must be rendered').toBeInTheDocument();
+    expect(
+      screen.getByText('Help icon'),
+      'trigger children must be rendered',
+    ).toBeInTheDocument();
   });
 
   it('applies aria-label to the trigger element', () => {
@@ -40,11 +43,13 @@ describe('Tooltip', () => {
       </Tooltip>,
     );
 
-    const trigger = screen.getByLabelText('Focus me');
     await user.tab(); // move focus onto the trigger
     // After focus the popup should appear in the portal.
     const popup = await screen.findByText('Focus tooltip content');
-    expect(popup, 'tooltip content must appear after the trigger receives focus').toBeInTheDocument();
+    expect(
+      popup,
+      'tooltip content must appear after the trigger receives focus',
+    ).toBeInTheDocument();
   });
 
   it('applies triggerClassName to the trigger wrapper', () => {
@@ -54,6 +59,8 @@ describe('Tooltip', () => {
       </Tooltip>,
     );
     const trigger = screen.getByLabelText('tt');
-    expect(trigger.className, 'triggerClassName must be applied').toContain('custom-class');
+    expect(trigger.className, 'triggerClassName must be applied').toContain(
+      'custom-class',
+    );
   });
 });

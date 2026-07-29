@@ -136,7 +136,9 @@ export class CaminoPicturesService {
     //    bomb, unsupported format variant) are caught and surfaced as 400 (Bad Request) rather than 500.
     let processedBuffer: Buffer;
     try {
-      processedBuffer = await this.imageProcessing.processForUpload(file.buffer);
+      processedBuffer = await this.imageProcessing.processForUpload(
+        file.buffer,
+      );
     } catch (err) {
       this.logger.warn(
         `Image processing failed for caminoId=${caminoId}: ${String(err)}`,
@@ -154,7 +156,11 @@ export class CaminoPicturesService {
 
     // 6. Upload to S3 — key uses only server-generated values; no user filename
     try {
-      url = await this.uploadsService.uploadImage(key, processedBuffer, 'image/webp');
+      url = await this.uploadsService.uploadImage(
+        key,
+        processedBuffer,
+        'image/webp',
+      );
     } catch (err) {
       this.logger.error(
         `S3 upload failed for camino picture caminoId=${caminoId} pictureId=${pictureId}: ${String(err)}`,

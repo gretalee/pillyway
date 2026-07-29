@@ -1,5 +1,13 @@
 import { Transform, Type } from 'class-transformer';
-import { IsArray, IsBoolean, IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
+import {
+  IsArray,
+  IsBoolean,
+  IsInt,
+  IsOptional,
+  IsString,
+  Max,
+  Min,
+} from 'class-validator';
 
 export class FindAllCaminosQueryDto {
   @IsOptional()
