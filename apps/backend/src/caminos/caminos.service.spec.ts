@@ -844,16 +844,18 @@ describe('CaminosService — generateSlug() slug generation', () => {
         update: vi.fn().mockResolvedValue({}),
       },
       caminoPoint: {
-        findUnique: vi.fn().mockImplementation(({ where }) => {
-          // When called with { slug } it's the uniqueness check inside generateSlug
-          if (where.slug !== undefined) {
-            return Promise.resolve(
-              slugExists(where.slug) ? { id: 'existing' } : null,
-            );
-          }
-          // When called with { id } or other keys return null (point doesn't pre-exist)
-          return Promise.resolve(null);
-        }),
+        findUnique: vi
+          .fn()
+          .mockImplementation(({ where }: { where: { slug?: string } }) => {
+            // When called with { slug } it's the uniqueness check inside generateSlug
+            if (where.slug !== undefined) {
+              return Promise.resolve(
+                slugExists(where.slug) ? { id: 'existing' } : null,
+              );
+            }
+            // When called with { id } or other keys return null (point doesn't pre-exist)
+            return Promise.resolve(null);
+          }),
         upsert: vi.fn().mockImplementation(({ create }) =>
           Promise.resolve({
             id: 'new-pt-id',

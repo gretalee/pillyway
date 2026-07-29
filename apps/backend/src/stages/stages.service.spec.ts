@@ -5,6 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import type { Prisma } from '@prisma/client';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { PrismaService } from '../prisma/prisma.service';
@@ -644,7 +645,10 @@ describe('StagesService.upsertStagePairs()', () => {
     const service = module.get(StagesService);
     const tx = makeTxMock();
 
-    await service.upsertStagePairs([], tx as any);
+    await service.upsertStagePairs(
+      [],
+      tx as unknown as Prisma.TransactionClient,
+    );
 
     expect(tx.stage.upsert).not.toHaveBeenCalled();
   });
@@ -655,7 +659,10 @@ describe('StagesService.upsertStagePairs()', () => {
     const service = module.get(StagesService);
     const tx = makeTxMock();
 
-    await service.upsertStagePairs([PT_A.id], tx as any);
+    await service.upsertStagePairs(
+      [PT_A.id],
+      tx as unknown as Prisma.TransactionClient,
+    );
 
     expect(tx.stage.upsert).not.toHaveBeenCalled();
   });
@@ -666,7 +673,10 @@ describe('StagesService.upsertStagePairs()', () => {
     const service = module.get(StagesService);
     const tx = makeTxMock();
 
-    await service.upsertStagePairs([PT_A.id, PT_B.id], tx as any);
+    await service.upsertStagePairs(
+      [PT_A.id, PT_B.id],
+      tx as unknown as Prisma.TransactionClient,
+    );
 
     expect(tx.stage.upsert).toHaveBeenCalledOnce();
     expect(tx.stage.upsert).toHaveBeenCalledWith(
@@ -687,7 +697,10 @@ describe('StagesService.upsertStagePairs()', () => {
     const service = module.get(StagesService);
     const tx = makeTxMock();
 
-    await service.upsertStagePairs([PT_A.id, PT_B.id, PT_C.id], tx as any);
+    await service.upsertStagePairs(
+      [PT_A.id, PT_B.id, PT_C.id],
+      tx as unknown as Prisma.TransactionClient,
+    );
 
     expect(tx.stage.upsert).toHaveBeenCalledTimes(2);
     const firstCall = tx.stage.upsert.mock.calls[0][0];
@@ -708,9 +721,15 @@ describe('StagesService.upsertStagePairs()', () => {
       .mockResolvedValueOnce(stageRow1) // first call: creates the row
       .mockResolvedValueOnce(stageRow1); // second call: no-op update, returns same row
 
-    await service.upsertStagePairs([PT_A.id, PT_B.id], tx as any);
+    await service.upsertStagePairs(
+      [PT_A.id, PT_B.id],
+      tx as unknown as Prisma.TransactionClient,
+    );
 
-    await service.upsertStagePairs([PT_A.id, PT_B.id], tx as any);
+    await service.upsertStagePairs(
+      [PT_A.id, PT_B.id],
+      tx as unknown as Prisma.TransactionClient,
+    );
 
     expect(tx.stage.upsert).toHaveBeenCalledTimes(2);
     // Both calls used the same where clause — the second one is the no-op
@@ -732,7 +751,10 @@ describe('StagesService.upsertStagePairs()', () => {
     };
 
     await expect(
-      service.upsertStagePairs([PT_A.id, PT_B.id], tx as any),
+      service.upsertStagePairs(
+        [PT_A.id, PT_B.id],
+        tx as unknown as Prisma.TransactionClient,
+      ),
     ).rejects.toThrow('DB connection timeout');
   });
 });

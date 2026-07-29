@@ -11,7 +11,7 @@ import {
 
 export class FindAllCaminosQueryDto {
   @IsOptional()
-  @Transform(({ value }) => {
+  @Transform(({ value }: { value: unknown }) => {
     if (value === 'true') return true;
     if (value === 'false') return false;
     return value; // preserve unknown so @IsBoolean can reject it

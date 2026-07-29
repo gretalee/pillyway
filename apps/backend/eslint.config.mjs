@@ -32,4 +32,16 @@ export default tseslint.config(
       "prettier/prettier": ["error", { endOfLine: "auto" }],
     },
   },
+  {
+    // Spec files mock services/Prisma via `as unknown as X` casts, which makes
+    // ESLint treat mock functions as unbound real class methods and their
+    // return values as `any` inside expect(...)/toHaveBeenCalledWith(...).
+    // These are false positives specific to test mocking, not real unsafety.
+    files: ['**/*.spec.ts'],
+    rules: {
+      '@typescript-eslint/unbound-method': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+    },
+  },
 );
