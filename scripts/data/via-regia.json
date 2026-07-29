@@ -23,16 +23,20 @@
       "https://www.stadt-vacha.de/Tourismus-Freizeit/Wandern-Pilgern",
       "https://abtei.marienstern.de/pilger",
       "https://www.kirche-eisenach.de/nikolaikirche--syltenhaus",
-      "https://www.kulturpilger.de/pilgern/refugium/"
+      "https://www.kulturpilger.de/pilgern/refugium/",
+      "https://www.outdooractive.com/de/route/pilgerweg/saale-unstrut/oekum.-pilgerweg-eckartsberga-stedten/24514640/",
+      "https://www.outdooractive.com/de/route/pilgerweg/weimar-weimarer-land/oekum.-pilgerweg-stedten-erfurt/24514646/",
+      "https://www.meine-kirchenzeitung.de/c-kirche-vor-ort/matratzenlager-auf-der-empore_a76378"
     ],
     "notes": [
       "This is the Ökumenischer Pilgerweg (Ecumenical Pilgrimage Path), Germany's revived medieval Via Regia, running 466 km from Görlitz to Vacha. Operated since 2003 by Ökumenischer Pilgerweg e.V., Tiefurter Allee 2c, 99425 Weimar (pilgerweg@gmail.com).",
       "PILGRIM PASSPORT (Pilgerausweis): Issued by Ökumenischer Pilgerweg e.V. Cost: €2 standalone, or included with the Pilgerführer guide (€12 + €2.50 shipping). Order at https://www.oekumenischer-pilgerweg.de or via pilgerweg@gmail.com. The guide includes hand-drawn 1:50,000 maps and all current hostel addresses (12th edition, 2025). Supplementary update sheets downloadable from the website.",
-      "Stage structure: 22 canonical stages between Görlitz and Vacha (total ~466 km). Stage waypoints vary slightly across sources; the canonical overnight stops used here are from the official Pilgerführer as reflected in oekumenischer-pilgerweg.de/stationen.html and wildganz.com stage pages.",
+      "Stage structure: 23 stages between Görlitz and Vacha (total ~466 km). Stage waypoints vary slightly across sources; the canonical overnight stops used here are from the official Pilgerführer as reflected in oekumenischer-pilgerweg.de/stationen.html and wildganz.com stage pages. Update: the original Eckartsberga–Erfurt stage (48 km) exceeded Pillyway's 32 km per-stage maximum and was split at Stedten am Ettersberg (position 18), whose village church St. Kilian has its own pilgrim tower room — matching outdooractive.com's official two-stage breakdown (23 km + 25 km).",
       "Hostel network: ~120 volunteer-run Christian hostels, spaced 15–27 km apart. Minimum suggested donation: €8/night unless a fixed price is listed. Most require advance telephone booking 2–3 days ahead. Guests must bring their own sleeping bag/mat for hygiene reasons. Beds cannot be booked online at most church hostels.",
       "Seasonal closures: Some hostels close Nov–Mar/Apr. Elbe ferry at Strehla (Lorenzkirch) operates March–October until 8 PM.",
       "The route ends at Vacha on the former inner-German border, where it merges with the Rhönjakobsweg toward Fulda and ultimately Santiago de Compostela.",
       "Accommodation status may have changed since sources were published (2018–2025). Always call ahead.",
+      "2026-07-27 update: added phone numbers (international format) for 12 of the 15 accommodations that previously had neither phone nor website. Still missing (no reliable contact found): Stedten (Pilgerzimmer Kirche St. Kilian), Gotha (Pilgerquartier Fam. Beutler), Vacha (Vierständerhaus Vacha) — double-check these before publishing.",
       "createdBy: 'seed' is a placeholder — replace with actual user ID before running the import script.",
       "Waypoint slugs use German umlaut normalization: ä→ae, ö→oe, ü→ue, ß→ss."
     ]
@@ -91,13 +95,14 @@
         {
           "name": "Pilgerherberge in der alten Schule",
           "type": "hostel",
-          "description": "Neueingerichtete Pilgerherberge in der alten Dorfschule neben der Kirche. Einfache Ausstattung, Spende erbeten.",
+          "description": "Neueingerichtete Pilgerherberge in der alten Dorfschule neben der Kirche. Einfache Ausstattung, Spende erbeten. Ansprechpartnerin Sonja Leubner, Buchholz 69a.",
           "addressStreet": "Buchholz 72",
           "addressZip": "02894",
           "addressCity": "Buchholz",
           "addressCountry": "germany",
           "website": null,
           "email": null,
+          "phone": "+49 35876 40440",
           "priceRange": "budget",
           "verified": false
         }
@@ -170,6 +175,7 @@
           "addressCountry": "germany",
           "website": null,
           "email": null,
+          "phone": "+49 35795 42555",
           "priceRange": "budget",
           "verified": false
         }
@@ -242,6 +248,7 @@
           "addressCountry": "germany",
           "website": null,
           "email": null,
+          "phone": "+49 3436 155002",
           "priceRange": "budget",
           "verified": false
         }
@@ -264,8 +271,9 @@
           "addressZip": "04808",
           "addressCity": "Wurzen",
           "addressCountry": "germany",
-          "website": null,
-          "email": null,
+          "website": "https://www.st-franziskus-wurzen.de",
+          "email": "wurzen@pfarrei-bddmei.de",
+          "phone": "+49 3425 8530225",
           "priceRange": "budget",
           "verified": false
         }
@@ -290,6 +298,7 @@
           "addressCountry": "germany",
           "website": null,
           "email": null,
+          "phone": "+49 341 1498960",
           "priceRange": "budget",
           "verified": false
         }
@@ -338,6 +347,7 @@
           "addressCountry": "germany",
           "website": null,
           "email": null,
+          "phone": "+49 3461 352810",
           "priceRange": "budget",
           "verified": false
         }
@@ -386,6 +396,7 @@
           "addressCountry": "germany",
           "website": null,
           "email": "buchungen@ferien-freyburg.de",
+          "phone": "+49 34464 7080",
           "priceRange": "budget",
           "verified": false
         }
@@ -410,6 +421,7 @@
           "addressCountry": "germany",
           "website": null,
           "email": null,
+          "phone": "+49 3445 28950",
           "priceRange": "budget",
           "verified": false
         }
@@ -467,6 +479,30 @@
     },
     {
       "position": 18,
+      "name": "Stedten",
+      "country": "germany",
+      "slug": "stedten",
+      "description": "Kleines Dorf am Ettersberg zwischen Eckartsberga und Erfurt. Die evangelische Dorfkirche St. Kilian bietet als einzige Kirche Thüringens auf dem Ökumenischen Pilgerweg ein Nachtquartier direkt im Kirchturm.",
+      "accommodations": [
+        {
+          "name": "Pilgerzimmer Kirche St. Kilian Stedten",
+          "type": "church",
+          "description": "Zum Pilgerzimmer umgebauter Kirchturmraum mit 4 Betten, zusätzlich Matratzenlager auf der Empore möglich. Küche und Bad vorhanden, Aufenthaltsraum mit 12 Sitzplätzen. Anmeldung bei Kerstin Kaufmann, Zugangscode für die Eingangstür wird mitgeteilt. Spende: 10 € pro Person.",
+          "addressStreet": null,
+          "addressZip": "99439",
+          "addressCity": "Stedten am Ettersberg",
+          "addressCountry": "germany",
+          "website": null,
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 51.056,
+      "lng": 11.27
+    },
+    {
+      "position": 19,
       "name": "Erfurt",
       "country": "germany",
       "slug": "erfurt",
@@ -503,7 +539,7 @@
       "lng": 11.0299
     },
     {
-      "position": 19,
+      "position": 20,
       "name": "Gotha",
       "country": "germany",
       "slug": "gotha",
@@ -543,8 +579,9 @@
           "addressZip": "99867",
           "addressCity": "Gotha-West",
           "addressCountry": "germany",
-          "website": null,
-          "email": null,
+          "website": "https://www.kirchengemeinde-gotha.de/kirchen/versoehnung-west",
+          "email": "kontakt@kirchengemeinde-gotha.de",
+          "phone": "+49 3621 758529",
           "priceRange": "budget",
           "verified": false
         }
@@ -553,7 +590,7 @@
       "lng": 10.6988
     },
     {
-      "position": 20,
+      "position": 21,
       "name": "Wutha-Farnroda",
       "country": "germany",
       "slug": "wutha-farnroda",
@@ -569,6 +606,7 @@
           "addressCountry": "germany",
           "website": null,
           "email": null,
+          "phone": "+49 36921 93630",
           "priceRange": "budget",
           "verified": false
         }
@@ -577,7 +615,7 @@
       "lng": 10.48
     },
     {
-      "position": 21,
+      "position": 22,
       "name": "Eisenach",
       "country": "germany",
       "slug": "eisenach",
@@ -604,8 +642,9 @@
           "addressZip": "99817",
           "addressCity": "Eisenach",
           "addressCountry": "germany",
-          "website": null,
-          "email": null,
+          "website": "https://www.diako-eisenach.de",
+          "email": "diakonissenhaus.stiftung@t-online.de",
+          "phone": "+49 3691 2600",
           "priceRange": "budget",
           "verified": false
         }
@@ -614,7 +653,7 @@
       "lng": 10.3229
     },
     {
-      "position": 22,
+      "position": 23,
       "name": "Oberellen",
       "country": "germany",
       "slug": "oberellen",
@@ -630,6 +669,7 @@
           "addressCountry": "germany",
           "website": null,
           "email": null,
+          "phone": "+49 36925 27533",
           "priceRange": "budget",
           "verified": false
         }
@@ -638,7 +678,7 @@
       "lng": 10.2
     },
     {
-      "position": 23,
+      "position": 24,
       "name": "Vacha",
       "country": "germany",
       "slug": "vacha",
@@ -774,9 +814,15 @@
     },
     {
       "from": "Eckartsberga",
+      "to": "Stedten",
+      "distance": 23,
+      "description": "Der Weg führt über Buttelstedt durch die thüringische Ackerlandschaft am Ettersberg nach Stedten, wo die Kirche St. Kilian mit ihrem Turmzimmer eine der wenigen Übernachtungsmöglichkeiten direkt im Kirchengebäude auf dem gesamten Weg bietet."
+    },
+    {
+      "from": "Stedten",
       "to": "Erfurt",
-      "distance": 48,
-      "description": "Langer Abschnitt über Buttelstedt, Stedten (Turmzimmer der Dorfkirche als Quartier) und Ollendorf/Frienstedt nach Erfurt. Etappe kann auf zwei Tagesetappen aufgeteilt werden."
+      "distance": 25,
+      "description": "Der Weg führt über Ollendorf und Frienstedt nach Erfurt und folgt auf den letzten Kilometern der historischen Via-Regia-Trasse auf der heutigen Leipziger Straße in die Innenstadt."
     },
     {
       "from": "Erfurt",

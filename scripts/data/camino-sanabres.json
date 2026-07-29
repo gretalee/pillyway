@@ -1,0 +1,682 @@
+{
+  "_meta": {
+    "route": "Camino Sanabrés (Zamora – Santiago de Compostela)",
+    "section": "Zamora → Montamarta → Granja de Moreruela → Tábara → Santa Marta de Tera → Rionegro del Puente → Mombuey → Puebla de Sanabria → Lubián → A Gudiña → Campobecerros → Laza → Vilar de Barrio → Xunqueira de Ambía → Ourense → Cea → O Castro (Dozón) → Silleda → Outeiro → Santiago de Compostela",
+    "distance_km": 405,
+    "stages": 19,
+    "created": "2026-07-27",
+    "sources": [
+      "https://www.gronze.com/etapa/zamora/montamarta",
+      "https://www.gronze.com/etapa/montamarta/granja-moreruela",
+      "https://www.gronze.com/etapa/granja-moreruela/tabara",
+      "https://www.gronze.com/etapa/tabara/santa-marta-tera",
+      "https://www.gronze.com/etapa/santa-marta-tera/mombuey",
+      "https://caminodesantiago.consumer.es/en/the-st-james-way/sanabres-way/stage-of-santa-croya-from-tera-to-rionegro-del-puente",
+      "https://caminodesantiago.consumer.es/en/the-st-james-way/sanabres-way/stage-of-rionegro-del-puente-to-puebla-de-sanabria",
+      "https://www.gronze.com/etapa/mombuey/puebla-sanabria",
+      "https://www.gronze.com/etapa/puebla-sanabria/lubian",
+      "https://www.gronze.com/etapa/lubian/gudina",
+      "https://www.gronze.com/etapa/gudina/laza",
+      "https://www.gronze.com/etapa/laza/xunqueira-ambia",
+      "https://www.gronze.com/etapa/xunqueira-ambia/ourense",
+      "https://www.gronze.com/etapa/ourense/cea",
+      "https://www.gronze.com/etapa/cea/castro-dozon",
+      "https://www.gronze.com/etapa/castro-dozon/silleda",
+      "https://www.gronze.com/etapa/silleda/outeiro-vedra",
+      "https://www.gronze.com/etapa/outeiro-vedra/santiago-compostela",
+      "https://www.alberguescaminosantiago.com/camino-sanabres/guia-etapas/",
+      "https://www.alberguescaminosantiago.com/camino-sanabres/",
+      "https://vivecamino.com/que-es-el-camino-sanabres-no-608/",
+      "https://www.alberguescaminosantiago.com/via-de-la-plata/albergue-peregrinos-zamora/",
+      "https://www.caminosantiago.org/cpperegrino/apps/credencialdigital.asp",
+      "https://oficinadelperegrino.com/en/preparation/associations-in-spain/",
+      "https://www.caminodesantiago.gal/en/on-the-way/network-of-public-hostels",
+      "https://santamartadetera.es/albergue/",
+      "https://hostalcarlosv.es/",
+      "https://www.casabubeladozon.com",
+      "https://www.alberguesantaolaia.es",
+      "https://www.gronze.com/galicia/coruna/santiago-compostela/residencia-peregrinos-san-lazaro",
+      "https://www.gronze.com/galicia/coruna/santiago-compostela/albergue-seminario-menor",
+      "https://seminariomenorsantiago.com/en/"
+    ],
+    "note": "Zamora ist nicht der historisch-offizielle Startpunkt des Camino Sanabrés (das ist Granja de Moreruela, wo die Route von der Vía de la Plata abzweigt) - da der Nutzer aber explizit 'von Zamora' angefragt hat, wurden die zwei zusätzlichen Vía-de-la-Plata-Etappen Zamora-Montamarta und Montamarta-Granja de Moreruela vorangestellt; das ist auch die gängige Praxis der meisten Pilger, die aus Zamora wegen der Bahn-/Busanbindung starten. Drei Originaletappen aus den Quellen überschritten die 32-km-Obergrenze und wurden aufgeteilt: Santa Marta de Tera-Mombuey (36,1 km) -> Rionegro del Puente eingefügt (27/9 km); A Gudiña-Laza (34,0-34,5 km) -> Campobecerros eingefügt (20/15 km); Laza-Xunqueira de Ambía (33,0-33,2 km) -> Vilar de Barrio eingefügt (19/13 km). Alle Distanzen wurden auf ganze km gerundet und stammen aus mehreren, teils leicht abweichenden Quellen (gronze.com als primäre Quelle, Eroski Consumer und weitere als Cross-Check) - kleine Abweichungen zu anderen Reiseführern (±1-2 km je Etappe) sind für diese Route normal. Koordinaten für kleinere Weiler (Montamarta, Rionegro del Puente, Campobecerros, Vilar de Barrio, O Castro/Dozón, Outeiro) sind Ortszentrum-Schätzungen aus Geodaten-Portalen, nicht aus einer Kartierungs-API - vor 'verified: true' prüfen. Die Pilgerherberge in Puebla de Sanabria (Casa Luz) und die frühere Herberge in O Castro (Dozón) sind laut Quellen dauerhaft bzw. vorübergehend geschlossen, daher wurden dort alternative Unterkünfte (Hostal Carlos V bzw. Casa Bubela) eingetragen. Ab A Gudiña sind die meisten Herbergen öffentliche, von der Xunta de Galicia betriebene Albergues ohne individuelle Reservierung (Telefonnummern teils die des Rathauses/Zivilschutzes statt einer direkten Herbergsnummer). Als website ist bei allen Unterkünften ohne eigene Seite die jeweilige gronze.com-Seite eingetragen - bei den Xunta-Albergues ursprünglich die generische caminodesantiago.gal-Seite, auf Wunsch durch die spezifische, aussagekräftigere gronze.com-Herbergsseite ersetzt. createdBy vor dem Seeding in Produktion durch eine echte Kinde-User-ID ersetzen."
+  },
+  "camino": {
+    "name": "Camino Sanabrés",
+    "description": "Der Camino Sanabrés, auch Camino Mozárabe genannt, ist eine Variante der Vía de la Plata und verbindet die Provinzhauptstadt Zamora über die Región de Sanabria und die südgalicische Provinz Ourense mit Santiago de Compostela. Er geht auf die Pilger zurück, die im Mittelalter aus dem Süden der Iberischen Halbinsel - insbesondere von Mozarabern aus al-Andalus - über die alte Römerstraße Vía de la Plata anreisten und in Granja de Moreruela, wo der Zisterzienserorden sein erstes Kloster auf spanischem Boden errichtete, nach Nordwesten abzweigten, um den Umweg über Astorga und den Camino Francés zu vermeiden. Zwischen Granja de Moreruela und Santiago liegen rund 367 Kilometer; von Zamora aus, wo die meisten Pilger aus praktischen Gründen (Bahn- und Busanbindung) starten, sind es rund 404 Kilometer in 19 Etappen.\n\nDie Route beginnt in der Kastilischen Meseta mit weiten Getreidefeldern rund um Zamora und Tábara, führt durch das Tal des Río Tera mit seiner ältesten romanischen Kirche der Provinz (Santa Marta de Tera) und erreicht bei Puebla de Sanabria die Ausläufer der Sierra Segundera. Über den Pass von Padornelo (1.356 m) und den Alto de A Canda (1.265 m) - die Grenze zu Galicien - führt der Weg durch eine der einsamsten und bergigsten Etappen des gesamten spanischen Jakobswegnetzes nach A Gudiña und weiter über Laza in die südgalicische Provinz Ourense. Von dort geht es über die Thermalstadt Ourense und das für sein Roggenbrot bekannte Cea, mit einem lohnenden Abstecher zum Zisterzienserkloster Oseira, durch das grüne, hügelige Galicien nach Silleda, Ponte Ulla und schließlich nach Santiago de Compostela.\n\nLandschaftlich ist der Camino Sanabrés abwechslungsreich: von der flachen, landwirtschaftlich geprägten Meseta über anspruchsvolle Bergetappen mit über 400 Höhenmetern Anstieg bis zum sanften, immer grünen Galicien. Historische Höhepunkte sind unter anderem die Klosterruine von Santa María de Moreruela, die romanische Jakobusstatue in Santa Marta de Tera - eine der ältesten bekannten Darstellungen des Apostels als Pilger -, die historischen Pilgerherbergen in ehemaligen Hospizen (u. a. in Rionegro del Puente) sowie das Zisterzienserkloster Santa María de Oseira bei Cea.\n\n**Pilgerpass (Credencial):** In Zamora kann die Credencial bei der Fundación Ramos de Castro (Calle Santa Clara, 18, 49002 Zamora) erworben werden. Entlang der gesamten Route stellen außerdem Pfarreien, Amigos-del-Camino-Vereinigungen und die meisten Pilgerherbergen selbst - insbesondere die von der Xunta de Galicia betriebenen öffentlichen Albergues ab A Gudiña - eine Credencial aus.",
+    "verified": false,
+    "createdBy": "seed"
+  },
+  "points": [
+    {
+      "position": 1,
+      "name": "Zamora",
+      "country": "spain",
+      "slug": "zamora",
+      "description": "Ausgangspunkt für Pilger, die den Camino Sanabrés zu Fuß beginnen (der Weg zweigt offiziell erst in Granja de Moreruela von der Vía de la Plata ab, doch die meisten Pilger starten wegen der guten Bahn- und Busanbindung in der Provinzhauptstadt). Zamora ist berühmt für seine außergewöhnliche Dichte an romanischen Kirchen - über 20 an der Zahl -, die Kathedrale mit ihrer byzantinisch anmutenden Kuppel und die mittelalterliche Steinbrücke über den Duero.",
+      "accommodations": [
+        {
+          "name": "Albergue Municipal de Peregrinos \"Ciudad de Zamora\"",
+          "type": "hostel",
+          "description": "Städtische Pilgerherberge, exklusiv für Pilger mit Credencial, betrieben von ehrenamtlichen Hospitaleros (\"Hosvol\"). Kostenloses Frühstück inklusive.",
+          "addressStreet": "Cuesta de San Cipriano, s/n",
+          "addressZip": "49002",
+          "addressCity": "Zamora",
+          "addressCountry": "spain",
+          "website": "https://www.gronze.com/castilla-y-leon/zamora/zamora",
+          "email": "turismo@zamora.es",
+          "phone": "+34 980 534 097",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 41.5034,
+      "lng": -5.7445
+    },
+    {
+      "position": 2,
+      "name": "Montamarta",
+      "country": "spain",
+      "slug": "montamarta",
+      "description": "Kleiner Ort am Stausee von Ricobayo, unweit der Ruinen der mittelalterlichen Wüstung Castrotorafe. Erstes Etappenziel nach einer flachen, durch Getreidefelder führenden Etappe entlang der Nationalstraße N-630.",
+      "accommodations": [
+        {
+          "name": "Albergue de peregrinos de Montamarta",
+          "type": "hostel",
+          "description": "Einfache Pilgerherberge 500 m vor dem Ort, auf der gegenüberliegenden Seite der Nationalstraße gelegen.",
+          "addressStreet": "500 m vor dem Ort, an der N-630",
+          "addressZip": "49149",
+          "addressCity": "Montamarta",
+          "addressCountry": "spain",
+          "website": "https://www.gronze.com/castilla-y-leon/zamora/montamarta",
+          "email": null,
+          "phone": "+34 980 550 112",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 41.6607,
+      "lng": -5.7968
+    },
+    {
+      "position": 3,
+      "name": "Granja de Moreruela",
+      "country": "spain",
+      "slug": "granja-de-moreruela",
+      "description": "Historisch bedeutender Ort: Hier errichtete der Zisterzienserorden im 12. Jahrhundert sein erstes Kloster auf der Iberischen Halbinsel (Ruinen des Monasterio de Santa María de Moreruela in der Nähe). Zugleich liegt hier die eigentliche Weggabelung der Vía de la Plata - nach Norden Richtung Astorga und Camino Francés, nach Nordwesten der Camino Sanabrés Richtung Sanabria und Ourense.",
+      "accommodations": [
+        {
+          "name": "Albergue de peregrinos de Granja de Moreruela",
+          "type": "hostel",
+          "description": "Zentral gelegene Pilgerherberge gegenüber dem Rathaus, direkt am Weg und nahe der Nationalstraße.",
+          "addressStreet": "Avenida Ángel de la Vega, s/n",
+          "addressZip": "49740",
+          "addressCity": "Granja de Moreruela",
+          "addressCountry": "spain",
+          "website": "https://www.gronze.com/castilla-y-leon/zamora/granja-moreruela",
+          "email": null,
+          "phone": "+34 980 587 005",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 41.8092,
+      "lng": -5.7394
+    },
+    {
+      "position": 4,
+      "name": "Tábara",
+      "country": "spain",
+      "slug": "tabara",
+      "description": "Kleinstadt mit der Kirche Santa María, deren Ursprünge auf ein westgotisches Kloster zurückgehen, in dem im 10. Jahrhundert die berühmten \"Beatos\"-Handschriften mit ihren Kommentaren zur Apokalypse entstanden. Nach der Überquerung des Esla an der Puente Quintos führt der Weg über lange, angenehme Feldwege hierher.",
+      "accommodations": [
+        {
+          "name": "Albergue de peregrinos de Tábara (\"Los Beatos\")",
+          "type": "hostel",
+          "description": "500 m vom Ortszentrum entfernte Pilgerherberge, benannt nach den berühmten mittelalterlichen \"Beatos\"-Handschriften.",
+          "addressStreet": "Calle Camino Sotillo, s/n",
+          "addressZip": "49140",
+          "addressCity": "Tábara",
+          "addressCountry": "spain",
+          "website": "https://www.gronze.com/castilla-y-leon/zamora/tabara",
+          "email": "alberguedetabara@gmail.com",
+          "phone": "+34 637 926 068",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 41.8539,
+      "lng": -5.9746
+    },
+    {
+      "position": 5,
+      "name": "Santa Marta de Tera",
+      "country": "spain",
+      "slug": "santa-marta-de-tera",
+      "description": "Kleines Dorf mit der ältesten romanischen Kirche der Provinz Zamora, deren Südportal eine der frühesten bekannten Steinstatuen des Apostels Jakobus als Pilger zeigt - ein Pflichthalt für jeden Pilger auf dem Sanabrés.",
+      "accommodations": [
+        {
+          "name": "Albergue de peregrinos de Santa Marta de Tera",
+          "type": "hostel",
+          "description": "Herberge direkt neben der romanischen Kirche, 16 Plätze, keine Reservierung möglich.",
+          "addressStreet": "Calle Iglesia Santa Marta, 10",
+          "addressZip": "49626",
+          "addressCity": "Santa Marta de Tera",
+          "addressCountry": "spain",
+          "website": "https://santamartadetera.es/albergue/",
+          "email": "info@santamartadetera.es",
+          "phone": "+34 980 649 050",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 41.9949,
+      "lng": -5.9707
+    },
+    {
+      "position": 6,
+      "name": "Rionegro del Puente",
+      "country": "spain",
+      "slug": "rionegro-del-puente",
+      "description": "Dorf am Fluss Negro, dessen Pilgerherberge in einem Gebäude untergebracht ist, das bereits im Mittelalter als Pilgerhospital diente. Die Etappe von Santa Marta de Tera führt größtenteils an der bewaldeten Flussaue des Tera entlang, bevor ein kurzer Anstieg auf 850 m folgt.",
+      "accommodations": [
+        {
+          "name": "Albergue Virgen de la Carballeda",
+          "type": "hostel",
+          "description": "Private Pilgerherberge im ehemaligen Pilgerhospiz, keine Reservierung möglich. Falls die Tür geschlossen ist, hängt eine Kontaktnummer an der Fassade.",
+          "addressStreet": "Carretera N-525, km 49",
+          "addressZip": "49326",
+          "addressCity": "Rionegro del Puente",
+          "addressCountry": "spain",
+          "website": "https://www.gronze.com/castilla-y-leon/zamora/rionegro-puente",
+          "email": "mozarabesanabres@gmail.com",
+          "phone": "+34 686 041 405",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 42.0066,
+      "lng": -6.2274
+    },
+    {
+      "position": 7,
+      "name": "Mombuey",
+      "country": "spain",
+      "slug": "mombuey",
+      "description": "Ort mit markantem romanischem Kirchturm der Kirche Santa María, der schon von Weitem über den Feldern sichtbar ist. Kurze Etappe von Rionegro del Puente entlang eines Weges parallel zur N-525.",
+      "accommodations": [
+        {
+          "name": "Albergue de peregrinos de Mombuey",
+          "type": "hostel",
+          "description": "Kleine, 2022 renovierte Pilgerherberge mit 8 Plätzen, rund 50 m von der Kirche entfernt. Keine Vorausbuchung möglich, der Hospitalero wohnt gegenüber und verwaltet den Schlüssel.",
+          "addressStreet": "Calle de la Iglesia, s/n",
+          "addressZip": "49310",
+          "addressCity": "Mombuey",
+          "addressCountry": "spain",
+          "website": "https://www.gronze.com/castilla-y-leon/zamora/mombuey",
+          "email": null,
+          "phone": "+34 980 642 711",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 42.023,
+      "lng": -6.3288
+    },
+    {
+      "position": 8,
+      "name": "Puebla de Sanabria",
+      "country": "spain",
+      "slug": "puebla-de-sanabria",
+      "description": "Malerische mittelalterliche Altstadt auf einem Felssporn über dem Zusammenfluss von Castro und Tera, mit Burg und der Kirche Santa María del Azogue. Wichtiger, gut ausgestatteter Etappenort vor dem Anstieg zum Pass von Padornelo.",
+      "accommodations": [
+        {
+          "name": "Hostal Carlos V",
+          "type": "hotel",
+          "description": "Zentral gelegenes Hostal wenige Schritte von der Altstadt entfernt; die reguläre Pilgerherberge (Casa Luz) war zum Zeitpunkt der Recherche vorübergehend geschlossen.",
+          "addressStreet": "Calle Braganza, 6",
+          "addressZip": "49300",
+          "addressCity": "Puebla de Sanabria",
+          "addressCountry": "spain",
+          "website": "https://hostalcarlosv.es",
+          "email": "info@hostalcarlosv.es",
+          "phone": "+34 980 620 161",
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ],
+      "lat": 42.0512,
+      "lng": -6.6333
+    },
+    {
+      "position": 9,
+      "name": "Lubián",
+      "country": "spain",
+      "slug": "lubian",
+      "description": "Letztes Dorf vor dem Aufstieg zum Puerto de Padornelo (1.356 m), dem höchsten Punkt der gesamten Route. Ruhiger, ländlicher Ort in den Ausläufern der Sierra Segundera.",
+      "accommodations": [
+        {
+          "name": "Albergue de peregrinos de Lubián",
+          "type": "hostel",
+          "description": "Exklusiv für Pilger, keine Reservierung, 600 m vom Ortszentrum entfernt direkt am Weg gelegen.",
+          "addressStreet": "Calle San Sebastián, 19",
+          "addressZip": "49570",
+          "addressCity": "Lubián",
+          "addressCountry": "spain",
+          "website": "https://www.gronze.com/castilla-y-leon/zamora/lubian",
+          "email": null,
+          "phone": "+34 980 624 003",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 42.0353,
+      "lng": -6.9052
+    },
+    {
+      "position": 10,
+      "name": "A Gudiña",
+      "country": "spain",
+      "slug": "a-gudina",
+      "description": "Erster größerer Ort in Galicien nach der Überquerung des Alto de A Canda (1.265 m), der die Grenze zwischen Kastilien-León und Galicien markiert. Die Pilgerherberge ist in der historischen \"Casa da Viúva\" untergebracht.",
+      "accommodations": [
+        {
+          "name": "Albergue de peregrinos de A Gudiña",
+          "type": "hostel",
+          "description": "Öffentliche Herberge der Xunta de Galicia, 2021 in der historischen \"Casa da Viúva\" eröffnet, 44 Plätze.",
+          "addressStreet": "Rúa Beato Sebastián de Aparicio, s/n",
+          "addressZip": "32540",
+          "addressCity": "A Gudiña",
+          "addressCountry": "spain",
+          "website": "https://www.gronze.com/galicia/orense/gudina/albergue-peregrinos-gudina",
+          "email": null,
+          "phone": "+34 988 594 006",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 42.0608,
+      "lng": -7.1381
+    },
+    {
+      "position": 11,
+      "name": "Campobecerros",
+      "country": "spain",
+      "slug": "campobecerros",
+      "description": "Einziger Ort mit nennenswerter Infrastruktur auf der langen, einsamen Bergetappe zwischen A Gudiña und Laza, die größtenteils oberhalb von 1.000 m Höhe verläuft.",
+      "accommodations": [
+        {
+          "name": "Albergue da Rosario",
+          "type": "hostel",
+          "description": "Private Pilgerherberge im Ortszentrum, guter Zwischenstopp auf der langen Bergetappe.",
+          "addressStreet": "Cardenal Quiroga, 9",
+          "addressZip": "32626",
+          "addressCity": "Campobecerros",
+          "addressCountry": "spain",
+          "website": "https://www.gronze.com/galicia/ourense/campobecerros",
+          "email": null,
+          "phone": "+34 650 530 547",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 42.0673,
+      "lng": -7.3323
+    },
+    {
+      "position": 12,
+      "name": "Laza",
+      "country": "spain",
+      "slug": "laza",
+      "description": "Kleinstadt am Fuß der Berge, bekannt für ihren traditionsreichen Karneval (Peliqueiros). Ziel der anspruchsvollsten und zugleich landschaftlich schönsten Etappe des galicischen Abschnitts, die größtenteils oberhalb von 1.000 m verläuft.",
+      "accommodations": [
+        {
+          "name": "Albergue de peregrinos de Laza",
+          "type": "hostel",
+          "description": "Öffentliche Herberge der Xunta de Galicia mit 34 Plätzen; vor der Ankunft muss man sich im Büro des Zivilschutzes (Protección Civil) anmelden und den Schlüssel abholen.",
+          "addressStreet": "Rúa do Toural, s/n",
+          "addressZip": "32620",
+          "addressCity": "Laza",
+          "addressCountry": "spain",
+          "website": "https://www.gronze.com/galicia/orense/laza/albergue-peregrinos-laza",
+          "email": "emerxencias@laza.es",
+          "phone": "+34 988 422 112",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 42.0606,
+      "lng": -7.4614
+    },
+    {
+      "position": 13,
+      "name": "Vilar de Barrio",
+      "country": "spain",
+      "slug": "vilar-de-barrio",
+      "description": "Empfohlener Zwischenstopp auf der langen, wechselhaften Etappe von Laza nach Xunqueira de Ambía, nach dem steilen Anstieg von Tamicelas zur Alberguería und dem Abstieg von der Cruz do Alto do Talariño.",
+      "accommodations": [
+        {
+          "name": "Albergue de peregrinos de Vilar de Barrio",
+          "type": "hostel",
+          "description": "2002 eröffnete Herberge der Xunta de Galicia, 100 m von der Plaza do Toural entfernt, 23 Plätze, barrierefrei.",
+          "addressStreet": "Avenida de San Fiz, s/n",
+          "addressZip": "32702",
+          "addressCity": "Vilar de Barrio",
+          "addressCountry": "spain",
+          "website": "https://www.gronze.com/galicia/ourense/vilar-barrio",
+          "email": null,
+          "phone": "+34 683 331 961",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 42.1597,
+      "lng": -7.6117
+    },
+    {
+      "position": 14,
+      "name": "Xunqueira de Ambía",
+      "country": "spain",
+      "slug": "xunqueira-de-ambia",
+      "description": "Ort mit der ehemaligen Kollegiatstiftskirche Santa María la Real, einem bedeutenden romanischen Bauwerk mit gotischem Kreuzgang. Ziel einer ruhigen Etappe durch landwirtschaftlich geprägtes Hügelland entlang der Straße OU-102.",
+      "accommodations": [
+        {
+          "name": "Albergue de peregrinos de Xunqueira de Ambía",
+          "type": "hostel",
+          "description": "Öffentliche Herberge der Xunta de Galicia mit Schlafsälen zu 10 und 4 Plätzen, barrierefrei.",
+          "addressStreet": "Rúa Asdrúbal Ferreiro, s/n",
+          "addressZip": "32780",
+          "addressCity": "Xunqueira de Ambía",
+          "addressCountry": "spain",
+          "website": "https://www.gronze.com/galicia/orense/xunqueira-ambia/albergue-peregrinos-xunqueira-ambia",
+          "email": null,
+          "phone": "+34 988 436 069",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 42.2056,
+      "lng": -7.7356
+    },
+    {
+      "position": 15,
+      "name": "Ourense",
+      "country": "spain",
+      "slug": "ourense",
+      "description": "Bedeutende römische Stadt, berühmt für ihre heißen Thermalquellen (As Burgas) und die Kathedrale San Martiño mit dem \"Pórtico do Paraíso\". Größte Stadt auf dem Camino Sanabrés und wichtiger Verpflegungs- und Übernachtungsort.",
+      "accommodations": [
+        {
+          "name": "Albergue de peregrinos de Ourense (Eligio Rivas Quintas)",
+          "type": "hostel",
+          "description": "2018 eröffnete Herberge der Xunta de Galicia in der Altstadt, wenige Meter von den heißen Quellen As Burgas entfernt.",
+          "addressStreet": "Rúa da Barreira, 12",
+          "addressZip": "32005",
+          "addressCity": "Ourense",
+          "addressCountry": "spain",
+          "website": "https://www.gronze.com/galicia/orense/ourense/albergue-peregrinos-ourense-0",
+          "email": null,
+          "phone": "+34 988 238 948",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 42.3358,
+      "lng": -7.8639
+    },
+    {
+      "position": 16,
+      "name": "Cea",
+      "country": "spain",
+      "slug": "cea",
+      "description": "Für sein traditionelles Roggenbrot (Pan de Cea, geschützte Ursprungsbezeichnung) bekannter Ort. Von hier aus lohnt sich ein Abstecher (+8,5 km) zum Zisterzienserkloster Santa María de Oseira, einem der bedeutendsten Klosterbauten Galiciens.",
+      "accommodations": [
+        {
+          "name": "Albergue de peregrinos de Cea",
+          "type": "hostel",
+          "description": "Öffentliche Herberge der Xunta de Galicia am Ortseingang, 60 m vom Hauptplatz entfernt.",
+          "addressStreet": "Calle Santo Cristo, s/n",
+          "addressZip": "32130",
+          "addressCity": "Cea",
+          "addressCountry": "spain",
+          "website": "https://www.gronze.com/galicia/orense/cea/albergue-peregrinos-cea",
+          "email": null,
+          "phone": "+34 988 282 000",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 42.4725,
+      "lng": -7.9819
+    },
+    {
+      "position": 17,
+      "name": "O Castro (Dozón)",
+      "country": "spain",
+      "slug": "o-castro-dozon",
+      "description": "Kleiner Ort in der Gemeinde Dozón, Endpunkt einer kurzen Etappe durch das grüne, ländliche Galicien. Die frühere Pilgerherberge des Ortes wurde 2023 dauerhaft geschlossen.",
+      "accommodations": [
+        {
+          "name": "Casa Bubela",
+          "type": "b_and_b",
+          "description": "Pension mit Schlafsaal- und Doppelzimmerplätzen; da die frühere Pilgerherberge geschlossen ist, aktuell die Hauptunterkunft am Ort. Freies WLAN, Frühstück inklusive, Abendessen auf Anfrage.",
+          "addressStreet": "Rúa Doutor Martínez Iglesias, s/n",
+          "addressZip": "36518",
+          "addressCity": "O Castro (Dozón)",
+          "addressCountry": "spain",
+          "website": "https://www.casabubeladozon.com",
+          "email": null,
+          "phone": "+34 620 542 503",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 42.5667,
+      "lng": -8.0464
+    },
+    {
+      "position": 18,
+      "name": "Silleda",
+      "country": "spain",
+      "slug": "silleda",
+      "description": "Größerer Ort mit zahlreichen Unterkunftsmöglichkeiten, Ziel einer Etappe mit stetigen, aber moderaten Höhenunterschieden durch zahlreiche kleine Weiler und Gemeinden.",
+      "accommodations": [
+        {
+          "name": "Albergue Santa Olaia",
+          "type": "hostel",
+          "description": "Zentral am Weg gelegene Pilgerherberge, ganzjährig geöffnet, Schlafsäle mit 3, 4 und 8 Betten.",
+          "addressStreet": "Avenida do Parque, 17",
+          "addressZip": "36540",
+          "addressCity": "Silleda",
+          "addressCountry": "spain",
+          "website": "https://www.alberguesantaolaia.es",
+          "email": "alberguesantaolaia.info@gmail.com",
+          "phone": "+34 626 405 652",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 42.7017,
+      "lng": -8.2439
+    },
+    {
+      "position": 19,
+      "name": "Outeiro",
+      "country": "spain",
+      "slug": "outeiro",
+      "description": "Winziger Weiler in der Gemeinde Vedra, ohne eigene Geschäfte, aber mit guter öffentlicher Herberge - der vorletzte Halt vor Santiago. Pilger sollten sich in Ponte Ulla, das die Etappe zuvor durchquert, mit Proviant eindecken.",
+      "accommodations": [
+        {
+          "name": "Albergue de peregrinos de Outeiro",
+          "type": "hostel",
+          "description": "Öffentliche Herberge der Xunta de Galicia mit 32 Betten, eingeweiht 2006, mit nutzbarer Küche - Einkäufe müssen vorher in Ponte Ulla erledigt werden, da es in Outeiro keine Geschäfte gibt.",
+          "addressStreet": "O Outeiro, s/n",
+          "addressZip": "15885",
+          "addressCity": "Outeiro (Vedra)",
+          "addressCountry": "spain",
+          "website": "https://www.gronze.com/galicia/coruna/outeiro-vedra/albergue-peregrinos-outeiro",
+          "email": null,
+          "phone": "+34 630 941 288",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 42.7915,
+      "lng": -8.4344
+    },
+    {
+      "position": 20,
+      "name": "Santiago de Compostela",
+      "country": "spain",
+      "slug": "santiago-de-compostela",
+      "description": "Ziel aller Jakobswege: die Kathedrale mit dem Grab des Apostels Jakobus und dem berühmten Botafumeiro. Nach der Ankunft am Praza do Obradoiro erhalten Pilger, die mindestens die letzten 100 km zu Fuß zurückgelegt haben, im Pilgerbüro (Oficina del Peregrino) die Compostela.",
+      "accommodations": [
+        {
+          "name": "Residencia de Peregrinos San Lázaro",
+          "type": "hostel",
+          "description": "Öffentliche Herberge der Xunta de Galicia am nördlichen Stadtrand, Endpunkt mehrerer Jakobswege einschließlich des Camino Sanabrés. Preis inklusive Einwegbettwäsche und Decken.",
+          "addressStreet": "Rúa de San Lázaro, s/n",
+          "addressZip": "15703",
+          "addressCity": "Santiago de Compostela",
+          "addressCountry": "spain",
+          "website": "https://www.gronze.com/galicia/coruna/santiago-compostela/residencia-peregrinos-san-lazaro",
+          "email": null,
+          "phone": "+34 981 571 488",
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Albergue Seminario Menor",
+          "type": "hostel",
+          "description": "Herberge in einem Teil des 1958 eingeweihten großen Seminario-Menor-Gebäudes im Stadtteil Belvís, am Rand der Altstadt, rund 15 Gehminuten von der Kathedrale entfernt. Schlafsäle mit 7 bis 29 niedrigen Stockbetten, kleine Cafeteria mit Grundnahrungsmitteln.",
+          "addressStreet": "Avenida Quiroga Palacios, 2",
+          "addressZip": "15703",
+          "addressCity": "Santiago de Compostela",
+          "addressCountry": "spain",
+          "website": "https://seminariomenorsantiago.com",
+          "email": "santiago@alberguesdelcamino.com",
+          "phone": "+34 881 031 768",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 42.8805,
+      "lng": -8.5456
+    }
+  ],
+  "stages": [
+    {
+      "from": "Zamora",
+      "to": "Montamarta",
+      "distance": 19,
+      "description": "Kurze und flache Etappe, die ausschließlich durch Getreideanbaugebiete führt. Einziger Zwischenort ist Roales del Pan mit Bar und kleinem Laden. Danach folgt ein langer, gerader Feldweg parallel zur Nationalstraße N-630 bis Montamarta."
+    },
+    {
+      "from": "Montamarta",
+      "to": "Granja de Moreruela",
+      "distance": 23,
+      "description": "Der Weg führt am Stausee von Ricobayo vorbei und streift die Ruinen der mittelalterlichen Wüstung Castrotorafe, bevor er durch die Dörfer Fontanillas de Castro und Riego del Camino nach Granja de Moreruela verläuft, wo die eigentliche Weggabelung der Vía de la Plata liegt."
+    },
+    {
+      "from": "Granja de Moreruela",
+      "to": "Tábara",
+      "distance": 25,
+      "description": "Ruhige, angenehme Etappe mit moderaten Höhenunterschieden durch Ackerland mit mediterranen Waldinseln. Nach der Überquerung des Esla an der Puente Quintos folgt ein kurzer steiler Abschnitt, danach lange, bequeme Feldwege bis Tábara."
+    },
+    {
+      "from": "Tábara",
+      "to": "Santa Marta de Tera",
+      "distance": 23,
+      "description": "Kurze Etappe mit moderaten Höhenunterschieden, überwiegend auf langen Feldwegen; nur die letzten Kilometer verlaufen auf lokalen Straßen. Die Landschaft wird zunehmend bewaldeter, bis die romanische Kirche von Santa Marta de Tera erreicht wird."
+    },
+    {
+      "from": "Santa Marta de Tera",
+      "to": "Rionegro del Puente",
+      "distance": 27,
+      "description": "Der Weg folgt zunächst dem Río Tera durch Auwald und Pappelplantagen über Camarzana de Tera und Calzadilla de Tera, führt dann über Feldwege durch Misch- und Kiefernwälder und steigt zum Schluss leicht auf rund 850 m an, bevor er nach Rionegro del Puente absteigt."
+    },
+    {
+      "from": "Rionegro del Puente",
+      "to": "Mombuey",
+      "distance": 9,
+      "description": "Kurze Verbindungsetappe entlang eines Weges parallel zur N-525, vorbei an Mooren und offenem Gelände, bis der markante romanische Kirchturm von Mombuey in Sicht kommt."
+    },
+    {
+      "from": "Mombuey",
+      "to": "Puebla de Sanabria",
+      "distance": 32,
+      "description": "Längere Etappe durch zunehmend bewaldetes und coupiertes Gelände mit wiederholten, aber moderaten Anstiegen und Abstiegen entlang der N-525 und der Autobahn A-52. Die Dörfer Asturianos und Palacios de Sanabria bieten unterwegs Verpflegung, bevor die Altstadt von Puebla de Sanabria erreicht wird."
+    },
+    {
+      "from": "Puebla de Sanabria",
+      "to": "Lubián",
+      "distance": 28,
+      "description": "Der Weg wechselt zwischen Pfaden, Feldwegen und kurzen Asphaltabschnitten und steigt über Requejo und Padornelo zum Puerto de Padornelo (1.356 m) an, dem höchsten Punkt der Route, mit 360 Höhenmetern Anstieg. Pilger können wählen, ob sie dem Flusslauf oder der Nationalstraße folgen."
+    },
+    {
+      "from": "Lubián",
+      "to": "A Gudiña",
+      "distance": 24,
+      "description": "Rein ländliche, bergige Etappe. Ab dem Santuario de la Tuiza führt ein Erdpfad in vier Kilometern mit 310 Höhenmetern Anstieg zum Alto de A Canda (1.265 m) - der Grenze zwischen Kastilien-León und Galicien - meist mit sanfter, nur stellenweise steilerer Steigung."
+    },
+    {
+      "from": "A Gudiña",
+      "to": "Campobecerros",
+      "distance": 20,
+      "description": "Erster Teil der langen Bergetappe nach Laza: einsam, überwiegend auf Asphalt- und Erdwegen, größtenteils oberhalb von 1.000 m Höhe. Campobecerros ist der einzige Zwischenort mit Infrastruktur."
+    },
+    {
+      "from": "Campobecerros",
+      "to": "Laza",
+      "distance": 15,
+      "description": "Fortsetzung der Bergetappe über As Eiras und Portocamba, weiterhin größtenteils oberhalb von 1.000 m, bevor der Weg nach Laza absteigt - trotz der Höhenlage der landschaftlich schönste Abschnitt des galicischen Teils der Vía de la Plata."
+    },
+    {
+      "from": "Laza",
+      "to": "Vilar de Barrio",
+      "distance": 19,
+      "description": "Anspruchsvolle Etappe durch ländliches Berggebiet über Soutelo Verde und Tamicelas mit einem harten Anstieg von 425 Höhenmetern zur Cruz do Alto do Talariño (965 m), vorbei an der Alberguería mit ihrer bekannten Pilgerherberge, bevor der Weg nach Vilar de Barrio absteigt."
+    },
+    {
+      "from": "Vilar de Barrio",
+      "to": "Xunqueira de Ambía",
+      "distance": 13,
+      "description": "Nach Vilar de Barrio quert der Weg zunächst landwirtschaftliches Flachland und wechselt anschließend wieder in sanftes Hügelland, bevor die ehemalige Kollegiatstiftskirche von Xunqueira de Ambía in Sicht kommt."
+    },
+    {
+      "from": "Xunqueira de Ambía",
+      "to": "Ourense",
+      "distance": 22,
+      "description": "Kurze Etappe mit geringen Höhenunterschieden. Die ersten zwei Drittel folgen der Straße OU-102 durch zahlreiche Dörfer, im letzten Drittel nimmt die Urbanisierung mit Wohngebieten, Gewerbegebieten und größeren Straßen zu, bis die Thermalstadt Ourense erreicht wird."
+    },
+    {
+      "from": "Ourense",
+      "to": "Cea",
+      "distance": 22,
+      "description": "Kurze, aber anspruchsvolle Etappe mit steilem Anstieg von 115 m an der Ponte Vella in Ourense auf 525 m in Cea. Empfohlen wird die offizielle Route über Tamallancos, die weniger Asphalt aufweist als die Alternative."
+    },
+    {
+      "from": "Cea",
+      "to": "O Castro (Dozón)",
+      "distance": 15,
+      "description": "Etappe durch bergiges, grünes ländliches Galicien mit zahlreichen kleinen Weilern und Gemeinden. Wer Zeit hat, kann einen 4,3 km längeren Abstecher über das Zisterzienserkloster Santa María de Oseira nehmen."
+    },
+    {
+      "from": "O Castro (Dozón)",
+      "to": "Silleda",
+      "distance": 28,
+      "description": "Unproblematische Etappe ohne besondere Schwierigkeiten, die zahlreiche kleine Ortschaften und Pfarreien mit stetigen, aber moderaten Höhenunterschieden durchquert, bis der größere Ort Silleda erreicht wird."
+    },
+    {
+      "from": "Silleda",
+      "to": "Outeiro",
+      "distance": 24,
+      "description": "Überwiegend bequeme Asphalt- und Erdwege mit moderaten Höhenunterschieden, mit Ausnahme eines steilen Abstiegs auf Asphalt ins Tal des Río Ulla bei Ponte Ulla und eines anschließenden, weniger steilen Anstiegs zum winzigen Weiler Outeiro. Die Etappe führt unter anderem durch Bandeira."
+    },
+    {
+      "from": "Outeiro",
+      "to": "Santiago de Compostela",
+      "distance": 17,
+      "description": "Kurze Schlussetappe mit angenehmen, moderaten Höhenunterschieden - deutlich ruhiger als angesichts der Nähe zur Großstadt zu erwarten wäre. Die ersten drei Kilometer führen durch Wald, danach durch ländliches Gebiet mit verstreuten Häusern, bis der Weg über den obligatorischen städtischen Abschnitt den Praza do Obradoiro erreicht."
+    }
+  ]
+}
