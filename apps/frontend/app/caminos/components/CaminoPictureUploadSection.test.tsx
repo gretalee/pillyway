@@ -7,7 +7,15 @@ import { CaminoPictureUploadSection } from './CaminoPictureUploadSection';
 // ── next/image mock ────────────────────────────────────────────────────────────
 vi.mock('next/image', () => ({
   // Strip next/image-specific props that are not valid on a plain <img> element.
-  default: ({ fill: _fill, sizes: _sizes, ...rest }: { fill?: boolean; sizes?: string; src: string; alt: string; className?: string }) => (
+  default: ({
+    ...rest
+  }: {
+    fill?: boolean;
+    sizes?: string;
+    src: string;
+    alt: string;
+    className?: string;
+  }) => (
     // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
     <img {...rest} />
   ),
@@ -207,8 +215,7 @@ describe('CaminoPictureUploadSection', () => {
     renderSection();
 
     // Grab the hidden file input for the primary picture upload
-    const fileInput = document
-      .querySelector('input[type="file"]') as HTMLInputElement;
+    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
     expect(fileInput, 'primary file input must be in the DOM').toBeTruthy();
 
     const dummyFile = new File(['content'], 'photo.jpg', { type: 'image/jpeg' });

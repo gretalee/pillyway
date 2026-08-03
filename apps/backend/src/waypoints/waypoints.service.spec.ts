@@ -124,10 +124,17 @@ describe('WaypointsService.findBySlug()', () => {
 describe('WaypointsService.update()', () => {
   afterEach(() => vi.restoreAllMocks());
 
-  const pilgrimRoles: KindeRole[] = [{ id: 'r1', key: 'pilgrim', name: 'Pilgrim' }];
+  const pilgrimRoles: KindeRole[] = [
+    { id: 'r1', key: 'pilgrim', name: 'Pilgrim' },
+  ];
   const noRoles: KindeRole[] = [];
 
-  const basePointWithCoords = { ...basePoint, lat: 43.163, lng: -1.238, description: null };
+  const basePointWithCoords = {
+    ...basePoint,
+    lat: 43.163,
+    lng: -1.238,
+    description: null,
+  };
 
   function buildUpdateMock(returnValue: object = basePointWithCoords) {
     return {
@@ -197,7 +204,12 @@ describe('WaypointsService.update()', () => {
     const service = module.get(WaypointsService);
 
     await expect(
-      service.update(WAYPOINT_SLUG, { lat: null, lng: -1.238 }, USER_ID, pilgrimRoles),
+      service.update(
+        WAYPOINT_SLUG,
+        { lat: null, lng: -1.238 },
+        USER_ID,
+        pilgrimRoles,
+      ),
     ).rejects.toBeInstanceOf(BadRequestException);
   });
 
@@ -219,7 +231,12 @@ describe('WaypointsService.update()', () => {
   });
 
   it('sets both coordinates and returns the updated waypoint', async () => {
-    const prismaMock = buildUpdateMock({ ...basePoint, lat: 43.163, lng: -1.238, description: null });
+    const prismaMock = buildUpdateMock({
+      ...basePoint,
+      lat: 43.163,
+      lng: -1.238,
+      description: null,
+    });
     const module = await buildModule(prismaMock);
     const service = module.get(WaypointsService);
 
@@ -239,7 +256,12 @@ describe('WaypointsService.update()', () => {
   });
 
   it('clears coordinates when both lat and lng are sent as null', async () => {
-    const prismaMock = buildUpdateMock({ ...basePoint, lat: null, lng: null, description: null });
+    const prismaMock = buildUpdateMock({
+      ...basePoint,
+      lat: null,
+      lng: null,
+      description: null,
+    });
     const module = await buildModule(prismaMock);
     const service = module.get(WaypointsService);
 
@@ -259,23 +281,45 @@ describe('WaypointsService.update()', () => {
   });
 
   it('does not include lat/lng in the update data when both are omitted', async () => {
-    const prismaMock = buildUpdateMock({ ...basePoint, lat: null, lng: null, description: null });
+    const prismaMock = buildUpdateMock({
+      ...basePoint,
+      lat: null,
+      lng: null,
+      description: null,
+    });
     const module = await buildModule(prismaMock);
     const service = module.get(WaypointsService);
 
-    await service.update(WAYPOINT_SLUG, { name: 'Rome' }, USER_ID, pilgrimRoles);
+    await service.update(
+      WAYPOINT_SLUG,
+      { name: 'Rome' },
+      USER_ID,
+      pilgrimRoles,
+    );
 
-    const updateData = prismaMock.caminoPoint.update.mock.calls[0][0].data as Record<string, unknown>;
+    const updateData = prismaMock.caminoPoint.update.mock.calls[0][0]
+      .data as Record<string, unknown>;
     expect(updateData).not.toHaveProperty('lat');
     expect(updateData).not.toHaveProperty('lng');
   });
 
   it('trims whitespace from the name before saving', async () => {
-    const prismaMock = buildUpdateMock({ ...basePoint, name: 'Rome', lat: null, lng: null, description: null });
+    const prismaMock = buildUpdateMock({
+      ...basePoint,
+      name: 'Rome',
+      lat: null,
+      lng: null,
+      description: null,
+    });
     const module = await buildModule(prismaMock);
     const service = module.get(WaypointsService);
 
-    await service.update(WAYPOINT_SLUG, { name: '  Rome  ' }, USER_ID, pilgrimRoles);
+    await service.update(
+      WAYPOINT_SLUG,
+      { name: '  Rome  ' },
+      USER_ID,
+      pilgrimRoles,
+    );
 
     expect(prismaMock.caminoPoint.update).toHaveBeenCalledWith({
       where: { slug: WAYPOINT_SLUG },
@@ -289,7 +333,12 @@ describe('WaypointsService.update()', () => {
     const service = module.get(WaypointsService);
     const eventLog = module.get(EventLogService);
 
-    await service.update(WAYPOINT_SLUG, { lat: 43.163, lng: -1.238 }, USER_ID, pilgrimRoles);
+    await service.update(
+      WAYPOINT_SLUG,
+      { lat: 43.163, lng: -1.238 },
+      USER_ID,
+      pilgrimRoles,
+    );
 
     expect(eventLog.logEvent).toHaveBeenCalledWith(
       EventType.WAYPOINT_UPDATED,

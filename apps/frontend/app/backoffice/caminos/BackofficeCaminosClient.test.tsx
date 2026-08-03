@@ -1,3 +1,4 @@
+import { createContext, useContext } from 'react';
 import { act, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
@@ -25,7 +26,6 @@ vi.mock('@kinde-oss/kinde-auth-nextjs', () => ({
 // internally. We replicate that via a React context so the aria-label close
 // button actually triggers the dismiss path in Modal.
 vi.mock('@base-ui/react/dialog', () => {
-  const { createContext, useContext } = require('react');
   const DialogCtx = createContext(null as ((o: boolean) => void) | null);
 
   const Root = ({

@@ -1,6 +1,6 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { describe, it, expect, vi, afterEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import type { ReactNode } from 'react';
 
 import { useCaminoVoteSummary } from './use-camino-vote-summary';
@@ -44,8 +44,12 @@ describe('useCaminoVoteSummary', () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-    expect(result.current.data?.yesCount, 'yesCount must be returned from the hook').toBe(7);
-    expect(result.current.data?.noCount, 'noCount must be returned from the hook').toBe(2);
+    expect(result.current.data?.yesCount, 'yesCount must be returned from the hook').toBe(
+      7,
+    );
+    expect(result.current.data?.noCount, 'noCount must be returned from the hook').toBe(
+      2,
+    );
   });
 
   it('calls fetchCaminoVoteSummary with the correct caminoId', async () => {

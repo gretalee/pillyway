@@ -52,9 +52,15 @@ export class WaypointsController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('pilgrim')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Update a waypoint (name, description, coordinates) — pilgrim role required' })
+  @ApiOperation({
+    summary:
+      'Update a waypoint (name, description, coordinates) — pilgrim role required',
+  })
   @ApiOkResponse({ description: 'Updated waypoint.' })
-  @ApiBadRequestResponse({ description: 'Empty body, name is blank, or partial/inconsistent coordinates.' })
+  @ApiBadRequestResponse({
+    description:
+      'Empty body, name is blank, or partial/inconsistent coordinates.',
+  })
   @ApiUnauthorizedResponse({ description: 'Missing or invalid JWT.' })
   @ApiForbiddenResponse({ description: 'Requires pilgrim role.' })
   @ApiNotFoundResponse({ description: 'Waypoint not found.' })
@@ -63,7 +69,12 @@ export class WaypointsController {
     @Body() dto: UpdateWaypointDto,
     @Req() req: Request & { user: KindeJwtPayload },
   ): Promise<WaypointDetailDto> {
-    return this.waypointsService.update(slug, dto, req.user.sub, req.user.roles ?? []);
+    return this.waypointsService.update(
+      slug,
+      dto,
+      req.user.sub,
+      req.user.roles ?? [],
+    );
   }
 
   @Post(':slug/accommodations')

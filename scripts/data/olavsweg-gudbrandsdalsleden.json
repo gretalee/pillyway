@@ -1,0 +1,1082 @@
+{
+  "_meta": {
+    "route": "Olavsweg (Gudbrandsdalsleden), Oslo – Trondheim",
+    "section": "Oslo → Hellerudsletta → Ullensaker → Elstad → Eidsvoll → Spitalen → Tangen → Stange Vestbygd → Hamar → Veldre → Ringen → Brøttum → Lillehammer → Skåden → Mageli → Ringebu → Heggerud → Kvam → Varphaugen → Jørundgard → Engelshus → Fokstugu → Hageseter → Kongsvold → Ryphusan → Oppdal → Langklopp → Meslo → Meldal → Svorkmo → Skaun → Sundet → Trondheim",
+    "distance_km": 681,
+    "stages": 32,
+    "created": "2026-08-03",
+    "sources": [
+      "https://www.pilegrimsleden.no/en/trails/gudbrandsdalsleden",
+      "https://www.pilegrimsleden.no/en/tours/gudbrandsdalsleden",
+      "https://www.pilegrimsleden.no/en/tours/gudbrandsdalsleden-ost-etappe-1-oslo-eidsvoll",
+      "https://www.olavsleden.de/etappen-dauer-laenge-olavsweg/",
+      "https://www.pilegrimsleden.no/en/articles/hvordan-starte-pilegrimsvandringen-i-oslo",
+      "https://www.pilegrimsleden.no/en/interest-points/minneparken",
+      "https://www.pilegrimsleden.no/en/interest-points/ostre-aker-herberge",
+      "https://aaraasgard.no/",
+      "https://www.pilegrimsleden.no/en/interest-points/arteid-vestre",
+      "https://www.pilegrimsleden.no/en/interest-points/risebru-pilegrimsherberge",
+      "https://sannfredstun.no/kontakt",
+      "https://www.pilegrimsleden.no/en/interest-points/tangenodden-camping",
+      "https://stangevestbygd.no/firmaer/fokhol-gard/",
+      "https://www.pilegrimsleden.no/en/regionale-pilegrimssenter/pilegrimssenter-hamar",
+      "https://kvarstad-gaard.no/",
+      "https://frich.no/rudshogda",
+      "https://www.pilegrimsleden.no/en/interest-points/brottum-camping",
+      "https://stasjonen.no/en/hostel_lillehammer/",
+      "https://www.pilegrimsleden.no/en/interest-points/dale-gudbrand-gard",
+      "https://www.mageligard.no/overnatting",
+      "https://www.pilegrimsleden.no/en/interest-points/bittes-gjestehus",
+      "https://heggerud.no/",
+      "https://www.pilegrimsleden.no/en/interest-points/kirketeigen-rom-og-camping",
+      "https://pilegrimsleden.no/en/interest-points/varphaugen-gard",
+      "https://www.jorundgard.no/kontakt-oss",
+      "https://www.pilegrimsleden.no/en/interest-points/oygarden-pilegrimsherberge",
+      "https://www.fokstugu.no/kontakt.html",
+      "https://www.hageseter.no/no/kontakt",
+      "https://frich.no/kongsvold-fjeldstue",
+      "https://docplayer.me/5083192-Ryphusan-adresse-forbregdsetra-vinstradalen-7340-oppdal-pris-150-kr-per-person-apent-01-06-01-10-avstand-ved-leden-178-km-til-trondheim.html",
+      "https://www.pilegrimsleden.no/en/interest-points/oppdal-gjestetun",
+      "https://langklopp.webnode.page/kart/",
+      "https://rennebu-il.no/opplev/meslo-herberge",
+      "https://rennebu-il.no/opplev/langklopp-fjellgard",
+      "https://www.pilegrimsleden.no/en/interest-points/ner-grefstad-gard",
+      "https://www.pilegrimsleden.no/en/interest-points/svorkmo-skytterhus",
+      "https://www.pilegrimsleden.no/en/interest-points/skaun-menighetshus",
+      "https://www.kirken.no/nb-NO/fellesrad/skaun-kirkelige-fellesrad/pilegrim/overnatting/",
+      "https://sundetgard.no/kontakt/",
+      "https://www.pilegrimsleden.no/en/pilegrimspass-og-olavsbrevet",
+      "https://www.nidarosdomen.no/en/ndr/om-ndr/nasjonalt-pilegrimssenter",
+      "https://nidarospilegrimsgard.com/",
+      "https://www.erikbolstad.no/postnummer-koordinatar/"
+    ],
+    "note": "Route deckt die östliche Route (Gudbrandsdalsleden øst) zwischen Oslo und Lillehammer ab, die auf 12 Etappen ohne Fährüberfahrt auskommt (offizielle Quellen erwähnen auch eine historische Bootsfahrt über den Mjøsa von Eidsvoll nach Hamar - diese wurde bewusst durch die vollständig begehbare Ostroute über Stange/Tangen/Hamar ersetzt, da eine 63-km-Bootsetappe nicht sinnvoll als Wanderetappe abbildbar ist). Alle 32 Etappen liegen im 5-32-km-Rahmen. Koordinaten für kleinere Weiler/Bauernhöfe (u. a. Hellerudsletta, Spitalen, Tangen, Stange Vestbygd, Veldre, Ringen, Skåden, Mageli, Heggerud, Kvam, Varphaugen, Jørundgard, Engelshus, Ryphusan, Langklopp, Meslo, Meldal, Svorkmo, Skaun, Sundet) sind Postleitzahlgebiet-Zentren bzw. grobe Schätzungen (Quelle: erikbolstad.no), keine hofgenauen GPS-Punkte - vor 'verified: true' prüfen. Bei 'Ryphusan' (Position 25) ist die Telefonnummer bewusst null: die Hütte ist unbewirtschaftet, Bezahlung erfolgt bar/Vipps/PayPal vor Ort, es existiert keine eigene Telefonnummer (ersatzweise ist die Nummer des Oppdal Taxi für einen Transfer in der Beschreibung genannt). Bei 'Engelshus' (Position 21) wurde ersatzweise die nächstgelegene dokumentierte Unterkunft Øygarden Pilegrimsherberge verwendet, da unter dem Namen 'Engelshus' selbst keine eigene Unterkunft mit vollständiger Adresse auffindbar war. 'Mageli Gård' (Position 15) und 'Meslo Herberge' (Position 28) tragen jeweils die Telefonnummer des Hofs/der Herberge selbst, die Adresse stammt teils von einer benachbarten Camping-/Registrierungsquelle mit identischer Hofbezeichnung - beide liegen erkennbar am selben Standort. createdBy vor dem Seeding in Produktion durch eine echte Kinde-User-ID ersetzen."
+  },
+  "camino": {
+    "name": "Olavsweg (Gudbrandsdalsleden)",
+    "description": "Der Olavsweg auf der Route Gudbrandsdalsleden ist mit rund 643 km die bedeutendste norwegische Pilgerstrecke des Pilegrimsleden-Netzwerks und führt von Oslo durch das Gudbrandsdalen und über das Hochgebirgsplateau Dovrefjell nach Trondheim zum Nidarosdom, der Grabstätte des Heiligen Olav. Bereits im Mittelalter war dies die Hauptroute der Pilger aus dem Süden Norwegens und aus dem übrigen Europa zum Grab König Olav Haraldssons, der 1030 in der Schlacht von Stiklestad fiel und wenig später als Nationalheiliger Norwegens verehrt wurde. Nach jahrhundertelangem Stillstand seit der Reformation 1537 wurde der Weg zwischen 1992 und 1997 in Zusammenarbeit der norwegischen Natur- und Kulturerbebehörden neu markiert und eröffnet; 2010 wurde er als Europäische Kulturstraße ausgezeichnet.\n\nDie Route beginnt an den Ruinen der St.-Hallvard-Kathedrale in Oslos Altstadt Gamlebyen und führt zunächst ostseitig um den Mjøsa, Norwegens größten See, über Eidsvoll - den Ort der norwegischen Verfassung von 1814 - und die alte Bischofsstadt Hamar nach Lillehammer, wo sich West- und Ostroute wieder vereinigen. Von dort führt der Weg mitten durchs Gudbrandsdalen, das Tal des Flusses Lågen, vorbei an der Stabkirche von Ringebu und durch die Landschaft um Sel, die Sigrid Undset als Schauplatz ihres Romans \"Kristin Lavransdatter\" wählte. Bei Dovre steigt der Weg auf das karge, baumlose Dovrefjell-Hochplateau, Lebensraum wildlebender Moschusochsen, bevor er über Oppdal und das Orkdalen die letzten einsamen Waldetappen bis Trondheim zurücklegt.\n\nLandschaftlich reicht die Bandbreite von der fruchtbaren Agrarlandschaft am Mjøsa über das enger werdende Flusstal des Gudbrandsdalen bis zur alpinen Weite des Dovrefjell auf über 1000 m Höhe - der anspruchsvollste Abschnitt der gesamten Strecke. Historische Höhepunkte sind unter anderem die Domruine auf Domkirkeodden in Hamar, die mittelalterliche Ringebu-Stabkirche, das Mittelalterzentrum Jørundgard bei Sel und die traditionsreichen Fjellstuen Fokstugu und Kongsvold, die schon im Mittelalter als königliche Raststationen auf dem Weg über das Gebirge dienten.\n\n**Pilgerpass (Pilegrimspass):** Der Pilgerpass kostet 50 NOK und ist am Startpunkt im Pilegrimssenter Oslo (Ruinpark St. Hallvard) sowie bei den regionalen Pilegrimssentre entlang der Strecke (u. a. in Hamar und auf Dovrefjell) sowie im Museumsshop des Nidarosdoms erhältlich. Nach Vorlage des mit Stempeln versehenen Passes stellt die Pilgerrezeption bei der Nidaros Pilegrimsgård in Trondheim das Olavsbrev aus, die Bestätigung der abgeschlossenen Pilgerfahrt.",
+    "verified": false,
+    "createdBy": "seed"
+  },
+  "points": [
+    {
+      "position": 1,
+      "name": "Oslo",
+      "country": "norway",
+      "slug": "oslo",
+      "description": "Startpunkt des Olavswegs an den Ruinen der St.-Hallvard-Kathedrale im Minneparken, Gamlebyen. Hier steht der erste Meilenstein mit der Aufschrift \"643 km bis Nidaros\". Im angeschlossenen Pilegrimssenter Oslo erhalten Pilger ihren Pilgerpass und Informationen zur Route.",
+      "accommodations": [
+        {
+          "name": "Østre Aker Pilegrimsherberge",
+          "type": "hostel",
+          "description": "Pilgerherberge in der Østre Aker Kirke im Osten Oslos. Eigener Schlafsack erforderlich, Dusche/WC und Kochnische vorhanden. Geöffnet 1. Mai bis 1. September.",
+          "addressStreet": "Ulvenveien 110",
+          "addressZip": "0665",
+          "addressCity": "Oslo",
+          "addressCountry": "norway",
+          "website": null,
+          "email": "ostreakerpilegrimsherberge@outlook.com",
+          "phone": "+47 408 14 012",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 59.9059,
+      "lng": 10.7677
+    },
+    {
+      "position": 2,
+      "name": "Hellerudsletta",
+      "country": "norway",
+      "slug": "hellerudsletta",
+      "description": "Nach der Querung der Riksvei bei Hellerudsletta führt der Weg über die Kragerudveien und die Åros-Brücke über die Nitelva. Kurz danach liegt der Aaraas-Hof, eine der ältesten Pilgerstationen der Strecke.",
+      "accommodations": [
+        {
+          "name": "Aaraastunet (Aaraas Gård)",
+          "type": "hostel",
+          "description": "Traditionsreicher Pilgerhof mit Herberge nahe der Nitelva, rund einen Tagesmarsch von Oslo entfernt. Einfache Schlafplätze, Selbstversorgerküche.",
+          "addressStreet": "Årosveien 307",
+          "addressZip": "1480",
+          "addressCity": "Slattum",
+          "addressCountry": "norway",
+          "website": "https://aaraasgard.no",
+          "email": "aaraastunet@gmail.com",
+          "phone": "+47 469 22 214",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 60.0084,
+      "lng": 10.9168
+    },
+    {
+      "position": 3,
+      "name": "Ullensaker",
+      "country": "norway",
+      "slug": "ullensaker",
+      "description": "Der Weg führt durch Sørum und Ullensaker bis nach Kløfta. Nahe der Ullensaker-Kirche (Romeriksdomen) liegt der Pilgerhof Arteid Vestre mit seinem historischen Stabbur als Herberge.",
+      "accommodations": [
+        {
+          "name": "Arteid Vestre",
+          "type": "hostel",
+          "description": "Unbewirtschaftete Pilgerherberge in einem historischen Stabbur (Vorratsspeicher) mit drei Zimmern für insgesamt sieben Personen, Gemeinschaftsraum mit kleiner Küche. Geöffnet Mai bis September.",
+          "addressStreet": "Arteidvegen 214",
+          "addressZip": "2040",
+          "addressCity": "Kløfta",
+          "addressCountry": "norway",
+          "website": null,
+          "email": "ArteidHerberge@outlook.com",
+          "phone": "+47 948 33 074",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 60.0766,
+      "lng": 11.1432
+    },
+    {
+      "position": 4,
+      "name": "Elstad",
+      "country": "norway",
+      "slug": "elstad",
+      "description": "Die Etappe endet am Hersjøen, nahe dem Flughafen Oslo-Gardermoen. Von hier führt der Weg am See entlang bis zum Fluss Risa. In der Nähe liegen mehrere Hotels bei Gardermoen, die Pilgern mit Credencial einen Rabatt gewähren.",
+      "accommodations": [
+        {
+          "name": "Thon Hotel Oslo Airport",
+          "type": "hotel",
+          "description": "Hotel nahe dem Flughafen Gardermoen, wenige Kilometer vom Wegverlauf bei Elstad entfernt. Pilgerrabatt bei Vorlage des Pilgerausweises.",
+          "addressStreet": "Balder Allé 2",
+          "addressZip": "2060",
+          "addressCity": "Gardermoen",
+          "addressCountry": "norway",
+          "website": "https://www.thonhotels.no/hoteller/norge/gardermoen/thon-hotel-oslo-airport/",
+          "email": null,
+          "phone": "+47 63 92 94 00",
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ],
+      "lat": 60.1976,
+      "lng": 11.1004
+    },
+    {
+      "position": 5,
+      "name": "Eidsvoll",
+      "country": "norway",
+      "slug": "eidsvoll",
+      "description": "Eidsvoll ist als Ort der norwegischen Verfassung von 1814 historisch bedeutsam. Der Weg passiert zuvor Mogreina, wo die Pilgerherberge Risebru in einem restaurierten Blockhaus aus dem frühen 19. Jahrhundert untergebracht ist.",
+      "accommodations": [
+        {
+          "name": "Risebru Pilegrimsherberge",
+          "type": "hostel",
+          "description": "Kleine Herberge in einem alten Blockhaus mit zwei Schlafzimmern und insgesamt sieben Betten, Wohnzimmer, Küche und Dusche/WC. Geöffnet 1. Mai bis 31. August, außerhalb der Saison nach Vereinbarung.",
+          "addressStreet": "Risebruvegen 6",
+          "addressZip": "2054",
+          "addressCity": "Mogreina",
+          "addressCountry": "norway",
+          "website": "http://www.risebru.no",
+          "email": "akrikjos@online.no",
+          "phone": "+47 920 21 897",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 60.2306,
+      "lng": 11.1731
+    },
+    {
+      "position": 6,
+      "name": "Spitalen",
+      "country": "norway",
+      "slug": "spitalen",
+      "description": "Spitalen war einst eine Siedlung der Waldfinnen, die im 17. Jahrhundert aus Finnland eingewandert waren. Die alte Dorfschule von Søndre Spitalen ist heute als \"Sannfredstun\" eine Pilgerherberge - die letzte Möglichkeit zur Einkehr auf dem einsamen Weg vor Tangen.",
+      "accommodations": [
+        {
+          "name": "Sannfredstun",
+          "type": "hostel",
+          "description": "Alte Dorfschule mit drei Zimmern und 8-10 Betten in Schlafsälen, Außentoilette und -dusche, Selbstversorgerküche. Nicht durchgehend besetzt - Voranmeldung dringend empfohlen.",
+          "addressStreet": "Erikstuvegen 38",
+          "addressZip": "2338",
+          "addressCity": "Espa",
+          "addressCountry": "norway",
+          "website": "https://sannfredstun.no",
+          "email": null,
+          "phone": "+47 957 31 796",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 60.5779,
+      "lng": 11.2709
+    },
+    {
+      "position": 7,
+      "name": "Tangen",
+      "country": "norway",
+      "slug": "tangen",
+      "description": "Kleiner Ort am Ostufer des Mjøsa-Sees, dem größten See Norwegens. Tangenodden Camping direkt am Strand bietet Hütten und Zeltplätze mit Blick auf das Wasser.",
+      "accommodations": [
+        {
+          "name": "Tangenodden Camping",
+          "type": "hostel",
+          "description": "Campingplatz am Strand des Mjøsa mit Hütten für 4-6 Personen, ganzjährig geöffnet. Selbstversorgung, Frühstück und Lunchpaket auf Anfrage, WLAN vorhanden.",
+          "addressStreet": "Refling Hagensvei 54",
+          "addressZip": "2337",
+          "addressCity": "Tangen",
+          "addressCountry": "norway",
+          "website": "http://www.tangenodden.no",
+          "email": "info@tangenodden.no",
+          "phone": "+47 901 98 917",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 60.6176,
+      "lng": 11.2672
+    },
+    {
+      "position": 8,
+      "name": "Stange Vestbygd",
+      "country": "norway",
+      "slug": "stange-vestbygd",
+      "description": "Fruchtbare Kulturlandschaft an der Sonnenseite des Mjøsa, rund 11 km südlich von Hamar. Der biodynamisch bewirtschaftete Hof Fokhol Gård ist einer der größten ökologischen Höfe Norwegens und bietet Pilgern ein Gästehaus mitten im Bauernbetrieb.",
+      "accommodations": [
+        {
+          "name": "Fokhol Gård Gjestehus",
+          "type": "b_and_b",
+          "description": "Gästehaus auf einem großen biodynamischen Bauernhof mit Zugang zu Küche und Bad, Sonnenterrasse und Garten. Ruhige Lage in vielfältiger Kulturlandschaft.",
+          "addressStreet": "Fokholgutua 216",
+          "addressZip": "2335",
+          "addressCity": "Stange",
+          "addressCountry": "norway",
+          "website": "https://fokhol.no",
+          "email": "gjestehus@fokhol.no",
+          "phone": "+47 944 50 308",
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ],
+      "lat": 60.7180,
+      "lng": 11.1942
+    },
+    {
+      "position": 9,
+      "name": "Hamar",
+      "country": "norway",
+      "slug": "hamar",
+      "description": "Bedeutende Bischofsstadt des Mittelalters am Mjøsa mit den Ruinen des Hamar-Doms auf der Halbinsel Domkirkeodden. Das Pilegrimssenter Hamar bietet neben einer Herberge auch Beratung und Ausrüstungsverleih für Pilger.",
+      "accommodations": [
+        {
+          "name": "Pilegrimssenter Hamar",
+          "type": "hostel",
+          "description": "Pilgerherberge des regionalen Pilgerzentrums auf Domkirkeodden, zwei Schlafzimmer mit 4 bzw. 6 Betten, Selbstversorgerküche. Zentrum bietet Beratung zur Route und Pilgerausweise.",
+          "addressStreet": "Storhamargata 125",
+          "addressZip": "2315",
+          "addressCity": "Hamar",
+          "addressCountry": "norway",
+          "website": null,
+          "email": "hamar@pilegrimssenter.no",
+          "phone": "+47 474 78 266",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 60.7945,
+      "lng": 11.0680
+    },
+    {
+      "position": 10,
+      "name": "Veldre",
+      "country": "norway",
+      "slug": "veldre",
+      "description": "Nahe der Veldre-Kirche beginnt der \"Prestvegen\" (Pfarrerweg), eine idyllische alte Verbindung zur Ringsaker-Kirche. Der Hof Kvarstad Gård bei Brumunddal, dessen Geschichte bis in die Wikingerzeit zurückreicht, bietet Pilgern Unterkunft in ruhiger, ländlicher Lage.",
+      "accommodations": [
+        {
+          "name": "Kvarstad Gård",
+          "type": "b_and_b",
+          "description": "Bauernhof in voller Bewirtschaftung auf einem Hügel bei Brumunddal, Zimmer für bis zu 29 Personen auf 12 Räume verteilt. Ruhige, ländliche Umgebung mit langer Geschichte bis in die Wikingerzeit.",
+          "addressStreet": "Rørsvegen 238",
+          "addressZip": "2384",
+          "addressCity": "Brumunddal",
+          "addressCountry": "norway",
+          "website": "https://kvarstad-gaard.no",
+          "email": "post@kvarstad-gaard.no",
+          "phone": "+47 469 50 377",
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ],
+      "lat": 60.8785,
+      "lng": 10.8733
+    },
+    {
+      "position": 11,
+      "name": "Ringen",
+      "country": "norway",
+      "slug": "ringen",
+      "description": "Der Weg erreicht Rudshøgda, einen kleinen Ort auf halbem Weg zwischen Hamar und Lillehammer, bekannt durch das Prøysenhuset (Museum des Liedermachers Alf Prøysen) in der Nähe. Frich's Motell liegt direkt am alten Prestvegen.",
+      "accommodations": [
+        {
+          "name": "Frich's Rudshøgda",
+          "type": "hotel",
+          "description": "Traditionsreiches Motel und Restaurant an der alten Poststraße zwischen Hamar und Lillehammer, moderne Zimmer mit Dusche/WC und TV. Pilgerrabatt bei telefonischer Buchung.",
+          "addressStreet": "Rudsvegen 3",
+          "addressZip": "2360",
+          "addressCity": "Rudshøgda",
+          "addressCountry": "norway",
+          "website": "https://frich.no/rudshogda",
+          "email": "rudshogda@frich.no",
+          "phone": "+47 62 35 50 50",
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ],
+      "lat": 60.9103,
+      "lng": 10.8057
+    },
+    {
+      "position": 12,
+      "name": "Brøttum",
+      "country": "norway",
+      "slug": "broettum",
+      "description": "Kleiner Ort unterhalb der Brøttum-Kirche, direkt an der Touristenstraße mit Blick auf den Mjøsa gelegen, auf halbem Weg zwischen Lillehammer und Moelv. Beliebter Rastplatz für Pilger auf dem Ostufer-Abschnitt.",
+      "accommodations": [
+        {
+          "name": "Brøttum Camping",
+          "type": "hostel",
+          "description": "Campingplatz mit einfachen Einzelhütten (Kühlschrank, Kochplatte) und großer Wiese für Zelte, Blick auf den Mjøsa. Geöffnet 1. Mai bis 1. Oktober.",
+          "addressStreet": "Turistvegen 1270",
+          "addressZip": "2372",
+          "addressCity": "Brøttum",
+          "addressCountry": "norway",
+          "website": null,
+          "email": null,
+          "phone": "+47 996 26 803",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 61.0292,
+      "lng": 10.5527
+    },
+    {
+      "position": 13,
+      "name": "Lillehammer",
+      "country": "norway",
+      "slug": "lillehammer",
+      "description": "Olympiastadt von 1994 am Nordufer des Mjøsa. Hier vereinigen sich die West- und Ostroute um den See wieder zu einem gemeinsamen Weg nach Trondheim. Das Freilichtmuseum Maihaugen und die historische Holzhausstadt laden zur Rast ein.",
+      "accommodations": [
+        {
+          "name": "Lillehammer Vandrerhjem Stasjonen",
+          "type": "hostel",
+          "description": "Zentral am Bahnhof gelegenes Vandrerhjem, 500 m vom Wegverlauf entfernt, ganzjährig geöffnet. 15 % Pilgerrabatt bei Onlinebuchung mit dem Code \"pilgrim\".",
+          "addressStreet": "Jernbanetorget 2",
+          "addressZip": "2609",
+          "addressCity": "Lillehammer",
+          "addressCountry": "norway",
+          "website": "https://stasjonen.no/pilegrim",
+          "email": "post@stasjonen.no",
+          "phone": "+47 612 60 024",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 61.1130,
+      "lng": 10.4704
+    },
+    {
+      "position": 14,
+      "name": "Skåden",
+      "country": "norway",
+      "slug": "skaaden",
+      "description": "Der Weg folgt dem Gudbrandsdalslågen-Tal durch die Gemeinde Øyer. Der Skåden-Hof mit seinem Wirtschaftsgebäude aus dem späten 17. Jahrhundert und einer seit 1734 nachweisbaren Familiengeschichte bietet Pilgergruppen auf Anfrage eine einfache Herberge.",
+      "accommodations": [
+        {
+          "name": "Skåden Gård",
+          "type": "b_and_b",
+          "description": "Historischer Bauernhof im Øyer-Tal mit einfacher Pilgerunterkunft. Voranmeldung erforderlich.",
+          "addressStreet": "Skåevegen 72",
+          "addressZip": "2636",
+          "addressCity": "Øyer",
+          "addressCountry": "norway",
+          "website": null,
+          "email": null,
+          "phone": "+47 61 27 81 60",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 61.2650,
+      "lng": 10.4130
+    },
+    {
+      "position": 15,
+      "name": "Mageli",
+      "country": "norway",
+      "slug": "mageli",
+      "description": "Ökologischer Bauernhof im Gudbrandsdalen bei Tretten, der Lebensmittel aus eigenem Anbau und Übernachtung mit lokaler Verankerung anbietet. Der Weg folgt hier weiter dem Tal des Gudbrandsdalslågen.",
+      "accommodations": [
+        {
+          "name": "Mageli Gård",
+          "type": "b_and_b",
+          "description": "Ökologisch bewirtschafteter Hof mit Zimmervermietung, Fokus auf lokale und regionale Produkte aus eigenem Anbau.",
+          "addressStreet": "Kongsvegen 2220",
+          "addressZip": "2635",
+          "addressCity": "Tretten",
+          "addressCountry": "norway",
+          "website": "https://www.mageligard.no",
+          "email": null,
+          "phone": "+47 934 28 721",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 61.3156,
+      "lng": 10.3006
+    },
+    {
+      "position": 16,
+      "name": "Ringebu",
+      "country": "norway",
+      "slug": "ringebu",
+      "description": "Historischer Ort mit der bekannten Ringebu-Stabkirche aus dem 13. Jahrhundert. Bittes Gjestehus liegt zentral, rund 250 m vom Bahnhof entfernt.",
+      "accommodations": [
+        {
+          "name": "Bittes Gjestehus",
+          "type": "b_and_b",
+          "description": "Gästehaus nahe dem Zentrum von Ringebu mit zwei Zimmern und vier Betten, Frühstück inklusive, gemeinsame Küche und Bad, Waschmaschine nutzbar.",
+          "addressStreet": "Bjørgemogata 9",
+          "addressZip": "2630",
+          "addressCity": "Ringebu",
+          "addressCountry": "norway",
+          "website": null,
+          "email": "brit.bitte08@gmail.com",
+          "phone": "+47 410 41 853",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 61.5296,
+      "lng": 10.1389
+    },
+    {
+      "position": 17,
+      "name": "Heggerud",
+      "country": "norway",
+      "slug": "heggerud",
+      "description": "Der Weg führt weiter durch das obere Gudbrandsdalen in Richtung Sør-Fron. Heggerud Gård liegt an der Gudbrandsdalsvegen mit Blick auf die umliegenden Obstgärten.",
+      "accommodations": [
+        {
+          "name": "Heggerud Gård",
+          "type": "b_and_b",
+          "description": "Ferienhof mit Blockhütten im Apfelgarten sowie Campingmöglichkeit, an der Gudbrandsdalsvegen gelegen.",
+          "addressStreet": "Kongsvegen 1170",
+          "addressZip": "2647",
+          "addressCity": "Sør-Fron",
+          "addressCountry": "norway",
+          "website": "https://heggerud.no",
+          "email": null,
+          "phone": "+47 996 08 339",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 61.5552,
+      "lng": 9.9407
+    },
+    {
+      "position": 18,
+      "name": "Kvam",
+      "country": "norway",
+      "slug": "kvam",
+      "description": "Ort im Nord-Fron mit der Kvam-Kirche, deren Kapelle für Pilger offensteht. Das christlich geführte Kirketeigen-Jugendzentrum bietet ganzjährig einfache Zimmer und Hütten.",
+      "accommodations": [
+        {
+          "name": "Kirketeigen Rom og Camping",
+          "type": "hostel",
+          "description": "Jugend- und Freizeitzentrum der Organisation Normisjon mit Zimmern und Hütten, ganzjährig geöffnet. Nahe der Kvam-Kirche mit offener Kapelle.",
+          "addressStreet": "Bygdahusvegen 11",
+          "addressZip": "2642",
+          "addressCity": "Kvam",
+          "addressCountry": "norway",
+          "website": null,
+          "email": null,
+          "phone": "+47 988 56 885",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 61.6654,
+      "lng": 9.6996
+    },
+    {
+      "position": 19,
+      "name": "Varphaugen",
+      "country": "norway",
+      "slug": "varphaugen",
+      "description": "Seit Beginn der norwegischen Pilgertradition im frühen 11. Jahrhundert bis zur Reformation 1537 war Varphaugen eine zentrale Raststation auf dem Weg nach Nidaros. Heute liegt hier auch das Sjoa Rafting Senter am gleichnamigen Wildwasserfluss.",
+      "accommodations": [
+        {
+          "name": "Varphaugen Gård",
+          "type": "b_and_b",
+          "description": "Historischer Pilgerrastplatz mit Hüttenunterkunft und Selbstverpflegung am Fluss Sjoa. Bettwäsche/Schlafsack mitbringen.",
+          "addressStreet": "Gudbrandsdalsvegen 430",
+          "addressZip": "2670",
+          "addressCity": "Otta",
+          "addressCountry": "norway",
+          "website": null,
+          "email": null,
+          "phone": "+47 61 23 07 00",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 61.7712,
+      "lng": 9.5353
+    },
+    {
+      "position": 20,
+      "name": "Jørundgard",
+      "country": "norway",
+      "slug": "joerundgard",
+      "description": "Das Mittelalterzentrum Jørundgard in Sel wurde für die Verfilmung von Sigrid Undsets Roman \"Kristin Lavransdatter\" errichtet und zeigt originalgetreu rekonstruierte Gebäude aus der Zeit des Mittelalters. Die Region um Sel ist Schauplatz des berühmten Romans.",
+      "accommodations": [
+        {
+          "name": "Jørundgard Middelaldersenter",
+          "type": "hostel",
+          "description": "Übernachtung in authentischer mittelalterlicher Umgebung, einfache Zimmer mit Gemeinschaftsbad in separatem Gebäude, Verpflegung und Erlebnisprogramm optional buchbar. Geöffnet 8. Mai bis 1. Oktober.",
+          "addressStreet": "Jørundgardvegen 18",
+          "addressZip": "2672",
+          "addressCity": "Sel",
+          "addressCountry": "norway",
+          "website": "https://www.jorundgard.no",
+          "email": "info@jorundgard.no",
+          "phone": "+47 61 23 37 00",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 61.8446,
+      "lng": 9.4135
+    },
+    {
+      "position": 21,
+      "name": "Engelshus",
+      "country": "norway",
+      "slug": "engelshus",
+      "description": "Der Weg führt weiter am Fuß des Rondane-Gebirges entlang, jener Landschaft, die Sigrid Undset als Schauplatz für Kristin Lavransdatters Kindheit wählte. Der historische Hof Øygarden aus dem 18. Jahrhundert liegt am Wegesrand.",
+      "accommodations": [
+        {
+          "name": "Øygarden Pilegrimsherberge",
+          "type": "hostel",
+          "description": "Historischer Hof aus dem 18. Jahrhundert am Fuß des Rondane mit sechs Zimmern und 12 Betten, zwei Bädern, Wohnzimmer und Küche. Abholservice, Gepäcktransport und Verpflegung auf Anfrage. Geöffnet Mai bis Oktober.",
+          "addressStreet": "Haugageilen 17",
+          "addressZip": "2672",
+          "addressCity": "Sel",
+          "addressCountry": "norway",
+          "website": null,
+          "email": null,
+          "phone": "+47 957 59 678",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 61.8520,
+      "lng": 9.4400
+    },
+    {
+      "position": 22,
+      "name": "Fokstugu",
+      "country": "norway",
+      "slug": "fokstugu",
+      "description": "Fokstugu liegt am Übergang zum Hochgebirgsplateau Dovrefjell und ist eine der ältesten Fjellstuen Norwegens - bereits im Mittelalter diente sie als königliche Raststation auf dem Weg über das Gebirge.",
+      "accommodations": [
+        {
+          "name": "Fokstugu Fjellstue",
+          "type": "hotel",
+          "description": "Traditionsreiche Berghütte am Rand des Dovrefjell-Plateaus mit einfachen und komfortablen Zimmern, familiengeführt seit Generationen.",
+          "addressStreet": "Trondheimsvegen 1050",
+          "addressZip": "2660",
+          "addressCity": "Dombås",
+          "addressCountry": "norway",
+          "website": "https://www.fokstugu.no",
+          "email": "ingrid.fokstugu@gmail.com",
+          "phone": "+47 971 90 491",
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ],
+      "lat": 62.1000,
+      "lng": 9.2740
+    },
+    {
+      "position": 23,
+      "name": "Hageseter",
+      "country": "norway",
+      "slug": "hageseter",
+      "description": "Mitten auf dem weiten Dovrefjell-Hochplateau gelegen, dem Lebensraum wilder Moschusochsen. Hageseter Turisthytte ist ein zentraler Stützpunkt für die Überquerung des Gebirges auf dem Olavsweg.",
+      "accommodations": [
+        {
+          "name": "Hageseter Turisthytte",
+          "type": "hotel",
+          "description": "Zentral auf dem Dovrefjell-Plateau gelegene Berghütte, geöffnet Juni bis Oktober sowie in den Winterferien und zu Ostern.",
+          "addressStreet": "Gautåseter 84",
+          "addressZip": "2660",
+          "addressCity": "Dombås",
+          "addressCountry": "norway",
+          "website": "https://www.hageseter.no",
+          "email": "post@hageseter.no",
+          "phone": "+47 61 24 29 60",
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ],
+      "lat": 62.1900,
+      "lng": 9.4200
+    },
+    {
+      "position": 24,
+      "name": "Kongsvold",
+      "country": "norway",
+      "slug": "kongsvold",
+      "description": "Historische Fjellstue im Drivdalen, seit dem Mittelalter Poststation auf dem Königsweg über Dovrefjell. Die Umgebung ist Teil des Dovrefjell-Sunndalsfjella-Nationalparks mit seinen wilden Moschusochsenherden.",
+      "accommodations": [
+        {
+          "name": "Kongsvold Fjeldstue",
+          "type": "hotel",
+          "description": "Historisches Berghotel im Drivdalen auf 900 m Höhe, eigener Bahnhof. Teil der Frich's-Hotelgruppe, traditionsreiche norwegische Küche.",
+          "addressStreet": "Dovrevegen 3663",
+          "addressZip": "7340",
+          "addressCity": "Oppdal",
+          "addressCountry": "norway",
+          "website": "https://frich.no/kongsvold-fjeldstue",
+          "email": "kongsvold@frich.no",
+          "phone": "+47 476 70 653",
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ],
+      "lat": 62.3031,
+      "lng": 9.6058
+    },
+    {
+      "position": 25,
+      "name": "Ryphusan",
+      "country": "norway",
+      "slug": "ryphusan",
+      "description": "Ein unbewirtschaftetes Selbstversorgerhäuschen mitten im Vinstradalen auf dem Weg von Dovrefjell hinunter in Richtung Oppdal - hier gilt \"first come, first served\". Proviant kann gegen bar oder Vipps/PayPal-Zahlung aus dem Vorrat entnommen werden.",
+      "accommodations": [
+        {
+          "name": "Ryphusan",
+          "type": "hostel",
+          "description": "Unbewirtschaftete Selbstversorgerhütte mit 8 Betten auf einer großen Holzpritsche sowie 2 zusätzlichen Matratzen und einem Zelt mit 4 Feldbetten. Eigener Schlafsack erforderlich. Keine Vorausbuchung möglich - keine Telefonnummer vorhanden, da die Hütte unbewirtschaftet ist; bei Bedarf vermittelt Oppdal Taxi (+47 72 42 12 05) einen Transfer.",
+          "addressStreet": "Forbregdsetra, Vinstradalen",
+          "addressZip": "7340",
+          "addressCity": "Oppdal",
+          "addressCountry": "norway",
+          "website": null,
+          "email": null,
+          "phone": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 62.4200,
+      "lng": 9.6200
+    },
+    {
+      "position": 26,
+      "name": "Oppdal",
+      "country": "norway",
+      "slug": "oppdal",
+      "description": "Größerer Ort und wichtiger Verkehrsknotenpunkt am Übergang vom Dovrefjell ins Drivdalen. Oppdal ist ein beliebtes Wintersportzentrum und bietet Pilgern eine gute Auswahl an Verpflegung und Unterkunft.",
+      "accommodations": [
+        {
+          "name": "Oppdal Gjestetun Hotel",
+          "type": "hotel",
+          "description": "Zentral gelegenes Hotel in Oppdal mit Frühstück, gute Basis nach der Überquerung des Dovrefjell-Hochplateaus.",
+          "addressStreet": "Ola Setroms veg 39",
+          "addressZip": "7340",
+          "addressCity": "Oppdal",
+          "addressCountry": "norway",
+          "website": "https://oppdalgjestetun.no",
+          "email": "gjestetunet@oppdal.as",
+          "phone": "+47 905 74 020",
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ],
+      "lat": 62.5943,
+      "lng": 9.6912
+    },
+    {
+      "position": 27,
+      "name": "Langklopp",
+      "country": "norway",
+      "slug": "langklopp",
+      "description": "Der Weg führt weiter durch die Berglandschaft zwischen Oppdal und Berkåk. Langklopp Fjellgård liegt malerisch auf 600 m Höhe und bietet das ganze Jahr über Aktivitäten und Unterkunft für Pilger und Familien.",
+      "accommodations": [
+        {
+          "name": "Langklopp Fjellgård",
+          "type": "b_and_b",
+          "description": "Berghof auf 600 m Höhe zwischen Berkåk und Oppdal mit Zimmern für bis zu 4 Personen, Gemeinschaftsdusche und -WC. Abendessen bei Ankunft sowie Frühstücks- und Lunchpaket inklusive.",
+          "addressStreet": "Øvre Langklopp 30",
+          "addressZip": "7397",
+          "addressCity": "Rennebu",
+          "addressCountry": "norway",
+          "website": "https://www.langklopp.net",
+          "email": null,
+          "phone": "+47 936 26 803",
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ],
+      "lat": 62.7524,
+      "lng": 9.9632
+    },
+    {
+      "position": 28,
+      "name": "Meslo",
+      "country": "norway",
+      "slug": "meslo",
+      "description": "Aktiver Bauernhof in Rennebu mit einer bis ins 17. Jahrhundert zurückreichenden Geschichte. Pilger übernachten hier gemeinsam mit Rindern, Schafen und Angelfreunden auf einem lebendigen Hof.",
+      "accommodations": [
+        {
+          "name": "Meslo Herberge",
+          "type": "b_and_b",
+          "description": "Bewirtschaftete Herberge auf aktivem Bauernhof mit 20 Betten in mehreren Gebäuden (Blockhütte \"Mastu\", Stabbur, \"Trønderlåna\"), Zimmer von Doppelzimmer mit eigenem Bad bis Gemeinschaftsunterkunft. WLAN, Wäscheservice, Hunde willkommen.",
+          "addressStreet": "Orkdalsveien 848",
+          "addressZip": "7392",
+          "addressCity": "Rennebu",
+          "addressCountry": "norway",
+          "website": null,
+          "email": null,
+          "phone": "+47 90 96 01 90",
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ],
+      "lat": 62.8473,
+      "lng": 9.8465
+    },
+    {
+      "position": 29,
+      "name": "Meldal",
+      "country": "norway",
+      "slug": "meldal",
+      "description": "Landwirtschaftlich geprägte Gemeinde im Orkdalen mit dem Meldal-Bygdemuseum und der Meldal-Kirche. Ner-Grefstad Gård bietet Pilgern eine einfache Unterkunft im historischen Stabbur.",
+      "accommodations": [
+        {
+          "name": "Ner-Grefstad Gård",
+          "type": "b_and_b",
+          "description": "Bauernhof mit Selbstversorger-Stabbur (8 Betten), Zugang zu Küche und Kühlschrank, sowie zwei neueren Zimmern in der Scheune. Kleiner Laden in der Nähe.",
+          "addressStreet": "Kvamsveien 1",
+          "addressZip": "7336",
+          "addressCity": "Meldal",
+          "addressCountry": "norway",
+          "website": null,
+          "email": null,
+          "phone": "+47 913 76 671",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 63.0472,
+      "lng": 9.7134
+    },
+    {
+      "position": 30,
+      "name": "Svorkmo",
+      "country": "norway",
+      "slug": "svorkmo",
+      "description": "Ehemaliger Standort einer Kupferschmelzhütte im Orkdalen. Svorkmo ist die letzte Möglichkeit zur Einkehr, bevor der Weg drei Tagesmärsche (58 km) durch Wald bis nach Trondheim führt.",
+      "accommodations": [
+        {
+          "name": "Gumdal Gård",
+          "type": "b_and_b",
+          "description": "Bauernhof mit insgesamt 10 Betten in fertig bezogenen Betten sowie Selbstversorgerküche, Dusche/WC vorhanden. Geöffnet Mai bis Oktober.",
+          "addressStreet": "Monsetjårvegen 174",
+          "addressZip": "7327",
+          "addressCity": "Svorkmo",
+          "addressCountry": "norway",
+          "website": null,
+          "email": "kjelloly@online.no",
+          "phone": "+47 900 27 503",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 63.1696,
+      "lng": 9.7425
+    },
+    {
+      "position": 31,
+      "name": "Skaun",
+      "country": "norway",
+      "slug": "skaun",
+      "description": "Ländliche Gemeinde zwischen Orkdalsfjord und Trondheim. Das Gemeindehaus direkt bei der Skaun-Kirche dient Pilgern als einfache Unterkunft auf den letzten Etappen vor Trondheim.",
+      "accommodations": [
+        {
+          "name": "Skaun Menighetshus",
+          "type": "church",
+          "description": "Gemeindehaus direkt bei der Skaun-Kirche mit Platz für bis zu 16 Personen auf Feldbetten oder Matratzen, gut ausgestattete Küche, Duschen und Schuhtrockner vorhanden. Geöffnet 15. Mai bis 30. September.",
+          "addressStreet": "Melbyvegen 2",
+          "addressZip": "7357",
+          "addressCity": "Skaun",
+          "addressCountry": "norway",
+          "website": null,
+          "email": "rutt.olden.skauge@hotmail.com",
+          "phone": "+47 948 59 515",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 63.2504,
+      "lng": 10.0569
+    },
+    {
+      "position": 32,
+      "name": "Sundet",
+      "country": "norway",
+      "slug": "sundet",
+      "description": "Sundet Gård liegt in der Mitte des Pilgerwegs und ist die letzte Station vor Nidaros. Der Hof hat die alte Tradition der Fährfahrt wiederbelebt und rudert Pilger über den Fluss an der Hofstelle.",
+      "accommodations": [
+        {
+          "name": "Sundet Gård",
+          "type": "b_and_b",
+          "description": "Letzte Pilgerstation vor Trondheim mit gutem Bett, Dusche und Abendessen. Übernachtung in einem stimmungsvollen Vorratsspeicher (Stabbur) aus dem 18. Jahrhundert.",
+          "addressStreet": "Leinstrandvegen 472",
+          "addressZip": "7083",
+          "addressCity": "Leinstrand",
+          "addressCountry": "norway",
+          "website": "https://sundetgard.no",
+          "email": "johnwan@online.no",
+          "phone": "+47 415 44 116",
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ],
+      "lat": 63.3252,
+      "lng": 10.3071
+    },
+    {
+      "position": 33,
+      "name": "Trondheim",
+      "country": "norway",
+      "slug": "trondheim",
+      "description": "Ziel des Olavswegs: der gotische Nidarosdom, Norwegens Nationalheiligtum und Grabstätte des Heiligen Olav. Im angeschlossenen Nationalen Pilgerzentrum bei der Nidaros Pilegrimsgård erhalten Pilger, die mindestens die letzten 100 km zu Fuß zurückgelegt haben, den Olavsbrief als Bestätigung ihrer Pilgerfahrt.",
+      "accommodations": [
+        {
+          "name": "Nidaros Pilegrimsgård",
+          "type": "hostel",
+          "description": "Zentrale Pilgerherberge und Empfangsstelle nur wenige Gehminuten vom Nidarosdom entfernt, ganzjährig geöffnet, mit Frühstück und Verpflegung für Gruppen und Einzelpilger.",
+          "addressStreet": "Kjøpmannsgata 1",
+          "addressZip": "7013",
+          "addressCity": "Trondheim",
+          "addressCountry": "norway",
+          "website": "https://pilegrimsgarden.no",
+          "email": "post@pilegrimsgarden.no",
+          "phone": "+47 73 52 50 00",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 63.4268,
+      "lng": 10.3966
+    }
+  ],
+  "stages": [
+    {
+      "from": "Oslo",
+      "to": "Hellerudsletta",
+      "distance": 18,
+      "description": "Der Weg verlässt die Altstadt Gamlebyen und führt durch die östlichen Stadtteile und den Østmarka-Waldgürtel nach Nittedal. Erste Orientierung bietet die Østre Aker Kirke, danach folgt der Pfad Wald- und Feldwegen bis zur Querung bei Hellerudsletta."
+    },
+    {
+      "from": "Hellerudsletta",
+      "to": "Ullensaker",
+      "distance": 24,
+      "description": "Nach der Überquerung der Nitelva an der Åros-Brücke führt der Weg durch die Landschaft von Sørum in Richtung Ullensaker. Wechselnde Wald- und Ackerlandschaften prägen diesen ruhigen Abschnitt bis zur Ullensaker-Kirche (Romeriksdomen)."
+    },
+    {
+      "from": "Ullensaker",
+      "to": "Elstad",
+      "distance": 24,
+      "description": "Der Weg führt am Rand des Flughafens Gardermoen vorbei durch Waldgebiete ohne Einkehrmöglichkeiten - Eidsvoll ist zwei Tagesmärsche entfernt die letzte Gelegenheit zum Einkaufen vor Tangen. Endpunkt ist der See Hersjøen."
+    },
+    {
+      "from": "Elstad",
+      "to": "Eidsvoll",
+      "distance": 21,
+      "description": "Der Pfad wechselt zwischen Asphalt- und Schotterwegen durch landwirtschaftlich geprägtes Gelände. Nach etwa 12 km erreicht man den idyllischen See Fløyta mit Rastplatz und Badestelle, bevor der Weg über Mogreina weiter nach Eidsvoll führt."
+    },
+    {
+      "from": "Eidsvoll",
+      "to": "Spitalen",
+      "distance": 25,
+      "description": "Der Weg führt durch die Stange-Allmenning, ein ausgedehntes Waldgebiet, das einst von eingewanderten Waldfinnen besiedelt wurde. Einsamer, ruhiger Abschnitt mit wenigen Ausblicken über die bewaldete Hügellandschaft."
+    },
+    {
+      "from": "Spitalen",
+      "to": "Tangen",
+      "distance": 25,
+      "description": "Der Pfad verlässt die Waldallmenning und steigt hinab zum Ostufer des Mjøsa-Sees. Bei Korsvika am Granerudsjøen lädt ein Rastplatz mit Bänken und Tischen zur Pause ein, bevor der Weg Tangen am See erreicht."
+    },
+    {
+      "from": "Tangen",
+      "to": "Stange Vestbygd",
+      "distance": 18,
+      "description": "Der Weg folgt dem Ostufer des Mjøsa durch die fruchtbare Agrarlandschaft von Stange, vorbei an mehreren historischen Höfen, bis zum biodynamischen Hof Fokhol Gård auf der Sonnenseite des Sees."
+    },
+    {
+      "from": "Stange Vestbygd",
+      "to": "Hamar",
+      "distance": 13,
+      "description": "Kurze, angenehme Etappe entlang des Mjøsa-Ufers in die mittelalterliche Bischofsstadt Hamar. Ziel ist die Halbinsel Domkirkeodden mit den Ruinen des Hamar-Doms und dem Pilegrimssenter Hamar."
+    },
+    {
+      "from": "Hamar",
+      "to": "Veldre",
+      "distance": 20,
+      "description": "Der Weg verlässt Hamar und führt weiter am Mjøsa entlang durch die Gemeinde Ringsaker in Richtung Veldre. Wechselnde Ufer- und Waldabschnitte prägen diese Etappe."
+    },
+    {
+      "from": "Veldre",
+      "to": "Ringen",
+      "distance": 20,
+      "description": "Von der Veldre-Kirche führt der historische Prestvegen (\"Pfarrerweg\") durch ruhige Kulturlandschaft nach Brumunddal und weiter hinauf nach Rudshøgda, wo die alte Poststraße zwischen Hamar und Lillehammer verläuft."
+    },
+    {
+      "from": "Ringen",
+      "to": "Brøttum",
+      "distance": 16,
+      "description": "Der Weg führt von Rudshøgda weiter nordwärts mit stetigen Ausblicken auf den Mjøsa-See. Sanfte Höhenunterschiede und wechselnde Wald- und Wiesenlandschaften bestimmen den Charakter dieser Etappe bis Brøttum."
+    },
+    {
+      "from": "Brøttum",
+      "to": "Lillehammer",
+      "distance": 14,
+      "description": "Die letzte Etappe des Ostufer-Abschnitts führt von Brøttum am Mjøsa entlang nach Lillehammer, wo sich West- und Ostroute um den See wieder zu einem gemeinsamen Weg nach Trondheim vereinigen."
+    },
+    {
+      "from": "Lillehammer",
+      "to": "Skåden",
+      "distance": 25,
+      "description": "Der Weg verlässt Lillehammer nordwärts und folgt dem Gudbrandsdalslågen-Fluss in die Gemeinde Øyer hinein. Wechselnde Wald- und Flussuferabschnitte prägen diese erste Etappe im eigentlichen Gudbrandsdalen."
+    },
+    {
+      "from": "Skåden",
+      "to": "Mageli",
+      "distance": 19,
+      "description": "Der Weg führt weiter durchs Tal nach Tretten, vorbei an kleinen Höfen und durch lichte Wälder entlang des Flusses. Ruhige, flache Etappe im engeren Talabschnitt."
+    },
+    {
+      "from": "Mageli",
+      "to": "Ringebu",
+      "distance": 26,
+      "description": "Längere Etappe durch das sich weitende Gudbrandsdalen bis zur Ringebu-Stabkirche aus dem 13. Jahrhundert, einer der besterhaltenen Stabkirchen Norwegens."
+    },
+    {
+      "from": "Ringebu",
+      "to": "Heggerud",
+      "distance": 20,
+      "description": "Der Weg führt weiter talaufwärts durch landwirtschaftlich geprägtes Gelände in Richtung Sør-Fron, vorbei an Obstgärten und kleinen Weilern."
+    },
+    {
+      "from": "Heggerud",
+      "to": "Kvam",
+      "distance": 25,
+      "description": "Etappe durch das obere Gudbrandsdalen nach Nord-Fron, mit Blick auf die umliegenden Berge und die Kvam-Kirche als Etappenziel."
+    },
+    {
+      "from": "Kvam",
+      "to": "Varphaugen",
+      "distance": 14,
+      "description": "Kurze Etappe entlang des Flusses Sjoa, bekannt für Wildwasser-Rafting, bis zum historischen Pilgerrastplatz Varphaugen."
+    },
+    {
+      "from": "Varphaugen",
+      "to": "Jørundgard",
+      "distance": 25,
+      "description": "Der Weg führt weiter durch Sel am Fuß des Rondane-Gebirges, der Landschaft aus Sigrid Undsets Roman \"Kristin Lavransdatter\", bis zum gleichnamigen Mittelalterzentrum."
+    },
+    {
+      "from": "Jørundgard",
+      "to": "Engelshus",
+      "distance": 21,
+      "description": "Ruhige Etappe weiter am Fuß des Rondane entlang, vorbei an historischen Höfen wie Øygarden, mit Blick auf die umliegende Gebirgslandschaft."
+    },
+    {
+      "from": "Engelshus",
+      "to": "Fokstugu",
+      "distance": 21,
+      "description": "Anspruchsvoller Anstieg zum Hochgebirgsplateau Dovrefjell. Die Baumgrenze wird überschritten, und der Weg erreicht die traditionsreiche Fjellstue Fokstugu, seit dem Mittelalter königliche Raststation."
+    },
+    {
+      "from": "Fokstugu",
+      "to": "Hageseter",
+      "distance": 21,
+      "description": "Etappe mitten durch das offene Dovrefjell-Hochplateau, Lebensraum wilder Moschusochsen. Karge, weite Fjelllandschaft ohne Baumbewuchs prägt diesen Abschnitt."
+    },
+    {
+      "from": "Hageseter",
+      "to": "Kongsvold",
+      "distance": 17,
+      "description": "Der Weg führt weiter über das Dovrefjell-Plateau und steigt hinab ins Drivdalen zur historischen Fjellstue Kongsvold, einer ehemaligen Poststation auf dem Königsweg."
+    },
+    {
+      "from": "Kongsvold",
+      "to": "Ryphusan",
+      "distance": 21,
+      "description": "Der Weg führt weiter durch das Drivdalen und über bewaldete Höhen bis ins einsame Vinstradalen, wo die unbewirtschaftete Selbstversorgerhütte Ryphusan liegt."
+    },
+    {
+      "from": "Ryphusan",
+      "to": "Oppdal",
+      "distance": 27,
+      "description": "Lange Etappe hinunter aus dem Vinstradalen nach Oppdal, dem wichtigsten Ort und Verkehrsknotenpunkt am Übergang vom Dovrefjell ins Drivdalen."
+    },
+    {
+      "from": "Oppdal",
+      "to": "Langklopp",
+      "distance": 24,
+      "description": "Der Weg führt aus Oppdal hinaus in die Berglandschaft zwischen Oppdal und Berkåk, mit stetigem Auf und Ab, bis zum malerisch auf 600 m Höhe gelegenen Langklopp Fjellgård."
+    },
+    {
+      "from": "Langklopp",
+      "to": "Meslo",
+      "distance": 20,
+      "description": "Etappe durch die Berglandschaft von Rennebu bis zum traditionsreichen Bauernhof Meslo, dessen Geschichte bis ins 17. Jahrhundert zurückreicht."
+    },
+    {
+      "from": "Meslo",
+      "to": "Meldal",
+      "distance": 30,
+      "description": "Lange Etappe durch das Rennebu- und obere Orkdalen bis in die landwirtschaftlich geprägte Gemeinde Meldal mit ihrem Heimatmuseum und der historischen Kirche."
+    },
+    {
+      "from": "Meldal",
+      "to": "Svorkmo",
+      "distance": 20,
+      "description": "Der Weg führt weiter durch das Orkdalen bis zum ehemaligen Kupferschmelzort Svorkmo, der letzten Einkehrmöglichkeit vor der langen Waldetappe nach Trondheim."
+    },
+    {
+      "from": "Svorkmo",
+      "to": "Skaun",
+      "distance": 24,
+      "description": "Erste der drei einsamen Waldetappen (58 km) vor Trondheim, überwiegend durch dichten Wald ohne Einkehrmöglichkeiten, bis zur Gemeinde Skaun bei der Skaun-Kirche."
+    },
+    {
+      "from": "Skaun",
+      "to": "Sundet",
+      "distance": 19,
+      "description": "Der Weg führt weiter durch Wald- und Hügellandschaft in Richtung Trondheimsfjord bis zum Sundet Gård, wo Pilger traditionell mit dem Ruderboot über den Fluss übergesetzt werden."
+    },
+    {
+      "from": "Sundet",
+      "to": "Trondheim",
+      "distance": 24,
+      "description": "Die letzte Etappe des Olavswegs führt von Sundet Gård durch die südlichen Stadtteile Trondheims bis zum Nidarosdom, wo Pilger nach 643 km ihr Ziel und die Grabstätte des Heiligen Olav erreichen."
+    }
+  ]
+}

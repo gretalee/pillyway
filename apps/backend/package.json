@@ -38,8 +38,16 @@
     "seed:elisabethpfad-e2:prod": "node --env-file=.env.prod ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/seed-camino.ts ../../scripts/data/elisabethpfad-e2.json",
     "seed:via-francigena": "node --env-file=.env ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/seed-camino.ts ../../scripts/data/via-francigena.json",
     "seed:via-francigena:prod": "node --env-file=.env.prod ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/seed-camino.ts ../../scripts/data/via-francigena.json",
+    "seed:jakobsweg-franken-schwaben": "node --env-file=.env ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/seed-camino.ts ../../scripts/data/jakobsweg-franken-schwaben.json",
+    "seed:jakobsweg-franken-schwaben:prod": "node --env-file=.env.prod ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/seed-camino.ts ../../scripts/data/jakobsweg-franken-schwaben.json",
+    "seed:camino-sanabres": "node --env-file=.env ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/seed-camino.ts ../../scripts/data/camino-sanabres.json",
+    "seed:camino-sanabres:prod": "node --env-file=.env.prod ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/seed-camino.ts ../../scripts/data/camino-sanabres.json",
+    "seed:olavsweg": "node --env-file=.env ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/seed-camino.ts ../../scripts/data/olavsweg-gudbrandsdalsleden.json",
+    "seed:olavsweg:prod": "node --env-file=.env.prod ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/seed-camino.ts ../../scripts/data/olavsweg-gudbrandsdalsleden.json",
     "db:backup:dev": "DB_BACKUP_ENV=dev node --env-file=.env ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/backup-db.ts",
     "db:backup:prod": "DB_BACKUP_ENV=prod node --env-file=.env.prod ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/backup-db.ts",
+    "backfill:camino-countries": "node --env-file=.env ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/backfill-camino-countries.ts",
+    "backfill:camino-countries:prod": "node --env-file=.env.prod ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/backfill-camino-countries.ts",
     "db:restore:dev": "node --env-file=.env ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/restore-db.ts"
   },
   "dependencies": {

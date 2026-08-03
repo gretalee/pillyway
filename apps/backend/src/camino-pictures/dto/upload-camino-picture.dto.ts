@@ -9,7 +9,7 @@ export class UploadCaminoPictureDto {
     type: 'string',
     enum: ['true', 'false'],
   })
-  @Transform(({ value }) => {
+  @Transform(({ value }: { value: unknown }) => {
     if (value === 'true') return true;
     if (value === 'false') return false;
     return value; // preserve undefined/unknown so @IsDefined / @IsBoolean can reject it

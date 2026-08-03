@@ -12,7 +12,9 @@ export class CaminoGpxFileResponseDto {
   caminoId: string;
 
   @Expose()
-  @ApiProperty({ description: 'Kinde user ID of the uploader (opaque string).' })
+  @ApiProperty({
+    description: 'Kinde user ID of the uploader (opaque string).',
+  })
   uploadedBy: string;
 
   @Expose()

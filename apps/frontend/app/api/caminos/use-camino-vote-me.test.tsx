@@ -1,6 +1,6 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { describe, it, expect, vi, afterEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import type { ReactNode } from 'react';
 
 import { useCaminoVoteMe } from './use-camino-vote-me';
@@ -47,7 +47,9 @@ describe('useCaminoVoteMe', () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-    expect(result.current.data, 'data must reflect the API response').toEqual({ vote: true });
+    expect(result.current.data, 'data must reflect the API response').toEqual({
+      vote: true,
+    });
   });
 
   it('passes the access token to fetchMyVote', async () => {
@@ -76,7 +78,10 @@ describe('useCaminoVoteMe', () => {
     });
 
     expect(result.current.fetchStatus).toBe('idle');
-    expect(fetchModule.fetchMyVote, 'fetch must not be called without a token').not.toHaveBeenCalled();
+    expect(
+      fetchModule.fetchMyVote,
+      'fetch must not be called without a token',
+    ).not.toHaveBeenCalled();
   });
 
   it('is disabled when caminoId is an empty string', () => {
@@ -89,7 +94,10 @@ describe('useCaminoVoteMe', () => {
     });
 
     expect(result.current.fetchStatus).toBe('idle');
-    expect(fetchModule.fetchMyVote, 'fetch must not be called without a caminoId').not.toHaveBeenCalled();
+    expect(
+      fetchModule.fetchMyVote,
+      'fetch must not be called without a caminoId',
+    ).not.toHaveBeenCalled();
   });
 
   it('returns null data when the API returns null (user has not voted)', async () => {
@@ -105,7 +113,10 @@ describe('useCaminoVoteMe', () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-    expect(result.current.data, 'null (no vote yet) must pass through cleanly').toBeNull();
+    expect(
+      result.current.data,
+      'null (no vote yet) must pass through cleanly',
+    ).toBeNull();
   });
 
   it('surfaces errors from fetchMyVote', async () => {

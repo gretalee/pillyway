@@ -199,7 +199,9 @@ describe('Field array controls', () => {
     await user.click(removeButtons[1]!);
 
     // Confirm removal in the AlertDialog
-    await user.click(await screen.findByRole('button', { name: 'remove_point_confirm_action' }));
+    await user.click(
+      await screen.findByRole('button', { name: 'remove_point_confirm_action' }),
+    );
 
     expect(screen.getAllByLabelText('point_name').length).toBe(1);
     expect(screen.getByDisplayValue('First Point')).toBeInTheDocument();
@@ -693,7 +695,9 @@ describe('Submission outcomes', () => {
 
     // After a 201 the form transitions to the pictures step; dismiss it via cancel
     await waitFor(() => {
-      expect(screen.getByRole('heading', { name: 'pictures_step_heading' })).toBeInTheDocument();
+      expect(
+        screen.getByRole('heading', { name: 'pictures_step_heading' }),
+      ).toBeInTheDocument();
     });
 
     await user.click(screen.getByRole('button', { name: 'cancel' }));
@@ -825,8 +829,6 @@ describe('Accessibility assertions', () => {
     renderForm();
     await waitForCountries();
 
-    // Trigger validation by attempting to submit
-    const submit = screen.getByRole('button', { name: 'submit' });
     // Form is invalid (disabled) — type to camino name to trigger error on blur
     const nameInput = screen.getByLabelText('field_name');
     await user.click(nameInput);

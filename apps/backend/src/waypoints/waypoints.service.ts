@@ -1,4 +1,9 @@
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { UpdateWaypointDto } from './dto/update-waypoint.dto';
 
@@ -74,10 +79,14 @@ export class WaypointsService {
     const latSent = dto.lat !== undefined;
     const lngSent = dto.lng !== undefined;
     if (latSent !== lngSent) {
-      throw new BadRequestException('lat and lng must both be provided or both omitted.');
+      throw new BadRequestException(
+        'lat and lng must both be provided or both omitted.',
+      );
     }
     if (latSent && (dto.lat === null) !== (dto.lng === null)) {
-      throw new BadRequestException('To clear coordinates, set both lat and lng to null.');
+      throw new BadRequestException(
+        'To clear coordinates, set both lat and lng to null.',
+      );
     }
 
     const point = await this.prisma.caminoPoint.findUnique({ where: { slug } });
@@ -87,7 +96,9 @@ export class WaypointsService {
       where: { slug },
       data: {
         ...(dto.name !== undefined ? { name: dto.name.trim() } : {}),
-        ...(dto.description !== undefined ? { description: dto.description?.trim() || null } : {}),
+        ...(dto.description !== undefined
+          ? { description: dto.description?.trim() || null }
+          : {}),
         ...(dto.lat !== undefined ? { lat: dto.lat } : {}),
         ...(dto.lng !== undefined ? { lng: dto.lng } : {}),
       },

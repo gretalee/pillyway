@@ -26,7 +26,9 @@ const USER_ID = 'kinde-user-001';
 const OTHER_USER_ID = 'kinde-user-002';
 const STORAGE_KEY = `camino-gpx-files/${CAMINO_ID}/${GPX_FILE_ID}.gpx`;
 
-const PILGRIM_ROLES: KindeRole[] = [{ id: 'r1', key: 'pilgrim', name: 'Pilgrim' }];
+const PILGRIM_ROLES: KindeRole[] = [
+  { id: 'r1', key: 'pilgrim', name: 'Pilgrim' },
+];
 const OWNER_ROLES: KindeRole[] = [
   { id: 'r1', key: 'pilgrim', name: 'Pilgrim' },
   { id: 'r2', key: 'owner', name: 'Owner' },
@@ -34,29 +36,31 @@ const OWNER_ROLES: KindeRole[] = [
 
 const VALID_GPX_11 = Buffer.from(
   '<?xml version="1.0"?>' +
-  '<gpx xmlns="http://www.topografix.com/GPX/1/1"><trk><name>test</name></trk></gpx>',
+    '<gpx xmlns="http://www.topografix.com/GPX/1/1"><trk><name>test</name></trk></gpx>',
 );
 
 const VALID_GPX_10 = Buffer.from(
   '<?xml version="1.0"?>' +
-  '<gpx xmlns="http://www.topografix.com/GPX/1/0"><wpt lat="0" lon="0"/></gpx>',
+    '<gpx xmlns="http://www.topografix.com/GPX/1/0"><wpt lat="0" lon="0"/></gpx>',
 );
 
 const VALID_GPX_RTE = Buffer.from(
   '<?xml version="1.0"?>' +
-  '<gpx xmlns="http://www.topografix.com/GPX/1/1"><rte></rte></gpx>',
+    '<gpx xmlns="http://www.topografix.com/GPX/1/1"><rte></rte></gpx>',
 );
 
-function makeFakeRecord(overrides: Partial<{
-  id: string;
-  caminoId: string;
-  uploadedBy: string;
-  uploaderName: string;
-  fileName: string;
-  storageKey: string;
-  createdAt: Date;
-  updatedAt: Date;
-}> = {}) {
+function makeFakeRecord(
+  overrides: Partial<{
+    id: string;
+    caminoId: string;
+    uploadedBy: string;
+    uploaderName: string;
+    fileName: string;
+    storageKey: string;
+    createdAt: Date;
+    updatedAt: Date;
+  }> = {},
+) {
   return {
     id: GPX_FILE_ID,
     caminoId: CAMINO_ID,
@@ -70,12 +74,22 @@ function makeFakeRecord(overrides: Partial<{
   };
 }
 
-function makeDto(overrides: Partial<UploadCaminoGpxFileDto> = {}): UploadCaminoGpxFileDto {
+function makeDto(
+  overrides: Partial<UploadCaminoGpxFileDto> = {},
+): UploadCaminoGpxFileDto {
   return { fileName: 'My Track', ...overrides } as UploadCaminoGpxFileDto;
 }
 
-function makeFile(buffer: Buffer, mimetype = 'application/gpx+xml'): Express.Multer.File {
-  return { buffer, mimetype, originalname: 'track.gpx', size: buffer.length } as Express.Multer.File;
+function makeFile(
+  buffer: Buffer,
+  mimetype = 'application/gpx+xml',
+): Express.Multer.File {
+  return {
+    buffer,
+    mimetype,
+    originalname: 'track.gpx',
+    size: buffer.length,
+  } as Express.Multer.File;
 }
 
 // ─── Setup ────────────────────────────────────────────────────────────────────
@@ -143,8 +157,14 @@ describe('CaminoGpxFilesService', () => {
 
     it('returns files sorted newest-first (as returned by Prisma)', async () => {
       const records = [
-        makeFakeRecord({ id: 'file-2', createdAt: new Date('2026-06-02T00:00:00Z') }),
-        makeFakeRecord({ id: 'file-1', createdAt: new Date('2026-06-01T00:00:00Z') }),
+        makeFakeRecord({
+          id: 'file-2',
+          createdAt: new Date('2026-06-02T00:00:00Z'),
+        }),
+        makeFakeRecord({
+          id: 'file-1',
+          createdAt: new Date('2026-06-01T00:00:00Z'),
+        }),
       ];
       prismaMock.camino.findUnique.mockResolvedValue({ id: CAMINO_ID });
       prismaMock.caminoGpxFile.findMany.mockResolvedValue(records);
@@ -158,7 +178,9 @@ describe('CaminoGpxFilesService', () => {
     it('throws NotFoundException when camino is absent', async () => {
       prismaMock.camino.findUnique.mockResolvedValue(null);
 
-      await expect(service.getGpxFiles(CAMINO_ID)).rejects.toThrow(NotFoundException);
+      await expect(service.getGpxFiles(CAMINO_ID)).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('does not expose storageKey in response', async () => {
@@ -175,25 +197,44 @@ describe('CaminoGpxFilesService', () => {
 
   describe('uploadGpxFile — pre-parse guard', () => {
     beforeEach(() => {
-      prismaMock.camino.findUnique.mockResolvedValue({ id: CAMINO_ID, name: 'Test Camino' });
+      prismaMock.camino.findUnique.mockResolvedValue({
+        id: CAMINO_ID,
+        name: 'Test Camino',
+      });
       prismaMock.caminoGpxFile.count.mockResolvedValue(0);
     });
 
     it('rejects buffer containing <!DOCTYPE before calling S3', async () => {
-      const buf = Buffer.from('<!DOCTYPE foo SYSTEM "http://evil.com/xxe.dtd">');
+      const buf = Buffer.from(
+        '<!DOCTYPE foo SYSTEM "http://evil.com/xxe.dtd">',
+      );
 
       await expect(
-        service.uploadGpxFile(CAMINO_ID, makeFile(buf), makeDto(), USER_ID, 'Pilgrim'),
+        service.uploadGpxFile(
+          CAMINO_ID,
+          makeFile(buf),
+          makeDto(),
+          USER_ID,
+          'Pilgrim',
+        ),
       ).rejects.toThrow(UnprocessableEntityException);
 
       expect(gpxStorageMock.uploadGpxFile).not.toHaveBeenCalled();
     });
 
     it('rejects buffer containing <!ENTITY before calling S3', async () => {
-      const buf = Buffer.from('<?xml version="1.0"?><!ENTITY xxe SYSTEM "file:///etc/passwd">');
+      const buf = Buffer.from(
+        '<?xml version="1.0"?><!ENTITY xxe SYSTEM "file:///etc/passwd">',
+      );
 
       await expect(
-        service.uploadGpxFile(CAMINO_ID, makeFile(buf), makeDto(), USER_ID, 'Pilgrim'),
+        service.uploadGpxFile(
+          CAMINO_ID,
+          makeFile(buf),
+          makeDto(),
+          USER_ID,
+          'Pilgrim',
+        ),
       ).rejects.toThrow(UnprocessableEntityException);
 
       expect(gpxStorageMock.uploadGpxFile).not.toHaveBeenCalled();
@@ -204,7 +245,10 @@ describe('CaminoGpxFilesService', () => {
 
   describe('uploadGpxFile — XML/GPX validation', () => {
     beforeEach(() => {
-      prismaMock.camino.findUnique.mockResolvedValue({ id: CAMINO_ID, name: 'Test Camino' });
+      prismaMock.camino.findUnique.mockResolvedValue({
+        id: CAMINO_ID,
+        name: 'Test Camino',
+      });
       prismaMock.caminoGpxFile.count.mockResolvedValue(0);
     });
 
@@ -212,15 +256,29 @@ describe('CaminoGpxFilesService', () => {
       const buf = Buffer.from('not xml at all <<<');
 
       await expect(
-        service.uploadGpxFile(CAMINO_ID, makeFile(buf), makeDto(), USER_ID, 'Pilgrim'),
+        service.uploadGpxFile(
+          CAMINO_ID,
+          makeFile(buf),
+          makeDto(),
+          USER_ID,
+          'Pilgrim',
+        ),
       ).rejects.toThrow(UnprocessableEntityException);
     });
 
     it('rejects valid XML with non-<gpx> root element', async () => {
-      const buf = Buffer.from('<kml xmlns="http://www.opengis.net/kml/2.2"></kml>');
+      const buf = Buffer.from(
+        '<kml xmlns="http://www.opengis.net/kml/2.2"></kml>',
+      );
 
       await expect(
-        service.uploadGpxFile(CAMINO_ID, makeFile(buf), makeDto(), USER_ID, 'Pilgrim'),
+        service.uploadGpxFile(
+          CAMINO_ID,
+          makeFile(buf),
+          makeDto(),
+          USER_ID,
+          'Pilgrim',
+        ),
       ).rejects.toThrow(UnprocessableEntityException);
     });
 
@@ -228,7 +286,13 @@ describe('CaminoGpxFilesService', () => {
       const buf = Buffer.from('<gpx xmlns="http://example.com/custom"></gpx>');
 
       await expect(
-        service.uploadGpxFile(CAMINO_ID, makeFile(buf), makeDto(), USER_ID, 'Pilgrim'),
+        service.uploadGpxFile(
+          CAMINO_ID,
+          makeFile(buf),
+          makeDto(),
+          USER_ID,
+          'Pilgrim',
+        ),
       ).rejects.toThrow(UnprocessableEntityException);
     });
 
@@ -238,7 +302,13 @@ describe('CaminoGpxFilesService', () => {
       );
 
       await expect(
-        service.uploadGpxFile(CAMINO_ID, makeFile(buf), makeDto(), USER_ID, 'Pilgrim'),
+        service.uploadGpxFile(
+          CAMINO_ID,
+          makeFile(buf),
+          makeDto(),
+          USER_ID,
+          'Pilgrim',
+        ),
       ).rejects.toThrow(UnprocessableEntityException);
     });
 
@@ -248,7 +318,13 @@ describe('CaminoGpxFilesService', () => {
       );
 
       await expect(
-        service.uploadGpxFile(CAMINO_ID, makeFile(buf), makeDto(), USER_ID, 'Pilgrim'),
+        service.uploadGpxFile(
+          CAMINO_ID,
+          makeFile(buf),
+          makeDto(),
+          USER_ID,
+          'Pilgrim',
+        ),
       ).rejects.toThrow(UnprocessableEntityException);
     });
 
@@ -256,7 +332,13 @@ describe('CaminoGpxFilesService', () => {
       prismaMock.caminoGpxFile.create.mockResolvedValue(makeFakeRecord());
 
       await expect(
-        service.uploadGpxFile(CAMINO_ID, makeFile(VALID_GPX_11), makeDto(), USER_ID, 'Pilgrim'),
+        service.uploadGpxFile(
+          CAMINO_ID,
+          makeFile(VALID_GPX_11),
+          makeDto(),
+          USER_ID,
+          'Pilgrim',
+        ),
       ).resolves.toBeDefined();
     });
 
@@ -264,7 +346,13 @@ describe('CaminoGpxFilesService', () => {
       prismaMock.caminoGpxFile.create.mockResolvedValue(makeFakeRecord());
 
       await expect(
-        service.uploadGpxFile(CAMINO_ID, makeFile(VALID_GPX_10), makeDto(), USER_ID, 'Pilgrim'),
+        service.uploadGpxFile(
+          CAMINO_ID,
+          makeFile(VALID_GPX_10),
+          makeDto(),
+          USER_ID,
+          'Pilgrim',
+        ),
       ).resolves.toBeDefined();
     });
 
@@ -272,7 +360,13 @@ describe('CaminoGpxFilesService', () => {
       prismaMock.caminoGpxFile.create.mockResolvedValue(makeFakeRecord());
 
       await expect(
-        service.uploadGpxFile(CAMINO_ID, makeFile(VALID_GPX_RTE), makeDto(), USER_ID, 'Pilgrim'),
+        service.uploadGpxFile(
+          CAMINO_ID,
+          makeFile(VALID_GPX_RTE),
+          makeDto(),
+          USER_ID,
+          'Pilgrim',
+        ),
       ).resolves.toBeDefined();
     });
   });
@@ -281,11 +375,20 @@ describe('CaminoGpxFilesService', () => {
 
   describe('uploadGpxFile — per-camino cap', () => {
     it('throws ConflictException when count is 20, S3 not called', async () => {
-      prismaMock.camino.findUnique.mockResolvedValue({ id: CAMINO_ID, name: 'Test Camino' });
+      prismaMock.camino.findUnique.mockResolvedValue({
+        id: CAMINO_ID,
+        name: 'Test Camino',
+      });
       prismaMock.caminoGpxFile.count.mockResolvedValue(20);
 
       await expect(
-        service.uploadGpxFile(CAMINO_ID, makeFile(VALID_GPX_11), makeDto(), USER_ID, 'Pilgrim'),
+        service.uploadGpxFile(
+          CAMINO_ID,
+          makeFile(VALID_GPX_11),
+          makeDto(),
+          USER_ID,
+          'Pilgrim',
+        ),
       ).rejects.toThrow(ConflictException);
 
       expect(gpxStorageMock.uploadGpxFile).not.toHaveBeenCalled();
@@ -296,13 +399,22 @@ describe('CaminoGpxFilesService', () => {
 
   describe('uploadGpxFile — happy path', () => {
     beforeEach(() => {
-      prismaMock.camino.findUnique.mockResolvedValue({ id: CAMINO_ID, name: 'Test Camino' });
+      prismaMock.camino.findUnique.mockResolvedValue({
+        id: CAMINO_ID,
+        name: 'Test Camino',
+      });
       prismaMock.caminoGpxFile.count.mockResolvedValue(0);
       prismaMock.caminoGpxFile.create.mockResolvedValue(makeFakeRecord());
     });
 
     it('calls gpxStorage.uploadGpxFile with key matching expected pattern', async () => {
-      await service.uploadGpxFile(CAMINO_ID, makeFile(VALID_GPX_11), makeDto(), USER_ID, 'Test User');
+      await service.uploadGpxFile(
+        CAMINO_ID,
+        makeFile(VALID_GPX_11),
+        makeDto(),
+        USER_ID,
+        'Test User',
+      );
 
       const [calledKey] = gpxStorageMock.uploadGpxFile.mock.calls[0];
       expect(calledKey).toMatch(
@@ -311,14 +423,26 @@ describe('CaminoGpxFilesService', () => {
     });
 
     it('stores uploaderName from parameter (composed by controller from JWT)', async () => {
-      await service.uploadGpxFile(CAMINO_ID, makeFile(VALID_GPX_11), makeDto(), USER_ID, 'Maria Schmidt');
+      await service.uploadGpxFile(
+        CAMINO_ID,
+        makeFile(VALID_GPX_11),
+        makeDto(),
+        USER_ID,
+        'Maria Schmidt',
+      );
 
       const createCall = prismaMock.caminoGpxFile.create.mock.calls[0][0];
       expect(createCall.data.uploaderName).toBe('Maria Schmidt');
     });
 
     it('uses Pilgrim fallback when uploaderName is empty string', async () => {
-      await service.uploadGpxFile(CAMINO_ID, makeFile(VALID_GPX_11), makeDto(), USER_ID, 'Pilgrim');
+      await service.uploadGpxFile(
+        CAMINO_ID,
+        makeFile(VALID_GPX_11),
+        makeDto(),
+        USER_ID,
+        'Pilgrim',
+      );
 
       const createCall = prismaMock.caminoGpxFile.create.mock.calls[0][0];
       expect(createCall.data.uploaderName).toBe('Pilgrim');
@@ -326,14 +450,24 @@ describe('CaminoGpxFilesService', () => {
 
     it('does not expose storageKey in the returned DTO', async () => {
       const result = await service.uploadGpxFile(
-        CAMINO_ID, makeFile(VALID_GPX_11), makeDto(), USER_ID, 'Test User',
+        CAMINO_ID,
+        makeFile(VALID_GPX_11),
+        makeDto(),
+        USER_ID,
+        'Test User',
       );
 
       expect(result).not.toHaveProperty('storageKey');
     });
 
     it('calls EventLogService.logEvent (fire-and-forget)', async () => {
-      await service.uploadGpxFile(CAMINO_ID, makeFile(VALID_GPX_11), makeDto(), USER_ID, 'Test User');
+      await service.uploadGpxFile(
+        CAMINO_ID,
+        makeFile(VALID_GPX_11),
+        makeDto(),
+        USER_ID,
+        'Test User',
+      );
 
       expect(eventLogMock.logEvent).toHaveBeenCalledWith(
         EventType.CAMINO_GPX_UPLOADED,
@@ -350,35 +484,61 @@ describe('CaminoGpxFilesService', () => {
       prismaMock.camino.findUnique.mockResolvedValue(null);
 
       await expect(
-        service.uploadGpxFile(CAMINO_ID, makeFile(VALID_GPX_11), makeDto(), USER_ID, 'Pilgrim'),
+        service.uploadGpxFile(
+          CAMINO_ID,
+          makeFile(VALID_GPX_11),
+          makeDto(),
+          USER_ID,
+          'Pilgrim',
+        ),
       ).rejects.toThrow(NotFoundException);
 
       expect(gpxStorageMock.uploadGpxFile).not.toHaveBeenCalled();
     });
 
     it('propagates error and does not call prisma.create when S3 upload fails', async () => {
-      prismaMock.camino.findUnique.mockResolvedValue({ id: CAMINO_ID, name: 'Test' });
+      prismaMock.camino.findUnique.mockResolvedValue({
+        id: CAMINO_ID,
+        name: 'Test',
+      });
       prismaMock.caminoGpxFile.count.mockResolvedValue(0);
       gpxStorageMock.uploadGpxFile.mockRejectedValue(
         new InternalServerErrorException('S3 failed'),
       );
 
       await expect(
-        service.uploadGpxFile(CAMINO_ID, makeFile(VALID_GPX_11), makeDto(), USER_ID, 'Pilgrim'),
+        service.uploadGpxFile(
+          CAMINO_ID,
+          makeFile(VALID_GPX_11),
+          makeDto(),
+          USER_ID,
+          'Pilgrim',
+        ),
       ).rejects.toThrow(InternalServerErrorException);
 
       expect(prismaMock.caminoGpxFile.create).not.toHaveBeenCalled();
     });
 
     it('attempts best-effort S3 cleanup with structured fields when DB insert fails', async () => {
-      prismaMock.camino.findUnique.mockResolvedValue({ id: CAMINO_ID, name: 'Test' });
+      prismaMock.camino.findUnique.mockResolvedValue({
+        id: CAMINO_ID,
+        name: 'Test',
+      });
       prismaMock.caminoGpxFile.count.mockResolvedValue(0);
-      prismaMock.caminoGpxFile.create.mockRejectedValue(new Error('DB insert failed'));
+      prismaMock.caminoGpxFile.create.mockRejectedValue(
+        new Error('DB insert failed'),
+      );
       // Cleanup succeeds silently
       gpxStorageMock.deleteGpxFile.mockResolvedValue(undefined);
 
       await expect(
-        service.uploadGpxFile(CAMINO_ID, makeFile(VALID_GPX_11), makeDto(), USER_ID, 'Pilgrim'),
+        service.uploadGpxFile(
+          CAMINO_ID,
+          makeFile(VALID_GPX_11),
+          makeDto(),
+          USER_ID,
+          'Pilgrim',
+        ),
       ).rejects.toThrow('DB insert failed');
 
       // Verify cleanup is called
@@ -392,26 +552,32 @@ describe('CaminoGpxFilesService', () => {
     it('throws NotFoundException when record not found', async () => {
       prismaMock.caminoGpxFile.findFirst.mockResolvedValue(null);
 
-      await expect(service.downloadGpxFile(CAMINO_ID, GPX_FILE_ID)).rejects.toThrow(
-        NotFoundException,
-      );
+      await expect(
+        service.downloadGpxFile(CAMINO_ID, GPX_FILE_ID),
+      ).rejects.toThrow(NotFoundException);
     });
 
     it('IDOR prevention: cross-camino lookup returns NotFoundException', async () => {
       prismaMock.caminoGpxFile.findFirst.mockResolvedValue(null);
 
-      await expect(service.downloadGpxFile(OTHER_CAMINO_ID, GPX_FILE_ID)).rejects.toThrow(
-        NotFoundException,
-      );
+      await expect(
+        service.downloadGpxFile(OTHER_CAMINO_ID, GPX_FILE_ID),
+      ).rejects.toThrow(NotFoundException);
 
       const findCall = prismaMock.caminoGpxFile.findFirst.mock.calls[0][0];
-      expect(findCall.where).toMatchObject({ id: GPX_FILE_ID, caminoId: OTHER_CAMINO_ID });
+      expect(findCall.where).toMatchObject({
+        id: GPX_FILE_ID,
+        caminoId: OTHER_CAMINO_ID,
+      });
     });
 
     it('calls streamGpxFile with the record storageKey and returns fileName', async () => {
       const fakeStream = new Readable({ read() {} });
       prismaMock.caminoGpxFile.findFirst.mockResolvedValue(makeFakeRecord());
-      gpxStorageMock.streamGpxFile.mockResolvedValue({ stream: fakeStream, contentLength: 512 });
+      gpxStorageMock.streamGpxFile.mockResolvedValue({
+        stream: fakeStream,
+        contentLength: 512,
+      });
 
       const result = await service.downloadGpxFile(CAMINO_ID, GPX_FILE_ID);
 
@@ -437,15 +603,25 @@ describe('CaminoGpxFilesService', () => {
       prismaMock.caminoGpxFile.findFirst.mockResolvedValue(null);
 
       await expect(
-        service.deleteGpxFile(OTHER_CAMINO_ID, GPX_FILE_ID, USER_ID, PILGRIM_ROLES),
+        service.deleteGpxFile(
+          OTHER_CAMINO_ID,
+          GPX_FILE_ID,
+          USER_ID,
+          PILGRIM_ROLES,
+        ),
       ).rejects.toThrow(NotFoundException);
 
       const findCall = prismaMock.caminoGpxFile.findFirst.mock.calls[0][0];
-      expect(findCall.where).toMatchObject({ id: GPX_FILE_ID, caminoId: OTHER_CAMINO_ID });
+      expect(findCall.where).toMatchObject({
+        id: GPX_FILE_ID,
+        caminoId: OTHER_CAMINO_ID,
+      });
     });
 
     it('throws ForbiddenException for non-uploader, non-owner', async () => {
-      prismaMock.caminoGpxFile.findFirst.mockResolvedValue(makeFakeRecord({ uploadedBy: OTHER_USER_ID }));
+      prismaMock.caminoGpxFile.findFirst.mockResolvedValue(
+        makeFakeRecord({ uploadedBy: OTHER_USER_ID }),
+      );
 
       await expect(
         service.deleteGpxFile(CAMINO_ID, GPX_FILE_ID, USER_ID, PILGRIM_ROLES),
@@ -453,7 +629,9 @@ describe('CaminoGpxFilesService', () => {
     });
 
     it('uploader can delete their own file (no time-window check)', async () => {
-      prismaMock.caminoGpxFile.findFirst.mockResolvedValue(makeFakeRecord({ uploadedBy: USER_ID }));
+      prismaMock.caminoGpxFile.findFirst.mockResolvedValue(
+        makeFakeRecord({ uploadedBy: USER_ID }),
+      );
       prismaMock.caminoGpxFile.delete.mockResolvedValue(undefined);
 
       await expect(
@@ -461,11 +639,15 @@ describe('CaminoGpxFilesService', () => {
       ).resolves.toBeUndefined();
 
       expect(gpxStorageMock.deleteGpxFile).toHaveBeenCalledWith(STORAGE_KEY);
-      expect(prismaMock.caminoGpxFile.delete).toHaveBeenCalledWith({ where: { id: GPX_FILE_ID } });
+      expect(prismaMock.caminoGpxFile.delete).toHaveBeenCalledWith({
+        where: { id: GPX_FILE_ID },
+      });
     });
 
     it('owner can delete any file regardless of uploader', async () => {
-      prismaMock.caminoGpxFile.findFirst.mockResolvedValue(makeFakeRecord({ uploadedBy: OTHER_USER_ID }));
+      prismaMock.caminoGpxFile.findFirst.mockResolvedValue(
+        makeFakeRecord({ uploadedBy: OTHER_USER_ID }),
+      );
       prismaMock.caminoGpxFile.delete.mockResolvedValue(undefined);
 
       await expect(
@@ -476,7 +658,9 @@ describe('CaminoGpxFilesService', () => {
     });
 
     it('S3 failure propagates BadGatewayException and DB delete is not called', async () => {
-      prismaMock.caminoGpxFile.findFirst.mockResolvedValue(makeFakeRecord({ uploadedBy: USER_ID }));
+      prismaMock.caminoGpxFile.findFirst.mockResolvedValue(
+        makeFakeRecord({ uploadedBy: USER_ID }),
+      );
       gpxStorageMock.deleteGpxFile.mockRejectedValue(new Error('S3 error'));
 
       await expect(
@@ -487,15 +671,25 @@ describe('CaminoGpxFilesService', () => {
     });
 
     it('calls EventLogService.logEvent after successful delete', async () => {
-      prismaMock.caminoGpxFile.findFirst.mockResolvedValue(makeFakeRecord({ uploadedBy: USER_ID }));
+      prismaMock.caminoGpxFile.findFirst.mockResolvedValue(
+        makeFakeRecord({ uploadedBy: USER_ID }),
+      );
       prismaMock.caminoGpxFile.delete.mockResolvedValue(undefined);
 
-      await service.deleteGpxFile(CAMINO_ID, GPX_FILE_ID, USER_ID, PILGRIM_ROLES);
+      await service.deleteGpxFile(
+        CAMINO_ID,
+        GPX_FILE_ID,
+        USER_ID,
+        PILGRIM_ROLES,
+      );
 
       expect(eventLogMock.logEvent).toHaveBeenCalledWith(
         EventType.CAMINO_GPX_DELETED,
         USER_ID,
-        expect.objectContaining({ camino_id: CAMINO_ID, gpx_file_id: GPX_FILE_ID }),
+        expect.objectContaining({
+          camino_id: CAMINO_ID,
+          gpx_file_id: GPX_FILE_ID,
+        }),
       );
     });
   });

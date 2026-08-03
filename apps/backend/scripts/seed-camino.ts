@@ -61,6 +61,23 @@ const VALID_PRICE_RANGES = new Set<string>([
   'budget', 'moderate', 'comfortable', 'luxury',
 ]);
 
+/**
+ * Deduplicate countries preserving first-occurrence order, matching
+ * CaminosService's extractOrderedCountries so the seed script fills the same
+ * denormalized `countries` column the API writes on create()/update().
+ */
+function extractOrderedCountries(countries: string[]): string[] {
+  const seen = new Set<string>();
+  const result: string[] = [];
+  for (const c of countries) {
+    if (!seen.has(c)) {
+      seen.add(c);
+      result.push(c);
+    }
+  }
+  return result;
+}
+
 // ─── CLI args ──────────────────────────────────────────────────────────────
 
 function parseArgs(): { dataFile: string; dryRun: boolean } {
@@ -161,6 +178,11 @@ async function seed(
   await prisma.$transaction(async (tx) => {
     // 1. Upsert Camino
     const caminoSlug = slugify(caminoData.name);
+    const countries = extractOrderedCountries(
+      [...points]
+        .sort((a, b) => a.position - b.position)
+        .map((p) => p.country),
+    );
     const camino = await tx.camino.upsert({
       where: { name: caminoData.name },
       create: {
@@ -169,10 +191,12 @@ async function seed(
         description: caminoData.description,
         verified: caminoData.verified,
         createdBy,
+        countries,
       },
       update: {
         description: caminoData.description,
         verified: caminoData.verified,
+        countries,
       },
     });
     const caminoId = camino.id;

@@ -1,0 +1,47 @@
+{
+  "_meta": {
+    "sources": [],
+    "notes": ""
+  },
+  "camino": {
+    "name": "",
+    "description": "",
+    "verified": false,
+    "createdBy": "seed"
+  },
+  "points": [
+    {
+      "position": 1,
+      "name": "",
+      "country": "",
+      "slug": "",
+      "description": "",
+      "accommodations": [
+        {
+          "name": "",
+          "type": "",
+          "description": "",
+          "addressStreet": "",
+          "addressZip": "",
+          "addressCity": "",
+          "addressCountry": "",
+          "website": "",
+          "email": "",
+          "phone": "",
+          "priceRange": "",
+          "verified": false
+        }
+      ],
+      "lat": 53.894,
+      "lng": 14.12
+    }
+  ],
+  "stages": [
+    {
+      "from": "",
+      "to": "",
+      "distance": 0,
+      "description": ""
+    }
+  ]
+}

@@ -14,7 +14,9 @@
       "https://www.locandafrancescana.com/",
       "https://www.ostelloassisi.com/",
       "https://www.cittadelladiassisi.it/en/",
-      "https://www.sanponziano.it/"
+      "https://www.sanponziano.it/",
+      "https://www.viadifrancesco.it/la-via-di-francesco-itinerario-del-pellegrinaggio/via-di-roma-pellegrinaggio-di-san-francesco-da-la-verna-a-roma/via-di-roma-a-piedi/159-via-di-roma-a-piedi-tappa-21-da-monterotondo-a-monte-sacro",
+      "https://www.viadifrancesco.it/la-via-di-francesco-itinerario-del-pellegrinaggio/via-di-roma-pellegrinaggio-di-san-francesco-da-la-verna-a-roma/via-di-roma-a-piedi/160-via-di-roma-a-piedi-tappa-22-da-monte-sacro-a-roma"
     ],
     "notes": [
       "The Via di Francesco (Way of St Francis / Franziskusweg) runs ~436 km from the Sanctuary of La Verna to St Peter's Basilica in Rome through Tuscany, Umbria and Lazio.",
@@ -26,6 +28,8 @@
       "The Convento di San Francesco in Gubbio was expected to reopen in April 2026 after renovation.",
       "Ponticelli Sabino has very limited dedicated pilgrim accommodation; some pilgrims use nearby Nerola as an alternative.",
       "Distances are based on official viadifrancesco.it data cross-referenced with pilgrimagetraveler.com and forwalk.org.",
+      "Monte Sacro was added as its own waypoint (position 25) splitting the original 34 km Monterotondo–Rom stage into the two official viadifrancesco.it stages (19 km + 15 km), since 34 km exceeded Pillyway's 32 km per-stage maximum; the two Monte-Sacro monastery accommodations that were previously listed under 'Rom' were moved to this new point, Domus Australia (near the Vatican) stayed under 'Rom'.",
+      "2026-07-27 update: added phone numbers for 47 of 55 accommodations (international format); filled in previously missing addressZip values for B&B Alla Battuta, Eremo di Montecasale, Eremo di San Pietro in Vigneto, Borgo della Marmotta, Casa del Pellegrino di Ceselli, and Casa del Pellegrino di Poggio San Lorenzo using comune-level CAP data (frazioni share their parent comune's CAP, so precision is at town level).",
       "createdBy: 'seed' is a placeholder — replace with actual user ID before running the import script."
     ]
   },
@@ -53,6 +57,7 @@
           "addressCountry": "italy",
           "website": null,
           "email": "santuarioverna@gmail.com",
+          "phone": "+39 0575 5341",
           "priceRange": "budget",
           "verified": false
         },
@@ -66,6 +71,7 @@
           "addressCountry": "italy",
           "website": null,
           "email": "pastor.laverna@gmail.com",
+          "phone": "+39 0575 599025",
           "priceRange": "budget",
           "verified": false
         },
@@ -79,6 +85,7 @@
           "addressCountry": "italy",
           "website": null,
           "email": "albergoristorantebellavista@gmail.com",
+          "phone": "+39 0575 599029",
           "priceRange": "budget",
           "verified": false
         }
@@ -103,6 +110,7 @@
           "addressCountry": "italy",
           "website": "https://www.ilcastellare.eu",
           "email": "info@ilcastellare.eu",
+          "phone": "+39 0575 799393",
           "priceRange": "budget",
           "verified": false
         },
@@ -116,6 +124,7 @@
           "addressCountry": "italy",
           "website": null,
           "email": "info@hotelsantostefanoarezzo.it",
+          "phone": "+39 0575 797129",
           "priceRange": "moderate",
           "verified": false
         }
@@ -135,11 +144,12 @@
           "type": "b_and_b",
           "description": "Kleines B&B mit 4 Betten in Montagna di Sansepolcro. Frühstück inklusive.",
           "addressStreet": null,
-          "addressZip": null,
+          "addressZip": "52037",
           "addressCity": "Montagna di Sansepolcro",
           "addressCountry": "italy",
           "website": null,
           "email": null,
+          "phone": "+39 349 3829435",
           "priceRange": "budget",
           "verified": false
         },
@@ -147,12 +157,13 @@
           "name": "Eremo di Montecasale (Frati Cappuccini)",
           "type": "monastery",
           "description": "Franziskanische Einsiedelei auf einem Hügel über Sansepolcro. Wenige Schlafplätze für Pilger (Spende), Voranmeldung erforderlich.",
-          "addressStreet": null,
-          "addressZip": null,
+          "addressStreet": "Frazione Basilica 59",
+          "addressZip": "52037",
           "addressCity": "Montecasale, Sansepolcro",
           "addressCountry": "italy",
           "website": null,
           "email": "cappuccini.montecasale@gmail.com",
+          "phone": "+39 0575 733695",
           "priceRange": "budget",
           "verified": false
         }
@@ -177,6 +188,7 @@
           "addressCountry": "italy",
           "website": "https://www.santamariadeiservi.it",
           "email": "info@santamariadeiservi.it",
+          "phone": "+39 0575 742347",
           "priceRange": "budget",
           "verified": false
         },
@@ -190,6 +202,7 @@
           "addressCountry": "italy",
           "website": null,
           "email": "dolcerosacamere@gmail.com",
+          "phone": "+39 366 397 3527",
           "priceRange": "budget",
           "verified": false
         },
@@ -203,6 +216,7 @@
           "addressCountry": "italy",
           "website": "https://www.relaisoroscopo.com",
           "email": "info@relaisoroscopo.com",
+          "phone": "+39 0575 734875",
           "priceRange": "moderate",
           "verified": false
         }
@@ -227,6 +241,7 @@
           "addressCountry": "italy",
           "website": null,
           "email": "benedettineciterna@gmail.com",
+          "phone": "+39 075 8592126",
           "priceRange": "budget",
           "verified": false
         },
@@ -264,6 +279,7 @@
           "addressCountry": "italy",
           "website": null,
           "email": null,
+          "phone": "+39 075 8553066",
           "priceRange": "budget",
           "verified": false
         },
@@ -277,6 +293,7 @@
           "addressCountry": "italy",
           "website": "https://www.hotelumbria.net",
           "email": "umbria@hotelumbria.net",
+          "phone": "+39 075 8554925",
           "priceRange": "moderate",
           "verified": false
         },
@@ -290,6 +307,7 @@
           "addressCountry": "italy",
           "website": "https://www.anticacanonica.it",
           "email": "info@anticacanonica.it",
+          "phone": "+39 075 8523298",
           "priceRange": "moderate",
           "verified": false
         }
@@ -327,6 +345,7 @@
           "addressCountry": "italy",
           "website": "https://www.hotel-tinca.com",
           "email": "info@hotel-tinca.com",
+          "phone": "+39 075 9460057",
           "priceRange": "moderate",
           "verified": false
         },
@@ -340,6 +359,7 @@
           "addressCountry": "italy",
           "website": "https://www.locandadelborgo.com",
           "email": "info@locandadelborgo.com",
+          "phone": "+39 075 9460798",
           "priceRange": "moderate",
           "verified": false
         }
@@ -364,6 +384,7 @@
           "addressCountry": "italy",
           "website": "https://www.accoglienzasanfrancesco.it",
           "email": "accoglienzasanfrancescogubbio@gmail.com",
+          "phone": "+39 370 349 0485",
           "priceRange": "budget",
           "verified": false
         },
@@ -377,6 +398,7 @@
           "addressCountry": "italy",
           "website": null,
           "email": "gabrielepauletto@libero.it",
+          "phone": "+39 075 9273869",
           "priceRange": "budget",
           "verified": false
         },
@@ -390,6 +412,7 @@
           "addressCountry": "italy",
           "website": "https://www.grottadellangelo.it",
           "email": "info@grottadellangelo.it",
+          "phone": "+39 075 9271747",
           "priceRange": "moderate",
           "verified": false
         }
@@ -409,11 +432,12 @@
           "type": "monastery",
           "description": "Einsiedelei mit 14 Schlafplätzen für Pilger. Spende erbeten. Reservierung über die Confraternita di San Jacopo zwingend erforderlich.",
           "addressStreet": null,
-          "addressZip": null,
+          "addressZip": "06024",
           "addressCity": "San Pietro in Vigneto, Gubbio",
           "addressCountry": "italy",
           "website": null,
           "email": "sanpietroinvigneto@confraternitadisanjacopo.it",
+          "phone": "+39 334 2740238",
           "priceRange": "budget",
           "verified": false
         }
@@ -451,6 +475,7 @@
           "addressCountry": "italy",
           "website": null,
           "email": "terra.media20@gmail.com",
+          "phone": "+39 371 487 6048",
           "priceRange": "budget",
           "verified": false
         },
@@ -464,6 +489,7 @@
           "addressCountry": "italy",
           "website": null,
           "email": "betaniavalfabrica@gmail.com",
+          "phone": "+39 075 901619",
           "priceRange": "budget",
           "verified": false
         },
@@ -477,6 +503,7 @@
           "addressCountry": "italy",
           "website": "https://www.suipassidifrancesco.it",
           "email": "suipassidifrancesco@tiscali.it",
+          "phone": "+39 075 901864",
           "priceRange": "moderate",
           "verified": false
         }
@@ -501,6 +528,7 @@
           "addressCountry": "italy",
           "website": null,
           "email": null,
+          "phone": "+39 075 5094588",
           "priceRange": "budget",
           "verified": false
         },
@@ -513,7 +541,8 @@
           "addressCity": "Assisi",
           "addressCountry": "italy",
           "website": "https://www.cittadelladiassisi.it",
-          "email": null,
+          "email": "ospitalita@cittadella.org",
+          "phone": "+39 075 813231",
           "priceRange": "budget",
           "verified": false
         },
@@ -526,7 +555,8 @@
           "addressCity": "Assisi",
           "addressCountry": "italy",
           "website": "https://www.ostelloassisi.com",
-          "email": null,
+          "email": "ostelloassisi@gmail.com",
+          "phone": "+39 075 816767",
           "priceRange": "budget",
           "verified": false
         },
@@ -538,8 +568,9 @@
           "addressZip": "06081",
           "addressCity": "Assisi",
           "addressCountry": "italy",
-          "website": null,
+          "website": "https://www.abbaziaassisi.it",
           "email": "info@abbaziaassisi.it",
+          "phone": "+39 075 5094993",
           "priceRange": "budget",
           "verified": false
         },
@@ -553,6 +584,7 @@
           "addressCountry": "italy",
           "website": "https://www.fontemaggio.it",
           "email": "info@fontemaggio.it",
+          "phone": "+39 075 813636",
           "priceRange": "budget",
           "verified": false
         }
@@ -577,6 +609,7 @@
           "addressCountry": "italy",
           "website": "https://www.agostinianespello.it",
           "email": "spello@agostiniane.it",
+          "phone": "+39 0742 651156",
           "priceRange": "budget",
           "verified": false
         }
@@ -600,7 +633,8 @@
           "addressCity": "Foligno",
           "addressCountry": "italy",
           "website": "https://www.diocesidifoligno.it",
-          "email": null,
+          "email": "casadirasiglia@diocesidifoligno.it",
+          "phone": "+39 0742 357337",
           "priceRange": "budget",
           "verified": false
         }
@@ -625,6 +659,7 @@
           "addressCountry": "italy",
           "website": null,
           "email": "santachiara.ccn@gmail.com",
+          "phone": "+39 0742 78216",
           "priceRange": "budget",
           "verified": false
         },
@@ -650,7 +685,8 @@
           "addressCity": "Trevi",
           "addressCountry": "italy",
           "website": "https://www.hoteltrevipalazzonatalini.it",
-          "email": null,
+          "email": "hoteltrevipalazzonatalini@gmail.com",
+          "phone": "+39 351 714 3412",
           "priceRange": "moderate",
           "verified": false
         }
@@ -669,12 +705,13 @@
           "name": "Borgo della Marmotta",
           "type": "b_and_b",
           "description": "Historischer Agriturismo aus dem 17. Jh. in der Nähe von Poreta. Ruhige Lage mit Panoramablick.",
-          "addressStreet": null,
-          "addressZip": null,
+          "addressStreet": "Frazione Poreta 7",
+          "addressZip": "06049",
           "addressCity": "Poreta, Spoleto",
           "addressCountry": "italy",
-          "website": null,
+          "website": "https://www.leterrediporeta.it",
           "email": null,
+          "phone": "+39 0743 274137",
           "priceRange": "moderate",
           "verified": false
         }
@@ -699,6 +736,7 @@
           "addressCountry": "italy",
           "website": "https://www.sanponziano.it",
           "email": "info@sanponziano.it",
+          "phone": "+39 392 913 5162",
           "priceRange": "moderate",
           "verified": false
         },
@@ -731,11 +769,12 @@
           "type": "hostel",
           "description": "Pilgerhospiz oberhalb des Dorfes Ceselli. Kontakt über die Gemeinde (Lina: +39 339 242 8928 / Catia: +39 333 843 0385).",
           "addressStreet": null,
-          "addressZip": null,
+          "addressZip": "06040",
           "addressCity": "Ceselli, Scheggino",
           "addressCountry": "italy",
           "website": null,
           "email": null,
+          "phone": "+39 339 242 8928",
           "priceRange": "budget",
           "verified": false
         }
@@ -760,6 +799,7 @@
           "addressCountry": "italy",
           "website": null,
           "email": null,
+          "phone": "+39 333 986 4664",
           "priceRange": "budget",
           "verified": false
         }
@@ -784,6 +824,7 @@
           "addressCountry": "italy",
           "website": null,
           "email": null,
+          "phone": "+39 0744 368118",
           "priceRange": "budget",
           "verified": false
         },
@@ -795,8 +836,9 @@
           "addressZip": "05100",
           "addressCity": "Piediluco",
           "addressCountry": "italy",
-          "website": null,
+          "website": "https://www.miralagohotel.net",
           "email": null,
+          "phone": "+39 0744 360022",
           "priceRange": "moderate",
           "verified": false
         }
@@ -821,6 +863,7 @@
           "addressCountry": "italy",
           "website": "https://www.locandafrancescana.com",
           "email": null,
+          "phone": "+39 0746 688688",
           "priceRange": "budget",
           "verified": false
         },
@@ -847,6 +890,7 @@
           "addressCountry": "italy",
           "website": null,
           "email": null,
+          "phone": "+39 347 513 3030",
           "priceRange": "budget",
           "verified": false
         }
@@ -871,6 +915,7 @@
           "addressCountry": "italy",
           "website": "https://www.santuarivallesanta.com",
           "email": "fontecolombo@santuarivallesanta.it",
+          "phone": "+39 0746 210125",
           "priceRange": "budget",
           "verified": false
         },
@@ -896,7 +941,8 @@
           "addressCity": "Rieti",
           "addressCountry": "italy",
           "website": null,
-          "email": null,
+          "email": "emelissa.a@libero.it",
+          "phone": "+39 338 324 0975",
           "priceRange": "moderate",
           "verified": false
         }
@@ -916,11 +962,12 @@
           "type": "hostel",
           "description": "Pilgerhospiz am zentralen Platz des Dorfes mit 14 Betten. Gelistet auf dormireincammino.it.",
           "addressStreet": "Piazza Guglielmo Marconi",
-          "addressZip": null,
+          "addressZip": "02030",
           "addressCity": "Poggio San Lorenzo",
           "addressCountry": "italy",
-          "website": "https://www.dormireincammino.it",
-          "email": null,
+          "website": "https://www.lacasadelpellegrino.it",
+          "email": "info@camminidellarte.it",
+          "phone": "+39 376 538 062",
           "priceRange": "budget",
           "verified": false
         }
@@ -955,6 +1002,7 @@
           "addressCountry": "italy",
           "website": null,
           "email": null,
+          "phone": "+39 06 9062 7534",
           "priceRange": "budget",
           "verified": false
         },
@@ -966,8 +1014,9 @@
           "addressZip": "00015",
           "addressCity": "Monterotondo",
           "addressCountry": "italy",
-          "website": null,
+          "website": "http://www.duomosantamariamaddalena.it",
           "email": "parrocchia@duomosantamariamaddalena.it",
+          "phone": "+39 06 9062 6060",
           "priceRange": "budget",
           "verified": false
         }
@@ -977,10 +1026,10 @@
     },
     {
       "position": 25,
-      "name": "Rom",
+      "name": "Monte Sacro",
       "country": "italy",
-      "slug": "rom",
-      "description": "Die Via di Francesco endet am Petersplatz im Vatikan. Die Route tritt durch den Stadtbezirk Monte Sacro (Kirche Santi Angeli Custodi) in Rom ein und folgt der Via Nomentana bis in die Innenstadt und zum Vatikan. Ziel ist die Petersbasilika mit der Confessio — dem Grab des Apostelfürsten Petrus.",
+      "slug": "monte-sacro",
+      "description": "Nordöstlicher Stadtbezirk Roms (Quartiere XVI) an der Via Nomentana, jenseits des Flusses Aniene. Hier betritt die Via di Francesco offiziell das Stadtgebiet von Rom; Wahrzeichen ist die Kirche Santi Angeli Custodi. Klassischer letzter Zwischenstopp vor dem Einzug ins historische Zentrum und zum Vatikan.",
       "accommodations": [
         {
           "name": "Suore del Cuore Immacolato di Maria (Monte Sacro)",
@@ -999,15 +1048,27 @@
           "name": "Casa Per Ferie Santa Rita (Monte Sacro)",
           "type": "monastery",
           "description": "Religiöse Casa per ferie nahe der Kirche Santi Angeli Custodi in Monte Sacro.",
-          "addressStreet": null,
+          "addressStreet": "Piazza Madre Maria Teresa Spinelli 2",
           "addressZip": "00141",
           "addressCity": "Rom",
           "addressCountry": "italy",
           "website": "https://www.ospitalitareligiosa.it",
-          "email": null,
+          "email": "casaperferiesantarita@gmail.com",
+          "phone": "+39 06 8680 0016",
           "priceRange": "budget",
           "verified": false
-        },
+        }
+      ],
+      "lat": 41.9333,
+      "lng": 12.5333
+    },
+    {
+      "position": 26,
+      "name": "Rom",
+      "country": "italy",
+      "slug": "rom",
+      "description": "Die Via di Francesco endet am Petersplatz im Vatikan. Von Monte Sacro folgt die Route der Via Nomentana durch die nordöstlichen Stadtviertel bis in die Innenstadt und zum Vatikan. Ziel ist die Petersbasilika mit der Confessio — dem Grab des Apostelfürsten Petrus.",
+      "accommodations": [
         {
           "name": "Domus Australia",
           "type": "b_and_b",
@@ -1018,6 +1079,7 @@
           "addressCountry": "italy",
           "website": "https://www.domusaustralia.org",
           "email": "info@domusaustralia.org",
+          "phone": "+39 06 4888 781",
           "priceRange": "moderate",
           "verified": false
         }
@@ -1167,9 +1229,15 @@
     },
     {
       "from": "Monterotondo",
+      "to": "Monte Sacro",
+      "distance": 19,
+      "description": "Durchquerung des Naturschutzgebiets Marcigliana mit den Resten der protohistorischen Siedlung Crustumerium, danach durch das Tal Valle Ricca, wo die Gemeindegrenze von Rom erreicht wird. An klaren Tagen Blick auf die Kuppel des Petersdoms, bevor die Route in Monte Sacro das Stadtgebiet betritt."
+    },
+    {
+      "from": "Monte Sacro",
       "to": "Rom",
-      "distance": 34,
-      "description": "Anspruchsvolle Schlussetappe mit Einzug in Rom über den Stadtteil Monte Sacro und die Via Nomentana bis zum Petersplatz."
+      "distance": 15,
+      "description": "Letzte, leichte Etappe entlang der Via Nomentana durch die nordöstlichen Stadtviertel Roms bis ins historische Zentrum und zum Petersplatz."
     }
   ]
 }

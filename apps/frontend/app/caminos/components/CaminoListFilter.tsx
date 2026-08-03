@@ -62,18 +62,20 @@ export function CaminoListFilter({
   }
 
   function toggleVerified() {
-    startTransition(() => router.push(buildUrl(!currentVerified, currentCountries, 1)));
+    startTransition(() =>
+      router.push(buildUrl(!currentVerified, currentCountries, 1), { scroll: false }),
+    );
   }
 
   function toggleCountry(country: string) {
     const next = currentCountries.includes(country)
       ? currentCountries.filter((c) => c !== country)
       : [...currentCountries, country];
-    startTransition(() => router.push(buildUrl(currentVerified, next, 1)));
+    startTransition(() => router.push(buildUrl(currentVerified, next, 1), { scroll: false }));
   }
 
   function resetFilters() {
-    startTransition(() => router.push('/caminos'));
+    startTransition(() => router.push('/caminos', { scroll: false }));
   }
 
   function goToPage(page: number) {

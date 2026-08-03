@@ -37,6 +37,7 @@ vi.mock('next-intl', () => ({
 
 vi.mock('next/image', () => ({
   default: ({ src, alt }: { src: string; alt: string; [key: string]: unknown }) => (
+    // eslint-disable-next-line @next/next/no-img-element
     <img src={src} alt={alt} />
   ),
 }));
@@ -53,6 +54,15 @@ import { useUploadCaminoPictures } from '@/app/api/camino-pictures/use-upload-ca
 import { useDeleteCaminoPicture } from '@/app/api/camino-pictures/use-delete-camino-picture';
 import { useUpdateCaminoPicture } from '@/app/api/camino-pictures/use-update-camino-picture';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
+
+// ── Mock return types ─────────────────────────────────────────────────────────
+
+type CaminoPicturesReturn = ReturnType<typeof useCaminoPictures>;
+type UploadPictureReturn = ReturnType<typeof useUploadCaminoPicture>;
+type UploadPicturesReturn = ReturnType<typeof useUploadCaminoPictures>;
+type DeletePictureReturn = ReturnType<typeof useDeleteCaminoPicture>;
+type UpdatePictureReturn = ReturnType<typeof useUpdateCaminoPicture>;
+type KindeClientReturn = ReturnType<typeof useKindeBrowserClient>;
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -84,15 +94,29 @@ function renderGallery(caminoId = 'camino-1') {
 // ── Default mock setup ────────────────────────────────────────────────────────
 
 beforeEach(() => {
-  vi.mocked(useCaminoPictures).mockReturnValue({ data: { primary: null, gallery: [] } } as any);
-  vi.mocked(useUploadCaminoPicture).mockReturnValue({ mutate: vi.fn(), isPending: false } as any);
-  vi.mocked(useUploadCaminoPictures).mockReturnValue({ mutate: vi.fn(), isPending: false } as any);
-  vi.mocked(useDeleteCaminoPicture).mockReturnValue({ mutate: vi.fn(), isPending: false } as any);
-  vi.mocked(useUpdateCaminoPicture).mockReturnValue({ mutate: vi.fn(), isPending: false } as any);
+  vi.mocked(useCaminoPictures).mockReturnValue({
+    data: { primary: null, gallery: [] },
+  } as unknown as CaminoPicturesReturn);
+  vi.mocked(useUploadCaminoPicture).mockReturnValue({
+    mutate: vi.fn(),
+    isPending: false,
+  } as unknown as UploadPictureReturn);
+  vi.mocked(useUploadCaminoPictures).mockReturnValue({
+    mutate: vi.fn(),
+    isPending: false,
+  } as unknown as UploadPicturesReturn);
+  vi.mocked(useDeleteCaminoPicture).mockReturnValue({
+    mutate: vi.fn(),
+    isPending: false,
+  } as unknown as DeletePictureReturn);
+  vi.mocked(useUpdateCaminoPicture).mockReturnValue({
+    mutate: vi.fn(),
+    isPending: false,
+  } as unknown as UpdatePictureReturn);
   vi.mocked(useKindeBrowserClient).mockReturnValue({
     user: { id: 'user-a' },
     accessToken: { roles: [{ key: 'pilgrim', id: 'r1', name: 'Pilgrim' }] },
-  } as any);
+  } as unknown as KindeClientReturn);
 });
 
 // ── Tests ─────────────────────────────────────────────────────────────────────
@@ -101,7 +125,7 @@ describe('CaminoPictures — gallery section', () => {
   it('shows the pencil edit button for a pilgrim who uploaded the picture', () => {
     vi.mocked(useCaminoPictures).mockReturnValue({
       data: { primary: null, gallery: [makeGalleryPicture({ uploadedBy: 'user-a' })] },
-    } as any);
+    } as unknown as CaminoPicturesReturn);
 
     renderGallery();
 
@@ -112,11 +136,11 @@ describe('CaminoPictures — gallery section', () => {
     vi.mocked(useKindeBrowserClient).mockReturnValue({
       user: { id: 'user-a' },
       accessToken: { roles: [] },
-    } as any);
+    } as unknown as KindeClientReturn);
 
     vi.mocked(useCaminoPictures).mockReturnValue({
       data: { primary: null, gallery: [makeGalleryPicture({ uploadedBy: 'user-a' })] },
-    } as any);
+    } as unknown as CaminoPicturesReturn);
 
     renderGallery();
 
@@ -128,7 +152,7 @@ describe('CaminoPictures — gallery section', () => {
 
     vi.mocked(useCaminoPictures).mockReturnValue({
       data: { primary: null, gallery: [makeGalleryPicture({ label: 'My caption' })] },
-    } as any);
+    } as unknown as CaminoPicturesReturn);
 
     renderGallery();
 
@@ -145,11 +169,11 @@ describe('CaminoPictures — gallery section', () => {
     vi.mocked(useUpdateCaminoPicture).mockReturnValue({
       mutate: mockUpdateMutate,
       isPending: false,
-    } as any);
+    } as unknown as UpdatePictureReturn);
 
     vi.mocked(useCaminoPictures).mockReturnValue({
       data: { primary: null, gallery: [makeGalleryPicture()] },
-    } as any);
+    } as unknown as CaminoPicturesReturn);
 
     renderGallery();
 
@@ -169,11 +193,11 @@ describe('CaminoPictures — gallery section', () => {
     vi.mocked(useUpdateCaminoPicture).mockReturnValue({
       mutate: mockUpdateMutate,
       isPending: false,
-    } as any);
+    } as unknown as UpdatePictureReturn);
 
     vi.mocked(useCaminoPictures).mockReturnValue({
       data: { primary: null, gallery: [makeGalleryPicture({ id: 'pic-1' })] },
-    } as any);
+    } as unknown as CaminoPicturesReturn);
 
     renderGallery();
 
@@ -197,11 +221,14 @@ describe('CaminoPictures — gallery section', () => {
     vi.mocked(useUpdateCaminoPicture).mockReturnValue({
       mutate: mockUpdateMutate,
       isPending: false,
-    } as any);
+    } as unknown as UpdatePictureReturn);
 
     vi.mocked(useCaminoPictures).mockReturnValue({
-      data: { primary: null, gallery: [makeGalleryPicture({ id: 'pic-1', label: 'old' })] },
-    } as any);
+      data: {
+        primary: null,
+        gallery: [makeGalleryPicture({ id: 'pic-1', label: 'old' })],
+      },
+    } as unknown as CaminoPicturesReturn);
 
     renderGallery();
 
@@ -220,7 +247,7 @@ describe('CaminoPictures — gallery section', () => {
   it('renders the existing label as text below the thumbnail', () => {
     vi.mocked(useCaminoPictures).mockReturnValue({
       data: { primary: null, gallery: [makeGalleryPicture({ label: 'Beautiful view' })] },
-    } as any);
+    } as unknown as CaminoPicturesReturn);
 
     renderGallery();
 
@@ -229,19 +256,24 @@ describe('CaminoPictures — gallery section', () => {
 
   it('shows the limit_reached message when the gallery upload returns a 422', async () => {
     vi.mocked(useUploadCaminoPictures).mockReturnValue({
-      mutate: (_files: unknown, options: { onError?: (err: Error & { status?: number }) => void }) => {
+      mutate: (
+        _files: unknown,
+        options: { onError?: (err: Error & { status?: number }) => void },
+      ) => {
         const err = Object.assign(new Error('Unprocessable'), { status: 422 });
         options?.onError?.(err);
       },
       isPending: false,
-    } as any);
+    } as unknown as UploadPicturesReturn);
 
     renderGallery();
 
     // Trigger the file input's onChange handler directly — jsdom does not open
     // a native file picker, so we skip the button click and fire change on the
     // hidden input directly.
-    const fileInput = document.querySelector('input[type="file"][multiple]') as HTMLInputElement;
+    const fileInput = document.querySelector(
+      'input[type="file"][multiple]',
+    ) as HTMLInputElement;
     expect(fileInput, 'gallery file input must exist').toBeTruthy();
 
     fireEvent.change(fileInput, {
