@@ -5,6 +5,7 @@ export const COUNTRIES: readonly string[] = [
   'germany',
   'italy',
   'netherlands',
+  'norway',
   'poland',
   'portugal',
   'spain',
