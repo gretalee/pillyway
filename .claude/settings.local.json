@@ -67,7 +67,16 @@
       "Bash(nohup yarn dev)",
       "Bash(disown)",
       "Read(//private/tmp/**)",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/)"
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/)",
+      "Bash(yarn eslint *)",
+      "Bash(yarn --cwd /Users/hendrike/Documents/projects/PillyWay/DEV/pillyway/apps/frontend tsc --noEmit -p tsconfig.json)",
+      "Bash(npx eslint *)",
+      "Bash(cp /private/tmp/claude-501/-Users-hendrike-Documents-projects-PillyWay-DEV-pillyway/81e16796-97ad-4de2-b340-296568b55db5/scratchpad/diag2.mjs /Users/hendrike/Documents/projects/PillyWay/DEV/pillyway/apps/e2e/diag2.mjs)",
+      "Bash(rm diag2.mjs)",
+      "Bash(cp /private/tmp/claude-501/-Users-hendrike-Documents-projects-PillyWay-DEV-pillyway/81e16796-97ad-4de2-b340-296568b55db5/scratchpad/header-height.mjs /Users/hendrike/Documents/projects/PillyWay/DEV/pillyway/apps/e2e/header-height.mjs)",
+      "Bash(rm header-height.mjs)",
+      "Bash(cp /private/tmp/claude-501/-Users-hendrike-Documents-projects-PillyWay-DEV-pillyway/81e16796-97ad-4de2-b340-296568b55db5/scratchpad/repro3.mjs /Users/hendrike/Documents/projects/PillyWay/DEV/pillyway/apps/e2e/repro3.mjs)",
+      "Bash(rm repro3.mjs)"
     ],
     "deny": [
       "Read(./.env)",

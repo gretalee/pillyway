@@ -19,15 +19,15 @@ export async function Header({ user }: HeaderProps) {
     <header
       className={cn(
         'sticky top-0 z-40 w-full border-b border-border',
-        'bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60',
+        'bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60',
       )}>
-      <div className="mx-auto max-w-full overflow-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-1">
+      <div className="mx-auto overflow-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-2">
           <BurgerMenu />
 
           <Link
             href="/"
-            className="text-lg font-semibold hover:opacity-80 transition-opacity"
+            className="text-lg font-semibold hover:opacity-80 transition-opacity translate-y-0.5"
             aria-label={t('aria_home')}>
             {t('home_label')}
           </Link>

@@ -88,6 +88,26 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
+/* Single source of truth for the off-canvas panel's size (OffCanvas.tsx):
+   both the panel's width/height and the amount the pushed content
+   translates read this same variable, so they can never drift apart —
+   the panel is always exactly as large as the space the content vacated. */
+:root {
+  --off-canvas-size: calc(100% - 50px);
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --off-canvas-size: 66.6667%;
+  }
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --off-canvas-size: 33.3333%;
+  }
+}
+
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
