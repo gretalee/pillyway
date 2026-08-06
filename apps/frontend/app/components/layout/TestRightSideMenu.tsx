@@ -41,7 +41,7 @@ export function TestRightSideMenuPanel() {
       side="right"
       title={t('title')}
       className="bg-green-400">
-      <p className="px-2 py-1.5 text-sm text-muted-foreground">{t('content')}</p>
+      <p className="px-2 py-1.5 text-sm text-muted-foreground h-96">{t('content')}</p>
     </SideMenu>
   );
 }

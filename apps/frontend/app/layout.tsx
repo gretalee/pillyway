@@ -7,8 +7,7 @@ import { Footer } from '@/app/components/layout/Footer';
 import { PathTracker } from '@/app/components/PathTracker';
 import { BurgerMenuPanel } from '@/app/components/layout/BurgerMenu';
 import { TestRightSideMenuPanel } from '@/app/components/layout/TestRightSideMenu';
-import { SideMenuViewport } from '@/app/components/ui/SideMenu/SideMenu';
-import { OffCanvasPin } from '@/app/components/ui/SideMenu/OffCanvasPin';
+import { SideSlider } from '@/app/components/ui/SideMenu/SideMenu';
 import { getAuthUser } from '@/lib/getAuthUser';
 import type { Locale } from '@/i18n/detectLocale';
 import '../assets/styles/global.css';
@@ -50,7 +49,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const authUser = await getAuthUser();
-
   const locale = (await getLocale()) as Locale;
   const messages = await getMessages();
   const timeZone = await getTimeZone();
@@ -66,15 +64,13 @@ export default async function RootLayout({
           <BurgerMenuPanel />
           <TestRightSideMenuPanel />
 
-          <SideMenuViewport className="flex min-h-full flex-1 flex-col">
-            <OffCanvasPin pinnedAgainst={['bottom']}>
-              <Header user={authUser} />
-            </OffCanvasPin>
+          <SideSlider className="flex min-h-full flex-1 flex-col">
+            <Header user={authUser} />
             <div className="flex flex-col flex-1">
               <main className="flex-1">{children}</main>
               <Footer />
             </div>
-          </SideMenuViewport>
+          </SideSlider>
         </Providers>
       </body>
     </html>

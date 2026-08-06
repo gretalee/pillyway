@@ -3,7 +3,9 @@
 import type { ComponentPropsWithoutRef, ElementType, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
-export type OffCanvasSide = 'left' | 'right' | 'top' | 'bottom';
+/** Push-based directions. `bottom` is intentionally not one of these — see
+ * SideMenu.tsx, which renders it as a plain floating overlay instead. */
+export type OffCanvasSide = 'left' | 'right' | 'top';
 
 /**
  * Panel size reads the `--off-canvas-size`/`--off-canvas-size-vertical`
@@ -15,37 +17,33 @@ export type OffCanvasSide = 'left' | 'right' | 'top' | 'bottom';
  * the true visible edge, never early.
  *
  * left/right use the `%`-based variable — safe because the content
- * wrapper's own width is always ~100vw. top/bottom use the `vh`-based one
- * instead: translateY resolves against the content wrapper's own (full
- * page) height, which is usually much taller than the viewport, so a `%`
- * value there would translate by way more than the panel is actually tall.
+ * wrapper's own width is always ~100vw. top uses the `vh`-based one instead:
+ * translateY resolves against the content wrapper's own (full page) height,
+ * which is usually much taller than the viewport, so a `%` value there
+ * would translate by way more than the panel is actually tall.
  */
 const PANEL_SIZE: Record<OffCanvasSide, string> = {
   left: 'w-[var(--off-canvas-size)]',
   right: 'w-[var(--off-canvas-size)]',
   top: 'h-[var(--off-canvas-size-vertical)]',
-  bottom: 'h-[var(--off-canvas-size-vertical)]',
 };
 
 const PANEL_POSITION: Record<OffCanvasSide, string> = {
   left: 'inset-y-0 left-0',
   right: 'inset-y-0 right-0',
   top: 'inset-x-0 top-0',
-  bottom: 'inset-x-0 bottom-0',
 };
 
 const CONTENT_OPEN_TRANSLATE: Record<OffCanvasSide, string> = {
   left: 'translate-x-[var(--off-canvas-size)]',
   right: '-translate-x-[var(--off-canvas-size)]',
   top: 'translate-y-[var(--off-canvas-size-vertical)]',
-  bottom: '-translate-y-[var(--off-canvas-size-vertical)]',
 };
 
 const CONTENT_CLOSED_TRANSLATE: Record<OffCanvasSide, string> = {
   left: 'translate-x-0',
   right: 'translate-x-0',
   top: 'translate-y-0',
-  bottom: 'translate-y-0',
 };
 
 /**
@@ -59,7 +57,6 @@ const CONTENT_SHADOW: Record<OffCanvasSide, string> = {
   left: 'shadow-[-8px_0_24px_-4px_rgba(0,0,0,0.35)]',
   right: 'shadow-[8px_0_24px_-4px_rgba(0,0,0,0.35)]',
   top: 'shadow-[0_-8px_24px_-4px_rgba(0,0,0,0.35)]',
-  bottom: 'shadow-[0_8px_24px_-4px_rgba(0,0,0,0.35)]',
 };
 
 interface OffCanvasContentProps {
@@ -77,21 +74,22 @@ interface OffCanvasContentProps {
  * design never reaches a full 100% translate, so a sliver of the original
  * content stays visible on every breakpoint.
  *
- * top/bottom need one more thing left/right don't: translating reveals a gap
+ * `top` needs one more thing left/right don't: translating reveals a gap
  * only where the translated box's own edge actually is. Horizontally that's
  * free — a page never scrolls sideways, so the content's own width is
  * always ~100vw and its left/right edges line up with the viewport's.
  * Vertically a page is *expected* to be taller than the viewport, so the
- * content's top/bottom edges are usually nowhere near the visible area —
- * translating it by the panel's height would just scroll a different slice
- * of the same page into view, panel still buried underneath. So while a
- * top/bottom panel is open, clip content to exactly one viewport's height —
- * it already can't be scrolled (SideMenu locks body scroll while open), so
- * this just makes the existing lock's effect match reality: a single,
- * viewport-sized "frame" with real edges the translate can reveal.
+ * content's top edge is usually nowhere near the visible area unless it's
+ * scrolled to the very top — translating it by the panel's height would
+ * otherwise just scroll a different slice of the same page into view, panel
+ * still buried underneath. So while the top panel is open, clip content to
+ * exactly one viewport's height — it already can't be scrolled (SideMenu
+ * locks body scroll while open), so this just makes the existing lock's
+ * effect match reality: a single, viewport-sized "frame" with real edges
+ * the translate can reveal.
  */
 export function OffCanvasContent({ open, side = 'left', children, className }: OffCanvasContentProps) {
-  const isVertical = side === 'top' || side === 'bottom';
+  const isVertical = side === 'top';
 
   return (
     <div

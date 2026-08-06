@@ -166,6 +166,11 @@
     @apply font-casper antialiased;
     /* 18px base instead of browser default 16px */
     font-size: 112.5%;
+    /* Always reserve the scrollbar's width, even when it's hidden (e.g. by
+       a SideMenu locking body scroll via overflow: hidden). Without this,
+       hiding the scrollbar widens the viewport and the whole page snaps
+       sideways — including the header — right as a menu opens or closes. */
+    scrollbar-gutter: stable;
   }
 
   h1 {

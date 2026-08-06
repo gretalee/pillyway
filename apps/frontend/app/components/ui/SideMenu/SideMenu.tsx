@@ -4,15 +4,16 @@ import { useEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { useSideMenuStore } from '@/store/side-menu-store';
+import type { SideMenuSide } from '@/store/side-menu-store';
 import { OffCanvasContent, OffCanvasPanel } from '@/app/components/ui/SideMenu/OffCanvas';
 import type { OffCanvasSide } from '@/app/components/ui/SideMenu/OffCanvas';
 
-export type { OffCanvasSide } from '@/app/components/ui/SideMenu/OffCanvas';
+export type { SideMenuSide } from '@/store/side-menu-store';
 
 /**
  * Controls one SideMenu instance by `id` from anywhere in the tree — a
  * header trigger button, a link, a keyboard shortcut, etc. Only needs the
- * `id`: the side it pushes toward is declared once, on the matching
+ * `id`: the side it opens toward is declared once, on the matching
  * `<SideMenu side="...">` itself, and looked up from there.
  */
 export function useSideMenu(id: string) {
@@ -32,7 +33,7 @@ export function useSideMenu(id: string) {
 interface SideMenuProps {
   /** Unique id — also used as the panel's DOM id and `aria-controls` target. */
   id: string;
-  side?: OffCanvasSide;
+  side?: SideMenuSide;
   /** Visible title, also doubles as the panel's accessible name. */
   title: string;
   /** Accessible name for the title-toggle button; falls back to `title`. */
@@ -42,17 +43,22 @@ interface SideMenuProps {
 }
 
 /**
- * Self-contained off-canvas side menu. Owns its open/closed state (via the
- * shared side-menu store, keyed by `id`), body scroll lock + scroll-position
- * restore, Escape-to-close, and focus-on-open — none of that needs to be
- * reimplemented per menu. The title bar doubles as the close control (a
- * proper toggle button with `aria-expanded`/`aria-controls`).
+ * Self-contained side menu. Owns its open/closed state (via the shared
+ * side-menu store, keyed by `id`), body scroll lock, Escape-to-close, and
+ * focus-on-open — none of that needs to be reimplemented per menu. The
+ * title bar doubles as the close control (a proper toggle button with
+ * `aria-expanded`/`aria-controls`).
  *
  * Multiple instances can coexist (each with its own `id`); only one is open
  * at a time by design (see side-menu-store). `side` is declared here, in one
  * place — it's registered with the store on mount, so trigger buttons
- * elsewhere just call `useSideMenu(id)` without repeating it. Pair with a
- * single `<SideMenuViewport>` wrapping the app content near the root.
+ * elsewhere just call `useSideMenu(id)` without repeating it.
+ *
+ * `left`/`right`/`top` push the rest of the page aside (pair with a single
+ * `<SideSlider>` wrapping the app content near the root). `bottom` is
+ * different on purpose: it's a plain floating overlay — as tall as its
+ * content, capped at half the viewport height, scrollable if it doesn't
+ * fit — that doesn't move the page at all.
  */
 export function SideMenu({
   id,
@@ -66,6 +72,7 @@ export function SideMenu({
   const registerSide = useSideMenuStore((s) => s.registerSide);
   const titleButtonRef = useRef<HTMLButtonElement>(null);
   const scrollYRef = useRef(0);
+  const isBottomOverlay = side === 'bottom';
 
   useEffect(() => {
     registerSide(id, side);
@@ -73,23 +80,30 @@ export function SideMenu({
 
   useEffect(() => {
     if (isOpen) {
-      // SideMenuViewport translates via CSS transform, which makes it an
-      // active containing block for any sticky descendants (e.g. a sticky
-      // header) — so position:sticky no longer tracks the real viewport
-      // while open. Background scrolling is locked either way, so reset to
-      // the top and restore the reading position once the panel closes.
-      scrollYRef.current = window.scrollY;
-      window.scrollTo(0, 0);
+      // Only push sides need the scroll reset: SideSlider translates
+      // via CSS transform, which makes it an active containing block for
+      // any sticky descendants (e.g. the sticky header) — so
+      // position:sticky no longer tracks the real viewport while open.
+      // Background scrolling is locked either way, so reset to the top and
+      // restore the reading position once the panel closes. The bottom
+      // overlay never moves the page, so position:sticky keeps working
+      // normally — resetting scroll there would just be a pointless jump.
+      if (!isBottomOverlay) {
+        scrollYRef.current = window.scrollY;
+        window.scrollTo(0, 0);
+      }
       document.body.style.overflowY = 'hidden';
       titleButtonRef.current?.focus();
     } else {
       document.body.style.overflowY = '';
-      window.scrollTo(0, scrollYRef.current);
+      if (!isBottomOverlay) {
+        window.scrollTo(0, scrollYRef.current);
+      }
     }
     return () => {
       document.body.style.overflowY = '';
     };
-  }, [isOpen]);
+  }, [isOpen, isBottomOverlay]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -100,57 +114,89 @@ export function SideMenu({
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, close]);
 
+  const titleBar = (
+    <div className="border-b border-border">
+      <div className="flex h-14 items-center px-4">
+        <button
+          ref={titleButtonRef}
+          type="button"
+          onClick={toggle}
+          aria-expanded={isOpen}
+          aria-controls={id}
+          aria-label={toggleAriaLabel}
+          className={cn(
+            'rounded-md text-base font-semibold cursor-pointer',
+            'hover:text-accent-foreground',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+          )}>
+          {title}
+        </button>
+      </div>
+    </div>
+  );
+
+  const body = (
+    <div className="flex-1 overflow-y-auto overscroll-contain px-2 py-3">{children}</div>
+  );
+
+  if (isBottomOverlay) {
+    return (
+      <nav
+        id={id}
+        aria-label={title}
+        aria-hidden={!isOpen}
+        inert={!isOpen}
+        className={cn(
+          'fixed inset-x-0 bottom-0 z-50 flex max-h-[50vh] flex-col',
+          'bg-popover text-popover-foreground shadow-up',
+          'transition-transform duration-300 ease-out',
+          // Closed state overshoots 100% by a few px: the shadow extends
+          // past the box's own edge, so translating by exactly its height
+          // isn't quite enough to carry the shadow off-screen too — a sliver
+          // stayed visible right at the bottom edge even while "closed".
+          isOpen ? 'translate-y-0' : 'translate-y-[calc(100%+8px)]',
+          className,
+        )}>
+        {titleBar}
+        {body}
+      </nav>
+    );
+  }
+
   return (
     <OffCanvasPanel
       as="nav"
       id={id}
       aria-label={title}
       open={isOpen}
-      side={side}
+      side={side as OffCanvasSide}
       className={className}>
-      <div className="border-b border-border">
-        <div className="flex h-14 items-center px-4">
-          <button
-            ref={titleButtonRef}
-            type="button"
-            onClick={toggle}
-            aria-expanded={isOpen}
-            aria-controls={id}
-            aria-label={toggleAriaLabel}
-            className={cn(
-              'rounded-md text-base font-semibold cursor-pointer',
-              'hover:text-accent-foreground',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-            )}>
-            {title}
-          </button>
-        </div>
-      </div>
-
-      <div className="flex-1 overflow-y-auto overscroll-contain px-2 py-3">
-        {children}
-      </div>
+      {titleBar}
+      {body}
     </OffCanvasPanel>
   );
 }
 
-interface SideMenuViewportProps {
+interface SideSliderProps {
   children: ReactNode;
   className?: string;
 }
 
 /**
- * Wraps the entire visible app once near the root (see layout.tsx). Slides
- * aside toward whichever SideMenu is currently open, revealing it
- * underneath. Renders untransformed (`side="left"`, closed) when nothing is
- * open — the side only matters once something opens.
+ * Wraps the entire visible app (see layout.tsx) and slides it to the
+ * side, when a SideMenu is open  (`left`/`right`/`top`)
+ * A `bottom` menu never pushes — it floats above the page instead —
+ * so it's treated the same as "nothing open" here.
  */
-export function SideMenuViewport({ children, className }: SideMenuViewportProps) {
+export function SideSlider({ children, className }: SideSliderProps) {
   const openSide = useSideMenuStore((s) => s.openSide);
-  const isOpen = useSideMenuStore((s) => s.openId !== null);
+  const openId = useSideMenuStore((s) => s.openId);
+  const pushSide: OffCanvasSide | null =
+    openSide && openSide !== 'bottom' ? openSide : null;
+  const isOpen = openId !== null && pushSide !== null;
 
   return (
-    <OffCanvasContent open={isOpen} side={openSide ?? 'left'} className={className}>
+    <OffCanvasContent open={isOpen} side={pushSide ?? 'left'} className={className}>
       {children}
     </OffCanvasContent>
   );
