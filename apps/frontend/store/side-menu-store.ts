@@ -4,9 +4,14 @@ import type { OffCanvasSide } from '@/app/components/ui/SideMenu/OffCanvas';
 interface SideMenuStore {
   openId: string | null;
   openSide: OffCanvasSide | null;
-  open: (id: string, side: OffCanvasSide) => void;
+  /** Each SideMenu registers its own side once on mount — the single source
+   * of truth for which way it pushes content — so callers of `open`/`toggle`
+   * (e.g. header trigger buttons) only ever need the `id`. */
+  sides: Record<string, OffCanvasSide>;
+  registerSide: (id: string, side: OffCanvasSide) => void;
+  open: (id: string) => void;
   close: (id: string) => void;
-  toggle: (id: string, side: OffCanvasSide) => void;
+  toggle: (id: string) => void;
 }
 
 /**
@@ -18,16 +23,19 @@ interface SideMenuStore {
  * is a sibling of the trigger/panel components in the root layout, not a
  * descendant of any single SideMenu.
  */
-export const useSideMenuStore = create<SideMenuStore>()((set) => ({
+export const useSideMenuStore = create<SideMenuStore>()((set, get) => ({
   openId: null,
   openSide: null,
-  open: (id, side) => set({ openId: id, openSide: side }),
+  sides: {},
+  registerSide: (id, side) =>
+    set((state) => (state.sides[id] === side ? state : { sides: { ...state.sides, [id]: side } })),
+  open: (id) => set({ openId: id, openSide: get().sides[id] ?? 'left' }),
   close: (id) =>
     set((state) => (state.openId === id ? { openId: null, openSide: null } : state)),
-  toggle: (id, side) =>
+  toggle: (id) =>
     set((state) =>
       state.openId === id
         ? { openId: null, openSide: null }
-        : { openId: id, openSide: side },
+        : { openId: id, openSide: state.sides[id] ?? 'left' },
     ),
 }));

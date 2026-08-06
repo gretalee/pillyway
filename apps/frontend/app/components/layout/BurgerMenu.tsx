@@ -12,7 +12,7 @@ const BURGER_MENU_ID = 'burger-menu-panel';
 export function BurgerMenuButton() {
   const tHeader = useTranslations('header');
 
-  const { isOpen, toggle } = useSideMenu(BURGER_MENU_ID, 'left');
+  const { isOpen, toggle } = useSideMenu(BURGER_MENU_ID);
 
   return (
     <button
@@ -42,7 +42,7 @@ const CAMINO_MENU_LIMIT = 100;
 export function BurgerMenuPanel() {
   const t = useTranslations('burger_menu');
 
-  const { isOpen, close } = useSideMenu(BURGER_MENU_ID, 'left');
+  const { isOpen, close } = useSideMenu(BURGER_MENU_ID);
 
   const { data, isLoading, isError } = useCaminos(
     { limit: CAMINO_MENU_LIMIT },
@@ -52,7 +52,7 @@ export function BurgerMenuPanel() {
   return (
     <SideMenu
       id={BURGER_MENU_ID}
-      side="left"
+      side="bottom"
       title={t('title')}
       toggleAriaLabel={t('close_aria')}>
       {/* Title, that also toggles the menu */}

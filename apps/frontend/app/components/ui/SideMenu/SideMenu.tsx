@@ -11,11 +11,11 @@ export type { OffCanvasSide } from '@/app/components/ui/SideMenu/OffCanvas';
 
 /**
  * Controls one SideMenu instance by `id` from anywhere in the tree — a
- * header trigger button, a link, a keyboard shortcut, etc. `side` only
- * matters for `open`/`toggle` (it tells the shared content viewport which
- * way to push); reading `isOpen` or calling `close` needs just the `id`.
+ * header trigger button, a link, a keyboard shortcut, etc. Only needs the
+ * `id`: the side it pushes toward is declared once, on the matching
+ * `<SideMenu side="...">` itself, and looked up from there.
  */
-export function useSideMenu(id: string, side: OffCanvasSide = 'left') {
+export function useSideMenu(id: string) {
   const isOpen = useSideMenuStore((s) => s.openId === id);
   const storeOpen = useSideMenuStore((s) => s.open);
   const storeClose = useSideMenuStore((s) => s.close);
@@ -23,9 +23,9 @@ export function useSideMenu(id: string, side: OffCanvasSide = 'left') {
 
   return {
     isOpen,
-    open: () => storeOpen(id, side),
+    open: () => storeOpen(id),
     close: () => storeClose(id),
-    toggle: () => storeToggle(id, side),
+    toggle: () => storeToggle(id),
   };
 }
 
@@ -49,9 +49,10 @@ interface SideMenuProps {
  * proper toggle button with `aria-expanded`/`aria-controls`).
  *
  * Multiple instances can coexist (each with its own `id`); only one is open
- * at a time by design (see side-menu-store). Pair with a single
- * `<SideMenuViewport>` wrapping the app content near the root, and
- * `useSideMenu(id, side)` for trigger buttons anywhere else in the tree.
+ * at a time by design (see side-menu-store). `side` is declared here, in one
+ * place — it's registered with the store on mount, so trigger buttons
+ * elsewhere just call `useSideMenu(id)` without repeating it. Pair with a
+ * single `<SideMenuViewport>` wrapping the app content near the root.
  */
 export function SideMenu({
   id,
@@ -61,9 +62,14 @@ export function SideMenu({
   children,
   className,
 }: SideMenuProps) {
-  const { isOpen, toggle, close } = useSideMenu(id, side);
+  const { isOpen, toggle, close } = useSideMenu(id);
+  const registerSide = useSideMenuStore((s) => s.registerSide);
   const titleButtonRef = useRef<HTMLButtonElement>(null);
   const scrollYRef = useRef(0);
+
+  useEffect(() => {
+    registerSide(id, side);
+  }, [id, side, registerSide]);
 
   useEffect(() => {
     if (isOpen) {

@@ -12,7 +12,7 @@ const TEST_RIGHT_MENU_ID = 'test-right-side-menu';
  * a real right-side menu (or nothing) takes its place.
  */
 export function TestRightSideMenuButton() {
-  const { isOpen, toggle } = useSideMenu(TEST_RIGHT_MENU_ID, 'right');
+  const { isOpen, toggle } = useSideMenu(TEST_RIGHT_MENU_ID);
   const t = useTranslations('test_side_menu');
 
   return (
