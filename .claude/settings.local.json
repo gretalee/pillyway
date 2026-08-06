@@ -79,7 +79,8 @@
       "Bash(rm repro3.mjs)",
       "Bash(cp /private/tmp/claude-501/-Users-hendrike-Documents-projects-PillyWay-DEV-pillyway/81e16796-97ad-4de2-b340-296568b55db5/scratchpad/usermenu-repro.mjs /Users/hendrike/Documents/projects/PillyWay/DEV/pillyway/apps/e2e/usermenu-repro.mjs)",
       "Bash(rm usermenu-repro.mjs)",
-      "Bash(npx playwright *)"
+      "Bash(npx playwright *)",
+      "Bash(lsof -nP -iTCP:3000 -sTCP:LISTEN)"
     ],
     "deny": [
       "Read(./.env)",

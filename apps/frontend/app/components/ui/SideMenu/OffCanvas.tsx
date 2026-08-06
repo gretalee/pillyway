@@ -133,6 +133,14 @@ type OffCanvasPanelProps<T extends ElementType> = OffCanvasPanelOwnProps<T> &
  * as a plain `div` by default; pass `as="nav"` (or any element/component) to
  * get the right semantics for the panel's content. Forwards any extra props
  * (aria-label, id, ...) to that underlying element.
+ *
+ * `hidden` (display:none) while closed — not just aria-hidden/inert — is
+ * load-bearing once more than one SideMenu exists: every panel shares
+ * `z-0` and is only ever covered by OffCanvasContent on the one edge it's
+ * anchored to. With two+ panels mounted (e.g. one on `left`, one on `top`),
+ * their fixed boxes overlap in the corner, and content only pushes aside
+ * for whichever is actually open — so a merely inert-but-still-rendered
+ * panel would bleed through wherever another panel's reveal exposes it.
  */
 export function OffCanvasPanel<T extends ElementType = 'div'>({
   as,
@@ -153,6 +161,7 @@ export function OffCanvasPanel<T extends ElementType = 'div'>({
         PANEL_POSITION[side],
         PANEL_SIZE[side],
         className,
+        !open && 'hidden',
       )}
       {...rest}>
       {children}
