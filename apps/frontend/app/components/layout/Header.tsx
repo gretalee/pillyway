@@ -1,10 +1,11 @@
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
-import { buttonVariants } from '../ui/button';
+import { buttonVariants } from '@/app/components/ui/button';
 import { cn } from '@/lib/utils';
-import { UserMenu } from './UserMenu';
-import { LanguageSwitcher } from './LanguageSwitcher';
-import { BurgerMenu } from './BurgerMenu';
+import { UserMenu } from '@/app/components/layout/UserMenu';
+import { LanguageSwitcher } from '@/app/components/layout/LanguageSwitcher';
+import { BurgerMenuButton } from '@/app/components/layout/BurgerMenu';
+import { TestRightSideMenuButton } from '@/app/components/layout/TestRightSideMenu';
 import type { AuthUser } from '@/lib/getAuthUser';
 
 interface HeaderProps {
@@ -23,7 +24,7 @@ export async function Header({ user }: HeaderProps) {
       )}>
       <div className="mx-auto overflow-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-2">
-          <BurgerMenu />
+          <BurgerMenuButton />
 
           <Link
             href="/"
@@ -48,6 +49,8 @@ export async function Header({ user }: HeaderProps) {
           )}
 
           <LanguageSwitcher />
+
+          <TestRightSideMenuButton />
 
           <nav aria-label={t('aria_account_nav')}>
             {user ? (

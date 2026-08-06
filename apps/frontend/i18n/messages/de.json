@@ -29,6 +29,11 @@
     "error_loading": "Caminos konnten nicht geladen werden.",
     "empty": "Keine Caminos gefunden."
   },
+  "test_side_menu": {
+    "aria_label": "Test-Seitenmenü öffnen",
+    "title": "Test-Menü",
+    "content": "Testinhalt für das rechte Seitenmenü."
+  },
   "contact": {
     "meta_title": "Kontakt",
     "meta_description": "Nehmen Sie Kontakt mit dem Pillyway-Team auf.",

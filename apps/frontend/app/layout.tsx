@@ -6,7 +6,8 @@ import { Header } from '@/app/components/layout/Header';
 import { Footer } from '@/app/components/layout/Footer';
 import { PathTracker } from '@/app/components/PathTracker';
 import { BurgerMenuPanel } from '@/app/components/layout/BurgerMenu';
-import { PageShiftWrapper } from '@/app/components/layout/PageShiftWrapper';
+import { TestRightSideMenuPanel } from '@/app/components/layout/TestRightSideMenu';
+import { SideMenuViewport } from '@/app/components/ui/SideMenu/SideMenu';
 import { getAuthUser } from '@/lib/getAuthUser';
 import type { Locale } from '@/i18n/detectLocale';
 import '../assets/styles/global.css';
@@ -57,16 +58,20 @@ export default async function RootLayout({
     <html lang={locale} className="h-full antialiased overflow-x-clip">
       <body className="min-h-full flex flex-col overflow-x-clip">
         <NextTopLoader color="var(--primary)" height={2} showSpinner={false} />
+
         <Providers locale={locale} messages={messages} timeZone={timeZone}>
           <PathTracker />
+
           <BurgerMenuPanel />
-          <PageShiftWrapper>
+          <TestRightSideMenuPanel />
+
+          <SideMenuViewport className="flex min-h-full flex-1 flex-col">
             <Header user={authUser} />
             <div className="flex flex-col flex-1">
               <main className="flex-1">{children}</main>
               <Footer />
             </div>
-          </PageShiftWrapper>
+          </SideMenuViewport>
         </Providers>
       </body>
     </html>
