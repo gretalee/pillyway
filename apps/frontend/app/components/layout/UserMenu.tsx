@@ -26,12 +26,16 @@ export function UserMenu({ firstName }: UserMenuProps) {
       </Menu.Trigger>
 
       <Menu.Portal>
-        <Menu.Positioner side="bottom" align="end" sideOffset={8}>
+        <Menu.Positioner
+          className="isolate z-50"
+          side="bottom"
+          align="end"
+          sideOffset={8}>
           <Menu.Popup
             className={cn(
-              'z-50 min-w-[8rem] overflow-hidden rounded-lg border border-border',
+              'min-w-32 overflow-hidden rounded-lg border border-border',
               'bg-popover p-1 text-popover-foreground shadow-md',
-              'data-[starting-style]:opacity-0 data-[ending-style]:opacity-0',
+              'data-starting-style:opacity-0 data-ending-style:opacity-0',
               'transition-opacity duration-150',
             )}>
             {firstName && (
@@ -50,7 +54,7 @@ export function UserMenu({ firstName }: UserMenuProps) {
               className={cn(
                 'flex cursor-pointer select-none items-center rounded-md px-2 py-1.5',
                 'text-sm font-medium leading-none outline-none',
-                'data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground',
+                'data-highlighted:bg-accent data-highlighted:text-accent-foreground',
                 'transition-colors duration-100',
               )}>
               {t('logout')}

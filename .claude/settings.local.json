@@ -76,7 +76,10 @@
       "Bash(cp /private/tmp/claude-501/-Users-hendrike-Documents-projects-PillyWay-DEV-pillyway/81e16796-97ad-4de2-b340-296568b55db5/scratchpad/header-height.mjs /Users/hendrike/Documents/projects/PillyWay/DEV/pillyway/apps/e2e/header-height.mjs)",
       "Bash(rm header-height.mjs)",
       "Bash(cp /private/tmp/claude-501/-Users-hendrike-Documents-projects-PillyWay-DEV-pillyway/81e16796-97ad-4de2-b340-296568b55db5/scratchpad/repro3.mjs /Users/hendrike/Documents/projects/PillyWay/DEV/pillyway/apps/e2e/repro3.mjs)",
-      "Bash(rm repro3.mjs)"
+      "Bash(rm repro3.mjs)",
+      "Bash(cp /private/tmp/claude-501/-Users-hendrike-Documents-projects-PillyWay-DEV-pillyway/81e16796-97ad-4de2-b340-296568b55db5/scratchpad/usermenu-repro.mjs /Users/hendrike/Documents/projects/PillyWay/DEV/pillyway/apps/e2e/usermenu-repro.mjs)",
+      "Bash(rm usermenu-repro.mjs)",
+      "Bash(npx playwright *)"
     ],
     "deny": [
       "Read(./.env)",

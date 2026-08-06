@@ -6,8 +6,8 @@ import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import { useCaminos } from '@/app/api/caminos/use-caminos';
 import { useBurgerMenuStore } from '@/store/burger-menu-store';
-import { OffCanvasPanel } from '../ui/OffCanvas';
-import BurgerIcon from '../ui/icons/BurgerIcon';
+import { OffCanvasPanel } from '@/app/components/ui/OffCanvas';
+import BurgerIcon from '@/app/components/ui/icons/BurgerIcon';
 
 const CAMINO_MENU_LIMIT = 50;
 
@@ -162,8 +162,6 @@ export function BurgerMenuPanel() {
             </li>
           ))}
         </ul>
-
-        <div className="bg-green-400 w-full h-[500px]"></div>
 
         <div className="my-2 border-t border-border" />
 

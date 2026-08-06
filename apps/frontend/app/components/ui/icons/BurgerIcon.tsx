@@ -4,7 +4,8 @@ interface BurgerIconProps {
   open?: boolean;
 }
 
-const lineClassName = '[transform-box:fill-box] origin-center transition-transform duration-500 ease-in-out';
+const lineClassName =
+  '[transform-box:fill-box] origin-center transition-transform duration-500 ease-in-out';
 
 function BurgerIcon({ open = false }: BurgerIconProps) {
   return (
@@ -21,21 +22,24 @@ function BurgerIcon({ open = false }: BurgerIconProps) {
         y1="6"
         x2="21"
         y2="6"
-        className={cn(lineClassName, open && 'translate-y-[6px] rotate-45')}
+        className={cn(lineClassName, open && 'translate-y-1.5 rotate-45')}
       />
       <line
         x1="3"
         y1="12"
         x2="21"
         y2="12"
-        className={cn('transition-opacity duration-300 delay-100 ease-out', open && 'opacity-0')}
+        className={cn(
+          'transition-opacity duration-300 delay-100 ease-out',
+          open && 'opacity-0',
+        )}
       />
       <line
         x1="3"
         y1="18"
         x2="21"
         y2="18"
-        className={cn(lineClassName, open && '-translate-y-[6px] -rotate-45')}
+        className={cn(lineClassName, open && '-translate-y-1.5 -rotate-45')}
       />
     </svg>
   );
