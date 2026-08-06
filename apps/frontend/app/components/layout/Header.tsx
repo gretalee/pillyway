@@ -37,9 +37,6 @@ export async function Header({ user }: HeaderProps) {
         <div className="flex items-center gap-1 md:gap-4">
           {isOwner && (
             <>
-              {/* <div className="max-sm:hidden">
-                Roles: {user?.roles.map((r) => r.key).join(', ')}
-              </div> */}
               <Link
                 href="/backoffice"
                 className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>

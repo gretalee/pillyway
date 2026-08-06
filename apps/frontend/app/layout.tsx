@@ -61,6 +61,7 @@ export default async function RootLayout({
         <Providers locale={locale} messages={messages} timeZone={timeZone}>
           <PathTracker />
 
+          {/* Their corresponding open/close buttons are rendered in the header. */}
           <BurgerMenuPanel />
           <TestRightSideMenuPanel />
 

@@ -46,17 +46,10 @@ const CONTENT_CLOSED_TRANSLATE: Record<OffCanvasSide, string> = {
   top: 'translate-y-0',
 };
 
-/**
- * Drop-shadow on the content's leading edge — the one that ends up
- * bordering the revealed panel once translated — as a visual boundary
- * between the still-visible content sliver and the panel underneath.
- * Harmless while closed: the offset shadow falls outside the viewport and
- * is clipped by the body's `overflow-x-hidden`.
- */
 const CONTENT_SHADOW: Record<OffCanvasSide, string> = {
-  left: 'shadow-[-8px_0_24px_-4px_rgba(0,0,0,0.35)]',
-  right: 'shadow-[8px_0_24px_-4px_rgba(0,0,0,0.35)]',
-  top: 'shadow-[0_-8px_24px_-4px_rgba(0,0,0,0.35)]',
+  left: 'shadow-xl',
+  right: 'shadow-[8px_0_16px_-4px_rgba(0,0,0,0.35)]',
+  top: 'shadow-up-lg',
 };
 
 interface OffCanvasContentProps {
@@ -88,7 +81,12 @@ interface OffCanvasContentProps {
  * effect match reality: a single, viewport-sized "frame" with real edges
  * the translate can reveal.
  */
-export function OffCanvasContent({ open, side = 'left', children, className }: OffCanvasContentProps) {
+export function OffCanvasContent({
+  open,
+  side = 'left',
+  children,
+  className,
+}: OffCanvasContentProps) {
   const isVertical = side === 'top';
 
   return (
