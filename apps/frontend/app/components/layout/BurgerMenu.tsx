@@ -52,7 +52,7 @@ export function BurgerMenuPanel() {
   return (
     <SideMenu
       id={BURGER_MENU_ID}
-      side="bottom"
+      side="left"
       title={t('title')}
       toggleAriaLabel={t('close_aria')}>
       {/* Title, that also toggles the menu */}

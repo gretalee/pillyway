@@ -91,20 +91,33 @@
 /* Single source of truth for the off-canvas panel's size (OffCanvas.tsx):
    both the panel's width/height and the amount the pushed content
    translates read this same variable, so they can never drift apart —
-   the panel is always exactly as large as the space the content vacated. */
+   the panel is always exactly as large as the space the content vacated.
+
+   Two variables, not one: `translate-x`/`translate-y` percentages resolve
+   against the *translated element's own* box, not the viewport. For
+   left/right that's harmless (the content wrapper's own width is always
+   ~100vw), but for top/bottom the content wrapper's own height is the full
+   page height — often many times taller than the viewport — so a `%`
+   translateY would drag the page up by way more than the panel is tall,
+   scrolling the header off-screen with nothing left to show it's still
+   there. `vh` units side-step that: they're always relative to the actual
+   viewport, matching the fixed-positioned panel's own height calculation. */
 :root {
   --off-canvas-size: calc(100% - 50px);
+  --off-canvas-size-vertical: calc(100vh - 50px);
 }
 
 @media (min-width: 48rem) {
   :root {
     --off-canvas-size: 66.6667%;
+    --off-canvas-size-vertical: 66.6667vh;
   }
 }
 
 @media (min-width: 64rem) {
   :root {
     --off-canvas-size: 33.3333%;
+    --off-canvas-size-vertical: 33.3333vh;
   }
 }
 
