@@ -52,6 +52,39 @@ describe('side-menu-store', () => {
     expect(useSideMenuStore.getState().sides).not.toBe(sidesBefore);
   });
 
+  it('registerSide corrects openSide when the registering id is the one currently open', () => {
+    // Regression guard: if a menu's side changes (or it re-registers) while
+    // it's the open one, openSide must move with it — otherwise SideSlider
+    // keeps pushing the stale direction (e.g. a right-side panel with a
+    // left push).
+    const { registerSide, open } = useSideMenuStore.getState();
+    registerSide('menu-a', 'left');
+    open('menu-a');
+    expect(useSideMenuStore.getState().openSide).toBe('left');
+
+    registerSide('menu-a', 'right');
+
+    const state = useSideMenuStore.getState();
+    expect(state.openSide, 'openSide must follow the newly-registered side for the open menu').toBe(
+      'right',
+    );
+    expect(state.sides['menu-a']).toBe('right');
+  });
+
+  it('registerSide does NOT touch openSide when a different menu is the one currently open', () => {
+    const { registerSide, open } = useSideMenuStore.getState();
+    registerSide('menu-a', 'left');
+    registerSide('menu-b', 'top');
+    open('menu-a');
+
+    registerSide('menu-b', 'right');
+
+    expect(
+      useSideMenuStore.getState().openSide,
+      're-registering a menu that is not the open one must not affect openSide',
+    ).toBe('left');
+  });
+
   // ---------- open ----------
 
   it('open sets openId and openSide from the registered side', () => {

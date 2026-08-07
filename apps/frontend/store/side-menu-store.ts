@@ -33,9 +33,19 @@ export const useSideMenuStore = create<SideMenuStore>()((set, get) => ({
   openSide: null,
   sides: {},
   registerSide: (id, side) =>
-    set((state) =>
-      state.sides[id] === side ? state : { sides: { ...state.sides, [id]: side } },
-    ),
+    set((state) => {
+      const sidesChanged = state.sides[id] !== side;
+      // If this id is the one currently open, its own openSide must move
+      // with it — otherwise a menu that (re-)registers a different side
+      // while already open (e.g. its `side` prop changes, or it registers
+      // after being opened) leaves SideSlider pushing the stale direction.
+      const openSideChanged = state.openId === id && state.openSide !== side;
+      if (!sidesChanged && !openSideChanged) return state;
+      return {
+        sides: sidesChanged ? { ...state.sides, [id]: side } : state.sides,
+        openSide: openSideChanged ? side : state.openSide,
+      };
+    }),
   open: (id) => set({ openId: id, openSide: get().sides[id] ?? 'left' }),
   close: (id) =>
     set((state) => (state.openId === id ? { openId: null, openSide: null } : state)),
