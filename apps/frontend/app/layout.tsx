@@ -63,8 +63,7 @@ export default async function RootLayout({
 
           {/* Their corresponding open/close buttons are rendered in the header. */}
           <BurgerMenuPanel />
-          <TestRightSideMenuPanel />
-
+          {process.env.NODE_ENV !== 'production' && <TestRightSideMenuPanel />}
           <SideSlider className="flex min-h-full flex-1 flex-col">
             <Header user={authUser} />
             <div className="flex flex-col flex-1">
