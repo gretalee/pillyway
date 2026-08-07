@@ -47,7 +47,7 @@ export async function Header({ user }: HeaderProps) {
 
           <LanguageSwitcher />
 
-          <TestRightSideMenuButton />
+          {process.env.NODE_ENV !== 'production' && <TestRightSideMenuButton />}
 
           <nav aria-label={t('aria_account_nav')}>
             {user ? (
