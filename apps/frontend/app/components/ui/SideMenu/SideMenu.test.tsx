@@ -83,6 +83,27 @@ describe('useSideMenu', () => {
     );
     expect(screen.getByTestId('state-a')).toHaveTextContent('closed');
   });
+
+  it('open/close/toggle keep a stable identity across re-renders', () => {
+    // Regression guard: SideMenu's Escape-key effect depends on `close`.
+    // If it were a fresh closure on every render, that effect would tear
+    // down and re-attach its keydown listener on every render — not just
+    // on genuine open/close transitions.
+    const seen: Array<{ open: unknown; close: unknown; toggle: unknown }> = [];
+    function Capture({ id }: { id: string }) {
+      const { open, close, toggle } = useSideMenu(id);
+      seen.push({ open, close, toggle });
+      return null;
+    }
+
+    const { rerender } = render(<Capture id="a" />);
+    rerender(<Capture id="a" />);
+
+    expect(seen).toHaveLength(2);
+    expect(seen[1].open, 'open must be referentially stable').toBe(seen[0].open);
+    expect(seen[1].close, 'close must be referentially stable').toBe(seen[0].close);
+    expect(seen[1].toggle, 'toggle must be referentially stable').toBe(seen[0].toggle);
+  });
 });
 
 // ---------- SideMenu — push sides (left/right/top) ----------

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { useSideMenuStore } from '@/store/side-menu-store';
@@ -22,12 +22,15 @@ export function useSideMenu(id: string) {
   const storeClose = useSideMenuStore((s) => s.close);
   const storeToggle = useSideMenuStore((s) => s.toggle);
 
-  return {
-    isOpen,
-    open: () => storeOpen(id),
-    close: () => storeClose(id),
-    toggle: () => storeToggle(id),
-  };
+  // Memoized so `close` (used as an effect dependency in SideMenu, e.g. for
+  // the Escape-key listener) stays referentially stable across renders —
+  // otherwise that effect would tear down and re-attach its listener on
+  // every render, not just on genuine open/close transitions.
+  const open = useCallback(() => storeOpen(id), [id, storeOpen]);
+  const close = useCallback(() => storeClose(id), [id, storeClose]);
+  const toggle = useCallback(() => storeToggle(id), [id, storeToggle]);
+
+  return { isOpen, open, close, toggle };
 }
 
 interface SideMenuProps {
