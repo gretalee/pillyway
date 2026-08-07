@@ -1,0 +1,58 @@
+import { create } from 'zustand';
+import type { OffCanvasSide } from '@/app/components/ui/SideMenu/OffCanvas';
+
+/** Every side a SideMenu can open toward. `bottom` isn't a push direction
+ * (see OffCanvasSide) — it's a floating overlay instead — but still needs
+ * tracking here so triggers/viewport agree on what's currently open. */
+export type SideMenuSide = OffCanvasSide | 'bottom';
+
+interface SideMenuStore {
+  openId: string | null;
+  openSide: SideMenuSide | null;
+  /** Each SideMenu registers its own side once on mount — the single source
+   * of truth for which way it pushes content — so callers of `open`/`toggle`
+   * (e.g. header trigger buttons) only ever need the `id`. */
+  sides: Record<string, SideMenuSide>;
+  registerSide: (id: string, side: SideMenuSide) => void;
+  open: (id: string) => void;
+  close: (id: string) => void;
+  toggle: (id: string) => void;
+}
+
+/**
+ * Shared open/closed state for every SideMenu instance in the app, keyed by
+ * `id`. Only one can be open at a time — the pushed page content can only
+ * slide toward a single side at once — so opening one implicitly closes
+ * whichever was open before. Lives outside SideMenu itself because the
+ * content viewport (SideSlider, which transforms the rest of the site)
+ * is a sibling of the trigger/panel components in the root layout, not a
+ * descendant of any single SideMenu.
+ */
+export const useSideMenuStore = create<SideMenuStore>()((set, get) => ({
+  openId: null,
+  openSide: null,
+  sides: {},
+  registerSide: (id, side) =>
+    set((state) => {
+      const sidesChanged = state.sides[id] !== side;
+      // If this id is the one currently open, its own openSide must move
+      // with it — otherwise a menu that (re-)registers a different side
+      // while already open (e.g. its `side` prop changes, or it registers
+      // after being opened) leaves SideSlider pushing the stale direction.
+      const openSideChanged = state.openId === id && state.openSide !== side;
+      if (!sidesChanged && !openSideChanged) return state;
+      return {
+        sides: sidesChanged ? { ...state.sides, [id]: side } : state.sides,
+        openSide: openSideChanged ? side : state.openSide,
+      };
+    }),
+  open: (id) => set({ openId: id, openSide: get().sides[id] ?? 'left' }),
+  close: (id) =>
+    set((state) => (state.openId === id ? { openId: null, openSide: null } : state)),
+  toggle: (id) =>
+    set((state) =>
+      state.openId === id
+        ? { openId: null, openSide: null }
+        : { openId: id, openSide: state.sides[id] ?? 'left' },
+    ),
+}));

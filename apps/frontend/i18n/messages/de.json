@@ -16,7 +16,29 @@
     "aria_login": "Anmelden",
     "aria_user_menu": "Benutzermenü",
     "aria_account_nav": "Kontonavigation",
-    "aria_language_switcher": "Sprache auswählen"
+    "aria_language_switcher": "Sprache auswählen",
+    "aria_burger_menu": "Hauptmenü"
+  },
+  "burger_menu": {
+    "title": "Menü",
+    "close_aria": "Menü schließen",
+    "caminos_heading": "Caminos",
+    "all_caminos": "Alle Caminos",
+    "contact": "Kontakt",
+    "loading": "Caminos werden geladen…",
+    "error_loading": "Caminos konnten nicht geladen werden.",
+    "empty": "Keine Caminos gefunden."
+  },
+  "test_side_menu": {
+    "aria_label": "Test-Seitenmenü öffnen",
+    "title": "Test-Menü",
+    "content": "Testinhalt für das rechte Seitenmenü."
+  },
+  "contact": {
+    "meta_title": "Kontakt",
+    "meta_description": "Nehmen Sie Kontakt mit dem Pillyway-Team auf.",
+    "title": "Kontakt",
+    "body": "Diese Seite folgt in Kürze."
   },
   "user_menu": {
     "greeting": "Hallo, {name}!",

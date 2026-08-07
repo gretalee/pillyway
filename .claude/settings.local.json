@@ -24,7 +24,7 @@
       "Bash(node_modules/.bin/next --version)",
       "WebSearch",
       "WebFetch(domain:docs.kinde.com)",
-      "WebFetch(domain:github.com)",,
+      "WebFetch(domain:github.com)",
       "WebFetch(domain:www.gronze.com)",
       "WebFetch(domain:caminoon.com)",
       "WebFetch(domain:caminodesantiago.consumer.es)",
@@ -67,7 +67,13 @@
       "Bash(nohup yarn dev)",
       "Bash(disown)",
       "Read(//private/tmp/**)",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/)"
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/)",
+      "Bash(yarn eslint *)",
+      "Bash(yarn --cwd apps/frontend tsc --noEmit -p tsconfig.json)",
+      "Bash(npx eslint *)",
+      "Bash(npx playwright *)",
+      "Bash(lsof -nP -iTCP:3000 -sTCP:LISTEN)",
+      "Bash(npx vitest *)"
     ],
     "deny": [
       "Read(./.env)",

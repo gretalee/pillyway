@@ -3,7 +3,6 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
-import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 
@@ -127,7 +126,7 @@ export function Lightbox({
         aria-label={t('close')}
         onClick={onClose}
         className={cn('absolute right-4 top-4 z-10', btnClass)}>
-        <X size={20} aria-hidden="true" />
+        <i className="icon-times text-xl" aria-hidden="true" />
       </button>
 
       {canGoPrev && (
@@ -140,7 +139,7 @@ export function Lightbox({
             btnClass,
             'size-auto py-16 rounded-xl opacity-50 md:opacity-70 hover:opacity-100',
           )}>
-          <ChevronLeft size={40} aria-hidden="true" />
+          <i className="icon-chevron-left text-[40px]" aria-hidden="true" />
         </button>
       )}
 
@@ -154,7 +153,7 @@ export function Lightbox({
             btnClass,
             'size-auto py-16 rounded-xl opacity-50 md:opacity-70 hover:opacity-100',
           )}>
-          <ChevronRight size={40} aria-hidden="true" />
+          <i className="icon-chevron-right text-[40px]" aria-hidden="true" />
         </button>
       )}
 

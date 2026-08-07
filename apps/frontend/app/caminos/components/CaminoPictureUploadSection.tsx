@@ -2,7 +2,6 @@
 
 import { useRef, useState } from 'react';
 import Image from 'next/image';
-import { Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 
@@ -151,7 +150,7 @@ export function CaminoPictureUploadSection({
               aria-label={t('delete')}
               onClick={() => handleDeleteIconClick(primary.id)}
               className="absolute bottom-2 right-2 z-10 flex size-7 items-center justify-center rounded-md bg-black/60 text-white opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
-              <Trash2 size={14} aria-hidden="true" />
+              <i className="icon-trash text-sm" aria-hidden="true" />
             </button>
           )}
         </div>
@@ -178,7 +177,7 @@ export function CaminoPictureUploadSection({
                   aria-label={t('delete')}
                   onClick={() => handleDeleteIconClick(picture.id)}
                   className="absolute bottom-1 right-1 z-10 flex size-6 items-center justify-center rounded bg-black/60 text-white opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
-                  <Trash2 size={12} aria-hidden="true" />
+                  <i className="icon-trash text-xs" aria-hidden="true" />
                 </button>
               )}
             </div>

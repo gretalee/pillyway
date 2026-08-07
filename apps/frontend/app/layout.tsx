@@ -5,6 +5,9 @@ import { Providers } from '@/providers/providers';
 import { Header } from '@/app/components/layout/Header';
 import { Footer } from '@/app/components/layout/Footer';
 import { PathTracker } from '@/app/components/PathTracker';
+import { BurgerMenuPanel } from '@/app/components/layout/BurgerMenu';
+import { TestRightSideMenuPanel } from '@/app/components/layout/TestRightSideMenu';
+import { SideSlider } from '@/app/components/ui/SideMenu/SideMenu';
 import { getAuthUser } from '@/lib/getAuthUser';
 import type { Locale } from '@/i18n/detectLocale';
 import '../assets/styles/global.css';
@@ -46,22 +49,28 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const authUser = await getAuthUser();
-
   const locale = (await getLocale()) as Locale;
   const messages = await getMessages();
   const timeZone = await getTimeZone();
 
   return (
-    <html lang={locale} className="h-full antialiased">
-      <body className="min-h-full flex flex-col">
+    <html lang={locale} className="h-full antialiased overflow-x-clip">
+      <body className="min-h-full flex flex-col overflow-x-clip">
         <NextTopLoader color="var(--primary)" height={2} showSpinner={false} />
+
         <Providers locale={locale} messages={messages} timeZone={timeZone}>
           <PathTracker />
-          <Header user={authUser} />
-          <div className="flex flex-col flex-1">
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
+
+          {/* Their corresponding open/close buttons are rendered in the header. */}
+          <BurgerMenuPanel />
+          {process.env.NODE_ENV !== 'production' && <TestRightSideMenuPanel />}
+          <SideSlider className="flex min-h-full flex-1 flex-col">
+            <Header user={authUser} />
+            <div className="flex flex-col flex-1">
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+          </SideSlider>
         </Providers>
       </body>
     </html>

@@ -86,6 +86,23 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* Single source of truth for the off-canvas panel's size (OffCanvas.tsx):
+   both the panel's width/height and the amount the pushed content
+   translates read this same variable, so they can never drift apart —
+   the panel is always exactly as large as the space the content vacated. */
+  --off-canvas-size: calc(100% - 50px);
+  --off-canvas-size-vertical: calc(100dvh - 50px);
+
+  @media (min-width: 48rem) {
+    --off-canvas-size: 66.6667%;
+    --off-canvas-size-vertical: 66.6667dvh;
+  }
+
+  @media (min-width: 64rem) {
+    --off-canvas-size: 33.3333%;
+    --off-canvas-size-vertical: 33.3333dvh;
+  }
 }
 
 .dark {
