@@ -73,7 +73,11 @@
       "Bash(npx eslint *)",
       "Bash(npx playwright *)",
       "Bash(lsof -nP -iTCP:3000 -sTCP:LISTEN)",
-      "Bash(npx vitest *)"
+      "Bash(npx vitest *)",
+      "Bash(yarn --cwd apps/e2e lint)",
+      "Bash(yarn --cwd apps/e2e eslint . --fix)",
+      "Bash(yarn --cwd apps/e2e tsc)",
+      "Bash(yarn ts:e2e)"
     ],
     "deny": [
       "Read(./.env)",
