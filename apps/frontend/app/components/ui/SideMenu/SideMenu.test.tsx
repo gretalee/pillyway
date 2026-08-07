@@ -11,14 +11,14 @@ function resetStore() {
 
 beforeEach(() => {
   resetStore();
-  document.body.style.overflowY = '';
+  document.documentElement.style.overflowY = '';
   // jsdom doesn't implement scrollTo — push-side SideMenus call it on every
   // open/close, which would otherwise spam "Not implemented" warnings.
   vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
 });
 
 afterEach(() => {
-  document.body.style.overflowY = '';
+  document.documentElement.style.overflowY = '';
   vi.restoreAllMocks();
 });
 
@@ -203,7 +203,13 @@ describe('SideMenu — push side', () => {
     expect(useSideMenuStore.getState().openId).toBeNull();
   });
 
-  it('locks body scroll while open and restores it on close', async () => {
+  it('locks page scroll (via <html>, not <body>) while open and restores it on close', async () => {
+    // Locking must target <html>, not <body>: <html> has overflow-x:clip
+    // (see global styles), which disqualifies body's overflow from
+    // propagating to the viewport — so <html> is what's actually scrolling.
+    // Locking <body> "worked" (nothing could scroll) but also made body a
+    // candidate nearest-scrolling-ancestor for the sticky header, whose
+    // scrollTop never moves — breaking the header's stickiness.
     const user = userEvent.setup();
     render(
       <SideMenu id="push-menu" side="left" title="Menu">
@@ -211,10 +217,11 @@ describe('SideMenu — push side', () => {
       </SideMenu>,
     );
     act(() => useSideMenuStore.getState().open('push-menu'));
-    expect(document.body.style.overflowY).toBe('hidden');
+    expect(document.documentElement.style.overflowY).toBe('hidden');
+    expect(document.body.style.overflowY).toBe('');
 
     await user.click(screen.getByRole('button', { name: 'Menu' }));
-    expect(document.body.style.overflowY).toBe('');
+    expect(document.documentElement.style.overflowY).toBe('');
   });
 
   it('moves focus to the title button on open', () => {
@@ -303,14 +310,25 @@ describe('SideMenu — bottom overlay', () => {
     expect(window.scrollTo, 'a bottom overlay must never call window.scrollTo').not.toHaveBeenCalled();
   });
 
-  it('still locks body scroll while open', () => {
+  it('does NOT lock page scroll — the overlay is independent, the page keeps scrolling normally', () => {
     render(
       <SideMenu id="bottom-menu" side="bottom" title="Overlay">
         body
       </SideMenu>,
     );
     act(() => useSideMenuStore.getState().open('bottom-menu'));
-    expect(document.body.style.overflowY).toBe('hidden');
+    expect(document.documentElement.style.overflowY).toBe('');
+    expect(document.body.style.overflowY).toBe('');
+  });
+
+  it('still moves focus to the title button on open', () => {
+    render(
+      <SideMenu id="bottom-menu" side="bottom" title="Overlay">
+        body
+      </SideMenu>,
+    );
+    act(() => useSideMenuStore.getState().open('bottom-menu'));
+    expect(screen.getByRole('button', { name: 'Overlay' })).toHaveFocus();
   });
 });
 

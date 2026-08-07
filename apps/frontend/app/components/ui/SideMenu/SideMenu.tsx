@@ -79,29 +79,22 @@ export function SideMenu({
   }, [id, side, registerSide]);
 
   useEffect(() => {
+    if (isBottomOverlay) {
+      if (isOpen) titleButtonRef.current?.focus();
+      return;
+    }
+
     if (isOpen) {
-      // Only push sides need the scroll reset: SideSlider translates
-      // via CSS transform, which makes it an active containing block for
-      // any sticky descendants (e.g. the sticky header) — so
-      // position:sticky no longer tracks the real viewport while open.
-      // Background scrolling is locked either way, so reset to the top and
-      // restore the reading position once the panel closes. The bottom
-      // overlay never moves the page, so position:sticky keeps working
-      // normally — resetting scroll there would just be a pointless jump.
-      if (!isBottomOverlay) {
-        scrollYRef.current = window.scrollY;
-        window.scrollTo(0, 0);
-      }
-      document.body.style.overflowY = 'hidden';
+      scrollYRef.current = window.scrollY;
+      window.scrollTo(0, 0);
+      document.documentElement.style.overflowY = 'hidden';
       titleButtonRef.current?.focus();
     } else {
-      document.body.style.overflowY = '';
-      if (!isBottomOverlay) {
-        window.scrollTo(0, scrollYRef.current);
-      }
+      document.documentElement.style.overflowY = '';
+      window.scrollTo(0, scrollYRef.current);
     }
     return () => {
-      document.body.style.overflowY = '';
+      document.documentElement.style.overflowY = '';
     };
   }, [isOpen, isBottomOverlay]);
 
