@@ -17,10 +17,19 @@ skill:
 - **CLAUDE.md → "E2E Testing Conventions (Playwright)"** — the canonical,
   written-down rules (structure, hook timeouts, cleanup). Treat this as the
   source of truth if anything here seems to disagree with it.
-- **`apps/e2e/tests/helpers.ts`** — every reusable setup/navigation/cleanup
-  helper. Read this in full before writing any new test — duplicating a
-  helper inline instead of reusing (or extending) it is the most common way
-  new specs drift from convention.
+- **`apps/e2e/tests/helpers/`** — every reusable setup/navigation/cleanup
+  helper, split by concern: `login-helpers.ts` holds login/session/naming
+  helpers (`setLanguageToEnglish`, `loginAs`, `logout`, `uniqueName`),
+  `camino-helpers.ts` holds all camino creation/fixture-data/cleanup helpers,
+  and `index.ts` is a pure barrel (`export * from './login-helpers'` +
+  `export * from './camino-helpers'`) so every spec file still imports from
+  `'./helpers'` regardless of which file a given helper actually lives in.
+  Read the relevant file(s) in full before writing any new test — duplicating
+  a helper inline instead of reusing (or extending) it is the most common way
+  new specs drift from convention. If a new concern (a new entity, or
+  something else that doesn't fit login/camino) accumulates enough dedicated
+  helpers to be worth splitting out, give it its own `<concern>-helpers.ts`
+  and add it to the `index.ts` barrel, following the same pattern.
 - **A recently-written spec file covering a similar flow** — check
   `apps/e2e/tests/` for the closest existing match before starting from
   scratch. Match its shape.
@@ -135,8 +144,10 @@ If the user hasn't said, ask (or infer from context):
 ## Step 7: Helpers, not page objects
 
 - **Extract recurring functionality into plain helper functions** in
-  `tests/helpers.ts` — e.g. login, camino creation, cleanup. Reuse (or
-  extend) what's already there before writing new setup code inline.
+  `tests/helpers/`, grouped by concern into files like `login-helpers.ts` and
+  `camino-helpers.ts` (never in `index.ts`, which stays a pure re-export
+  barrel) — e.g. login, camino creation, cleanup. Reuse (or extend) what's
+  already there before writing new setup code inline.
 - **Avoid the Page Object Model.** This repo uses plain async functions
   (`loginAs(page, email, password)`, `createCaminoWith4Points(page, name)`,
   ...) that take a `page` and return the data the test needs — not classes
@@ -145,8 +156,9 @@ If the user hasn't said, ask (or infer from context):
 ## Step 8: Reusable test data, not re-typed literals
 
 - **When a helper creates data (a camino's waypoints, a stage's fields, ...),
-  export the literal data it uses as a named constant from `helpers.ts`** —
-  don't bury it as a private module-level array only the helper can see.
+  export the literal data it uses as a named constant from its helper file**
+  (e.g. `camino-helpers.ts`) — don't bury it as a private module-level array
+  only the helper can see.
   Example: `CAMINO_FIXTURE_WAYPOINTS` (name/country/countryCode per waypoint)
   is exported and consumed by both `createCaminoWith4Points` (to fill the
   form) and `createCaminoViaForm` (takes just its first entry).
@@ -173,13 +185,13 @@ If the user hasn't said, ask (or infer from context):
 1. Inspect existing spec files for a similar flow — don't start from a
    blank file if something close already exists.
 2. Reuse existing fixtures, helpers, and exported test-data constants from
-   `tests/helpers.ts` — including for assertions, per Step 8.
+   `tests/helpers/` — including for assertions, per Step 8.
 3. Identify the user-visible behavior being tested — write it down as the
    file's data/auth-strategy comment before writing any Playwright code.
 4. Identify stable (accessible) locators for every interaction and
    assertion in the flow.
 5. Consider whether the test's setup data should be created through the
-   API instead of the UI. Today every helper in `tests/helpers.ts` creates
+   API instead of the UI. Today every helper in `tests/helpers/` creates
    data via the UI form (`createCaminoViaForm`, `createCaminoWith4Points`) —
    that's the current convention. Note API-based setup as an option worth
    raising with the user for a slow/flaky setup step, but don't build new

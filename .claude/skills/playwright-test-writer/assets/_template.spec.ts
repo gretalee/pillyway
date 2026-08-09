@@ -1,8 +1,12 @@
 import { expect, test } from '@playwright/test';
 import {
-  // Import only what you need. Check tests/helpers.ts first — if the setup
-  // step you need isn't there yet but would be useful to another spec too,
-  // add it there instead of duplicating it inline.
+  // Import only what you need. Check tests/helpers/ first — login/session
+  // helpers (login, logout, uniqueName, ...) live in
+  // tests/helpers/login-helpers.ts, entity-specific ones (e.g. camino
+  // creation/cleanup) in tests/helpers/camino-helpers.ts. Both are
+  // re-exported from './helpers' (a pure barrel), so this import path never
+  // changes. If the setup step you need isn't there yet but would be useful
+  // to another spec too, add it there instead of duplicating it inline.
   // createCaminoWith4Points, deleteCaminoViaUI, loginAs, logout, setLanguageToEnglish, uniqueName,
 } from './helpers';
 
