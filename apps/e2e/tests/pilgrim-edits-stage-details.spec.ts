@@ -33,6 +33,7 @@ test.describe('Pilgrim edits stage details', () => {
   test.setTimeout(60_000);
 
   let caminoId: string;
+  let caminoSlug: string;
   let caminoName: string;
 
   test.beforeAll(async ({ browser }, testInfo) => {
@@ -47,14 +48,16 @@ test.describe('Pilgrim edits stage details', () => {
     await setLanguageToEnglish(page);
     await loginAs(page, email!, password!);
     caminoName = uniqueName('PilgrimEditsStage');
-    caminoId = await createCaminoWith4Points(page, caminoName);
+    const created = await createCaminoWith4Points(page, caminoName);
+    caminoId = created.id;
+    caminoSlug = created.slug;
     await logout(page);
     await ctx.close();
   });
 
   test.afterAll(async ({ browser }, testInfo) => {
     testInfo.setTimeout(90_000);
-    if (!caminoId) return;
+    if (!caminoSlug) return;
     const email = process.env.E2E_PILGRIM_EMAIL;
     const password = process.env.E2E_PILGRIM_PASSWORD;
     if (!email || !password) return;
@@ -64,7 +67,7 @@ test.describe('Pilgrim edits stage details', () => {
     await setLanguageToEnglish(page);
     await loginAs(page, email, password);
     try {
-      await deleteCaminoViaUI(page, caminoId);
+      await deleteCaminoViaUI(page, caminoSlug);
     } finally {
       await logout(page);
       await ctx.close();

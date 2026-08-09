@@ -34,7 +34,7 @@ import {
 test.describe('View stage as guest', () => {
   test.describe.configure({ mode: 'serial' });
 
-  let caminoId: string;
+  let caminoSlug: string;
   let caminoName: string;
 
   test.beforeAll(async ({ browser }, testInfo) => {
@@ -49,14 +49,14 @@ test.describe('View stage as guest', () => {
     await setLanguageToEnglish(page);
     await loginAs(page, email!, password!);
     caminoName = uniqueName('ViewStageAsGuest');
-    caminoId = await createCaminoWith4Points(page, caminoName);
+    caminoSlug = (await createCaminoWith4Points(page, caminoName)).slug;
     await logout(page);
     await ctx.close();
   });
 
   test.afterAll(async ({ browser }, testInfo) => {
     testInfo.setTimeout(90_000);
-    if (!caminoId) return;
+    if (!caminoSlug) return;
     const email = process.env.E2E_PILGRIM_EMAIL;
     const password = process.env.E2E_PILGRIM_PASSWORD;
     if (!email || !password) return;
@@ -66,7 +66,7 @@ test.describe('View stage as guest', () => {
     await setLanguageToEnglish(page);
     await loginAs(page, email, password);
     try {
-      await deleteCaminoViaUI(page, caminoId);
+      await deleteCaminoViaUI(page, caminoSlug);
     } finally {
       await logout(page);
       await ctx.close();

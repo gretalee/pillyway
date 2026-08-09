@@ -35,7 +35,7 @@ test.describe('Pilgrim sees the reorder warning dialog', () => {
   test.describe.configure({ mode: 'serial' });
   test.setTimeout(60_000);
 
-  let caminoId: string;
+  let caminoSlug: string;
   let caminoName: string;
 
   test.beforeAll(async ({ browser }, testInfo) => {
@@ -50,14 +50,14 @@ test.describe('Pilgrim sees the reorder warning dialog', () => {
     await setLanguageToEnglish(page);
     await loginAs(page, email!, password!);
     caminoName = uniqueName('ReorderWarning');
-    caminoId = await createCaminoWith4Points(page, caminoName);
+    caminoSlug = (await createCaminoWith4Points(page, caminoName)).slug;
     await logout(page);
     await ctx.close();
   });
 
   test.afterAll(async ({ browser }, testInfo) => {
     testInfo.setTimeout(90_000);
-    if (!caminoId) return;
+    if (!caminoSlug) return;
     const email = process.env.E2E_PILGRIM_EMAIL;
     const password = process.env.E2E_PILGRIM_PASSWORD;
     if (!email || !password) return;
@@ -67,7 +67,7 @@ test.describe('Pilgrim sees the reorder warning dialog', () => {
     await setLanguageToEnglish(page);
     await loginAs(page, email, password);
     try {
-      await deleteCaminoViaUI(page, caminoId);
+      await deleteCaminoViaUI(page, caminoSlug);
     } finally {
       await logout(page);
       await ctx.close();
@@ -80,7 +80,7 @@ test.describe('Pilgrim sees the reorder warning dialog', () => {
     await setLanguageToEnglish(page);
     await loginAs(page, process.env.E2E_PILGRIM_EMAIL!, process.env.E2E_PILGRIM_PASSWORD!);
 
-    await page.goto(`/caminos/${caminoId}/update`);
+    await page.goto(`/caminos/${caminoSlug}/update`);
     await expect(
       page.getByLabel('Camino Name'),
       'update form must be pre-populated with the current camino name',
@@ -115,7 +115,7 @@ test.describe('Pilgrim sees the reorder warning dialog', () => {
     await expect(
       page,
       '"Go back" must leave the pilgrim on the update form, not navigate away',
-    ).toHaveURL(`/caminos/${caminoId}/update`);
+    ).toHaveURL(`/caminos/${caminoSlug}/update`);
 
     // ─── Second pass: re-trigger and "Save anyway" confirms ────────────────
 
@@ -126,10 +126,10 @@ test.describe('Pilgrim sees the reorder warning dialog', () => {
     ).toBeVisible({ timeout: 10_000 });
 
     await page.getByRole('button', { name: 'Save anyway' }).click();
-    await page.waitForURL(`/caminos/${caminoId}`, { timeout: 15_000 });
+    await page.waitForURL(`/caminos/${caminoSlug}`, { timeout: 15_000 });
     await expect(
       page,
       '"Save anyway" must save and redirect to the camino detail page',
-    ).toHaveURL(`/caminos/${caminoId}`);
+    ).toHaveURL(`/caminos/${caminoSlug}`);
   });
 });

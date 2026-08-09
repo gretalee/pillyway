@@ -33,6 +33,7 @@ test.describe('Pilgrim adds accommodation and sight to a waypoint', () => {
   test.setTimeout(60_000);
 
   let caminoId: string;
+  let caminoSlug: string;
   let caminoName: string;
   let waypointSlug: string;
 
@@ -48,8 +49,11 @@ test.describe('Pilgrim adds accommodation and sight to a waypoint', () => {
     await setLanguageToEnglish(page);
     await loginAs(page, email!, password!);
     caminoName = uniqueName('PilgrimAddsPoi');
-    caminoId = await createCaminoWith4Points(page, caminoName);
+    const created = await createCaminoWith4Points(page, caminoName);
+    caminoId = created.id;
+    caminoSlug = created.slug;
 
+    // Stage links use the camino's numeric id, not its slug.
     await page.goto(`/caminos/${caminoId}/stages/1`);
     const startLink = page.locator('dl dd a').first();
     await expect(startLink, 'stage 1 start point must be a link').toBeVisible({ timeout: 10_000 });
@@ -63,7 +67,7 @@ test.describe('Pilgrim adds accommodation and sight to a waypoint', () => {
 
   test.afterAll(async ({ browser }, testInfo) => {
     testInfo.setTimeout(90_000);
-    if (!caminoId) return;
+    if (!caminoSlug) return;
     const email = process.env.E2E_PILGRIM_EMAIL;
     const password = process.env.E2E_PILGRIM_PASSWORD;
     if (!email || !password) return;
@@ -73,7 +77,7 @@ test.describe('Pilgrim adds accommodation and sight to a waypoint', () => {
     await setLanguageToEnglish(page);
     await loginAs(page, email, password);
     try {
-      await deleteCaminoViaUI(page, caminoId);
+      await deleteCaminoViaUI(page, caminoSlug);
     } finally {
       await logout(page);
       await ctx.close();

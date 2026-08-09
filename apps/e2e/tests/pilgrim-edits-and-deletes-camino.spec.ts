@@ -1,5 +1,12 @@
 import { expect, test } from '@playwright/test';
-import { createCaminoViaForm, loginAs, logout, setLanguageToEnglish, uniqueName } from './helpers';
+import {
+  createCaminoViaForm,
+  deleteCaminoViaUI,
+  loginAs,
+  logout,
+  setLanguageToEnglish,
+  uniqueName,
+} from './helpers';
 
 /**
  * E2E test for a pilgrim editing and deleting their own camino.
@@ -28,7 +35,7 @@ test.describe('Pilgrim edits and deletes a camino', () => {
   test.describe.configure({ mode: 'serial' });
   test.setTimeout(60_000);
 
-  let caminoId: string;
+  let caminoSlug: string;
   let caminoName: string;
 
   test.beforeAll(async ({ browser }, testInfo) => {
@@ -43,14 +50,14 @@ test.describe('Pilgrim edits and deletes a camino', () => {
     await setLanguageToEnglish(page);
     await loginAs(page, email!, password!);
     caminoName = uniqueName('PilgrimEditDelete');
-    caminoId = await createCaminoViaForm(page, caminoName);
+    caminoSlug = (await createCaminoViaForm(page, caminoName)).slug;
     await logout(page);
     await ctx.close();
   });
 
   test.afterAll(async ({ browser }, testInfo) => {
     testInfo.setTimeout(90_000);
-    if (!caminoId) return;
+    if (!caminoSlug) return;
     const email = process.env.E2E_PILGRIM_EMAIL;
     const password = process.env.E2E_PILGRIM_PASSWORD;
     if (!email || !password) return;
@@ -60,16 +67,9 @@ test.describe('Pilgrim edits and deletes a camino', () => {
     await setLanguageToEnglish(page);
     await loginAs(page, email, password);
     try {
-      await page.goto('/caminos');
-      const trigger = page.locator(`[aria-label="Actions for ${caminoName}"]`);
-      if (await trigger.isVisible({ timeout: 5_000 }).catch(() => false)) {
-        await trigger.click();
-        const deleteMenuItem = page.getByRole('menuitem', { name: 'Delete camino' });
-        if (await deleteMenuItem.isVisible({ timeout: 5_000 }).catch(() => false)) {
-          await deleteMenuItem.click();
-          await page.getByRole('button', { name: 'Delete' }).click();
-        }
-      }
+      // The test itself already deletes this camino as its final step — this
+      // is a safety net for whenever it doesn't get that far.
+      await deleteCaminoViaUI(page, caminoSlug);
     } finally {
       await logout(page);
       await ctx.close();
@@ -85,7 +85,7 @@ test.describe('Pilgrim edits and deletes a camino', () => {
     // ─── Three-dots menu → update form, pre-populated ──────────────────────
 
     await page.goto('/caminos');
-    const card = page.locator(`li:has(a[href="/caminos/${caminoId}"])`);
+    const card = page.locator(`li:has(a[href="/caminos/${caminoSlug}"])`);
     await expect(card, 'test camino card must be visible in the list').toBeVisible({
       timeout: 10_000,
     });
@@ -96,7 +96,7 @@ test.describe('Pilgrim edits and deletes a camino', () => {
       '"Change camino data" menu item must be visible',
     ).toBeVisible({ timeout: 5_000 });
     await changeCaminoItem.click();
-    await page.waitForURL(`/caminos/${caminoId}/update`, { timeout: 10_000 });
+    await page.waitForURL(`/caminos/${caminoSlug}/update`, { timeout: 10_000 });
     await expect(
       page.getByRole('form', { name: 'Update Camino' }),
       'update form must be visible',
@@ -108,7 +108,7 @@ test.describe('Pilgrim edits and deletes a camino', () => {
 
     // ─── Inline edit: Enter saves ───────────────────────────────────────────
 
-    await page.goto(`/caminos/${caminoId}`);
+    await page.goto(`/caminos/${caminoSlug}`);
     await expect(
       page.getByRole('heading', { level: 1 }),
       'detail page heading must show the current camino name before inline editing',
@@ -143,7 +143,7 @@ test.describe('Pilgrim edits and deletes a camino', () => {
 
     // ─── Full update form ────────────────────────────────────────────────
 
-    await page.goto(`/caminos/${caminoId}/update`);
+    await page.goto(`/caminos/${caminoSlug}/update`);
     await expect(page.getByLabel('Camino Name'), 'update form must show the current name').toHaveValue(
       caminoName,
       { timeout: 10_000 },
@@ -151,7 +151,7 @@ test.describe('Pilgrim edits and deletes a camino', () => {
     const nameAfterFormUpdate = `${caminoName} Renamed`;
     await page.getByLabel('Camino Name').fill(nameAfterFormUpdate);
     await page.getByRole('button', { name: 'Save changes' }).click();
-    await page.waitForURL(`/caminos/${caminoId}`, { timeout: 20_000 });
+    await page.waitForURL(`/caminos/${caminoSlug}`, { timeout: 20_000 });
     await expect(
       page.getByRole('heading', { level: 1 }),
       'submitting the update form must redirect to the detail page with the new name',
