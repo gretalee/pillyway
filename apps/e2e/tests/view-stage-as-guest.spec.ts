@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import {
+  CAMINO_FIXTURE_WAYPOINTS,
   createCaminoWith4Points,
   deleteCaminoViaUI,
   loginAs,
@@ -95,10 +96,11 @@ test.describe('View stage as guest', () => {
     });
     await firstStageLink.click();
     await page.waitForURL(/\/caminos\/[^/]+\/stages\/\d+$/, { timeout: 10_000 });
+    const [start, end] = CAMINO_FIXTURE_WAYPOINTS;
     await expect(
       page.getByRole('heading', { level: 1 }),
-      'stage detail heading must mention "Stage"',
-    ).toContainText('Stage', { timeout: 10_000 });
+      'stage 1 heading must name its actual start and end waypoints',
+    ).toContainText(`Stage 1: ${start.name} – ${end.name}`, { timeout: 10_000 });
 
     await expect(
       page.getByRole('link', { name: 'Edit stage' }),

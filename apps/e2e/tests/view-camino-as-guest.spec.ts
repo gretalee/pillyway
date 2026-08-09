@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
 import {
+  CAMINO_FIXTURE_COUNTRY_CODES,
+  CAMINO_FIXTURE_WAYPOINTS,
   createCaminoWith4Points,
   deleteCaminoViaUI,
   loginAs,
@@ -119,7 +121,7 @@ test.describe('View camino as guest', () => {
       'detail page heading must show the camino name',
     ).toContainText(caminoName);
     await expect(
-      page.getByText('FR · ES'),
+      page.getByText(CAMINO_FIXTURE_COUNTRY_CODES),
       'countries row must list the two countries the camino passes through',
     ).toBeVisible();
     await expect(
@@ -138,12 +140,7 @@ test.describe('View camino as guest', () => {
       stageRows,
       'all 3 stages between the 4 waypoints must be listed',
     ).toHaveCount(3);
-    for (const waypointName of [
-      'Saint-Jean-Pied-de-Port',
-      'Roncesvalles',
-      'Pamplona',
-      'Logroño',
-    ]) {
+    for (const { name: waypointName } of CAMINO_FIXTURE_WAYPOINTS) {
       await expect(
         page.locator('ol').getByText(waypointName, { exact: false }).first(),
         `stage list must mention waypoint "${waypointName}"`,

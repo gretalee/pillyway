@@ -142,11 +142,38 @@ If the user hasn't said, ask (or infer from context):
   ...) that take a `page` and return the data the test needs — not classes
   wrapping locators. Keep new helpers in that same shape.
 
-## Step 8: Before implementing — work through this checklist in order
+## Step 8: Reusable test data, not re-typed literals
+
+- **When a helper creates data (a camino's waypoints, a stage's fields, ...),
+  export the literal data it uses as a named constant from `helpers.ts`** —
+  don't bury it as a private module-level array only the helper can see.
+  Example: `CAMINO_FIXTURE_WAYPOINTS` (name/country/countryCode per waypoint)
+  is exported and consumed by both `createCaminoWith4Points` (to fill the
+  form) and `createCaminoViaForm` (takes just its first entry).
+- **Tests that assert on that same data must import and use the constant,
+  never re-type the values.** If a test checks the countries shown on a
+  camino created via `createCaminoWith4Points`, it asserts against
+  `CAMINO_FIXTURE_COUNTRY_CODES` (itself derived from
+  `CAMINO_FIXTURE_WAYPOINTS`), not a hardcoded `'FR · ES'` string. Re-typing
+  the same literal in the test lets the helper and the test silently drift
+  apart — the helper's data can change while the test keeps "passing" against
+  stale expectations, or a real bug hides behind a coincidentally-matching
+  duplicate.
+- This also strengthens weak assertions "for free": a check that could only
+  afford to assert `.toContainText('Stage')` (because writing out the real
+  heading felt like unmaintainable duplication) can instead assert the exact
+  expected text — e.g. `` `Stage 1: ${start.name} – ${end.name}` `` — once
+  that data has a single source of truth to pull from.
+- Derive related constants instead of hand-computing them twice (e.g.
+  `CAMINO_FIXTURE_COUNTRY_CODES` is `[...new Set(CAMINO_FIXTURE_WAYPOINTS.map(wp => wp.countryCode))].join(' · ')`,
+  not a separately maintained string).
+
+## Step 9: Before implementing — work through this checklist in order
 
 1. Inspect existing spec files for a similar flow — don't start from a
    blank file if something close already exists.
-2. Reuse existing fixtures and helpers from `tests/helpers.ts`.
+2. Reuse existing fixtures, helpers, and exported test-data constants from
+   `tests/helpers.ts` — including for assertions, per Step 8.
 3. Identify the user-visible behavior being tested — write it down as the
    file's data/auth-strategy comment before writing any Playwright code.
 4. Identify stable (accessible) locators for every interaction and
@@ -165,7 +192,7 @@ If the user hasn't said, ask (or infer from context):
    login overhead is the bottleneck, don't implement it inline in a new spec.
 7. Only then implement the test.
 
-## Step 9: The non-negotiable rule (CLAUDE.md)
+## Step 10: The non-negotiable rule (CLAUDE.md)
 
 **Never skip a test because a prerequisite is missing** (no seeded records,
 an env var not set, backend unreachable). `test.skip()` and `testInfo.skip()`
@@ -181,14 +208,14 @@ This applies to `beforeAll` guard checks just as much as to the test body —
 the failure needs to be loud and immediately diagnosable in CI, not silently
 skipped.
 
-## Step 10: Write the file
+## Step 11: Write the file
 
 Start from `assets/_template.spec.ts` in this skill for the skeleton (header
 comment block, single describe/single test shape, timeout placeholders).
 Fill in the data/auth strategy comment honestly — it's what the next person
 reads before touching the file.
 
-## Step 11: Validate
+## Step 12: Validate
 
 1. Confirm the file type-checks / has no obvious syntax issues.
 2. Running the test for real requires: the frontend (`yarn dev:frontend`)
@@ -204,7 +231,7 @@ reads before touching the file.
    back — by finding the missing synchronization or unstable data, never by
    adding a timeout or a retry (see Step 6).
 
-## Step 12: Hand back a summary
+## Step 13: Hand back a summary
 
 - The file path (new or edited) and which use-case it covers.
 - Which env vars it requires.

@@ -112,15 +112,17 @@ async function submitCaminoCreateForm(page: Page): Promise<CreatedCamino> {
 }
 
 // ─── Helper: fill and submit the camino creation form ────────────────────────
-// Uses a single waypoint (France) to keep setup minimal.
+// Uses a single waypoint (the first CAMINO_FIXTURE_WAYPOINTS entry) to keep
+// setup minimal.
 export async function createCaminoViaForm(page: Page, name: string): Promise<CreatedCamino> {
   await page.goto('/caminos/new');
   await page.getByLabel('Camino Name').fill(name);
 
+  const [firstWaypoint] = CAMINO_FIXTURE_WAYPOINTS;
   const waypointNameInput = page.getByLabel('Waypoint Name').first();
-  await waypointNameInput.fill('Saint-Jean-Pied-de-Port');
+  await waypointNameInput.fill(firstWaypoint.name);
   const countrySelect = page.getByLabel('Country').first();
-  await countrySelect.selectOption('France');
+  await countrySelect.selectOption(firstWaypoint.country);
 
   const useExistingButton = page
     .getByRole('button', { name: /Yes, use this existing waypoint/ })
@@ -133,30 +135,48 @@ export async function createCaminoViaForm(page: Page, name: string): Promise<Cre
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Helper: create a camino with 4 waypoints across 2 countries, so that
-// exactly 3 stages exist, a route map renders (needs >=2 coordinates), and
-// the verification section renders (needs >=3 points). Stage 2 is then a
-// middle stage with both previous and next navigation links. Existing
-// waypoints are reused via the suggestion card to keep the DB lean.
+// Shared fixture data for camino creation. Exported so tests can assert
+// against the exact same values used to create the fixture (waypoint names,
+// country codes) instead of re-typing them — a mismatch here would mean the
+// helper and the test silently drift apart.
+//
+// 4 waypoints across 2 countries: exactly 3 stages exist, a route map
+// renders (needs >=2 coordinates), and the verification section renders
+// (needs >=3 points). Stage 2 is then a middle stage with both previous and
+// next navigation links.
 // ─────────────────────────────────────────────────────────────────────────────
 
-const WAYPOINTS: Array<{ name: string; country: string }> = [
-  { name: 'Saint-Jean-Pied-de-Port', country: 'France' },
-  { name: 'Roncesvalles', country: 'Spain' },
-  { name: 'Pamplona', country: 'Spain' },
-  { name: 'Logroño', country: 'Spain' },
+export interface CaminoWaypointFixture {
+  /** Waypoint name as typed into the "Waypoint Name" field. */
+  name: string;
+  /** Country display name, as shown in the "Country" <select>. */
+  country: string;
+  /** ISO country code, as rendered in the UI's countries-passed-through row. */
+  countryCode: string;
+}
+
+export const CAMINO_FIXTURE_WAYPOINTS: readonly CaminoWaypointFixture[] = [
+  { name: 'Saint-Jean-Pied-de-Port', country: 'France', countryCode: 'FR' },
+  { name: 'Roncesvalles', country: 'Spain', countryCode: 'ES' },
+  { name: 'Pamplona', country: 'Spain', countryCode: 'ES' },
+  { name: 'Logroño', country: 'Spain', countryCode: 'ES' },
 ];
+
+/** Matches the "FR · ES" countries-passed-through row for CAMINO_FIXTURE_WAYPOINTS. */
+export const CAMINO_FIXTURE_COUNTRY_CODES = [
+  ...new Set(CAMINO_FIXTURE_WAYPOINTS.map((wp) => wp.countryCode)),
+].join(' · ');
 
 export async function createCaminoWith4Points(page: Page, name: string): Promise<CreatedCamino> {
   await page.goto('/caminos/new');
   await page.getByLabel('Camino Name').fill(name);
 
-  for (let i = 0; i < WAYPOINTS.length; i++) {
+  for (let i = 0; i < CAMINO_FIXTURE_WAYPOINTS.length; i++) {
     if (i > 0) {
       await page.getByRole('button', { name: 'Add Waypoint' }).click();
     }
 
-    const { name: wpName, country } = WAYPOINTS[i];
+    const { name: wpName, country } = CAMINO_FIXTURE_WAYPOINTS[i];
     await page.getByLabel('Waypoint Name').nth(i).fill(wpName);
     await page.getByLabel('Country').nth(i).selectOption(country);
 
