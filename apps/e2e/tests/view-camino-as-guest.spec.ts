@@ -34,14 +34,10 @@ import {
  * afterAll deletes it via the UI (best-effort, but logs loudly on failure —
  * see deleteCaminoViaUI).
  *
- * Known gap: the route map (`getByRole('img', { name: 'Routenkarte' })`) is
- * intentionally NOT asserted here. It only renders once a camino's
- * waypoints have coordinates, and this fixture's waypoints — created via
- * the "reuse existing waypoint" suggestion flow — were confirmed (twice,
- * with a generous wait) to end up without coordinates, even though the
- * waypoints being reused already exist elsewhere with real coordinates.
- * That looks like a real gap in the reuse flow, not a test problem — worth
- * a separate look, and then a dedicated map assertion once it's resolved.
+ * The route map (`getByRole('img', { name: 'Routenkarte' })`) is asserted
+ * too. It renders once a camino has >=2 points with coordinates, which
+ * CAMINO_FIXTURE_WAYPOINTS' lat/lng values (filled by
+ * createCaminoWith4Points) guarantee.
  *
  * Auth strategy
  * -------------
@@ -135,6 +131,10 @@ test.describe('View camino as guest', () => {
       page.getByRole('heading', { name: 'Stages' }),
       'detail page must show a Stages heading',
     ).toBeVisible();
+    await expect(
+      page.getByRole('img', { name: 'Routenkarte' }),
+      'route map must render for a camino with >=2 waypoints that have coordinates',
+    ).toBeVisible({ timeout: 10_000 });
     const stageRows = page.locator('ol li');
     await expect(
       stageRows,

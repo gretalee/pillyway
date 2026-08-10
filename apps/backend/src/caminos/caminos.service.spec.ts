@@ -279,6 +279,61 @@ describe('CaminosService.create()', () => {
     expect(result.caminoPoints).toHaveLength(3);
     expect(result.caminoPoints.map((p) => p.position)).toEqual([1, 2, 3]);
   });
+
+  // Regression: a "new point" definition that collides by name+country with
+  // an already-existing CaminoPoint must still apply freshly-provided
+  // coordinates via the upsert's update branch, not silently discard them.
+  it('passes lat/lng to the upsert update branch when a new point has coordinates', async () => {
+    const tx = makeTx();
+    const prismaMock = {
+      $transaction: vi
+        .fn()
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) =>
+          cb(tx),
+        ),
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
+
+    const dtoWithCoords: CreateCaminoDto = {
+      name: 'Camino Con Coords',
+      caminoPoints: [
+        {
+          name: 'Saint-Jean-Pied-de-Port',
+          country: 'france',
+          lat: 43.1634,
+          lng: -1.2377,
+        },
+      ],
+    };
+
+    await service.create(dtoWithCoords, 'kinde-user-001');
+
+    expect(tx.caminoPoint.upsert).toHaveBeenCalledWith(
+      expect.objectContaining({ update: { lat: 43.1634, lng: -1.2377 } }),
+    );
+  });
+
+  // Regression: without coordinates, the update branch must stay empty (in
+  // particular it must never touch the immutable slug).
+  it('sends an empty upsert update branch when a new point has no coordinates', async () => {
+    const tx = makeTx();
+    const prismaMock = {
+      $transaction: vi
+        .fn()
+        .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) =>
+          cb(tx),
+        ),
+    };
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
+
+    await service.create(newPointDto, 'kinde-user-001');
+
+    expect(tx.caminoPoint.upsert).toHaveBeenCalledWith(
+      expect.objectContaining({ update: {} }),
+    );
+  });
 });
 
 // ─── CaminosService.create() — Exception mapping ─────────────────────────────
@@ -587,6 +642,7 @@ describe('CaminosService.update()', () => {
 
     return {
       camino: caminoMock,
+      caminoPoint: tx.caminoPoint,
       $transaction: vi
         .fn()
         .mockImplementation((cb: (tx: ReturnType<typeof makeTx>) => unknown) =>
@@ -635,6 +691,31 @@ describe('CaminosService.update()', () => {
       OWNER_AND_PILGRIM_ROLES,
     );
     expect(result.id).toBe(CAMINO_ID);
+  });
+
+  // Regression: same upsert-collision bug as create(), reached via the
+  // "replace waypoint list" branch of update().
+  it('passes lat/lng to the upsert update branch when a new point has coordinates', async () => {
+    const prismaMock = makeUpdatePrismaMock();
+    const module = await buildModule(prismaMock);
+    const service = module.get(CaminosService);
+
+    const dtoWithCoords: UpdateCaminoDto = {
+      caminoPoints: [
+        { name: 'New Point', country: 'spain', lat: 42.8125, lng: -1.6458 },
+      ],
+    };
+
+    await service.update(
+      CAMINO_ID,
+      dtoWithCoords,
+      OTHER_ID,
+      OWNER_AND_PILGRIM_ROLES,
+    );
+
+    expect(prismaMock.caminoPoint.upsert).toHaveBeenCalledWith(
+      expect.objectContaining({ update: { lat: 42.8125, lng: -1.6458 } }),
+    );
   });
 
   it('allows the creator to remove waypoints within the time window', async () => {

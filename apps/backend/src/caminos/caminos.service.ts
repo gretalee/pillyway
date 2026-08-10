@@ -113,6 +113,22 @@ function assertCoordPair(
   }
 }
 
+/**
+ * Coordinate patch for a caminoPoint upsert's `update` branch — only writes
+ * lat/lng when both are explicitly provided (same "atomic pair" rule as
+ * assertCoordPair), leaving every other field — in particular the immutable
+ * slug — untouched. Without this, a "new point" request that collides by
+ * name+country with an already-existing point (e.g. re-submitting the same
+ * waypoint name later) would silently discard freshly-provided coordinates,
+ * leaving a point created once without coordinates coordinate-less forever.
+ */
+function coordUpdateData(
+  lat: number | null | undefined,
+  lng: number | null | undefined,
+): Prisma.CaminoPointUpdateInput {
+  return lat !== undefined && lng !== undefined ? { lat, lng } : {};
+}
+
 /** Deduplicate countries preserving first-occurrence order. */
 function extractOrderedCountries(orderedCountries: string[]): string[] {
   const seen = new Set<string>();
@@ -406,7 +422,8 @@ export class CaminosService {
                 lat: item.lat ?? null,
                 lng: item.lng ?? null,
               },
-              update: {}, // slug is immutable — never update it
+              // slug is immutable — never included in the update branch.
+              update: coordUpdateData(item.lat, item.lng),
             });
             pointId = upserted.id;
             pointName = upserted.name;
@@ -658,7 +675,8 @@ export class CaminosService {
                     lat: item.lat ?? null,
                     lng: item.lng ?? null,
                   },
-                  update: {}, // slug is immutable — never update it
+                  // slug is immutable — never included in the update branch.
+                  update: coordUpdateData(item.lat, item.lng),
                 });
                 pointId = upserted.id;
                 pointCountry = upserted.country;

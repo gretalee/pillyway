@@ -13,13 +13,21 @@ export interface CaminoWaypointFixture {
   country: string;
   /** ISO country code, as rendered in the UI's countries-passed-through row. */
   countryCode: string;
+  /**
+   * Real-world coordinates, filled into the "Latitude"/"Longitude" fields on
+   * creation. Required so CaminoRouteMap (which needs >=2 points with
+   * coordinates) actually renders for fixture caminos — see the comment on
+   * fillWaypointRow below for why this matters even for reused waypoints.
+   */
+  lat: number;
+  lng: number;
 }
 
 export const CAMINO_FIXTURE_WAYPOINTS: readonly CaminoWaypointFixture[] = [
-  { name: 'Saint-Jean-Pied-de-Port', country: 'France', countryCode: 'FR' },
-  { name: 'Roncesvalles', country: 'Spain', countryCode: 'ES' },
-  { name: 'Pamplona', country: 'Spain', countryCode: 'ES' },
-  { name: 'Logroño', country: 'Spain', countryCode: 'ES' },
+  { name: 'Saint-Jean-Pied-de-Port', country: 'France', countryCode: 'FR', lat: 43.1634, lng: -1.2377 },
+  { name: 'Roncesvalles', country: 'Spain', countryCode: 'ES', lat: 43.0097, lng: -1.3197 },
+  { name: 'Pamplona', country: 'Spain', countryCode: 'ES', lat: 42.8125, lng: -1.6458 },
+  { name: 'Logroño', country: 'Spain', countryCode: 'ES', lat: 42.4627, lng: -2.4449 },
 ];
 
 /** Matches the "FR · ES" countries-passed-through row for CAMINO_FIXTURE_WAYPOINTS. */
@@ -63,6 +71,59 @@ async function submitCaminoCreateForm(page: Page): Promise<CreatedCamino> {
   return created;
 }
 
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/**
+ * Fills one waypoint row's name, country, and coordinates, accepting the
+ * "reuse existing waypoint" suggestion if it appears.
+ *
+ * The suggestion button's accessible name interpolates the waypoint name
+ * (e.g. "Yes, use this existing waypoint: Roncesvalles"), and matching on
+ * that specific name — not just the shared prefix — is required, not
+ * cosmetic: each waypoint row runs its own independently-debounced search,
+ * so with several rows on the page at once, more than one row's suggestion
+ * card can be visible simultaneously. A `.first()` match against the whole
+ * page (this helper's original approach) doesn't target "this row's"
+ * suggestion — it targets whichever row's card happens to render first,
+ * which can silently confirm the wrong row.
+ *
+ * Coordinates are filled even when a suggestion is accepted. The create
+ * form always renders editable Latitude/Longitude inputs — unlike the
+ * update form, it never passes a `waypointSlug` prop to CaminoPointRow,
+ * which is what would switch them to a read-only display — and the search
+ * suggestion never carries coordinates to begin with (the
+ * /camino-points/search response has no lat/lng field, so a linked point
+ * keeps whatever coordinates it already had). Without this, a fixture
+ * waypoint created once without coordinates (e.g. by an older version of
+ * this helper) would stay coordinate-less forever: every later run's
+ * exact-name-match search just re-links to that same shared record. Filling
+ * coordinates here both seeds new waypoints correctly and self-heals any
+ * already-broken shared ones — confirmed via the backend's create-camino
+ * logic, which updates an existing point's lat/lng whenever both are
+ * provided in the request.
+ */
+async function fillWaypointRow(
+  page: Page,
+  index: number,
+  waypoint: CaminoWaypointFixture,
+): Promise<void> {
+  await page.getByLabel('Waypoint Name').nth(index).fill(waypoint.name);
+  await page.getByLabel('Country').nth(index).selectOption(waypoint.country);
+
+  const useExisting = page.getByRole('button', {
+    name: new RegExp(`Yes, use this existing waypoint.*${escapeRegExp(waypoint.name)}`),
+  });
+  if (await useExisting.isVisible({ timeout: 10_000 }).catch(() => false)) {
+    await useExisting.click();
+    await useExisting.waitFor({ state: 'hidden', timeout: 5_000 }).catch(() => {});
+  }
+
+  await page.getByLabel('Latitude (optional)').nth(index).fill(String(waypoint.lat));
+  await page.getByLabel('Longitude (optional)').nth(index).fill(String(waypoint.lng));
+}
+
 // ─── Helper: fill and submit the camino creation form ────────────────────────
 // Uses a single waypoint (the first CAMINO_FIXTURE_WAYPOINTS entry) to keep
 // setup minimal.
@@ -73,18 +134,7 @@ export async function createCaminoViaForm(
   await page.goto('/caminos/new');
   await page.getByLabel('Camino Name').fill(name);
 
-  const [firstWaypoint] = CAMINO_FIXTURE_WAYPOINTS;
-  const waypointNameInput = page.getByLabel('Waypoint Name').first();
-  await waypointNameInput.fill(firstWaypoint.name);
-  const countrySelect = page.getByLabel('Country').first();
-  await countrySelect.selectOption(firstWaypoint.country);
-
-  const useExistingButton = page
-    .getByRole('button', { name: /Yes, use this existing waypoint/ })
-    .first();
-  if (await useExistingButton.isVisible({ timeout: 5_000 }).catch(() => false)) {
-    await useExistingButton.click();
-  }
+  await fillWaypointRow(page, 0, CAMINO_FIXTURE_WAYPOINTS[0]);
 
   return submitCaminoCreateForm(page);
 }
@@ -100,21 +150,7 @@ export async function createCaminoWith4Points(
     if (i > 0) {
       await page.getByRole('button', { name: 'Add Waypoint' }).click();
     }
-
-    const { name: wpName, country } = CAMINO_FIXTURE_WAYPOINTS[i];
-    await page.getByLabel('Waypoint Name').nth(i).fill(wpName);
-    await page.getByLabel('Country').nth(i).selectOption(country);
-
-    // Accept an existing waypoint if the suggestion card appears. Its
-    // accessible name interpolates the waypoint name (e.g. "Yes, use this
-    // existing waypoint: Roncesvalles"), so match by substring, not exact.
-    const useExisting = page
-      .getByRole('button', { name: /Yes, use this existing waypoint/ })
-      .first();
-    if (await useExisting.isVisible({ timeout: 5_000 }).catch(() => false)) {
-      await useExisting.click();
-      await useExisting.waitFor({ state: 'hidden', timeout: 5_000 }).catch(() => {});
-    }
+    await fillWaypointRow(page, i, CAMINO_FIXTURE_WAYPOINTS[i]);
   }
 
   // Wait for the form to be in a submittable state (background waypoint lookups finish)
