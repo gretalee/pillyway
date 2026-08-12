@@ -37,17 +37,21 @@ export const CAMINO_FIXTURE_COUNTRY_CODES = [
 
 /**
  * Clicks "Create Camino" and captures the created camino's id/slug directly
- * from the create API response — NOT from any later UI navigation.
+ * from the create API response — NOT from any later UI navigation, and NOT
+ * gated behind any subsequent UI assertion.
  *
  * Why this matters: the form no longer redirects on success — it swaps in a
  * second "Add pictures (optional)" step within the same page, and only
- * pushes to the detail page once "View camino" is clicked. If a test's
- * beforeAll captured the id/slug only after that later navigation and
- * anything after creation failed (a flaky click, a slow page), the camino
- * would already exist in the database but the test would never learn its
+ * pushes to the detail page once "View camino" is clicked. If this function
+ * captured the id/slug but then threw before returning it (e.g. an
+ * additional UI sanity check that turned out flaky), the camino would
+ * already exist in the database but the caller would never receive its
  * identity — leaving it permanently orphaned, since afterAll cleanup can
- * only target a camino it knows the id/slug of. Capturing at the API-response
- * moment means cleanup stays possible no matter what happens afterward.
+ * only target a camino it knows the id/slug of. Returning immediately after
+ * validating/parsing the response — with no UI assertion in between — is
+ * what keeps cleanup possible no matter what happens afterward. Callers that
+ * want to assert the post-creation UI state do so themselves, after they
+ * already have `created` in hand.
  */
 async function submitCaminoCreateForm(page: Page): Promise<CreatedCamino> {
   const [response] = await Promise.all([
@@ -60,15 +64,7 @@ async function submitCaminoCreateForm(page: Page): Promise<CreatedCamino> {
     page.getByRole('button', { name: 'Create Camino' }).click(),
   ]);
   expect(response.ok(), 'camino creation request must succeed').toBe(true);
-  const created = (await response.json()) as CreatedCamino;
-
-  // Sanity check that the UI itself also recognizes the creation succeeded.
-  await expect(
-    page.getByRole('heading', { name: 'Add pictures (optional)' }),
-    'the "Add pictures" step must appear after a successful camino creation',
-  ).toBeVisible({ timeout: 15_000 });
-
-  return created;
+  return (await response.json()) as CreatedCamino;
 }
 
 function escapeRegExp(value: string): string {
