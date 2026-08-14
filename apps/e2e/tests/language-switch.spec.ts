@@ -103,7 +103,7 @@ test.describe('Language detection and switching', () => {
     ).toBeVisible();
     const urlBeforeSwitch = page.url();
 
-    await page.getByRole('button', { name: 'EN' }).first().click();
+    await page.getByRole('button', { name: 'EN', exact: true }).click();
     await expect(
       page.getByRole('link', { name: 'Log in' }),
       'clicking EN must switch visible strings to English immediately',
@@ -118,11 +118,11 @@ test.describe('Language detection and switching', () => {
     ).toBe(urlBeforeSwitch);
 
     await expect(
-      page.getByRole('button', { name: 'EN' }).first(),
+      page.getByRole('button', { name: 'EN', exact: true }),
       'EN button must be marked active (aria-pressed=true) after switching to English',
     ).toHaveAttribute('aria-pressed', 'true');
     await expect(
-      page.getByRole('button', { name: 'DE' }).first(),
+      page.getByRole('button', { name: 'DE', exact: true }),
       'DE button must be marked inactive (aria-pressed=false) after switching to English',
     ).toHaveAttribute('aria-pressed', 'false');
 
@@ -147,7 +147,7 @@ test.describe('Language detection and switching', () => {
     ).toBeVisible();
 
     // Switching back to German verifies the reverse direction too.
-    await page.getByRole('button', { name: 'DE' }).first().click();
+    await page.getByRole('button', { name: 'DE', exact: true }).click();
     await expect(
       page.getByRole('link', { name: 'Anmelden' }),
       'clicking DE must switch back to German',

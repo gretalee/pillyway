@@ -118,6 +118,18 @@ If the user hasn't said, ask (or infer from context):
   `getByRole`/`getByLabel` query fits — this is different from a CSS class
   or generated attribute, since `aria-label`/`href` are part of the
   accessible/functional contract, not implementation detail.
+- **`getByRole(..., { name })` (and `getByLabel`/`getByText`) match by
+  case-insensitive substring unless `exact: true` is passed** — a short
+  target name can silently match an unrelated element whose accessible name
+  happens to contain it (e.g. `{ name: 'EN' }` also matches a burger button
+  labeled "Main menu", since "menu" contains "en"; confirmed to actually
+  happen in `language-switch.spec.ts`). Always pass `exact: true` for short
+  (\<~4 char) or common-word target names — anything where the string could
+  plausibly appear as a substring of a longer, unrelated label elsewhere on
+  the page. When a locator needs `.first()`/`.last()` to work, treat that as
+  a signal to look for this kind of accidental collision, not just page
+  duplication — check whether the intended element is genuinely duplicated
+  before assuming a naming collision is the cause.
 
 ## Step 6: Synchronization — no arbitrary timeouts, ever
 
