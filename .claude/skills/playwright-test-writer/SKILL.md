@@ -1,6 +1,6 @@
 ---
 name: playwright-test-writer
-description: Writes Playwright E2E tests for the Pillyway frontend that follow this repo's testing conventions (one test.describe per file with exactly one test() covering one user use-case, serial-safe setup via helpers, accessible locators only, no arbitrary timeouts, timeout-escalation rules, the non-negotiable no-skip rule). Use this whenever the user asks to write, add, generate, or update an E2E test / Playwright test for a Pillyway page or user flow, or mentions apps/e2e/tests, test.describe, Kinde login flows, or camino/waypoint/accommodation/sight CRUD flows in a testing context.
+description: Writes Playwright E2E tests for the Pillyway frontend that follow this repo's testing conventions (one test.describe per file with exactly one test() covering one user use-case, serial-safe setup via helpers, accessible-first locators with getByTestId as a fallback, no arbitrary timeouts, timeout-escalation rules, the non-negotiable no-skip rule). Use this whenever the user asks to write, add, generate, or update an E2E test / Playwright test for a Pillyway page or user flow, or mentions apps/e2e/tests, test.describe, Kinde login flows, or camino/waypoint/accommodation/sight CRUD flows in a testing context.
 ---
 
 # Playwright Test Writer
@@ -75,6 +75,34 @@ If the user hasn't said, ask (or infer from context):
     .toBeVisible();
   ```
 
+- **Before looping over a collection to assert a per-item property, assert
+  the collection is non-empty first — with its own description.** A `for`
+  loop over a `.count()` of 0 iterates zero times and passes trivially,
+  proving nothing. That's a false sense of coverage: if the data behind the
+  loop ever narrows to empty (a filter combination with no matches, a
+  fixture that stops producing what the loop expects), the test keeps
+  "passing" without ever checking the property it exists to check.
+
+  ```ts
+  const items = list.getByRole('listitem');
+  await expect(items, 'the filtered list must not be empty').not.toHaveCount(0);
+  const count = await items.count();
+  for (let i = 0; i < count; i++) {
+    await expect(items.nth(i), `item ${i} must match the filter`).toContainText(expectedValue);
+  }
+  ```
+
+  Use `expect(locator).not.toHaveCount(0)` for this, not
+  `expect(await locator.count()).toBeGreaterThan(0)` — `.count()` is a
+  plain, one-shot read with no retry, so calling it immediately after an
+  action that triggers an async re-render (a filter click, a client-side
+  navigation) can race ahead of the DOM and read a stale count.
+  `toHaveCount()` is a web-first assertion like the others in Step 6 — it
+  retries until the condition holds or times out.
+
+  Where possible, prefer a single strong assertion over a loop entirely —
+  e.g. `toHaveCount(expectedCount)` on the whole collection communicates the
+  same thing without the empty-loop failure mode.
 - **Serial mode** (`test.describe.configure({ mode: 'serial' })`) is still
   required whenever the use-case creates/updates/deletes data — it's what
   keeps a `beforeAll` fixture safe to build once and reuse.
@@ -102,22 +130,35 @@ If the user hasn't said, ask (or infer from context):
 
 ## Step 5: Locators
 
-- **Accessible locators only**: `getByRole`, `getByLabel`, `getByText`,
+- **Prefer accessible locators**: `getByRole`, `getByLabel`, `getByText`,
   `getByPlaceholder`. These match what a real user (or screen reader) would
-  perceive, and survive markup refactors.
+  perceive, and survive markup refactors. Always check whether one of these
+  already fits — e.g. a `role="group"`/`aria-label` wrapper is a `getByRole`
+  match even if the element also happens to carry a `data-testid`.
+- **`getByTestId` is a valid fallback when accessible locators are too
+  complicated or don't exist** — e.g. a purely presentational element (a
+  `<span>` with dynamic text, no interactive role) that has no natural
+  accessible role or form-associable label. `getByLabel` only matches
+  form-control label association, not any element that merely carries an
+  `aria-label` — so a labelled-but-non-interactive `<span>` genuinely has no
+  accessible-locator path. Adding a new `data-testid` to a component
+  specifically to make it testable is acceptable here — unlike a CSS class,
+  it's a stable, intentional, test-facing attribute, not a styling hook.
+  Try the accessible-locator route first and fall back to `getByTestId` only
+  once that's confirmed impractical, not by default.
 - **Never use a CSS class as a locator.** Classes are styling hooks, not
   contracts, and change with every design tweak.
 - **Never use generated/internal framework attributes or fragile DOM
   structure as a locator** — e.g. React/Next.js internals, auto-generated
   hash classes, or a brittle `div > div:nth-child(3) > span` chain. If no
-  accessible locator exists for something that needs one, that's a product
-  bug (missing `aria-label`/role) worth flagging, not a reason to fall back
-  to structural coupling.
+  accessible locator (or, failing that, `getByTestId`) exists for something
+  that needs one, that's a product bug worth flagging, not a reason to fall
+  back to structural coupling.
 - An attribute selector on a stable, intentional attribute (e.g.
   `[aria-label*="Actions for"]`, an `href` match) is acceptable when no
-  `getByRole`/`getByLabel` query fits — this is different from a CSS class
-  or generated attribute, since `aria-label`/`href` are part of the
-  accessible/functional contract, not implementation detail.
+  `getByRole`/`getByLabel`/`getByTestId` query fits — this is different from
+  a CSS class or generated attribute, since `aria-label`/`href` are part of
+  the accessible/functional contract, not implementation detail.
 - **`getByRole(..., { name })` (and `getByLabel`/`getByText`) match by
   case-insensitive substring unless `exact: true` is passed** — a short
   target name can silently match an unrelated element whose accessible name

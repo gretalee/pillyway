@@ -35,6 +35,17 @@ export const CAMINO_FIXTURE_COUNTRY_CODES = [
   ...new Set(CAMINO_FIXTURE_WAYPOINTS.map((wp) => wp.countryCode)),
 ].join(' · ');
 
+/** A single waypoint in a country distinct from CAMINO_FIXTURE_WAYPOINTS, for
+ * tests that need a camino outside the France/Spain fixture (e.g. country
+ * filter tests). */
+export const ITALY_WAYPOINT_FIXTURE: CaminoWaypointFixture = {
+  name: 'Assisi',
+  country: 'Italy',
+  countryCode: 'IT',
+  lat: 43.0707,
+  lng: 12.6197,
+};
+
 /**
  * Clicks "Create Camino" and captures the created camino's id/slug directly
  * from the create API response — NOT from any later UI navigation, and NOT
@@ -121,16 +132,18 @@ async function fillWaypointRow(
 }
 
 // ─── Helper: fill and submit the camino creation form ────────────────────────
-// Uses a single waypoint (the first CAMINO_FIXTURE_WAYPOINTS entry) to keep
-// setup minimal.
+// Uses a single waypoint (the first CAMINO_FIXTURE_WAYPOINTS entry by
+// default) to keep setup minimal. Pass a different CaminoWaypointFixture
+// (e.g. ITALY_WAYPOINT_FIXTURE) for tests that need a specific country.
 export async function createCaminoViaForm(
   page: Page,
   name: string,
+  waypoint: CaminoWaypointFixture = CAMINO_FIXTURE_WAYPOINTS[0],
 ): Promise<CreatedCamino> {
   await page.goto('/caminos/new');
   await page.getByLabel('Camino Name').fill(name);
 
-  await fillWaypointRow(page, 0, CAMINO_FIXTURE_WAYPOINTS[0]);
+  await fillWaypointRow(page, 0, waypoint);
 
   return submitCaminoCreateForm(page);
 }
@@ -154,6 +167,33 @@ export async function createCaminoWith4Points(
   await expect(createButton).toBeEnabled({ timeout: 15_000 });
 
   return submitCaminoCreateForm(page);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Helper: set a camino's verified flag via the backoffice toggle. Setting
+// `verified` requires the owner role (PATCH /caminos/:id/verified is
+// @Roles('owner') only — CLAUDE.md: "owner role is reserved exclusively for
+// backoffice features"). Camino votes have no automatic effect on
+// `verified`; this backoffice toggle is the only way to set it. The `page`
+// passed in must already be authenticated as an owner.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export async function setCaminoVerified(page: Page, caminoName: string): Promise<void> {
+  await page.goto('/backoffice/caminos');
+
+  const toggle = page.getByRole('switch', {
+    name: `Toggle verification status for ${caminoName}`,
+    exact: true,
+  });
+  await expect(
+    toggle,
+    `verified toggle for camino "${caminoName}" must be visible in the backoffice`,
+  ).toBeVisible({ timeout: 10_000 });
+  await toggle.click();
+  await expect(
+    toggle,
+    `verified toggle for camino "${caminoName}" must be checked after clicking`,
+  ).toHaveAttribute('aria-checked', 'true', { timeout: 10_000 });
 }
 
 export async function deleteCaminoViaUI(page: Page, caminoSlug: string): Promise<void> {
