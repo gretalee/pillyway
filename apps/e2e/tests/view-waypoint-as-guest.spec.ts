@@ -4,7 +4,7 @@ import {
   deleteCaminoViaUI,
   loginAs,
   logout,
-  setLanguageToEnglish,
+  setLanguageTo,
   uniqueName,
 } from './helpers';
 
@@ -46,16 +46,20 @@ test.describe('View waypoint as guest', () => {
 
     const ctx = await browser.newContext();
     const page = await ctx.newPage();
-    await setLanguageToEnglish(page);
+    await setLanguageTo(page, 'en');
     await loginAs(page, email!, password!);
     caminoName = uniqueName('ViewWaypointAsGuest');
     caminoSlug = (await createCaminoWith4Points(page, caminoName)).slug;
 
     await page.goto(`/caminos/${caminoSlug}/stages/1`);
     const startLink = page.locator('dl dd a').first();
-    await expect(startLink, 'stage 1 start point must be a link').toBeVisible({ timeout: 10_000 });
+    await expect(startLink, 'stage 1 start point must be a link').toBeVisible({
+      timeout: 10_000,
+    });
     const href = await startLink.getAttribute('href');
-    expect(href, 'start point link must point to /waypoints/...').toMatch(/^\/waypoints\//);
+    expect(href, 'start point link must point to /waypoints/...').toMatch(
+      /^\/waypoints\//,
+    );
     waypointSlug = href!.replace('/waypoints/', '');
 
     await logout(page);
@@ -71,7 +75,7 @@ test.describe('View waypoint as guest', () => {
 
     const ctx = await browser.newContext();
     const page = await ctx.newPage();
-    await setLanguageToEnglish(page);
+    await setLanguageTo(page, 'en');
     await loginAs(page, email, password);
     try {
       await deleteCaminoViaUI(page, caminoSlug);
@@ -84,7 +88,7 @@ test.describe('View waypoint as guest', () => {
   test('guest views an empty waypoint page, follows a stage link to it, and is redirected from the add-accommodation page', async ({
     page,
   }) => {
-    await setLanguageToEnglish(page);
+    await setLanguageTo(page, 'en');
 
     await page.goto(`/waypoints/${waypointSlug}`);
     await expect(

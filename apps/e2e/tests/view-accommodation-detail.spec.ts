@@ -4,7 +4,7 @@ import {
   deleteCaminoViaUI,
   loginAs,
   logout,
-  setLanguageToEnglish,
+  setLanguageTo,
   uniqueName,
 } from './helpers';
 
@@ -49,7 +49,7 @@ test.describe('View accommodation detail page', () => {
 
     const ctx = await browser.newContext();
     const page = await ctx.newPage();
-    await setLanguageToEnglish(page);
+    await setLanguageTo(page, 'en');
     await loginAs(page, email!, password!);
 
     caminoName = uniqueName('ViewAccommodationDetail');
@@ -93,7 +93,7 @@ test.describe('View accommodation detail page', () => {
 
     const ctx = await browser.newContext();
     const page = await ctx.newPage();
-    await setLanguageToEnglish(page);
+    await setLanguageTo(page, 'en');
     await loginAs(page, email, password);
     try {
       await deleteCaminoViaUI(page, caminoSlug);
@@ -106,7 +106,7 @@ test.describe('View accommodation detail page', () => {
   test('guest sees the accommodation but no edit link; a logged-in pilgrim does see the edit link', async ({
     page,
   }) => {
-    await setLanguageToEnglish(page);
+    await setLanguageTo(page, 'en');
     const pageUrl = `/accommodations/${accommodationId}`;
     await page.goto(pageUrl);
 
@@ -114,14 +114,24 @@ test.describe('View accommodation detail page', () => {
       page.getByRole('heading', { name: accommodationName }),
       'accommodation name must be shown as the page heading',
     ).toBeVisible({ timeout: 10_000 });
-    await expect(page.getByText('Hostel', { exact: true }), 'type badge must be visible').toBeVisible();
-    await expect(page.getByRole('link', { name: 'Back' }), 'a Back link must be visible').toBeVisible();
+    await expect(
+      page.getByText('Hostel', { exact: true }),
+      'type badge must be visible',
+    ).toBeVisible();
+    await expect(
+      page.getByRole('link', { name: 'Back' }),
+      'a Back link must be visible',
+    ).toBeVisible();
     await expect(
       page.getByRole('link', { name: 'Edit accommodation' }),
       'guest must see no Edit accommodation link',
     ).toBeHidden();
 
-    await loginAs(page, process.env.E2E_PILGRIM_EMAIL!, process.env.E2E_PILGRIM_PASSWORD!);
+    await loginAs(
+      page,
+      process.env.E2E_PILGRIM_EMAIL!,
+      process.env.E2E_PILGRIM_PASSWORD!,
+    );
     await page.goto(pageUrl);
     await expect(
       page.getByRole('link', { name: 'Edit accommodation' }),

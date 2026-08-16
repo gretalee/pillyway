@@ -4,7 +4,7 @@ import {
   deleteCaminoViaUI,
   loginAs,
   logout,
-  setLanguageToEnglish,
+  setLanguageTo,
   uniqueName,
 } from './helpers';
 
@@ -46,7 +46,7 @@ test.describe('Pilgrim adds accommodation and sight to a waypoint', () => {
 
     const ctx = await browser.newContext();
     const page = await ctx.newPage();
-    await setLanguageToEnglish(page);
+    await setLanguageTo(page, 'en');
     await loginAs(page, email!, password!);
     caminoName = uniqueName('PilgrimAddsPoi');
     const created = await createCaminoWith4Points(page, caminoName);
@@ -56,9 +56,13 @@ test.describe('Pilgrim adds accommodation and sight to a waypoint', () => {
     // Stage links use the camino's numeric id, not its slug.
     await page.goto(`/caminos/${caminoId}/stages/1`);
     const startLink = page.locator('dl dd a').first();
-    await expect(startLink, 'stage 1 start point must be a link').toBeVisible({ timeout: 10_000 });
+    await expect(startLink, 'stage 1 start point must be a link').toBeVisible({
+      timeout: 10_000,
+    });
     const href = await startLink.getAttribute('href');
-    expect(href, 'start point link must point to /waypoints/...').toMatch(/^\/waypoints\//);
+    expect(href, 'start point link must point to /waypoints/...').toMatch(
+      /^\/waypoints\//,
+    );
     waypointSlug = href!.replace('/waypoints/', '');
 
     await logout(page);
@@ -74,7 +78,7 @@ test.describe('Pilgrim adds accommodation and sight to a waypoint', () => {
 
     const ctx = await browser.newContext();
     const page = await ctx.newPage();
-    await setLanguageToEnglish(page);
+    await setLanguageTo(page, 'en');
     await loginAs(page, email, password);
     try {
       await deleteCaminoViaUI(page, caminoSlug);
@@ -87,8 +91,12 @@ test.describe('Pilgrim adds accommodation and sight to a waypoint', () => {
   test('pilgrim adds an accommodation and a sight, both appearing on the waypoint page', async ({
     page,
   }) => {
-    await setLanguageToEnglish(page);
-    await loginAs(page, process.env.E2E_PILGRIM_EMAIL!, process.env.E2E_PILGRIM_PASSWORD!);
+    await setLanguageTo(page, 'en');
+    await loginAs(
+      page,
+      process.env.E2E_PILGRIM_EMAIL!,
+      process.env.E2E_PILGRIM_PASSWORD!,
+    );
 
     // ─── Add accommodation ──────────────────────────────────────────────────
 
@@ -98,7 +106,9 @@ test.describe('Pilgrim adds accommodation and sight to a waypoint', () => {
       'pilgrim must see an Add accommodation link',
     ).toBeVisible({ timeout: 10_000 });
     await page.getByRole('link', { name: 'Add accommodation' }).click();
-    await page.waitForURL(`/waypoints/${waypointSlug}/accommodations/new`, { timeout: 10_000 });
+    await page.waitForURL(`/waypoints/${waypointSlug}/accommodations/new`, {
+      timeout: 10_000,
+    });
 
     const accName = `Test Hostel ${Date.now()}`;
     await page.getByLabel('Name').fill(accName);

@@ -4,7 +4,7 @@ import {
   deleteCaminoViaUI,
   loginAs,
   logout,
-  setLanguageToEnglish,
+  setLanguageTo,
   uniqueName,
 } from './helpers';
 
@@ -45,7 +45,7 @@ test.describe('Pilgrim edits stage details', () => {
 
     const ctx = await browser.newContext();
     const page = await ctx.newPage();
-    await setLanguageToEnglish(page);
+    await setLanguageTo(page, 'en');
     await loginAs(page, email!, password!);
     caminoName = uniqueName('PilgrimEditsStage');
     const created = await createCaminoWith4Points(page, caminoName);
@@ -64,7 +64,7 @@ test.describe('Pilgrim edits stage details', () => {
 
     const ctx = await browser.newContext();
     const page = await ctx.newPage();
-    await setLanguageToEnglish(page);
+    await setLanguageTo(page, 'en');
     await loginAs(page, email, password);
     try {
       await deleteCaminoViaUI(page, caminoSlug);
@@ -77,8 +77,12 @@ test.describe('Pilgrim edits stage details', () => {
   test('pilgrim sets distance and description, clears the distance, then cancels an edit without saving', async ({
     page,
   }) => {
-    await setLanguageToEnglish(page);
-    await loginAs(page, process.env.E2E_PILGRIM_EMAIL!, process.env.E2E_PILGRIM_PASSWORD!);
+    await setLanguageTo(page, 'en');
+    await loginAs(
+      page,
+      process.env.E2E_PILGRIM_EMAIL!,
+      process.env.E2E_PILGRIM_PASSWORD!,
+    );
 
     await page.goto(`/caminos/${caminoId}/stages/1`);
     await expect(
@@ -98,8 +102,14 @@ test.describe('Pilgrim edits stage details', () => {
     ).toContainText('Edit Stage 1', { timeout: 10_000 });
 
     // Start/end points are shown as read-only text, not editable fields.
-    await expect(page.getByText('Start point'), 'start point label must be visible').toBeVisible();
-    await expect(page.getByText('End point'), 'end point label must be visible').toBeVisible();
+    await expect(
+      page.getByText('Start point'),
+      'start point label must be visible',
+    ).toBeVisible();
+    await expect(
+      page.getByText('End point'),
+      'end point label must be visible',
+    ).toBeVisible();
     await expect(
       page.getByLabel('Start point'),
       'start point must not be an editable field',
@@ -115,9 +125,10 @@ test.describe('Pilgrim edits stage details', () => {
     await page.getByLabel('Description (optional)').fill('A beautiful mountain stage.');
     await page.getByRole('button', { name: 'Save changes' }).click();
     await page.waitForURL(`/caminos/${caminoId}/stages/1`, { timeout: 15_000 });
-    await expect(page.getByText('24.7 km'), 'saved distance must appear on the detail page').toBeVisible(
-      { timeout: 10_000 },
-    );
+    await expect(
+      page.getByText('24.7 km'),
+      'saved distance must appear on the detail page',
+    ).toBeVisible({ timeout: 10_000 });
     await expect(
       page.getByText('A beautiful mountain stage.'),
       'saved description must appear on the detail page',

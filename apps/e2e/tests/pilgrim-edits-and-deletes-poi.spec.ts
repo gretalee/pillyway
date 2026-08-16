@@ -4,7 +4,7 @@ import {
   deleteCaminoViaUI,
   loginAs,
   logout,
-  setLanguageToEnglish,
+  setLanguageTo,
   uniqueName,
 } from './helpers';
 
@@ -50,7 +50,7 @@ test.describe('Pilgrim edits and deletes accommodation and sight', () => {
 
     const ctx = await browser.newContext();
     const page = await ctx.newPage();
-    await setLanguageToEnglish(page);
+    await setLanguageTo(page, 'en');
     await loginAs(page, email!, password!);
 
     caminoName = uniqueName('PilgrimEditsDeletesPoi');
@@ -96,7 +96,7 @@ test.describe('Pilgrim edits and deletes accommodation and sight', () => {
 
     const ctx = await browser.newContext();
     const page = await ctx.newPage();
-    await setLanguageToEnglish(page);
+    await setLanguageTo(page, 'en');
     await loginAs(page, email, password);
     try {
       await deleteCaminoViaUI(page, caminoSlug);
@@ -109,8 +109,12 @@ test.describe('Pilgrim edits and deletes accommodation and sight', () => {
   test('pilgrim edits the accommodation name, edits the sight name, then deletes both', async ({
     page,
   }) => {
-    await setLanguageToEnglish(page);
-    await loginAs(page, process.env.E2E_PILGRIM_EMAIL!, process.env.E2E_PILGRIM_PASSWORD!);
+    await setLanguageTo(page, 'en');
+    await loginAs(
+      page,
+      process.env.E2E_PILGRIM_EMAIL!,
+      process.env.E2E_PILGRIM_PASSWORD!,
+    );
 
     // ─── Edit accommodation ─────────────────────────────────────────────────
 
@@ -175,7 +179,10 @@ test.describe('Pilgrim edits and deletes accommodation and sight', () => {
     });
     await accDialog.getByRole('button', { name: 'Delete' }).click();
     // Dialog closes only on DELETE success — confirms the API call completed.
-    await expect(accDialog, 'dialog must close once the delete request completes').not.toBeVisible({
+    await expect(
+      accDialog,
+      'dialog must close once the delete request completes',
+    ).not.toBeVisible({
       timeout: 15_000,
     });
 

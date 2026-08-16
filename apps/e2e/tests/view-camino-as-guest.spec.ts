@@ -6,7 +6,7 @@ import {
   deleteCaminoViaUI,
   loginAs,
   logout,
-  setLanguageToEnglish,
+  setLanguageTo,
   uniqueName,
 } from './helpers';
 
@@ -60,7 +60,7 @@ test.describe('View camino as guest', () => {
 
     const ctx = await browser.newContext();
     const page = await ctx.newPage();
-    await setLanguageToEnglish(page);
+    await setLanguageTo(page, 'en');
     await loginAs(page, email!, password!);
     caminoName = uniqueName('ViewAsGuest');
     const created = await createCaminoWith4Points(page, caminoName);
@@ -78,7 +78,7 @@ test.describe('View camino as guest', () => {
 
     const ctx = await browser.newContext();
     const page = await ctx.newPage();
-    await setLanguageToEnglish(page);
+    await setLanguageTo(page, 'en');
     await loginAs(page, email, password);
     try {
       await deleteCaminoViaUI(page, caminoSlug);
@@ -91,7 +91,7 @@ test.describe('View camino as guest', () => {
   test('guest sees full camino detail content but no edit affordances, and is redirected away from the update page', async ({
     page,
   }) => {
-    await setLanguageToEnglish(page);
+    await setLanguageTo(page, 'en');
 
     // ─── No action menu anywhere on the caminos list ───────────────────────
 

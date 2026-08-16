@@ -4,7 +4,7 @@ import {
   deleteCaminoViaUI,
   loginAs,
   logout,
-  setLanguageToEnglish,
+  setLanguageTo,
   uniqueName,
 } from './helpers';
 
@@ -47,7 +47,7 @@ test.describe('Pilgrim sees the reorder warning dialog', () => {
 
     const ctx = await browser.newContext();
     const page = await ctx.newPage();
-    await setLanguageToEnglish(page);
+    await setLanguageTo(page, 'en');
     await loginAs(page, email!, password!);
     caminoName = uniqueName('ReorderWarning');
     caminoSlug = (await createCaminoWith4Points(page, caminoName)).slug;
@@ -64,7 +64,7 @@ test.describe('Pilgrim sees the reorder warning dialog', () => {
 
     const ctx = await browser.newContext();
     const page = await ctx.newPage();
-    await setLanguageToEnglish(page);
+    await setLanguageTo(page, 'en');
     await loginAs(page, email, password);
     try {
       await deleteCaminoViaUI(page, caminoSlug);
@@ -77,8 +77,12 @@ test.describe('Pilgrim sees the reorder warning dialog', () => {
   test('reordering waypoints triggers the warning dialog; "Go back" cancels, then re-triggering and choosing "Save anyway" saves', async ({
     page,
   }) => {
-    await setLanguageToEnglish(page);
-    await loginAs(page, process.env.E2E_PILGRIM_EMAIL!, process.env.E2E_PILGRIM_PASSWORD!);
+    await setLanguageTo(page, 'en');
+    await loginAs(
+      page,
+      process.env.E2E_PILGRIM_EMAIL!,
+      process.env.E2E_PILGRIM_PASSWORD!,
+    );
 
     await page.goto(`/caminos/${caminoSlug}/update`);
     await expect(

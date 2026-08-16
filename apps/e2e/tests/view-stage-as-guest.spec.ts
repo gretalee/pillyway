@@ -6,7 +6,7 @@ import {
   loginAs,
   logout,
   navigateToCaminoWithName,
-  setLanguageToEnglish,
+  setLanguageTo,
   uniqueName,
 } from './helpers';
 
@@ -47,7 +47,7 @@ test.describe('View stage as guest', () => {
 
     const ctx = await browser.newContext();
     const page = await ctx.newPage();
-    await setLanguageToEnglish(page);
+    await setLanguageTo(page, 'en');
     await loginAs(page, email!, password!);
     caminoName = uniqueName('ViewStageAsGuest');
     caminoSlug = (await createCaminoWith4Points(page, caminoName)).slug;
@@ -64,7 +64,7 @@ test.describe('View stage as guest', () => {
 
     const ctx = await browser.newContext();
     const page = await ctx.newPage();
-    await setLanguageToEnglish(page);
+    await setLanguageTo(page, 'en');
     await loginAs(page, email, password);
     try {
       await deleteCaminoViaUI(page, caminoSlug);
@@ -77,7 +77,7 @@ test.describe('View stage as guest', () => {
   test('guest views the stage list, opens a stage, sees no edit link, navigates via next/prev, and is redirected away from the edit page', async ({
     page,
   }) => {
-    await setLanguageToEnglish(page);
+    await setLanguageTo(page, 'en');
     const id = await navigateToCaminoWithName(caminoName, page);
     await expect(page, 'must land on the camino detail page').toHaveURL(`/caminos/${id}`);
 
@@ -110,7 +110,9 @@ test.describe('View stage as guest', () => {
     const nav = page.getByRole('navigation', { name: 'Stage navigation' });
     await expect(nav, 'stage navigation region must be visible').toBeVisible();
     await expect(
-      nav.getByRole('button', { name: 'This is the starting point', disabled: true }).first(),
+      nav
+        .getByRole('button', { name: 'This is the starting point', disabled: true })
+        .first(),
       'previous-stage control must be disabled on stage 1',
     ).toBeVisible();
 

@@ -4,7 +4,7 @@ import {
   deleteCaminoViaUI,
   loginAs,
   logout,
-  setLanguageToEnglish,
+  setLanguageTo,
   uniqueName,
 } from './helpers';
 
@@ -47,7 +47,7 @@ test.describe('Pilgrim edits and deletes a camino', () => {
 
     const ctx = await browser.newContext();
     const page = await ctx.newPage();
-    await setLanguageToEnglish(page);
+    await setLanguageTo(page, 'en');
     await loginAs(page, email!, password!);
     caminoName = uniqueName('PilgrimEditDelete');
     caminoSlug = (await createCaminoViaForm(page, caminoName)).slug;
@@ -64,7 +64,7 @@ test.describe('Pilgrim edits and deletes a camino', () => {
 
     const ctx = await browser.newContext();
     const page = await ctx.newPage();
-    await setLanguageToEnglish(page);
+    await setLanguageTo(page, 'en');
     await loginAs(page, email, password);
     try {
       // The test itself already deletes this camino as its final step — this
@@ -79,8 +79,12 @@ test.describe('Pilgrim edits and deletes a camino', () => {
   test('pilgrim opens the update form, renames inline (save + cancel), renames via the full form, then cancels and confirms delete', async ({
     page,
   }) => {
-    await setLanguageToEnglish(page);
-    await loginAs(page, process.env.E2E_PILGRIM_EMAIL!, process.env.E2E_PILGRIM_PASSWORD!);
+    await setLanguageTo(page, 'en');
+    await loginAs(
+      page,
+      process.env.E2E_PILGRIM_EMAIL!,
+      process.env.E2E_PILGRIM_PASSWORD!,
+    );
 
     // ─── Three-dots menu → update form, pre-populated ──────────────────────
 
@@ -117,7 +121,10 @@ test.describe('Pilgrim edits and deletes a camino', () => {
     let editButton = page.getByRole('button', { name: 'Edit camino name' });
     await editButton.click();
     let nameInput = page.getByRole('textbox', { name: 'Edit camino name' });
-    await expect(nameInput, 'inline name input must be focused when opened').toBeFocused();
+    await expect(
+      nameInput,
+      'inline name input must be focused when opened',
+    ).toBeFocused();
 
     const nameAfterInlineSave = `${caminoName} (updated)`;
     await nameInput.fill(nameAfterInlineSave);
@@ -135,7 +142,10 @@ test.describe('Pilgrim edits and deletes a camino', () => {
     nameInput = page.getByRole('textbox', { name: 'Edit camino name' });
     await nameInput.fill('This should not be saved');
     await nameInput.press('Escape');
-    await expect(nameInput, 'pressing Escape must close the inline edit input').toBeHidden();
+    await expect(
+      nameInput,
+      'pressing Escape must close the inline edit input',
+    ).toBeHidden();
     await expect(
       page.getByRole('heading', { level: 1 }),
       'pressing Escape must restore the previous name, discarding the edit',
@@ -144,10 +154,10 @@ test.describe('Pilgrim edits and deletes a camino', () => {
     // ─── Full update form ────────────────────────────────────────────────
 
     await page.goto(`/caminos/${caminoSlug}/update`);
-    await expect(page.getByLabel('Camino Name'), 'update form must show the current name').toHaveValue(
-      caminoName,
-      { timeout: 10_000 },
-    );
+    await expect(
+      page.getByLabel('Camino Name'),
+      'update form must show the current name',
+    ).toHaveValue(caminoName, { timeout: 10_000 });
     const nameAfterFormUpdate = `${caminoName} Renamed`;
     await page.getByLabel('Camino Name').fill(nameAfterFormUpdate);
     await page.getByRole('button', { name: 'Save changes' }).click();
@@ -162,7 +172,10 @@ test.describe('Pilgrim edits and deletes a camino', () => {
 
     await page.goto('/caminos');
     let menuTrigger = page.locator(`[aria-label="Actions for ${caminoName}"]`);
-    await expect(menuTrigger, 'action menu trigger must be visible on the card').toBeVisible({
+    await expect(
+      menuTrigger,
+      'action menu trigger must be visible on the card',
+    ).toBeVisible({
       timeout: 10_000,
     });
     await menuTrigger.click();
@@ -171,13 +184,19 @@ test.describe('Pilgrim edits and deletes a camino', () => {
       timeout: 5_000,
     });
     await deleteMenuItem.click();
-    await expect(page.getByRole('alertdialog'), 'delete confirmation dialog must open').toBeVisible();
+    await expect(
+      page.getByRole('alertdialog'),
+      'delete confirmation dialog must open',
+    ).toBeVisible();
     await expect(
       page.getByText(`"${caminoName}"`),
       'delete dialog must reference the camino by name',
     ).toBeVisible();
     await page.getByRole('button', { name: 'Cancel' }).click();
-    await expect(page.getByRole('alertdialog'), 'dialog must close on Cancel').toBeHidden();
+    await expect(
+      page.getByRole('alertdialog'),
+      'dialog must close on Cancel',
+    ).toBeHidden();
     await expect(
       page.getByRole('heading', { name: caminoName }),
       'camino must still be in the list after cancelling delete',
