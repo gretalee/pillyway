@@ -2,33 +2,36 @@
 import eslint from '@eslint/js';
 import playwright from 'eslint-plugin-playwright';
 import tseslint from 'typescript-eslint';
+import { defineConfig } from 'eslint/config';
 
-export default tseslint.config(
+// `ignores` gets its own object (nothing else in it) — that's the only shape
+// ESLint treats as a *global* ignore, applying no matter what other config
+// objects get added later. Combining it with other keys would instead just
+// limit that one object's own reach, not act as a repo-wide exclusion.
+//
+// Playwright's config is scoped to `files: ['tests/**/*.ts']` so its
+// test-authoring rules (e.g. expect-expect, no-focused-test) only apply to
+// spec files, not to files like playwright.config.ts.
+export default defineConfig(
   {
     ignores: ['eslint.config.mjs', 'playwright-report/**', 'test-results/**'],
   },
-  eslint.configs.recommended,
-  ...tseslint.configs.recommendedTypeChecked,
   {
-    files: ['tests/**/*.ts'],
-    ...playwright.configs['flat/recommended'],
-  },
-  {
+    extends: [eslint.configs.recommended, tseslint.configs.recommendedTypeChecked],
     languageOptions: {
       parserOptions: {
         projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
     },
-  },
-  {
     rules: {
-      // Playwright's own request/route/page objects are all `any`-flavored
-      // in ways typescript-eslint's stricter checked rules complain about
-      // (e.g. `(await res.json())` return type); this repo already turns
-      // these down to warnings in the backend config for the same reason.
       '@typescript-eslint/no-unsafe-argument': 'warn',
       '@typescript-eslint/no-floating-promises': 'warn',
+      '@typescript-eslint/no-unsafe-call': 'off',
     },
+  },
+  {
+    files: ['tests/**/*.ts'],
+    extends: [playwright.configs['flat/recommended']],
   },
 );
