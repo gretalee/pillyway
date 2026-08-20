@@ -237,7 +237,11 @@ test.describe('Caminos', () => {
     ).toBeVisible();
   });
 
+  // ─── Pagination ───────────────────────
+
+  // TODO: test that pagination works
+
   // ─── Camino Detail View ───────────────────────
 
-  // TODO ...
+  // TODO: click on a camino card opens the camino detail view, and the detail view shows the camino name, countries, description, stages, and GPX data. The detail view shows no edit links for a guest user.
 });

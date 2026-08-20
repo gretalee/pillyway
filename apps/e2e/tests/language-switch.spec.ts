@@ -78,7 +78,13 @@ test.describe('Language detection and switching', () => {
     const overrideCtx = await browser.newContext({ locale: 'de-DE' });
     const overridePage = await overrideCtx.newPage();
     await overrideCtx.addCookies([
-      { name: 'pillyway-locale', value: 'en', domain: 'localhost', path: '/', sameSite: 'Lax' },
+      {
+        name: 'pillyway-locale',
+        value: 'en',
+        domain: 'localhost',
+        path: '/',
+        sameSite: 'Lax',
+      },
     ]);
     await overridePage.goto('/');
     await expect(
@@ -94,7 +100,13 @@ test.describe('Language detection and switching', () => {
     // ─── Manual switching, on the default `page` fixture ──────────────────
 
     await page.context().addCookies([
-      { name: 'pillyway-locale', value: 'de', domain: 'localhost', path: '/', sameSite: 'Lax' },
+      {
+        name: 'pillyway-locale',
+        value: 'de',
+        domain: 'localhost',
+        path: '/',
+        sameSite: 'Lax',
+      },
     ]);
     await page.goto('/');
     await expect(
@@ -128,11 +140,17 @@ test.describe('Language detection and switching', () => {
 
     const cookiesAfterEn = await page.context().cookies();
     const localeCookieAfterEn = cookiesAfterEn.find((c) => c.name === 'pillyway-locale');
-    expect(localeCookieAfterEn, 'pillyway-locale cookie must exist after switching').toBeDefined();
-    expect(localeCookieAfterEn?.value, 'pillyway-locale cookie value must be "en"').toBe('en');
-    expect(localeCookieAfterEn?.sameSite, 'pillyway-locale cookie must have SameSite=Lax').toBe(
-      'Lax',
+    expect(
+      localeCookieAfterEn,
+      'pillyway-locale cookie must exist after switching',
+    ).toBeDefined();
+    expect(localeCookieAfterEn?.value, 'pillyway-locale cookie value must be "en"').toBe(
+      'en',
     );
+    expect(
+      localeCookieAfterEn?.sameSite,
+      'pillyway-locale cookie must have SameSite=Lax',
+    ).toBe('Lax');
 
     // Persists across navigation to another page and back.
     await page.goto('/caminos');
@@ -154,13 +172,3 @@ test.describe('Language detection and switching', () => {
     ).toBeVisible();
   });
 });
-
-// Keyboard-accessibility scenarios for the language switcher are not yet
-// implemented as E2E tests (originally sketched as test.fixme() placeholders):
-// - AC-9: switcher must be reachable via Tab from page start.
-// - AC-9: Enter on a focused language option activates the switch.
-// - WCAG 2.1 SC 2.1.1: Space on a focused language option also activates it.
-// - WCAG 2.1 SC 2.4.7: switcher must show a visible focus ring when
-//   keyboard-focused (needs a screenshot/visual-regression baseline or an
-//   accessibility-tree/focus-visible-class check — plain DOM assertions
-//   can't verify computed outline styles).
