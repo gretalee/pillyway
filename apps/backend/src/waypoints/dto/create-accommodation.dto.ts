@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import {
   ArrayMaxSize,
   IsArray,
@@ -13,6 +14,7 @@ import {
 
 import { AccommodationType, PriceRange } from '@prisma/client';
 import { COUNTRIES } from '../../countries/countries.constants';
+import { ensureHttpProtocol } from '../../common/url.utils';
 
 export class CreateAccommodationDto {
   @IsString()
@@ -39,6 +41,11 @@ export class CreateAccommodationDto {
   email?: string;
 
   @IsOptional()
+  @Transform(({ value }: { value: unknown }) =>
+    typeof value === 'string' && value.trim() !== ''
+      ? ensureHttpProtocol(value.trim())
+      : value,
+  )
   @IsUrl()
   website?: string;
 

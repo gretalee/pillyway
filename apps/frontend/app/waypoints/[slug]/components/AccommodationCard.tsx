@@ -6,7 +6,7 @@ import type {
 } from '@/app/api/accommodations/accommodation-types';
 import { DeleteAccommodationButton } from './DeleteAccommodationButton';
 import { buttonVariants } from '@/app/components/ui/button';
-import { cn } from '@/lib/utils';
+import { cn, ensureHttpProtocol } from '@/lib/utils';
 import { JSX } from 'react/jsx-dev-runtime';
 import { PictureGallery } from '@/app/components/PictureGallery';
 
@@ -146,7 +146,7 @@ export async function AccommodationCard({
                 <i className="icon-sphere pr-1" aria-hidden="true"></i>
 
                 <a
-                  href={accommodation.website}
+                  href={ensureHttpProtocol(accommodation.website)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-primary underline-offset-4 hover:underline">
