@@ -64,7 +64,7 @@ export const ITALY_WAYPOINT_FIXTURE: CaminoWaypointFixture = {
  * want to assert the post-creation UI state do so themselves, after they
  * already have `created` in hand.
  */
-async function submitCaminoCreateForm(page: Page): Promise<CreatedCamino> {
+export async function submitCaminoCreateForm(page: Page): Promise<CreatedCamino> {
   const [response] = await Promise.all([
     page.waitForResponse(
       (res) =>
@@ -111,7 +111,7 @@ function escapeRegExp(value: string): string {
  * logic, which updates an existing point's lat/lng whenever both are
  * provided in the request.
  */
-async function fillWaypointRow(
+export async function fillWaypointRow(
   page: Page,
   index: number,
   waypoint: CaminoWaypointFixture,
