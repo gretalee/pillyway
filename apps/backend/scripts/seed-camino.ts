@@ -182,6 +182,7 @@ async function seed(
     stages: 0,
     stagesSkipped: 0,
   };
+  let pointOrderRebuilt = false;
 
   await prisma.$transaction(async (tx) => {
     // 1. Resolve the Camino. Never blindly upsert by name: a name match could
@@ -235,7 +236,8 @@ async function seed(
       } else if (editedSinceCreation) {
         console.warn(
           `⚠ Camino "${caminoData.name}" has been edited since creation (updatedAt != createdAt) — ` +
-            `leaving name/description/verified/countries and waypoint order untouched to avoid clobbering a pilgrim edit.`,
+            `leaving name/description/verified/countries untouched to avoid clobbering a pilgrim edit. ` +
+            `(Waypoint order is checked separately below — this alone does not block adding new waypoints.)`,
         );
         safeToOverwriteCaminoContent = false;
       } else {
@@ -248,11 +250,48 @@ async function seed(
       }
     }
 
-    // 2. Waypoint order: only rebuild it when the camino content check above
-    //    passed. Rebuilding unconditionally would silently discard a
-    //    pilgrim's reordering/add/remove of waypoints on the next re-seed.
-    if (safeToOverwriteCaminoContent) {
+    // 2. Waypoint order. This is deliberately NOT gated on
+    //    safeToOverwriteCaminoContent above: whether the camino's own
+    //    name/description/verified/countries were edited is unrelated to
+    //    whether it's safe to splice a new waypoint into the sequence.
+    //    Adding a waypoint never touches any *existing* waypoint (or its
+    //    accommodations/sights) — it only shifts position numbers, so it's
+    //    inherently safe. What must stay blocked is the seed silently
+    //    REMOVING or REORDERING waypoints a pilgrim has since curated via
+    //    the app's "Edit waypoints" UI (there's no per-row edit-tracking on
+    //    this join table, so we can't detect that directly — instead we
+    //    check the shape of the change): take the current DB order, and
+    //    the seed's order filtered down to just the names already present
+    //    in the DB. If those two match exactly, the seed is a pure
+    //    insertion — safe to rebuild positions from it. Any mismatch means
+    //    something was removed or reordered, and the rebuild is skipped.
+    const currentOrderRows = await tx.caminoPointOrder.findMany({
+      where: { caminoId },
+      orderBy: { position: 'asc' },
+      include: { caminoPoint: { select: { name: true } } },
+    });
+    const currentOrderNames = currentOrderRows.map((r) => r.caminoPoint.name);
+    const seedOrderNames = [...points]
+      .sort((a, b) => a.position - b.position)
+      .map((p) => p.name);
+    const currentNameSet = new Set(currentOrderNames);
+    const seedFilteredToCurrent = seedOrderNames.filter((n) => currentNameSet.has(n));
+
+    const safeToRebuildPointOrder =
+      currentOrderNames.length === seedFilteredToCurrent.length &&
+      currentOrderNames.every((n, i) => n === seedFilteredToCurrent[i]);
+
+    if (safeToRebuildPointOrder) {
       await tx.caminoPointOrder.deleteMany({ where: { caminoId } });
+      pointOrderRebuilt = true;
+    } else {
+      console.warn(
+        `⚠ Waypoint order for "${caminoData.name}" has diverged from the seed file in a way that isn't ` +
+          `a pure addition (an existing waypoint was removed or reordered) — leaving the current sequence ` +
+          `untouched. Any new waypoints in this seed file will still be created as standalone points and ` +
+          `linked with new stages where possible, but won't be spliced into this camino's route. Resolve ` +
+          `manually via "Edit waypoints" in the app if the seed change should still apply.`,
+      );
     }
 
     // 3. CaminoPoints, CaminoPointOrder, Accommodations.
@@ -303,7 +342,7 @@ async function seed(
       }
       pointIdByName.set(pd.name, point.id);
 
-      if (safeToOverwriteCaminoContent) {
+      if (safeToRebuildPointOrder) {
         await tx.caminoPointOrder.create({
           data: { caminoId, caminoPointId: point.id, position: pd.position },
         });
@@ -410,6 +449,9 @@ async function seed(
   console.log(`  Accommodations left as-is: ${counts.accommodationsSkipped} (different createdBy or edited since creation)`);
   console.log(`  Stages created:            ${counts.stages}`);
   console.log(`  Stages left untouched:     ${counts.stagesSkipped} (already existed — never overwritten)`);
+  console.log(
+    `  Waypoint order:            ${pointOrderRebuilt ? 'rebuilt from seed file' : 'left untouched (would have removed/reordered an existing waypoint)'}`,
+  );
   console.log('─────────────────────────────────────────\n');
 }
 
