@@ -1,6 +1,9 @@
 import { expect, test } from '@playwright/test';
 import {
+  CAMINO_FIXTURE_COUNTRY_CODES,
+  CAMINO_FIXTURE_WAYPOINTS,
   createCaminoViaForm,
+  createCaminoWith4Points,
   type CreatedCamino,
   deleteCaminoViaUI,
   ITALY_WAYPOINT_FIXTURE,
@@ -10,6 +13,11 @@ import {
   setLanguageTo,
   uniqueName,
 } from './helpers';
+
+/**
+ * E2E test for the public /caminos experience: home page → caminos list
+ * (with filters) → camino detail page, all as an unauthenticated guest.
+ */
 
 test.describe('Caminos', () => {
   test.describe.configure({ mode: 'serial' });
@@ -41,7 +49,7 @@ test.describe('Caminos', () => {
       caminoItalyName,
       ITALY_WAYPOINT_FIXTURE,
     );
-    caminoFrance = await createCaminoViaForm(pilgrimPage, caminoFranceName);
+    caminoFrance = await createCaminoWith4Points(pilgrimPage, caminoFranceName);
     caminoUnverified = await createCaminoViaForm(pilgrimPage, caminoUnverifiedName);
     await logout(pilgrimPage);
     await pilgrimCtx.close();
@@ -104,6 +112,10 @@ test.describe('Caminos', () => {
     await expect(
       page.getByRole('button', { name: 'Neuen Camino erstellen' }),
       'guest must see no "create new camino" button',
+    ).toHaveCount(0);
+    await expect(
+      page.locator('[aria-label*="Actions for"]'),
+      'guest must see no three-dots action menu on any camino card',
     ).toHaveCount(0);
 
     const caminoList = page.getByRole('list', { name: 'Caminos', exact: true });
@@ -235,13 +247,94 @@ test.describe('Caminos', () => {
       unverifiedCard,
       'the unverified fixture camino must be visible again after resetting filters (proves the verified filter, not deletion, was hiding it)',
     ).toBeVisible();
+
+    // ─── Camino Detail View ───────────────────────
+
+    await franceCard.getByRole('heading').first().click();
+    await page.waitForURL(`/caminos/${caminoFrance!.slug}`, { timeout: 10_000 });
+
+    await expect(
+      page.getByRole('heading', { level: 1 }),
+      'detail page heading must show the camino name',
+    ).toContainText(caminoFranceName);
+    await expect(
+      page.getByRole('button', { name: 'Verifizierter Weg' }),
+      'the verified badge must be visible on the detail page for a verified camino',
+    ).toBeVisible();
+    await expect(
+      page.getByText(CAMINO_FIXTURE_COUNTRY_CODES),
+      'countries row must list the two countries the camino passes through',
+    ).toBeVisible();
+    await expect(
+      page.getByText('Keine Beschreibung vorhanden.'),
+      'description section must show the fallback text when no description is set',
+    ).toBeVisible();
+
+    await expect(
+      page.getByRole('heading', { name: 'Etappen' }),
+      'detail page must show a Stages heading',
+    ).toBeVisible();
+    await expect(
+      page.getByRole('img', { name: 'Routenkarte' }),
+      'route map must render for a camino with >=2 waypoints that have coordinates',
+    ).toBeVisible({ timeout: 10_000 });
+    const stageRows = page.locator('ol li');
+    await expect(
+      stageRows,
+      'all 3 stages between the 4 waypoints must be listed',
+    ).toHaveCount(3);
+    for (const { name: waypointName } of CAMINO_FIXTURE_WAYPOINTS) {
+      await expect(
+        page.locator('ol').getByText(waypointName, { exact: false }).first(),
+        `stage list must mention waypoint "${waypointName}"`,
+      ).toBeVisible();
+    }
+    await expect(
+      page.getByRole('link', { name: 'Wegpunkte bearbeiten' }),
+      'guest must see no Edit waypoints link',
+    ).toBeHidden();
+
+    const gpxButton = page.getByRole('button', { name: 'GPX Daten' });
+    await expect(gpxButton, 'GPX Data button must be visible').toBeVisible();
+    await gpxButton.click();
+    const gpxDialog = page.getByRole('dialog');
+    await expect(gpxDialog, 'GPX modal must open').toBeVisible();
+    await expect(
+      gpxDialog.getByText('Noch keine GPX-Dateien vorhanden.'),
+      'GPX modal must show its empty state for a camino with no GPX files',
+    ).toBeVisible();
+    await expect(
+      gpxDialog.getByRole('button', { name: 'GPX hochladen' }),
+      'guest must see no GPX upload button',
+    ).toBeHidden();
+    await page.keyboard.press('Escape');
+    await expect(gpxDialog, 'GPX modal must close').toBeHidden();
+
+    await expect(
+      page.getByRole('heading', { name: 'Verifizierter Weg', exact: true }),
+      'Verified Route section heading must be visible',
+    ).toBeVisible();
+    await expect(
+      page.getByText('Ja: 0'),
+      'vote count must show 0 Yes for a fresh camino',
+    ).toBeVisible();
+    await expect(
+      page.getByText('Nein: 0'),
+      'vote count must show 0 No for a fresh camino',
+    ).toBeVisible();
+    await expect(
+      page.getByText('Melde dich an, um den Weg verifizieren zu können.'),
+      'guest must be prompted to log in before voting',
+    ).toBeVisible();
+
+    await page.goto(`/caminos/${caminoFrance!.slug}/update`);
+    await expect(
+      page,
+      'an unauthenticated visitor must be redirected away from the update page',
+    ).not.toHaveURL(`/caminos/${caminoFrance!.slug}/update`);
   });
 
   // ─── Pagination ───────────────────────
 
   // TODO: test that pagination works
-
-  // ─── Camino Detail View ───────────────────────
-
-  // TODO: click on a camino card opens the camino detail view, and the detail view shows the camino name, countries, description, stages, and GPX data. The detail view shows no edit links for a guest user.
 });
