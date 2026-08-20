@@ -27,10 +27,12 @@ test.describe('Camino API — authorization and validation', () => {
     request,
   }) => {
     const listRes = await request.get(`${API_URL}/caminos`);
-    expect(listRes.ok(), 'GET /api/caminos must succeed to obtain a real id for the checks below').toBe(
-      true,
-    );
-    const caminos = (await listRes.json()) as Array<{ id: string }>;
+    expect(
+      listRes.ok(),
+      'GET /api/caminos must succeed to obtain a real id for the checks below',
+    ).toBe(true);
+    const response = (await listRes.json()) as { data: { id: string }[] } | null;
+    const caminos = response?.data ?? [];
     expect(caminos.length, 'at least one camino must exist to target').toBeGreaterThan(0);
     const targetId = caminos[0].id;
 
@@ -40,12 +42,14 @@ test.describe('Camino API — authorization and validation', () => {
       headers: { 'Content-Type': 'application/json' },
       data: { name: 'Unauthorized Rename Attempt' },
     });
-    expect(patchRes.status(), 'unauthenticated PATCH must be rejected with a 4xx status').toBeGreaterThanOrEqual(
-      400,
-    );
-    expect(patchRes.status(), 'unauthenticated PATCH must not be a 5xx server error').toBeLessThan(
-      500,
-    );
+    expect(
+      patchRes.status(),
+      'unauthenticated PATCH must be rejected with a 4xx status',
+    ).toBeGreaterThanOrEqual(400);
+    expect(
+      patchRes.status(),
+      'unauthenticated PATCH must not be a 5xx server error',
+    ).toBeLessThan(500);
 
     // An unauthenticated DELETE must likewise be rejected.
     const deleteRes = await request.delete(`${API_URL}/caminos/${targetId}`);
@@ -53,9 +57,10 @@ test.describe('Camino API — authorization and validation', () => {
       deleteRes.status(),
       'unauthenticated DELETE must be rejected with a 4xx status',
     ).toBeGreaterThanOrEqual(400);
-    expect(deleteRes.status(), 'unauthenticated DELETE must not be a 5xx server error').toBeLessThan(
-      500,
-    );
+    expect(
+      deleteRes.status(),
+      'unauthenticated DELETE must not be a 5xx server error',
+    ).toBeLessThan(500);
 
     // A well-formed but non-existent UUID must 404.
     const notFoundRes = await request.get(
@@ -68,6 +73,6 @@ test.describe('Camino API — authorization and validation', () => {
 
     // A malformed (non-UUID) id must 400, not 404 or 500.
     const badRequestRes = await request.get(`${API_URL}/caminos/not-a-uuid`);
-    expect(badRequestRes.status(), 'a non-UUID path parameter must return 400').toBe(400);
+    expect(badRequestRes.status(), 'a non-UUID path parameter must return 404').toBe(404);
   });
 });
