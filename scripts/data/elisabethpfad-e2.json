@@ -441,7 +441,7 @@
           "addressCity": "Homberg (Efze)",
           "addressCountry": "germany",
           "phone": "+49 5681 608238",
-          "website": null,
+          "website": "https://jugendhaus-homberg.de/",
           "email": "info@lutherisches-jugendgaestehaus.de",
           "priceRange": "budget",
           "verified": false
@@ -449,13 +449,13 @@
         {
           "name": "Burghotel Homberg",
           "type": "hotel",
-          "description": "Hotel in Homberg (Efze) nahe der Burg, mit Doppel- und Einzelzimmern.",
+          "description": "Burghotel Homberg, Frau Kilic Özlem, Holzhäuserstr. 32, Tel.: 05681/608812, DZ o.F. 60,- Euro, EZ. o.F. 40,- Euro, Frühstück auf Wunsch möglich.",
           "addressStreet": "Holzhäuserstr. 32",
           "addressZip": "34576",
           "addressCity": "Homberg (Efze)",
           "addressCountry": "germany",
-          "phone": "+49 5681 608812",
-          "website": null,
+          "phone": "+49 173 27 55 471",
+          "website": "https://ulihomberg.jimdofree.com/burghotel-in-homberg-efze/",
           "email": null,
           "priceRange": "moderate",
           "verified": false
