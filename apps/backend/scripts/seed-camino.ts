@@ -173,40 +173,128 @@ async function seed(
   //    This ensures the camino is never left in a partially-rebuilt state if
   //    the script errors mid-import (e.g. after the deleteMany but before all
   //    point orders are recreated).
-  const counts = { points: 0, accommodations: 0, accommodationsUpdated: 0, stages: 0 };
+  const counts = {
+    points: 0,
+    pointsSkipped: 0,
+    accommodations: 0,
+    accommodationsUpdated: 0,
+    accommodationsSkipped: 0,
+    stages: 0,
+    stagesSkipped: 0,
+  };
+  let pointOrderRebuilt = false;
 
   await prisma.$transaction(async (tx) => {
-    // 1. Upsert Camino
+    // 1. Resolve the Camino. Never blindly upsert by name: a name match could
+    //    be (a) this seed's own camino from a previous run, safe to refresh,
+    //    or (b) a completely unrelated camino a real user independently
+    //    created with the same name, which must not be touched at all, or
+    //    (c) this seed's own camino that a pilgrim has since edited via the
+    //    app (rename, waypoint reorder, etc.), whose edits must survive a
+    //    re-seed. Camino.updatedAt is never touched by this script's own
+    //    writes below, so — unlike Stage/Accommodation further down — a
+    //    divergence from createdAt reliably means a real edit happened via
+    //    CaminosService.update(), which always bumps it.
     const caminoSlug = slugify(caminoData.name);
     const countries = extractOrderedCountries(
       [...points]
         .sort((a, b) => a.position - b.position)
         .map((p) => p.country),
     );
-    const camino = await tx.camino.upsert({
-      where: { name: caminoData.name },
-      create: {
-        name: caminoData.name,
-        slug: caminoSlug,
-        description: caminoData.description,
-        verified: caminoData.verified,
-        createdBy,
-        countries,
-      },
-      update: {
-        description: caminoData.description,
-        verified: caminoData.verified,
-        countries,
-      },
+
+    const existingCamino = await tx.camino.findUnique({ where: { name: caminoData.name } });
+
+    let caminoId: string;
+    let safeToOverwriteCaminoContent: boolean;
+
+    if (!existingCamino) {
+      const created = await tx.camino.create({
+        data: {
+          name: caminoData.name,
+          slug: caminoSlug,
+          description: caminoData.description,
+          verified: caminoData.verified,
+          createdBy,
+          countries,
+        },
+      });
+      caminoId = created.id;
+      safeToOverwriteCaminoContent = true;
+      console.log(`\nCamino "${created.name}" — id: ${created.id} (created)`);
+    } else {
+      caminoId = existingCamino.id;
+      const ownedBySeed = existingCamino.createdBy === createdBy;
+      const editedSinceCreation =
+        existingCamino.updatedAt.getTime() !== existingCamino.createdAt.getTime();
+
+      if (!ownedBySeed) {
+        console.warn(
+          `⚠ Camino "${caminoData.name}" already exists with createdBy="${existingCamino.createdBy}" ` +
+            `(this seed run's createdBy is "${createdBy}") — leaving it untouched, likely a real user's camino.`,
+        );
+        safeToOverwriteCaminoContent = false;
+      } else if (editedSinceCreation) {
+        console.warn(
+          `⚠ Camino "${caminoData.name}" has been edited since creation (updatedAt != createdAt) — ` +
+            `leaving name/description/verified/countries untouched to avoid clobbering a pilgrim edit. ` +
+            `(Waypoint order is checked separately below — this alone does not block adding new waypoints.)`,
+        );
+        safeToOverwriteCaminoContent = false;
+      } else {
+        const updated = await tx.camino.update({
+          where: { id: caminoId },
+          data: { description: caminoData.description, verified: caminoData.verified, countries },
+        });
+        safeToOverwriteCaminoContent = true;
+        console.log(`\nCamino "${updated.name}" — id: ${updated.id} (refreshed)`);
+      }
+    }
+
+    // 2. Waypoint order. This is deliberately NOT gated on
+    //    safeToOverwriteCaminoContent above: whether the camino's own
+    //    name/description/verified/countries were edited is unrelated to
+    //    whether it's safe to splice a new waypoint into the sequence.
+    //    Adding a waypoint never touches any *existing* waypoint (or its
+    //    accommodations/sights) — it only shifts position numbers, so it's
+    //    inherently safe. What must stay blocked is the seed silently
+    //    REMOVING or REORDERING waypoints a pilgrim has since curated via
+    //    the app's "Edit waypoints" UI (there's no per-row edit-tracking on
+    //    this join table, so we can't detect that directly — instead we
+    //    check the shape of the change): take the current DB order, and
+    //    the seed's order filtered down to just the names already present
+    //    in the DB. If those two match exactly, the seed is a pure
+    //    insertion — safe to rebuild positions from it. Any mismatch means
+    //    something was removed or reordered, and the rebuild is skipped.
+    const currentOrderRows = await tx.caminoPointOrder.findMany({
+      where: { caminoId },
+      orderBy: { position: 'asc' },
+      include: { caminoPoint: { select: { name: true } } },
     });
-    const caminoId = camino.id;
-    console.log(`\nCamino "${camino.name}" — id: ${camino.id}`);
+    const currentOrderNames = currentOrderRows.map((r) => r.caminoPoint.name);
+    const seedOrderNames = [...points]
+      .sort((a, b) => a.position - b.position)
+      .map((p) => p.name);
+    const currentNameSet = new Set(currentOrderNames);
+    const seedFilteredToCurrent = seedOrderNames.filter((n) => currentNameSet.has(n));
 
-    // 2. Replace point orders atomically: delete all existing rows first so
-    //    stale positions from a previous import don't survive the re-seed.
-    await tx.caminoPointOrder.deleteMany({ where: { caminoId } });
+    const safeToRebuildPointOrder =
+      currentOrderNames.length === seedFilteredToCurrent.length &&
+      currentOrderNames.every((n, i) => n === seedFilteredToCurrent[i]);
 
-    // 3. Upsert CaminoPoints, recreate CaminoPointOrder, create Accommodations
+    if (safeToRebuildPointOrder) {
+      await tx.caminoPointOrder.deleteMany({ where: { caminoId } });
+      pointOrderRebuilt = true;
+    } else {
+      console.warn(
+        `⚠ Waypoint order for "${caminoData.name}" has diverged from the seed file in a way that isn't ` +
+          `a pure addition (an existing waypoint was removed or reordered) — leaving the current sequence ` +
+          `untouched. Any new waypoints in this seed file will still be created as standalone points and ` +
+          `linked with new stages where possible, but won't be spliced into this camino's route. Resolve ` +
+          `manually via "Edit waypoints" in the app if the seed change should still apply.`,
+      );
+    }
+
+    // 3. CaminoPoints, CaminoPointOrder, Accommodations.
     const pointIdByName = new Map<string, string>();
     console.log(`\nPoints (${points.length}):`);
 
@@ -216,18 +304,49 @@ async function seed(
           (pd.accommodations.length ? ` — ${pd.accommodations.length} accommodation(s)` : ''),
       );
 
-      const point = await tx.caminoPoint.upsert({
-        where: { slug: pd.slug },
-        create: { name: pd.name, country: pd.country, slug: pd.slug, description: pd.description, lat: pd.lat ?? null, lng: pd.lng ?? null },
-        update: { name: pd.name, country: pd.country, description: pd.description, lat: pd.lat ?? null, lng: pd.lng ?? null },
-      });
+      // CaminoPoints have no updatedAt/createdBy column, so there is no way
+      // to tell a seed-original waypoint apart from one a pilgrim has since
+      // edited via PATCH /waypoints/:slug. Never overwrite an existing one —
+      // only create genuinely new waypoints. (A migration adding
+      // createdBy/updatedAt to CaminoPoint would let this become as strict
+      // as the Camino/Accommodation checks below.)
+      const existingPoint = await tx.caminoPoint.findUnique({ where: { slug: pd.slug } });
+      let point: { id: string };
+      if (existingPoint) {
+        point = existingPoint;
+        counts.pointsSkipped++;
+        if (
+          existingPoint.name !== pd.name ||
+          existingPoint.country !== pd.country ||
+          existingPoint.description !== pd.description ||
+          existingPoint.lat !== (pd.lat ?? null) ||
+          existingPoint.lng !== (pd.lng ?? null)
+        ) {
+          console.warn(
+            `    ⚠ CaminoPoint "${pd.name}" already exists and differs from the seed file — ` +
+              `left untouched (CaminoPoint has no edit-tracking column, so this could be a pilgrim edit). Review manually if the seed data changed intentionally.`,
+          );
+        }
+      } else {
+        point = await tx.caminoPoint.create({
+          data: {
+            name: pd.name,
+            country: pd.country,
+            slug: pd.slug,
+            description: pd.description,
+            lat: pd.lat ?? null,
+            lng: pd.lng ?? null,
+          },
+        });
+        counts.points++;
+      }
       pointIdByName.set(pd.name, point.id);
-      counts.points++;
 
-      // deleteMany cleared all rows for this camino above, so create is safe here
-      await tx.caminoPointOrder.create({
-        data: { caminoId, caminoPointId: point.id, position: pd.position },
-      });
+      if (safeToRebuildPointOrder) {
+        await tx.caminoPointOrder.create({
+          data: { caminoId, caminoPointId: point.id, position: pd.position },
+        });
+      }
 
       for (const acc of pd.accommodations) {
         if (!VALID_ACC_TYPES.has(acc.type)) {
@@ -248,28 +367,43 @@ async function seed(
             acc.priceRange && VALID_PRICE_RANGES.has(acc.priceRange)
               ? (acc.priceRange as PriceRange)
               : null,
-          verified: acc.verified,
         };
         const existing = await tx.accommodation.findFirst({
           where: { caminoPointId: point.id, name: acc.name },
-          select: { id: true },
+          select: { id: true, createdBy: true, createdAt: true, updatedAt: true },
         });
         if (existing) {
-          await tx.accommodation.update({
-            where: { id: existing.id },
-            data: { ...accData, verified: undefined, updatedAt: new Date() },
-          });
-          counts.accommodationsUpdated++;
+          const ownedBySeed = existing.createdBy === createdBy;
+          const editedSinceCreation =
+            existing.updatedAt.getTime() !== existing.createdAt.getTime();
+          if (!ownedBySeed || editedSinceCreation) {
+            console.warn(
+              `    ⚠ Accommodation "${acc.name}" already exists (${!ownedBySeed ? 'different createdBy' : 'edited since creation'}) — left untouched.`,
+            );
+            counts.accommodationsSkipped++;
+          } else {
+            // verified is deliberately excluded: it's a pilgrim/backoffice
+            // decision, not something the seed file should ever override.
+            await tx.accommodation.update({
+              where: { id: existing.id },
+              data: accData,
+            });
+            counts.accommodationsUpdated++;
+          }
         } else {
           await tx.accommodation.create({
-            data: { caminoPointId: point.id, name: acc.name, createdBy, ...accData },
+            data: { caminoPointId: point.id, name: acc.name, createdBy, verified: acc.verified, ...accData },
           });
           counts.accommodations++;
         }
       }
     }
 
-    // 4. Upsert Stages
+    // 4. Stages. Like CaminoPoint, Stage has no createdBy column, and its
+    //    updatedAt is Prisma-managed (@updatedAt) so this script's own writes
+    //    would bump it too — updatedAt vs createdAt can't distinguish "a
+    //    pilgrim edited this" from "a previous seed run touched this".
+    //    Only create genuinely new stages; never overwrite an existing one.
     console.log(`\nStages (${stages.length}):`);
     for (const sd of stages) {
       const startId = pointIdByName.get(sd.from);
@@ -283,22 +417,41 @@ async function seed(
 
       console.log(`  ${sd.from} → ${sd.to}${sd.distance ? ` (${sd.distance} km)` : ''}`);
 
-      await tx.stage.upsert({
+      const existingStage = await tx.stage.findUnique({
         where: { startPointId_endPointId: { startPointId: startId, endPointId: endId } },
-        create: { startPointId: startId, endPointId: endId, distance: sd.distance, description: sd.description },
-        update: { distance: sd.distance, description: sd.description },
       });
-      counts.stages++;
+      if (existingStage) {
+        counts.stagesSkipped++;
+        if (
+          existingStage.distance !== sd.distance ||
+          existingStage.description !== sd.description
+        ) {
+          console.warn(
+            `    ⚠ Stage "${sd.from} → ${sd.to}" already exists and differs from the seed file — left untouched (no edit-tracking column on Stage).`,
+          );
+        }
+      } else {
+        await tx.stage.create({
+          data: { startPointId: startId, endPointId: endId, distance: sd.distance, description: sd.description },
+        });
+        counts.stages++;
+      }
     }
   }, { timeout: 60000 });
 
   // 5. Summary (printed after successful commit)
   console.log('\n─────────────────────────────────────────');
   console.log('Import complete.');
-  console.log(`  Points upserted:        ${counts.points}`);
-  console.log(`  Accommodations created: ${counts.accommodations}`);
-  console.log(`  Accommodations updated: ${counts.accommodationsUpdated}`);
-  console.log(`  Stages upserted:        ${counts.stages}`);
+  console.log(`  Points created:            ${counts.points}`);
+  console.log(`  Points left untouched:     ${counts.pointsSkipped} (already existed — never overwritten)`);
+  console.log(`  Accommodations created:    ${counts.accommodations}`);
+  console.log(`  Accommodations updated:    ${counts.accommodationsUpdated}`);
+  console.log(`  Accommodations left as-is: ${counts.accommodationsSkipped} (different createdBy or edited since creation)`);
+  console.log(`  Stages created:            ${counts.stages}`);
+  console.log(`  Stages left untouched:     ${counts.stagesSkipped} (already existed — never overwritten)`);
+  console.log(
+    `  Waypoint order:            ${pointOrderRebuilt ? 'rebuilt from seed file' : 'left untouched (would have removed/reordered an existing waypoint)'}`,
+  );
   console.log('─────────────────────────────────────────\n');
 }
 

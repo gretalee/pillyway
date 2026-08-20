@@ -44,9 +44,9 @@ export async function StageList({ caminoId }: StageListProps) {
             <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
               {stage.stageNumber}
             </span>
-            <div className="flex-1 flex min-w-0 font-medium gap-2">
+            <div className="flex-1 flex min-w-0 font-medium md:gap-2">
               <span className="flex-1 overflow-hidden font-medium flex items-center gap-2">
-                <span className="font-medium truncate pt-[1px] max-md:flex-1">
+                <span className="font-medium truncate pt-px max-md:flex-1">
                   {stage.startPoint.name}
                   {stage.startPoint.country && (
                     <span className="ml-1 ">
@@ -69,8 +69,8 @@ export async function StageList({ caminoId }: StageListProps) {
             </span>
 
             <div className="flex-1 flex min-w-0 font-medium gap-2">
-              <span className="flex-1 overflow-hidden font-medium flex items-center gap-2">
-                <span className="font-medium truncate pt-[1px] max-md:flex-1">
+              <span className="flex-1 overflow-hidden font-medium flex items-center md:gap-2">
+                <span className="font-medium truncate pt-px max-md:flex-1">
                   {stage.endPoint.name}
                   {stage.endPoint.country && (
                     <span className="ml-1">
