@@ -1,13 +1,14 @@
 import { expect, test } from '@playwright/test';
 import {
   // Import only what you need. Check tests/helpers/ first — login/session
-  // helpers (login, logout, uniqueName, ...) live in
-  // tests/helpers/login-helpers.ts, entity-specific ones (e.g. camino
-  // creation/cleanup) in tests/helpers/camino-helpers.ts. Both are
+  // helpers (loginAs, logout, uniqueName, ...) live in
+  // tests/helpers/login-helpers.ts, locale switching in
+  // tests/helpers/language-helpers.ts, entity-specific ones (e.g. camino
+  // creation/cleanup) in tests/helpers/camino-helpers.ts. All are
   // re-exported from './helpers' (a pure barrel), so this import path never
   // changes. If the setup step you need isn't there yet but would be useful
   // to another spec too, add it there instead of duplicating it inline.
-  // createCaminoWith4Points, deleteCaminoViaUI, loginAs, logout, setLanguageToEnglish, uniqueName,
+  // type CreatedCamino, createCaminoWith4Points, deleteCaminoViaUI, loginAs, logout, setLanguageTo, uniqueName,
 } from './helpers';
 
 /**
@@ -30,11 +31,13 @@ import {
  * across steps (e.g. guest view, then pilgrim edit), say so — that's still
  * one use-case and one test, just multiple contexts/logins within it.>
  *
- * Timeout rules (CLAUDE.md)
- * -------------------------
+ * Timeout rules (CLAUDE.md + SKILL.md Step 3)
+ * -------------------------------------------
  * - testInfo.setTimeout(120_000) in beforeAll  — login + navigate + fill forms
  * - testInfo.setTimeout(90_000)  in beforeAll/afterAll — login + one UI op only
- * - test.setTimeout(60_000)      — on the describe block, if the test logs in
+ * - test.setTimeout(60_000)      — baseline if the test itself logs in; step
+ *   up through 90_000/120_000/150_000/180_000 as the journey grows past a
+ *   handful of steps — see SKILL.md Step 3 for sizing guidance.
  */
 
 test.describe('<Use-case name>', () => {
@@ -44,7 +47,10 @@ test.describe('<Use-case name>', () => {
   test.describe.configure({ mode: 'serial' });
   test.setTimeout(60_000); // only needed if the test itself performs a Kinde login
 
-  let caminoId: string;
+  // CreatedCamino is { id, slug } — cleanup helpers like deleteCaminoViaUI
+  // take the *slug*, not the id. Name the variable for what it actually
+  // holds so that's obvious at the call site.
+  let caminoSlug: string | undefined;
   let caminoName: string;
 
   // ─── Setup ──────────────────────────────────────────────────────────────
@@ -61,11 +67,12 @@ test.describe('<Use-case name>', () => {
 
     const ctx = await browser.newContext();
     const page = await ctx.newPage();
-    // await setLanguageToEnglish(page);
+    // await setLanguageTo(page, 'en');
     // await loginAs(page, email!, password!);
 
     // caminoName = uniqueName('<ShortPrefix>');
-    // caminoId = await createCaminoWith4Points(page, caminoName);
+    // const created: CreatedCamino = await createCaminoWith4Points(page, caminoName);
+    // caminoSlug = created.slug;
     // ... rest of this use-case's shared fixture setup ...
 
     await ctx.close();
@@ -75,7 +82,7 @@ test.describe('<Use-case name>', () => {
 
   test.afterAll(async ({ browser }, testInfo) => {
     testInfo.setTimeout(90_000);
-    if (!caminoId) return;
+    if (!caminoSlug) return;
 
     const email = process.env.E2E_PILGRIM_EMAIL;
     const password = process.env.E2E_PILGRIM_PASSWORD;
@@ -85,10 +92,10 @@ test.describe('<Use-case name>', () => {
 
     const ctx = await browser.newContext();
     const page = await ctx.newPage();
-    // await setLanguageToEnglish(page);
+    // await setLanguageTo(page, 'en');
     // await loginAs(page, email, password);
     try {
-      // await deleteCaminoViaUI(page, caminoId);
+      // await deleteCaminoViaUI(page, caminoSlug);
     } finally {
       await ctx.close();
     }

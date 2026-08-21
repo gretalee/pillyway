@@ -19,17 +19,23 @@ skill:
   source of truth if anything here seems to disagree with it.
 - **`apps/e2e/tests/helpers/`** — every reusable setup/navigation/cleanup
   helper, split by concern: `login-helpers.ts` holds login/session/naming
-  helpers (`setLanguageToEnglish`, `loginAs`, `logout`, `uniqueName`),
-  `camino-helpers.ts` holds all camino creation/fixture-data/cleanup helpers,
-  and `index.ts` is a pure barrel (`export * from './login-helpers'` +
-  `export * from './camino-helpers'`) so every spec file still imports from
-  `'./helpers'` regardless of which file a given helper actually lives in.
-  Read the relevant file(s) in full before writing any new test — duplicating
-  a helper inline instead of reusing (or extending) it is the most common way
-  new specs drift from convention. If a new concern (a new entity, or
-  something else that doesn't fit login/camino) accumulates enough dedicated
-  helpers to be worth splitting out, give it its own `<concern>-helpers.ts`
-  and add it to the `index.ts` barrel, following the same pattern.
+  helpers (`loginAs`, `logout`, `uniqueName`), `language-helpers.ts` holds
+  `setLanguageTo(page, 'en' | 'de')` for setting the locale before a test
+  starts, `camino-helpers.ts` holds all camino creation/fixture-data/cleanup
+  helpers, and `index.ts` is a pure barrel (`export * from './login-helpers'`
+  + `export * from './language-helpers'` + `export * from './camino-helpers'`)
+  so every spec file still imports from `'./helpers'` regardless of which
+  file a given helper actually lives in. Read the relevant file(s) in full
+  before writing any new test — duplicating a helper inline instead of
+  reusing (or extending) it is the most common way new specs drift from
+  convention. This list itself drifts too (it's exactly how
+  `language-helpers.ts` came to exist, split out of `login-helpers.ts`) — if
+  `ls apps/e2e/tests/helpers/` shows a file not named here, trust the
+  directory listing over this bullet. If a new concern (a new entity, or
+  something else that doesn't fit login/language/camino) accumulates enough
+  dedicated helpers to be worth splitting out, give it its own
+  `<concern>-helpers.ts` and add it to the `index.ts` barrel, following the
+  same pattern.
 - **A recently-written spec file covering a similar flow** — check
   `apps/e2e/tests/` for the closest existing match before starting from
   scratch. Match its shape.
@@ -53,6 +59,12 @@ If the user hasn't said, ask (or infer from context):
   fixture are needed.
 - New file, or does an existing file already cover this exact use-case and
   just needs another expectation added to its single test?
+- Is this a browser flow at all? Some use-cases are backend-only checks
+  (e.g. `camino-api-authorization.spec.ts` asserts the API itself rejects
+  unauthenticated PATCH/DELETE and returns correct status codes for bad
+  IDs) — those use Playwright's `request` fixture instead of `page`, need no
+  login/locators, and Steps 5's locator rules don't apply. Still one
+  `describe`/one `test`, still every `expect()` described.
 
 ## Step 2: One file, one test, one use-case
 
@@ -119,6 +131,22 @@ If the user hasn't said, ask (or infer from context):
   does NOT extend hook timeouts — hooks need their own call.
 - `testInfo.setTimeout(120_000)` — for `beforeAll` hooks that additionally
   navigate and fill forms after creating the shared fixture.
+- **The 60_000 baseline above only covers "one login plus a short test
+  body."** Step 2 explicitly favors combining a whole use-case's journey
+  into a single `test()` — for a long journey (create, multiple edits, add
+  child entities, resolve a dialog, delete) that single-test body can easily
+  need 150–250+ Playwright actions across a dozen-plus page navigations.
+  Size `test.setTimeout()` to the journey, not just the login: start at
+  60_000, and step up through the same 90_000 / 120_000 / 150_000 / 180_000
+  tiers used for hooks as the step count grows — roughly an extra 10–15s of
+  budget per additional full UI navigation or dialog in the flow.
+  `caminos-loggedIn.spec.ts` (create → 3 renames → add accommodation/sight →
+  3 stage edits → reorder-conflict dialog → 2 deletes, all after one login)
+  needed `test.setTimeout(180_000)`. Don't leave a long full-flow test on
+  the unstated Playwright default (30s, from not calling `test.setTimeout`
+  at all) just because it doesn't call `loginAs` in a `beforeEach` — a
+  single `test()` that itself performs the login and then a long journey
+  still needs an explicit, generously-sized override.
 
 ## Step 4: Cleanup rules
 
@@ -135,6 +163,19 @@ If the user hasn't said, ask (or infer from context):
   perceive, and survive markup refactors. Always check whether one of these
   already fits — e.g. a `role="group"`/`aria-label` wrapper is a `getByRole`
   match even if the element also happens to carry a `data-testid`.
+- **Plain HTML elements often already have an implicit ARIA role — check
+  before reaching for a structural locator.** `<ol>`/`<ul>` and their `<li>`
+  children are `getByRole('list')`/`getByRole('listitem')` matches with zero
+  markup changes; a raw `page.locator('ol li')` is doing the same query the
+  hard way and losing the resilience `getByRole` gives you. This is easy to
+  miss for containers with no obvious ARIA attributes — when you're about to
+  write a CSS-descendant locator, check the
+  [implicit role table](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques)
+  for the element first. Not everything has one, though — a `<dl>`'s `<dd>`
+  value cells have no implicit role, so a link buried inside one (e.g. "the
+  start-point link in this stage's definition list") genuinely has no
+  accessible-locator path; that's exactly when the `getByTestId` fallback
+  below applies, not a structural locator like `page.locator('dl dd a')`.
 - **`getByTestId` is a valid fallback when accessible locators are too
   complicated or don't exist** — e.g. a purely presentational element (a
   `<span>` with dynamic text, no interactive role) that has no natural
@@ -193,6 +234,22 @@ If the user hasn't said, ask (or infer from context):
   separate, intentional infra-level allowance and stays as-is — this rule
   is about not adding *additional*, test-local retry overrides to paper
   over a flaky assertion.)
+- **A same-route SPA re-navigation that intermittently "does nothing" is a
+  stale-mount problem, not a missing-wait problem — reach for
+  `page.goto(...)` instead of more synchronization.** A full-flow test that
+  revisits the same edit route multiple times (e.g. edit stage 1's distance,
+  save, then come back to edit it again) can hit a case where clicking an
+  in-app `<Link>` back onto that route reuses a stale
+  component/query-cache instance instead of remounting fresh — the form
+  renders, but "Save" silently no-ops with no console error, no failed
+  network request, nothing to `expect()` against. This isn't fixable by
+  waiting longer or adding a `toHaveValue()` check before the click (both
+  were tried and still failed intermittently in `caminos-loggedIn.spec.ts`);
+  the actual fix was replacing the second and later `editLink.click()`
+  re-entries with `await page.goto(<same edit URL>)`, which forces a fresh
+  mount and a fresh data fetch every time. If a repeated-visit step in a
+  flow fails intermittently with no visible error, suspect this before
+  adding more waits.
 
 ## Step 7: Helpers, not page objects
 
