@@ -56,7 +56,7 @@ export default async function CaminoDetailPage({ params }: Props) {
   return (
     <div className="mx-auto w-full max-w-3xl flex-1 px-4 py-6 lg:py-16 sm:px-6 lg:px-8">
       <CaminoDetail camino={camino} user={user}>
-        <StageList caminoId={camino.id} />
+        <StageList caminoId={camino.slug} />
       </CaminoDetail>
     </div>
   );

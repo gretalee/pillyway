@@ -1,14 +1,15 @@
 import { expect, test } from '@playwright/test';
 import {
+  API_URL,
   createMockCamino,
+  type CreatedCaminoPoint,
   DEFAULT_CAMINO_SEED_DATA,
   deleteCaminoViaUI,
+  deleteMockWaypoints,
   loginAs,
   logout,
   setLanguageTo,
 } from './helpers';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3033/api';
 
 /**
  * E2E test for viewing and editing a single stage.
@@ -27,13 +28,14 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3033/api';
  * Data strategy
  * -------------
  * One shared mock camino (createMockCamino's 4-point default: Saint-Jean-
- * Pied-de-Port → Roncesvalles → Pamplona → Logroño), created once in
- * beforeAll. Stage 2 (Roncesvalles → Pamplona) is used throughout, since
- * it's the only stage with both a previous and a next stage. beforeAll also
- * adds one accommodation at each of stage 2's waypoints — fetching their
- * slugs via the public GET .../stages/2 endpoint rather than scraping the
- * DOM, since the create-camino form's response has no per-waypoint
- * identifiers. Deleted in afterAll.
+ * Pied-de-Port → Roncesvalles → Pamplona → Logroño, uniquely suffixed — see
+ * the beforeAll comment), created once in beforeAll. Stage 2 (Roncesvalles →
+ * Pamplona) is used throughout, since it's the only stage with both a
+ * previous and a next stage. beforeAll also adds one accommodation at each
+ * of stage 2's waypoints — fetching their slugs via the public GET
+ * .../stages/2 endpoint (simpler than filtering the create response's
+ * caminoPoints by position). Both the camino and its waypoints are deleted
+ * in afterAll.
  *
  * Auth strategy
  * -------------
@@ -48,6 +50,7 @@ test.describe('Stages', () => {
 
   let caminoId: string | undefined;
   let caminoSlug: string | undefined;
+  let caminoPoints: CreatedCaminoPoint[] | undefined;
   let startPointSlug: string;
   let startPointName: string;
   let endPointSlug: string;
@@ -87,11 +90,11 @@ test.describe('Stages', () => {
     });
     caminoId = created.id;
     caminoSlug = created.slug;
+    caminoPoints = created.caminoPoints;
 
     // Stage 2 (Roncesvalles → Pamplona) is the only stage with both a
     // previous and a next stage. Fetch it via the same public endpoint the
-    // stage detail page itself uses, to get each waypoint's slug — the
-    // create-camino response only carries the camino's own id/slug.
+    // stage detail page itself uses, to get each waypoint's slug.
     const stageRes = await page.request.get(`${API_URL}/caminos/${caminoId}/stages/2`);
     expect(stageRes.ok(), 'GET stage 2 must succeed to read its waypoint slugs').toBe(true);
     const stage2 = (await stageRes.json()) as {
@@ -142,6 +145,9 @@ test.describe('Stages', () => {
     await loginAs(page, email, password);
     try {
       await deleteCaminoViaUI(page, caminoSlug);
+      // Uniquely-suffixed waypoints (see beforeAll) — never shared with any
+      // other camino, so this should always succeed.
+      if (caminoPoints) await deleteMockWaypoints(page, caminoPoints);
     } finally {
       await logout(page);
       await ctx.close();

@@ -53,6 +53,34 @@ export async function logout(page: Page): Promise<void> {
   await page.waitForURL('/', { timeout: 10_000 });
 }
 
+/**
+ * Returns the current session's Kinde access token, for tests that need to
+ * call the backend API directly (bypassing the UI) with authorization —
+ * e.g. cleanup calls to endpoints with no corresponding UI action.
+ *
+ * `/api/auth/setup` is not a bespoke endpoint added for testing — it's the
+ * same same-origin route the Kinde Next.js SDK's own `useKindeBrowserClient`
+ * hook fetches internally (see `fetchKindeState` in
+ * `@kinde-oss/kinde-auth-nextjs/dist/src/frontend/utils.*.js`) to hydrate
+ * `accessTokenEncoded` client-side. Calling it here just reads the same
+ * already-authenticated session cookie the browser already has — it grants
+ * no new capability beyond what the page's own JS already does on load.
+ *
+ * Returns null (never throws) if the session has no token — callers must
+ * decide how to handle that themselves (this is typically used from
+ * best-effort cleanup code, where a failure here should not fail a test).
+ */
+export async function getAccessToken(page: Page): Promise<string | null> {
+  try {
+    const res = await page.request.get('/api/auth/setup');
+    if (!res.ok()) return null;
+    const data = (await res.json()) as { accessTokenEncoded?: string };
+    return data.accessTokenEncoded ?? null;
+  } catch {
+    return null;
+  }
+}
+
 // ─── Helper: unique test entity name ─────────────────────────────────────────
 export function uniqueName(label: string): string {
   return `[E2E-${label}] ${Date.now()}`;

@@ -1,7 +1,9 @@
 import {
+  ConflictException,
   InternalServerErrorException,
   Logger,
   LoggerService,
+  NotFoundException,
 } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -154,5 +156,104 @@ describe('CaminoPointsService.search()', () => {
     await expect(service.search('saint', 'france')).rejects.toBeInstanceOf(
       InternalServerErrorException,
     );
+  });
+});
+
+// ─── deleteIfUnused() ───────────────────────────────────────────────────────
+
+interface DeleteTxMocks {
+  findUnique: ReturnType<typeof vi.fn>;
+  count: ReturnType<typeof vi.fn>;
+  stageDeleteMany: ReturnType<typeof vi.fn>;
+  pointDelete: ReturnType<typeof vi.fn>;
+}
+
+function buildDeleteTxMocks(
+  overrides: Partial<DeleteTxMocks> = {},
+): DeleteTxMocks {
+  return {
+    findUnique: vi.fn().mockResolvedValue({ id: 'point-1' }),
+    count: vi.fn().mockResolvedValue(0),
+    stageDeleteMany: vi.fn().mockResolvedValue({ count: 0 }),
+    pointDelete: vi.fn().mockResolvedValue({ id: 'point-1' }),
+    ...overrides,
+  };
+}
+
+async function buildDeleteModule(
+  mocks: DeleteTxMocks,
+): Promise<CaminoPointsService> {
+  const tx = {
+    caminoPoint: { findUnique: mocks.findUnique, delete: mocks.pointDelete },
+    caminoPointOrder: { count: mocks.count },
+    stage: { deleteMany: mocks.stageDeleteMany },
+  };
+  const module: TestingModule = await Test.createTestingModule({
+    providers: [
+      CaminoPointsService,
+      {
+        provide: PrismaService,
+        useValue: {
+          $transaction: vi
+            .fn()
+            .mockImplementation((cb: (tx: unknown) => unknown) => cb(tx)),
+        },
+      },
+    ],
+  })
+    .setLogger(false as unknown as LoggerService)
+    .compile();
+  return module.get(CaminoPointsService);
+}
+
+describe('CaminoPointsService.deleteIfUnused()', () => {
+  it('throws NotFoundException when the point does not exist, without touching stages or the point itself', async () => {
+    const mocks = buildDeleteTxMocks({
+      findUnique: vi.fn().mockResolvedValue(null),
+    });
+    const service = await buildDeleteModule(mocks);
+
+    await expect(service.deleteIfUnused('missing-id')).rejects.toBeInstanceOf(
+      NotFoundException,
+    );
+    expect(mocks.count).not.toHaveBeenCalled();
+    expect(mocks.stageDeleteMany).not.toHaveBeenCalled();
+    expect(mocks.pointDelete).not.toHaveBeenCalled();
+  });
+
+  it('throws ConflictException when the point is still used by a camino, without deleting anything', async () => {
+    const mocks = buildDeleteTxMocks({ count: vi.fn().mockResolvedValue(2) });
+    const service = await buildDeleteModule(mocks);
+
+    await expect(service.deleteIfUnused('point-1')).rejects.toBeInstanceOf(
+      ConflictException,
+    );
+    expect(mocks.stageDeleteMany).not.toHaveBeenCalled();
+    expect(mocks.pointDelete).not.toHaveBeenCalled();
+  });
+
+  it('deletes orphaned stages then the point itself when the point is unused', async () => {
+    const mocks = buildDeleteTxMocks();
+    const service = await buildDeleteModule(mocks);
+
+    await service.deleteIfUnused('point-1');
+
+    expect(mocks.stageDeleteMany).toHaveBeenCalledWith({
+      where: { OR: [{ startPointId: 'point-1' }, { endPointId: 'point-1' }] },
+    });
+    expect(mocks.pointDelete).toHaveBeenCalledWith({
+      where: { id: 'point-1' },
+    });
+  });
+
+  it('deletes the point before checking stages is irrelevant — stages must be removed first to satisfy the FK', async () => {
+    const mocks = buildDeleteTxMocks();
+    const service = await buildDeleteModule(mocks);
+
+    await service.deleteIfUnused('point-1');
+
+    const stageCallOrder = mocks.stageDeleteMany.mock.invocationCallOrder[0];
+    const pointCallOrder = mocks.pointDelete.mock.invocationCallOrder[0];
+    expect(stageCallOrder).toBeLessThan(pointCallOrder);
   });
 });

@@ -5,6 +5,7 @@ import {
   createMockCamino,
   DEFAULT_CAMINO_SEED_DATA,
   deleteCaminoViaUI,
+  deleteMockWaypoints,
   ITALY_SEED_POINT,
   loginAs,
   logout,
@@ -92,6 +93,20 @@ test.describe('Caminos', () => {
       if (caminoItaly) await deleteCaminoViaUI(page, caminoItaly.slug);
       if (caminoFrance) await deleteCaminoViaUI(page, caminoFrance.slug);
       if (caminoUnverified) await deleteCaminoViaUI(page, caminoUnverified.slug);
+      // Only succeeds once no other camino uses these waypoints anymore
+      // (this spec deliberately reuses DEFAULT_CAMINO_SEED_DATA's shared
+      // names) — best-effort, safe to attempt regardless. Deduplicated by
+      // id first: caminoFrance and caminoUnverified both link the same
+      // shared "Saint-Jean-Pied-de-Port" point (upserted, not duplicated),
+      // so deleting it once via one camino's list and then trying again via
+      // the other's would otherwise log a confusing (but harmless) 404.
+      const allPoints = [
+        ...(caminoItaly?.caminoPoints ?? []),
+        ...(caminoFrance?.caminoPoints ?? []),
+        ...(caminoUnverified?.caminoPoints ?? []),
+      ];
+      const uniquePoints = [...new Map(allPoints.map((p) => [p.id, p])).values()];
+      await deleteMockWaypoints(page, uniquePoints);
     } finally {
       await logout(page);
       await ctx.close();

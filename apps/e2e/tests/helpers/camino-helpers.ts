@@ -1,11 +1,26 @@
 import { expect } from '@playwright/test';
 import type { Page } from '@playwright/test';
 
-import { uniqueName } from './login-helpers';
+import { getAccessToken, uniqueName } from './login-helpers';
+
+export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3033/api';
+
+/** A waypoint as returned by the create-camino API response — real backend
+ * identifiers, distinct from CaminoSeedPoint (which is just the data a test
+ * submits). Used to delete mock waypoints in afterAll (see
+ * deleteMockWaypoints below). */
+export interface CreatedCaminoPoint {
+  id: string;
+  name: string;
+  country: string;
+  slug: string;
+  position: number;
+}
 
 export interface CreatedCamino {
   id: string;
   slug: string;
+  caminoPoints: CreatedCaminoPoint[];
 }
 
 /**
@@ -247,7 +262,12 @@ export async function createMockCamino(
   });
 
   const created = await submitCaminoCreateForm(page);
-  return { ...resolved, id: created.id, slug: created.slug };
+  return {
+    ...resolved,
+    id: created.id,
+    slug: created.slug,
+    caminoPoints: created.caminoPoints,
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -335,6 +355,47 @@ export async function deleteCaminoViaUI(page: Page, caminoSlug: string): Promise
     console.error(
       `[cleanup] camino for slug "${caminoSlug}" still appears in the list after confirming delete — verify manually`,
     );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Helper: delete the mock waypoints a test created, via the backend API
+// (there is no UI for this — waypoints have no delete button anywhere in the
+// app). Call this AFTER deleteCaminoViaUI, not before: deleting the camino
+// first removes its camino_point_order rows, which is what lets the backend
+// confirm each waypoint is genuinely unused before allowing its deletion —
+// camino deletion intentionally never touches camino_points itself (a
+// waypoint can be shared by other caminos), so without this, every mock
+// camino's waypoints (and the Stage/Accommodation rows attached to them)
+// would silently accumulate forever. Best-effort: never throws, logs and
+// moves on — a failed cleanup must not fail a test run.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export async function deleteMockWaypoints(
+  page: Page,
+  caminoPoints: readonly CreatedCaminoPoint[],
+): Promise<void> {
+  const accessToken = await getAccessToken(page);
+  if (!accessToken) {
+    console.error(
+      '[cleanup] could not obtain an access token — mock waypoints may need manual deletion',
+    );
+    return;
+  }
+
+  for (const point of caminoPoints) {
+    const res = await page.request
+      .delete(`${API_URL}/camino-points/${point.id}`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      .catch(() => null);
+    if (!res || !res.ok()) {
+      console.error(
+        `[cleanup] could not delete mock waypoint "${point.name}" (${point.id}), status ${
+          res ? res.status() : 'request failed'
+        } — it may need manual deletion`,
+      );
+    }
   }
 }
 

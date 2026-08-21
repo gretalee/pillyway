@@ -1,8 +1,10 @@
 import { expect, test } from '@playwright/test';
 import {
   createMockCamino,
+  type CreatedCaminoPoint,
   DEFAULT_CAMINO_SEED_DATA,
   deleteCaminoViaUI,
+  deleteMockWaypoints,
   loginAs,
   logout,
   setLanguageTo,
@@ -20,6 +22,7 @@ test.describe('Pilgrim creates, edits, and deletes a camino', () => {
 
   let caminoSlug: string | undefined;
   let caminoName: string;
+  let caminoPoints: CreatedCaminoPoint[] | undefined;
 
   test.afterAll(async ({ browser }, testInfo) => {
     testInfo.setTimeout(90_000);
@@ -36,6 +39,10 @@ test.describe('Pilgrim creates, edits, and deletes a camino', () => {
       // The test itself already deletes this camino as its final step — this
       // is a safety net for whenever it doesn't get that far.
       await deleteCaminoViaUI(page, caminoSlug);
+      // Only succeeds once no other camino uses these waypoints anymore
+      // (this spec deliberately reuses DEFAULT_CAMINO_SEED_DATA's shared
+      // names) — best-effort, safe to attempt regardless.
+      if (caminoPoints) await deleteMockWaypoints(page, caminoPoints);
     } finally {
       await logout(page);
       await ctx.close();
@@ -82,6 +89,7 @@ test.describe('Pilgrim creates, edits, and deletes a camino', () => {
     });
     caminoSlug = created.slug;
     caminoName = created.camino.name;
+    caminoPoints = created.caminoPoints;
 
     // "View camino" navigation is not exercised by any helper — check it here.
     const viewCaminoButton = page.getByRole('button', { name: 'View camino' });
@@ -136,6 +144,14 @@ test.describe('Pilgrim creates, edits, and deletes a camino', () => {
     // per character, matching how the component is actually driven by a user.
     await nameInput.selectText();
     await nameInput.pressSequentially(nameAfterInlineSave);
+    // toHaveValue() first, same reasoning as the stage-edit inputs below:
+    // pressing Enter immediately after pressSequentially was still observed
+    // (live, intermittently) to fire before React's onChange-driven state
+    // update had actually settled, silently saving the pre-edit value.
+    await expect(
+      nameInput,
+      'inline name input must reflect the typed value before pressing Enter',
+    ).toHaveValue(nameAfterInlineSave);
     await nameInput.press('Enter');
     await expect(
       page.getByRole('heading', { level: 1 }),
