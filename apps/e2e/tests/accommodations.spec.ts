@@ -3,6 +3,14 @@ import { expect, test } from '@playwright/test';
 test.describe('Accommodations', () => {
   test.describe.configure({ mode: 'serial' });
 
+  test.beforeAll(async ({ page }) => {
+    // create mock camino
+  });
+
+  test.afterEach(async ({ page }) => {
+    // delete mock camino
+  });
+
   test('Test: See and edit accommodations', async ({ page }) => {
     await page.goto('/caminos');
 
