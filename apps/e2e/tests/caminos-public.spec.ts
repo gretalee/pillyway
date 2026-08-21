@@ -1,17 +1,15 @@
 import { expect, test } from '@playwright/test';
 import {
-  CAMINO_FIXTURE_COUNTRY_CODES,
-  CAMINO_FIXTURE_WAYPOINTS,
-  createCaminoViaForm,
-  createCaminoWith4Points,
-  type CreatedCamino,
+  countryCodesOf,
+  type CreatedMockCamino,
+  createMockCamino,
+  DEFAULT_CAMINO_SEED_DATA,
   deleteCaminoViaUI,
-  ITALY_WAYPOINT_FIXTURE,
+  ITALY_SEED_POINT,
   loginAs,
   logout,
   setCaminoVerified,
   setLanguageTo,
-  uniqueName,
 } from './helpers';
 
 /**
@@ -22,12 +20,12 @@ import {
 test.describe('Caminos', () => {
   test.describe.configure({ mode: 'serial' });
 
-  let caminoItaly: CreatedCamino | undefined;
-  let caminoFrance: CreatedCamino | undefined;
-  let caminoUnverified: CreatedCamino | undefined;
-  const caminoItalyName = uniqueName('CaminosPublicItaly');
-  const caminoFranceName = uniqueName('CaminosPublicFrance');
-  const caminoUnverifiedName = uniqueName('CaminosPublicUnverified');
+  let caminoItaly: CreatedMockCamino | undefined;
+  let caminoFrance: CreatedMockCamino | undefined;
+  let caminoUnverified: CreatedMockCamino | undefined;
+  let caminoItalyName: string;
+  let caminoFranceName: string;
+  let caminoUnverifiedName: string;
 
   test.beforeAll(async ({ browser }, testInfo) => {
     testInfo.setTimeout(150_000);
@@ -44,13 +42,29 @@ test.describe('Caminos', () => {
     const pilgrimPage = await pilgrimCtx.newPage();
     await setLanguageTo(pilgrimPage, 'en');
     await loginAs(pilgrimPage, pilgrimEmail!, pilgrimPassword!);
-    caminoItaly = await createCaminoViaForm(
-      pilgrimPage,
-      caminoItalyName,
-      ITALY_WAYPOINT_FIXTURE,
-    );
-    caminoFrance = await createCaminoWith4Points(pilgrimPage, caminoFranceName);
-    caminoUnverified = await createCaminoViaForm(pilgrimPage, caminoUnverifiedName);
+    caminoItaly = await createMockCamino(pilgrimPage, {
+      ...DEFAULT_CAMINO_SEED_DATA,
+      camino: { ...DEFAULT_CAMINO_SEED_DATA.camino, name: 'CaminosPublicItaly' },
+      points: [ITALY_SEED_POINT],
+    });
+    caminoItalyName = caminoItaly.camino.name;
+
+    caminoFrance = await createMockCamino(pilgrimPage, {
+      ...DEFAULT_CAMINO_SEED_DATA,
+      // Empty description (not just omitted) is deliberate: the test below
+      // asserts the detail page's "no description set" fallback text on
+      // this camino.
+      camino: { ...DEFAULT_CAMINO_SEED_DATA.camino, name: 'CaminosPublicFrance', description: '' },
+    });
+    caminoFranceName = caminoFrance.camino.name;
+
+    caminoUnverified = await createMockCamino(pilgrimPage, {
+      ...DEFAULT_CAMINO_SEED_DATA,
+      camino: { ...DEFAULT_CAMINO_SEED_DATA.camino, name: 'CaminosPublicUnverified' },
+      points: [DEFAULT_CAMINO_SEED_DATA.points[0]],
+    });
+    caminoUnverifiedName = caminoUnverified.camino.name;
+
     await logout(pilgrimPage);
     await pilgrimCtx.close();
 
@@ -262,7 +276,7 @@ test.describe('Caminos', () => {
       'the verified badge must be visible on the detail page for a verified camino',
     ).toBeVisible();
     await expect(
-      page.getByText(CAMINO_FIXTURE_COUNTRY_CODES),
+      page.getByText(countryCodesOf(caminoFrance!.points)),
       'countries row must list the two countries the camino passes through',
     ).toBeVisible();
     await expect(
@@ -283,7 +297,7 @@ test.describe('Caminos', () => {
       stageRows,
       'all 3 stages between the 4 waypoints must be listed',
     ).toHaveCount(3);
-    for (const { name: waypointName } of CAMINO_FIXTURE_WAYPOINTS) {
+    for (const { name: waypointName } of caminoFrance!.points) {
       await expect(
         page.locator('ol').getByText(waypointName, { exact: false }).first(),
         `stage list must mention waypoint "${waypointName}"`,

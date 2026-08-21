@@ -1,50 +1,106 @@
 import { expect } from '@playwright/test';
 import type { Page } from '@playwright/test';
 
+import { uniqueName } from './login-helpers';
+
 export interface CreatedCamino {
   id: string;
   slug: string;
 }
 
-export interface CaminoWaypointFixture {
-  /** Waypoint name as typed into the "Waypoint Name" field. */
+/**
+ * One waypoint in a mock camino's seed data — deliberately shaped like a
+ * point entry in the seed JSON files under scripts/data/ (see the
+ * camino-seed-generator skill), not like a Playwright-specific fixture.
+ * `country` is the full lowercase English country name (e.g. "france"),
+ * matching both the DB/seed-file convention (CLAUDE.md) and the `value`
+ * attribute the Country <select> actually renders — filling it via
+ * `selectOption({ value: ... })` this way is immune to locale/label text.
+ */
+export interface CaminoSeedPoint {
   name: string;
-  /** Country display name, as shown in the "Country" <select>. */
+  /** Full lowercase English country name, e.g. "france" — never an ISO code. */
   country: string;
-  /** ISO country code, as rendered in the UI's countries-passed-through row. */
+  /** ISO country code, for asserting against UI elements that show codes
+   * (e.g. the "FR · ES" countries-passed-through row, the country filter). */
   countryCode: string;
+  description?: string;
   /**
-   * Real-world coordinates, filled into the "Latitude"/"Longitude" fields on
-   * creation. Required so CaminoRouteMap (which needs >=2 points with
-   * coordinates) actually renders for fixture caminos — see the comment on
-   * fillWaypointRow below for why this matters even for reused waypoints.
+   * Real-world coordinates. Required so CaminoRouteMap (which needs >=2
+   * points with coordinates) actually renders for a mock camino — see the
+   * comment on fillWaypointRow below for why this matters even for reused
+   * waypoints.
    */
   lat: number;
   lng: number;
 }
 
-export const CAMINO_FIXTURE_WAYPOINTS: readonly CaminoWaypointFixture[] = [
-  { name: 'Saint-Jean-Pied-de-Port', country: 'France', countryCode: 'FR', lat: 43.1634, lng: -1.2377 },
-  { name: 'Roncesvalles', country: 'Spain', countryCode: 'ES', lat: 43.0097, lng: -1.3197 },
-  { name: 'Pamplona', country: 'Spain', countryCode: 'ES', lat: 42.8125, lng: -1.6458 },
-  { name: 'Logroño', country: 'Spain', countryCode: 'ES', lat: 42.4627, lng: -2.4449 },
-];
+/**
+ * A mock camino's seed data — the shape createMockCamino() consumes and
+ * (with `camino.name` resolved to a unique value) returns. Mirrors the
+ * `camino`/`points` shape of the real seed JSON files, trimmed to only the
+ * fields the create-camino form actually has inputs for (no `stages` or
+ * per-point `accommodations` — those aren't part of camino creation; add
+ * them afterward via the waypoint/stage pages, as
+ * caminos-loggedIn.spec.ts does).
+ */
+export interface CaminoSeedData {
+  camino: {
+    /**
+     * Used as the label passed to uniqueName() — createMockCamino always
+     * appends a fresh timestamp, so this itself never needs to be unique,
+     * and the resolved (unique) name is what comes back on the return
+     * value's `camino.name`.
+     */
+    name: string;
+    description: string;
+  };
+  points: CaminoSeedPoint[];
+}
 
-/** Matches the "FR · ES" countries-passed-through row for CAMINO_FIXTURE_WAYPOINTS. */
-export const CAMINO_FIXTURE_COUNTRY_CODES = [
-  ...new Set(CAMINO_FIXTURE_WAYPOINTS.map((wp) => wp.countryCode)),
-].join(' · ');
+export type CreatedMockCamino = CaminoSeedData & CreatedCamino;
 
-/** A single waypoint in a country distinct from CAMINO_FIXTURE_WAYPOINTS, for
- * tests that need a camino outside the France/Spain fixture (e.g. country
- * filter tests). */
-export const ITALY_WAYPOINT_FIXTURE: CaminoWaypointFixture = {
+/**
+ * Default seed data for createMockCamino() — a 4-waypoint camino across
+ * France and Spain. Tests that need a different shape import this and
+ * override only what they need, e.g.:
+ *
+ *   createMockCamino(page, {
+ *     ...DEFAULT_CAMINO_SEED_DATA,
+ *     camino: { ...DEFAULT_CAMINO_SEED_DATA.camino, name: 'MyTestCamino' },
+ *     points: [ITALY_SEED_POINT],
+ *   })
+ */
+export const DEFAULT_CAMINO_SEED_DATA: CaminoSeedData = {
+  camino: {
+    name: 'MockCamino',
+    description: 'A fixture camino created for E2E tests.',
+  },
+  points: [
+    { name: 'Saint-Jean-Pied-de-Port', country: 'france', countryCode: 'FR', lat: 43.1634, lng: -1.2377 },
+    { name: 'Roncesvalles', country: 'spain', countryCode: 'ES', lat: 43.0097, lng: -1.3197 },
+    { name: 'Pamplona', country: 'spain', countryCode: 'ES', lat: 42.8125, lng: -1.6458 },
+    { name: 'Logroño', country: 'spain', countryCode: 'ES', lat: 42.4627, lng: -2.4449 },
+  ],
+};
+
+/** A single waypoint in a country distinct from DEFAULT_CAMINO_SEED_DATA,
+ * for tests that need a camino outside the France/Spain fixture (e.g.
+ * country filter tests): `points: [ITALY_SEED_POINT]`. */
+export const ITALY_SEED_POINT: CaminoSeedPoint = {
   name: 'Assisi',
-  country: 'Italy',
+  country: 'italy',
   countryCode: 'IT',
   lat: 43.0707,
   lng: 12.6197,
 };
+
+/** Derives the "FR · ES"-style countries-passed-through string from a seed's
+ * points — don't hand-type this in a test, since it must stay in sync with
+ * whichever points a given mock camino actually used. */
+export function countryCodesOf(points: readonly CaminoSeedPoint[]): string {
+  return [...new Set(points.map((p) => p.countryCode))].join(' · ');
+}
 
 /**
  * Clicks "Create Camino" and captures the created camino's id/slug directly
@@ -83,8 +139,8 @@ function escapeRegExp(value: string): string {
 }
 
 /**
- * Fills one waypoint row's name, country, and coordinates, accepting the
- * "reuse existing waypoint" suggestion if it appears.
+ * Fills one waypoint row's name, country, description, and coordinates,
+ * accepting the "reuse existing waypoint" suggestion if it appears.
  *
  * The suggestion button's accessible name interpolates the waypoint name
  * (e.g. "Yes, use this existing waypoint: Roncesvalles"), and matching on
@@ -110,63 +166,88 @@ function escapeRegExp(value: string): string {
  * already-broken shared ones — confirmed via the backend's create-camino
  * logic, which updates an existing point's lat/lng whenever both are
  * provided in the request.
+ *
+ * Country is selected by its `value` (the raw lowercase country name, e.g.
+ * "france"), not by the translated display label — that keeps this helper
+ * correct regardless of which locale the page happens to be in.
  */
 export async function fillWaypointRow(
   page: Page,
   index: number,
-  waypoint: CaminoWaypointFixture,
+  point: CaminoSeedPoint,
 ): Promise<void> {
-  await page.getByLabel('Waypoint Name').nth(index).fill(waypoint.name);
-  await page.getByLabel('Country').nth(index).selectOption(waypoint.country);
+  await page.getByLabel('Waypoint Name').nth(index).fill(point.name);
+  await page.getByLabel('Country').nth(index).selectOption({ value: point.country });
 
   const useExisting = page.getByRole('button', {
-    name: new RegExp(`Yes, use this existing waypoint.*${escapeRegExp(waypoint.name)}`),
+    name: new RegExp(`Yes, use this existing waypoint.*${escapeRegExp(point.name)}`),
   });
   if (await useExisting.isVisible({ timeout: 10_000 }).catch(() => false)) {
     await useExisting.click();
     await useExisting.waitFor({ state: 'hidden', timeout: 5_000 }).catch(() => {});
   }
 
-  await page.getByLabel('Latitude (optional)').nth(index).fill(String(waypoint.lat));
-  await page.getByLabel('Longitude (optional)').nth(index).fill(String(waypoint.lng));
+  if (point.description) {
+    await page.getByLabel('Waypoint Description (optional)').nth(index).fill(point.description);
+  }
+  await page.getByLabel('Latitude (optional)').nth(index).fill(String(point.lat));
+  await page.getByLabel('Longitude (optional)').nth(index).fill(String(point.lng));
 }
 
-// ─── Helper: fill and submit the camino creation form ────────────────────────
-// Uses a single waypoint (the first CAMINO_FIXTURE_WAYPOINTS entry by
-// default) to keep setup minimal. Pass a different CaminoWaypointFixture
-// (e.g. ITALY_WAYPOINT_FIXTURE) for tests that need a specific country.
-export async function createCaminoViaForm(
+/**
+ * Creates a camino through the real UI form, driven entirely by seed data
+ * shaped like the repo's seed JSON files (see camino-seed-generator).
+ *
+ * `seedData` defaults to DEFAULT_CAMINO_SEED_DATA. Its `camino.name` is
+ * treated as a uniqueName() label, not a final name — this function always
+ * resolves it to a fresh unique value before filling the form, so callers
+ * never need to remember to uniquify it themselves and can't accidentally
+ * collide across runs. The full resolved seed data (unique name included)
+ * is returned, augmented with the created camino's `id`/`slug`, so a test
+ * can assert against e.g. `created.camino.name` or `created.points[0].name`
+ * without re-typing what was actually submitted.
+ *
+ * A test that needs different data imports DEFAULT_CAMINO_SEED_DATA (or
+ * ITALY_SEED_POINT) and overrides only what it needs:
+ *
+ *   await createMockCamino(page, {
+ *     ...DEFAULT_CAMINO_SEED_DATA,
+ *     points: [ITALY_SEED_POINT],
+ *   });
+ *
+ * Leaves the page on the post-creation "Add pictures (optional)" step —
+ * same as submitCaminoCreateForm — so callers that want to assert that step
+ * or click "View camino" do so themselves with `created` already in hand.
+ */
+export async function createMockCamino(
   page: Page,
-  name: string,
-  waypoint: CaminoWaypointFixture = CAMINO_FIXTURE_WAYPOINTS[0],
-): Promise<CreatedCamino> {
+  seedData: CaminoSeedData = DEFAULT_CAMINO_SEED_DATA,
+): Promise<CreatedMockCamino> {
+  const resolved: CaminoSeedData = {
+    camino: { ...seedData.camino, name: uniqueName(seedData.camino.name) },
+    points: seedData.points.map((point) => ({ ...point })),
+  };
+
   await page.goto('/caminos/new');
-  await page.getByLabel('Camino Name').fill(name);
+  await page.getByLabel('Camino Name').fill(resolved.camino.name);
+  if (resolved.camino.description) {
+    await page.getByLabel('Description (optional)', { exact: true }).fill(resolved.camino.description);
+  }
 
-  await fillWaypointRow(page, 0, waypoint);
-
-  return submitCaminoCreateForm(page);
-}
-
-export async function createCaminoWith4Points(
-  page: Page,
-  name: string,
-): Promise<CreatedCamino> {
-  await page.goto('/caminos/new');
-  await page.getByLabel('Camino Name').fill(name);
-
-  for (let i = 0; i < CAMINO_FIXTURE_WAYPOINTS.length; i++) {
+  for (let i = 0; i < resolved.points.length; i++) {
     if (i > 0) {
       await page.getByRole('button', { name: 'Add Waypoint' }).click();
     }
-    await fillWaypointRow(page, i, CAMINO_FIXTURE_WAYPOINTS[i]);
+    await fillWaypointRow(page, i, resolved.points[i]);
   }
 
-  // Wait for the form to be in a submittable state (background waypoint lookups finish)
   const createButton = page.getByRole('button', { name: 'Create Camino' });
-  await expect(createButton).toBeEnabled({ timeout: 15_000 });
+  await expect(createButton, 'Create Camino button must become enabled').toBeEnabled({
+    timeout: 15_000,
+  });
 
-  return submitCaminoCreateForm(page);
+  const created = await submitCaminoCreateForm(page);
+  return { ...resolved, id: created.id, slug: created.slug };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

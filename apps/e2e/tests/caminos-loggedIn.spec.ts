@@ -1,12 +1,11 @@
 import { expect, test } from '@playwright/test';
 import {
-  type CreatedCamino,
-  createCaminoWith4Points,
+  createMockCamino,
+  DEFAULT_CAMINO_SEED_DATA,
   deleteCaminoViaUI,
   loginAs,
   logout,
   setLanguageTo,
-  uniqueName,
 } from './helpers';
 
 /**
@@ -77,9 +76,12 @@ test.describe('Pilgrim creates, edits, and deletes a camino', () => {
 
     // ─── Create Camino: fill 4 waypoints, submit, "Add pictures" step ──────
 
-    caminoName = uniqueName('CaminosLoggedIn');
-    const created: CreatedCamino = await createCaminoWith4Points(page, caminoName);
+    const created = await createMockCamino(page, {
+      ...DEFAULT_CAMINO_SEED_DATA,
+      camino: { ...DEFAULT_CAMINO_SEED_DATA.camino, name: 'CaminosLoggedIn' },
+    });
     caminoSlug = created.slug;
+    caminoName = created.camino.name;
 
     // "View camino" navigation is not exercised by any helper — check it here.
     const viewCaminoButton = page.getByRole('button', { name: 'View camino' });
