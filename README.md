@@ -201,6 +201,15 @@ Authentication is handled by **Kinde** using JWTs. The backend validates tokens 
 | `pilgrim`                | Create, edit, and delete caminos, stages, accommodations, and sights  |
 | `owner`                  | Backoffice access (every `owner` is also assigned `pilgrim` in Kinde) |
 
+> **Camino points (waypoints)** are shared across caminos, so they're not
+> owned by any single one and have no general-purpose delete endpoint.
+> `DELETE /camino-points/:id` is the one exception: it requires the
+> `pilgrim` role **and** an additional safety check — the point must not be
+> referenced by any camino, or the request fails with `409 Conflict`. That
+> makes it safe to expose without a per-entity ownership check, since it can
+> never remove a waypoint still in active use; today it exists mainly to let
+> E2E tests clean up the mock waypoints they create.
+
 ### Frontend Architecture
 
 - **App Router** (`app/` directory) — no `pages/` directory
