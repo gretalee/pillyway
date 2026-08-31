@@ -32,7 +32,7 @@ const USER_ID = 'kinde-user-001';
 const OTHER_USER_ID = 'kinde-user-002';
 const OWNER_USER_ID = 'kinde-owner-001';
 const PICTURE_URL =
-  'https://example.supabase.co/storage/v1/object/public/bucket/camino-pictures/pic.jpeg';
+  'https://example.supabase.co/storage/v1/object/public/bucket/camino-pictures/pic.webp';
 
 const PILGRIM_ROLES: KindeRole[] = [
   { id: 'r1', key: 'pilgrim', name: 'Pilgrim' },
@@ -74,16 +74,21 @@ function makeBasePicture(
 function makeUploadsServiceMock() {
   return {
     uploadImage: vi.fn().mockResolvedValue(PICTURE_URL),
+    uploadImagePair: vi.fn().mockResolvedValue(PICTURE_URL),
     deleteImages: vi.fn().mockResolvedValue(undefined),
     deleteImageStrict: vi.fn().mockResolvedValue(undefined),
   };
 }
 
-const PROCESSED_BUFFER = Buffer.from([0x52, 0x49, 0x46, 0x46]); // fake WebP bytes
+const GALLERY_BUFFER = Buffer.from([0x52, 0x49, 0x46, 0x46]); // fake WebP bytes
+const THUMBNAIL_BUFFER = Buffer.from([0x57, 0x45, 0x42, 0x50]); // fake WebP bytes
 
 function makeImageProcessingServiceMock() {
   return {
-    processForUpload: vi.fn().mockResolvedValue(PROCESSED_BUFFER),
+    processForUpload: vi.fn().mockResolvedValue({
+      gallery: GALLERY_BUFFER,
+      thumbnail: THUMBNAIL_BUFFER,
+    }),
   };
 }
 
@@ -429,7 +434,7 @@ describe('CaminoPicturesService.uploadPicture()', () => {
       pictureFindFirst: vi.fn().mockResolvedValue(null),
     });
     const uploadsServiceMock = makeUploadsServiceMock();
-    uploadsServiceMock.uploadImage = vi
+    uploadsServiceMock.uploadImagePair = vi
       .fn()
       .mockRejectedValue(new Error('S3 connection refused'));
 
@@ -537,10 +542,10 @@ describe('CaminoPicturesService.uploadPicture()', () => {
       service.uploadPicture(CAMINO_ID, makeFile(), false, USER_ID),
     ).rejects.toBeInstanceOf(BadRequestException);
 
-    expect(uploadsServiceMock.uploadImage).not.toHaveBeenCalled();
+    expect(uploadsServiceMock.uploadImagePair).not.toHaveBeenCalled();
   });
 
-  it('passes the processed WebP buffer and image/webp content-type to UploadsService', async () => {
+  it('passes the processed gallery+thumbnail pair and a .webp key to uploadImagePair', async () => {
     const createdRecord = makeBasePicture({ isPrimary: false, position: 1 });
     const prismaMock = makePrismaMock({
       pictureCreate: vi.fn().mockResolvedValue(createdRecord),
@@ -555,11 +560,68 @@ describe('CaminoPicturesService.uploadPicture()', () => {
     await service.uploadPicture(CAMINO_ID, makeFile(), false, USER_ID);
 
     expect(imageMock.processForUpload).toHaveBeenCalledOnce();
-    expect(uploadsServiceMock.uploadImage).toHaveBeenCalledWith(
+    expect(uploadsServiceMock.uploadImagePair).toHaveBeenCalledWith(
       expect.stringMatching(/\.webp$/),
-      PROCESSED_BUFFER,
-      'image/webp',
+      { gallery: GALLERY_BUFFER, thumbnail: THUMBNAIL_BUFFER },
     );
+    expect(uploadsServiceMock.uploadImagePair).toHaveBeenCalledOnce();
+  });
+
+  it('processes as camino-hero context when isPrimary is true, camino-gallery when false', async () => {
+    const prismaMock = makePrismaMock({
+      pictureCount: vi.fn().mockResolvedValue(0),
+      pictureFindFirst: vi.fn().mockResolvedValue(null),
+    });
+    const imageMock = makeImageProcessingServiceMock();
+    const module = await buildModule(
+      prismaMock,
+      makeUploadsServiceMock(),
+      imageMock,
+    );
+    const service = module.get(CaminoPicturesService);
+
+    await service.uploadPicture(CAMINO_ID, makeFile(), true, USER_ID);
+    expect(imageMock.processForUpload).toHaveBeenCalledWith(
+      expect.any(Buffer),
+      'camino-hero',
+    );
+
+    imageMock.processForUpload.mockClear();
+    await service.uploadPicture(CAMINO_ID, makeFile(), false, USER_ID);
+    expect(imageMock.processForUpload).toHaveBeenCalledWith(
+      expect.any(Buffer),
+      'camino-gallery',
+    );
+  });
+
+  it('cleans up both the gallery and thumbnail S3 objects when the DB insert fails', async () => {
+    const p2002 = new Prisma.PrismaClientKnownRequestError(
+      'Unique constraint failed on camino_pictures_primary_unique',
+      {
+        code: 'P2002',
+        clientVersion: '7.0.0',
+        meta: { target: ['camino_id'] },
+      },
+    );
+    const prismaMock = makePrismaMock({
+      pictureFindFirst: vi.fn().mockResolvedValue(null),
+      transaction: vi
+        .fn()
+        .mockResolvedValueOnce({ maxPosition: 0 })
+        .mockRejectedValueOnce(p2002),
+    });
+    const uploadsServiceMock = makeUploadsServiceMock();
+    const module = await buildModule(prismaMock, uploadsServiceMock);
+    const service = module.get(CaminoPicturesService);
+
+    await expect(
+      service.uploadPicture(CAMINO_ID, makeFile(), true, USER_ID),
+    ).rejects.toBeInstanceOf(ConflictException);
+
+    // deleteImages itself derives + deletes the thumbnail sibling — see
+    // UploadsService.deleteImages — so CaminoPicturesService only ever
+    // needs to pass the one (gallery) URL it received from uploadImagePair.
+    expect(uploadsServiceMock.deleteImages).toHaveBeenCalledWith([PICTURE_URL]);
   });
 
   it('skips image processing when the 50-picture limit is already reached', async () => {

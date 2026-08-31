@@ -104,7 +104,7 @@ export class CaminoPicturesController {
           type: 'string',
           format: 'binary',
           description:
-            'Image file (JPEG, PNG, or WebP, max 30 MB — automatically resized and converted to WebP)',
+            'Image file (JPEG, PNG, WebP, or HEIC/HEIF, max 30 MB — automatically resized and converted to WebP)',
         },
         isPrimary: {
           type: 'string',
@@ -139,7 +139,7 @@ export class CaminoPicturesController {
             message: 'File exceeds the maximum size of 30 MB',
           }),
           new FileTypeValidator({
-            fileType: /^image\/(jpeg|png|webp)$/,
+            fileType: /^image\/(jpeg|png|webp|heic|heif)$/,
           }),
         ],
       }),

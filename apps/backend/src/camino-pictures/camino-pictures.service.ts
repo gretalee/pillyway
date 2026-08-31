@@ -16,14 +16,29 @@ import { KindeRole } from '../auth/kinde-jwt.strategy';
 import { EventLogService } from '../event-log/event-log.service';
 import { EventType } from '../event-log/event-type.enum';
 import { PrismaService } from '../prisma/prisma.service';
-import { ImageProcessingService } from '../uploads/image-processing.service';
+import {
+  ImageProcessingService,
+  ProcessedImage,
+} from '../uploads/image-processing.service';
 import { UploadsService } from '../uploads/uploads.service';
 import {
   CaminoPictureResponseDto,
   CaminoPicturesResponseDto,
 } from './dto/camino-picture-response.dto';
 
-const ALLOWED_MIME = new Set(['image/jpeg', 'image/png', 'image/webp']);
+// HEIC/HEIF included so a direct-from-iPhone photo isn't rejected outright —
+// ImageProcessingService (sharp/libvips) attempts to decode it; if the
+// deployed libvips build lacks HEIF support, that attempt fails cleanly with
+// a 400 (see the catch around imageProcessing.processForUpload below), not
+// a 415 here and not a crash. Worth a live smoke test with a real HEIC file
+// after deploying, since this wasn't verified against actual HEIC content.
+const ALLOWED_MIME = new Set([
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/heic',
+  'image/heif',
+]);
 
 const MAX_PICTURES = 50;
 
@@ -132,12 +147,15 @@ export class CaminoPicturesService {
       return { maxPosition: maxPositionRecord._max.position ?? 0 };
     });
 
-    // 4. Compress and re-encode to WebP. Errors from sharp (corrupt file, decompression
-    //    bomb, unsupported format variant) are caught and surfaced as 400 (Bad Request) rather than 500.
-    let processedBuffer: Buffer;
+    // 4. Compress and re-encode to WebP, producing both a gallery (full) and
+    //    thumbnail derivative. Errors from sharp (corrupt file, decompression
+    //    bomb, unsupported format variant) are caught and surfaced as 400 (Bad
+    //    Request) rather than 500.
+    let images: ProcessedImage;
     try {
-      processedBuffer = await this.imageProcessing.processForUpload(
+      images = await this.imageProcessing.processForUpload(
         file.buffer,
+        isPrimary ? 'camino-hero' : 'camino-gallery',
       );
     } catch (err) {
       this.logger.warn(
@@ -148,19 +166,17 @@ export class CaminoPicturesService {
       );
     }
 
-    // 5. Generate picture ID before S3 upload so DB record and key are consistent
+    // 5. Generate picture ID before S3 upload so DB record and key are consistent.
+    //    Only the gallery key/URL is ever stored — uploadImagePair uploads the
+    //    thumbnail to a derived sibling key that's never itself persisted.
     const pictureId = randomUUID();
     const key = `camino-pictures/${caminoId}/${pictureId}.webp`;
 
+    // 6. Upload both derivatives to S3 — key uses only server-generated
+    //    values; no user filename.
     let url: string;
-
-    // 6. Upload to S3 — key uses only server-generated values; no user filename
     try {
-      url = await this.uploadsService.uploadImage(
-        key,
-        processedBuffer,
-        'image/webp',
-      );
+      url = await this.uploadsService.uploadImagePair(key, images);
     } catch (err) {
       this.logger.error(
         `S3 upload failed for camino picture caminoId=${caminoId} pictureId=${pictureId}: ${String(err)}`,
@@ -196,10 +212,11 @@ export class CaminoPicturesService {
         });
       });
     } catch (err) {
-      // S3 object already uploaded — clean up orphan (best-effort)
+      // S3 objects already uploaded — clean up both orphans (best-effort;
+      // deleteImages also derives + deletes the thumbnail sibling)
       this.uploadsService.deleteImages([url]).catch((cleanupErr) => {
         this.logger.error(
-          `Failed to clean up orphaned S3 object after DB insert failure. key="${key}" err=${String(cleanupErr)}`,
+          `Failed to clean up orphaned S3 object(s) after DB insert failure. key="${key}" err=${String(cleanupErr)}`,
         );
       });
 
@@ -296,8 +313,12 @@ export class CaminoPicturesService {
       );
     }
 
-    // 3. Delete from S3 first — throws BadGatewayException on failure,
-    //    which prevents the DB record from being deleted
+    // 3. Delete from S3 first (both the gallery image, strictly, and its
+    //    derived thumbnail sibling, best-effort — see
+    //    UploadsService.deleteImageStrict). Throws BadGatewayException if
+    //    the gallery delete fails, which prevents the DB record from being
+    //    deleted (it's the stored, referenced URL; a dangling reference
+    //    must never happen).
     await this.uploadsService.deleteImageStrict(picture.url);
 
     // 4. Only on S3 success: delete the DB record

@@ -1,5 +1,6 @@
 import {
   BadGatewayException,
+  BadRequestException,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -13,6 +14,12 @@ import {
 } from '@aws-sdk/client-s3';
 import { randomUUID } from 'crypto';
 
+import {
+  ImageProcessingService,
+  ProcessedImage,
+} from './image-processing.service';
+import { deriveThumbnailUrl } from './image-url.util';
+
 @Injectable()
 export class UploadsService {
   private readonly logger = new Logger(UploadsService.name);
@@ -20,7 +27,10 @@ export class UploadsService {
   private readonly bucket: string;
   private readonly publicBaseUrl: string;
 
-  constructor(private readonly config: ConfigService) {
+  constructor(
+    private readonly config: ConfigService,
+    private readonly imageProcessing: ImageProcessingService,
+  ) {
     this.bucket = this.config.getOrThrow<string>('SUPABASE_STORAGE_BUCKET');
     const endpoint = this.config.getOrThrow<string>('SUPABASE_S3_URL');
     const region = this.config.getOrThrow<string>('SUPABASE_S3_REGION');
@@ -75,10 +85,33 @@ export class UploadsService {
   }
 
   /**
-   * Deletes a single S3 object identified by its public URL.
-   * Throws BadGatewayException if the delete operation fails (key appears in
-   * response.Errors or the SDK call rejects). Used by picture delete where an
-   * S3 failure must block the DB delete.
+   * Uploads a gallery+thumbnail derivative pair produced by
+   * ImageProcessingService: gallery at `key`, thumbnail at the key's
+   * derived `-thumb.webp` sibling. Only the gallery URL is ever returned —
+   * per the dual-derivative naming convention, the thumbnail is never
+   * stored anywhere, only ever re-derived from the gallery URL on demand
+   * (see image-url.util.ts). Either PUT failing fails the whole pair: a
+   * gallery URL persisted without its thumbnail sibling would 404 the
+   * moment anything requests the derived thumbnail URL.
+   */
+  async uploadImagePair(key: string, images: ProcessedImage): Promise<string> {
+    const [url] = await Promise.all([
+      this.uploadImage(key, images.gallery, 'image/webp'),
+      this.uploadImage(deriveThumbnailUrl(key), images.thumbnail, 'image/webp'),
+    ]);
+    return url;
+  }
+
+  /**
+   * Deletes a single S3 object identified by its public URL, AND its
+   * derived thumbnail sibling. The gallery delete is strict — throws
+   * BadGatewayException if it fails (key appears in response.Errors or the
+   * SDK call rejects), which blocks the caller's DB delete, since a
+   * dangling reference to a deleted-but-still-referenced URL must never
+   * happen. The thumbnail delete is best-effort: nothing stores or
+   * references its URL directly (it's always re-derived), so a failure
+   * there is a harmless — if wasteful — orphan, not a dangling reference,
+   * and must not block the DB delete the gallery delete is gating.
    */
   async deleteImageStrict(url: string): Promise<void> {
     const prefix = `${this.publicBaseUrl}/`;
@@ -128,8 +161,27 @@ export class UploadsService {
     }
 
     this.logger.debug(`Object key="${key}" deleted successfully`);
+
+    // Best-effort thumbnail cleanup — see method doc. deleteImages() can
+    // itself throw on a hard SDK-level failure (it only self-handles the
+    // soft response.Errors case) — same convention as every other
+    // best-effort caller of deleteImages() in this codebase (e.g.
+    // CaminosService.delete()): wrap it here, don't let it escape.
+    try {
+      await this.deleteImages([deriveThumbnailUrl(url)]);
+    } catch (err) {
+      this.logger.error(
+        `Failed to delete thumbnail sibling for "${url}": ${String(err)}`,
+      );
+    }
   }
 
+  /**
+   * Processes and uploads up to 10 images (accommodation/sight content —
+   * see the 'waypoint-content' context in ImageProcessingService), each as
+   * a gallery+thumbnail pair. Returns the gallery URLs only, in the same
+   * flat string[] shape as before — no caller-facing/schema change.
+   */
   async uploadImages(
     files: Express.Multer.File[],
   ): Promise<{ urls: string[] }> {
@@ -140,22 +192,28 @@ export class UploadsService {
     const urls: string[] = [];
 
     for (const file of files) {
-      const sanitisedName = file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_');
-      const key = `images/${randomUUID()}-${sanitisedName}`;
-
-      this.logger.debug(
-        `Uploading key="${key}" size=${file.size} mime=${file.mimetype}`,
-      );
-
+      let images: ProcessedImage;
       try {
-        await this.s3.send(
-          new PutObjectCommand({
-            Bucket: this.bucket,
-            Key: key,
-            Body: file.buffer,
-            ContentType: file.mimetype,
-          }),
+        images = await this.imageProcessing.processForUpload(
+          file.buffer,
+          'waypoint-content',
         );
+      } catch (err) {
+        this.logger.warn(
+          `Image processing failed for "${file.originalname}": ${String(err)}`,
+        );
+        throw new BadRequestException(
+          `The image "${file.originalname}" could not be processed. Please ensure it is a valid, non-corrupted image file.`,
+        );
+      }
+
+      // Server-generated key only — no user filename — and always .webp,
+      // since the output format is fixed regardless of what was uploaded.
+      const key = `images/${randomUUID()}.webp`;
+
+      let url: string;
+      try {
+        url = await this.uploadImagePair(key, images);
       } catch (err) {
         this.logger.error(
           `S3 upload failed for "${file.originalname}": ${String(err)}`,
@@ -165,27 +223,33 @@ export class UploadsService {
         );
       }
 
-      const publicUrl = `${this.publicBaseUrl}/${key}`;
-      this.logger.debug(`Uploaded successfully → ${publicUrl}`);
-      urls.push(publicUrl);
+      this.logger.debug(`Uploaded successfully → ${url}`);
+      urls.push(url);
     }
 
     return { urls };
   }
 
+  /**
+   * Best-effort bulk delete: every given URL AND its derived thumbnail
+   * sibling. Never throws — logs and continues, since every caller of this
+   * method treats it as best-effort cleanup (unlike deleteImageStrict).
+   */
   async deleteImages(urls: string[]): Promise<void> {
     if (urls.length === 0) {
       return;
     }
 
+    const expandedUrls = urls.flatMap((url) => [url, deriveThumbnailUrl(url)]);
+
     const prefix = `${this.publicBaseUrl}/`;
-    const keys = urls
+    const keys = expandedUrls
       .filter((url) => url.startsWith(prefix))
       .map((url) => url.slice(prefix.length));
 
-    if (keys.length < urls.length) {
+    if (keys.length < expandedUrls.length) {
       this.logger.warn(
-        `deleteImages: ${urls.length - keys.length} of ${urls.length} URL(s) did not match the expected prefix and will be skipped. ` +
+        `deleteImages: ${expandedUrls.length - keys.length} of ${expandedUrls.length} URL(s)/derived key(s) did not match the expected prefix and will be skipped. ` +
           `Possible orphaned S3 objects. Prefix="${prefix}"`,
       );
     }
