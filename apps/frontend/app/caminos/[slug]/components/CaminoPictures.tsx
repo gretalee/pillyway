@@ -198,7 +198,7 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
           <input
             ref={primaryFileInputRef}
             type="file"
-            accept="image/jpeg,image/png,image/webp"
+            accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
             className="sr-only"
             aria-hidden="true"
             onChange={handlePrimaryFileChange}
@@ -393,7 +393,7 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
           <input
             ref={galleryFileInputRef}
             type="file"
-            accept="image/jpeg,image/png,image/webp"
+            accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
             multiple
             className="sr-only"
             aria-hidden="true"

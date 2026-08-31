@@ -2,7 +2,7 @@
 
 import { useCaminoPictures } from '@/app/api/camino-pictures/use-camino-pictures';
 import { cn } from '@/lib/utils';
-import Image from 'next/image';
+import { ThumbnailImage } from '@/app/components/ThumbnailImage';
 
 const CaminoMainImage = ({
   caminoId,
@@ -22,7 +22,7 @@ const CaminoMainImage = ({
 
   return (
     <div className={cn('relative h-32 w-full overflow-hidden rounded-md', className)}>
-      <Image
+      <ThumbnailImage
         src={primary.url}
         alt={title ?? ''}
         fill
