@@ -2,3 +2,4 @@
 - [Language Switch (i18n) Architecture](feature_language_switch_arch.md) — next-intl v4, cookie-only locale, single middleware, ESM __dirname bug, hydration flow
 - [Supabase transaction strategy](pattern_supabase_transactions.md) — use Supabase RPC (pg function, SECURITY DEFINER) for atomic multi-step writes; no raw pg client
 - [NestJS XOR DTO validation](pattern_nestjs_xor_dto.md) — custom ValidatorConstraint for mutually exclusive field groups; class-validator has no native XOR
+- [Image derivative URL strategy](pattern_image_derivative_urls.md) — thumbnail URLs derived by naming convention, not schema, across all 3 image types; delete-path leak gotcha

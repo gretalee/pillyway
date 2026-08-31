@@ -104,12 +104,19 @@ export class CaminoPicturesController {
           type: 'string',
           format: 'binary',
           description:
-            'Image file (JPEG, PNG, or WebP, max 30 MB — automatically resized and converted to WebP)',
+            'Image file (JPEG, PNG, WebP, or HEIC/HEIF, max 30 MB — automatically resized and converted to WebP)',
         },
         isPrimary: {
           type: 'string',
           enum: ['true', 'false'],
           description: 'Whether to upload as the primary (hero) picture',
+        },
+        name: {
+          type: 'string',
+          description:
+            'Optional display name. Sanitized into the S3 key and combined ' +
+            'with a unique suffix so it can never overwrite an existing image. ' +
+            'If omitted, a filename is generated, as before.',
         },
       },
     },
@@ -139,7 +146,7 @@ export class CaminoPicturesController {
             message: 'File exceeds the maximum size of 30 MB',
           }),
           new FileTypeValidator({
-            fileType: /^image\/(jpeg|png|webp)$/,
+            fileType: /^image\/(jpeg|png|webp|heic|heif)$/,
           }),
         ],
       }),
@@ -152,6 +159,7 @@ export class CaminoPicturesController {
       file,
       dto.isPrimary,
       req.user.sub,
+      dto.name,
     );
   }
 

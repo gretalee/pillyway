@@ -1,6 +1,8 @@
 import {
   BadRequestException,
+  Body,
   Controller,
+  Logger,
   Post,
   UploadedFiles,
   UseGuards,
@@ -9,6 +11,7 @@ import {
 import { FilesInterceptor } from '@nestjs/platform-express';
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiConsumes,
   ApiForbiddenResponse,
   ApiOkResponse,
@@ -25,6 +28,8 @@ import { UploadsService } from './uploads.service';
 @ApiTags('Uploads')
 @Controller('uploads')
 export class UploadsController {
+  private readonly logger = new Logger(UploadsController.name);
+
   constructor(private readonly uploadsService: UploadsService) {}
 
   @Post('images')
@@ -36,6 +41,29 @@ export class UploadsController {
     summary: 'Upload up to 10 images (pilgrim role required)',
     description:
       'Accepts multipart/form-data with a `files` field. Maximum 10 files, 10 MB each. Only image/* MIME types are accepted.',
+  })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      required: ['files'],
+      properties: {
+        files: {
+          type: 'array',
+          items: { type: 'string', format: 'binary' },
+          description:
+            'Up to 10 image files (JPEG, PNG, WebP, HEIC/HEIF), 10 MB each.',
+        },
+        names: {
+          type: 'string',
+          description:
+            'Optional JSON-encoded array of display names, positionally matched to `files` ' +
+            '(e.g. \'["Mein schönes Bild", null]\' — null/missing entries get a generated name). ' +
+            'Each given name is sanitized and combined with a unique suffix, so it can never ' +
+            'overwrite an existing image. Malformed JSON is ignored — all files fall back to ' +
+            'generated names rather than failing the upload.',
+        },
+      },
+    },
   })
   @ApiOkResponse({
     description: 'Upload successful. Returns an array of public URLs.',
@@ -56,7 +84,25 @@ export class UploadsController {
   )
   async uploadImages(
     @UploadedFiles() files: Express.Multer.File[],
+    @Body('names') namesRaw?: string,
   ): Promise<{ urls: string[] }> {
-    return this.uploadsService.uploadImages(files);
+    return this.uploadsService.uploadImages(files, this.parseNames(namesRaw));
+  }
+
+  // `names` is purely cosmetic (S3 key readability) — malformed JSON must
+  // never fail the whole upload, just fall back to generated names for
+  // every file, same as if `names` had never been sent.
+  private parseNames(
+    namesRaw: string | undefined,
+  ): (string | undefined)[] | undefined {
+    if (!namesRaw) return undefined;
+    try {
+      const parsed: unknown = JSON.parse(namesRaw);
+      if (!Array.isArray(parsed)) return undefined;
+      return parsed.map((n) => (typeof n === 'string' ? n : undefined));
+    } catch (err) {
+      this.logger.debug(`Ignoring malformed 'names' field: ${String(err)}`);
+      return undefined;
+    }
   }
 }

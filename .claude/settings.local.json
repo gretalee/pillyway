@@ -77,7 +77,19 @@
       "Bash(yarn --cwd apps/e2e lint)",
       "Bash(yarn --cwd apps/e2e eslint . --fix)",
       "Bash(yarn --cwd apps/e2e tsc)",
-      "Bash(yarn ts:e2e)"
+      "Bash(yarn ts:e2e)",
+      "Bash(yarn --cwd apps/backend test image-processing)",
+      "Bash(yarn --cwd apps/backend test image-url)",
+      "Bash(yarn --cwd apps/backend test camino-pictures.service)",
+      "Bash(yarn --cwd apps/backend test image-processing camino-pictures)",
+      "Bash(yarn --cwd apps/backend test uploads.service)",
+      "Bash(yarn --cwd apps/backend test uploads.service -t \"throws BadRequestException when image processing fails\")",
+      "Bash(yarn --cwd apps/backend test uploads.service -t \"uploadImages\")",
+      "Bash(yarn --cwd apps/backend test uploads.service -t \"rejects if the thumbnail PUT fails\")",
+      "Bash(yarn --cwd apps/backend test uploads camino-pictures image-processing image-url)",
+      "Bash(yarn --cwd apps/backend lint)",
+      "Bash(yarn --cwd apps/backend test image-name)",
+      "Bash(yarn --cwd apps/backend test uploads.service camino-pictures.service)"
     ],
     "deny": [
       "Read(./.env)",
