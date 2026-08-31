@@ -20,10 +20,16 @@ interface ThumbnailSrc {
  * not the derived one.
  */
 export function useThumbnailSrc(fullUrl: string): ThumbnailSrc {
-  const [failed, setFailed] = useState(false);
+  // Tracks which URL failed, not a plain boolean — if a component instance
+  // is reused for a different image (e.g. the primary picture is replaced
+  // while CaminoMainImage stays mounted), `failed` must not carry over from
+  // the old URL. Comparing to fullUrl derives the reset for free on the
+  // next render, no effect needed.
+  const [failedUrl, setFailedUrl] = useState<string | null>(null);
+  const failed = failedUrl === fullUrl;
 
   return {
     src: failed ? fullUrl : deriveThumbnailUrl(fullUrl),
-    onError: () => setFailed(true),
+    onError: () => setFailedUrl(fullUrl),
   };
 }
