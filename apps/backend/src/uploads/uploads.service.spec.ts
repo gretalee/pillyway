@@ -172,6 +172,32 @@ describe('UploadsService.uploadImages() — success', () => {
     expect(key).toMatch(/^images\/[0-9a-f-]+\.webp$/);
   });
 
+  it('builds the key from names[i] when given, positionally matched to files[i]', async () => {
+    const service = (await buildModule(defaultConfig)).get(UploadsService);
+    await service.uploadImages(
+      [makeFile('a.jpg'), makeFile('b.jpg')],
+      ['Mein schönes Bild', undefined],
+    );
+
+    const MockedPutObjectCommand = vi.mocked(PutObjectCommand);
+    const galleryKeys = MockedPutObjectCommand.mock.calls
+      .map((c) => c[0].Key as string)
+      .filter((k) => !k.includes('-thumb'));
+    expect(galleryKeys[0]).toMatch(
+      /^images\/mein_schoenes_bild_[0-9a-f]{8}\.webp$/,
+    );
+    expect(galleryKeys[1]).toMatch(/^images\/[0-9a-f-]{36}\.webp$/);
+  });
+
+  it('falls back to a generated key for every file when names is omitted entirely', async () => {
+    const service = (await buildModule(defaultConfig)).get(UploadsService);
+    await service.uploadImages([makeFile('a.jpg')]);
+
+    const MockedPutObjectCommand = vi.mocked(PutObjectCommand);
+    const key = MockedPutObjectCommand.mock.calls[0][0].Key as string;
+    expect(key).toMatch(/^images\/[0-9a-f-]{36}\.webp$/);
+  });
+
   it('returns an empty urls array when given an empty files array', async () => {
     const service = (await buildModule(defaultConfig)).get(UploadsService);
     sendMock.mockClear(); // reset any calls recorded during module construction

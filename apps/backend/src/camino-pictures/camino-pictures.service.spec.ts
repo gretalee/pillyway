@@ -567,6 +567,48 @@ describe('CaminoPicturesService.uploadPicture()', () => {
     expect(uploadsServiceMock.uploadImagePair).toHaveBeenCalledOnce();
   });
 
+  it('builds the S3 key from an optional display name via buildImageFilename', async () => {
+    const prismaMock = makePrismaMock({
+      pictureCount: vi.fn().mockResolvedValue(0),
+      pictureFindFirst: vi.fn().mockResolvedValue(null),
+    });
+    const uploadsServiceMock = makeUploadsServiceMock();
+    const module = await buildModule(prismaMock, uploadsServiceMock);
+    const service = module.get(CaminoPicturesService);
+
+    await service.uploadPicture(
+      CAMINO_ID,
+      makeFile(),
+      false,
+      USER_ID,
+      'Mein schönes Bild',
+    );
+
+    const key = uploadsServiceMock.uploadImagePair.mock.calls[0][0] as string;
+    expect(key).toMatch(
+      new RegExp(
+        `^camino-pictures/${CAMINO_ID}/mein_schoenes_bild_[0-9a-f]{8}\\.webp$`,
+      ),
+    );
+  });
+
+  it('falls back to a generated filename when no name is given (unchanged behaviour)', async () => {
+    const prismaMock = makePrismaMock({
+      pictureCount: vi.fn().mockResolvedValue(0),
+      pictureFindFirst: vi.fn().mockResolvedValue(null),
+    });
+    const uploadsServiceMock = makeUploadsServiceMock();
+    const module = await buildModule(prismaMock, uploadsServiceMock);
+    const service = module.get(CaminoPicturesService);
+
+    await service.uploadPicture(CAMINO_ID, makeFile(), false, USER_ID);
+
+    const key = uploadsServiceMock.uploadImagePair.mock.calls[0][0] as string;
+    expect(key).toMatch(
+      new RegExp(`^camino-pictures/${CAMINO_ID}/[0-9a-f-]{36}\\.webp$`),
+    );
+  });
+
   it('processes as camino-hero context when isPrimary is true, camino-gallery when false', async () => {
     const prismaMock = makePrismaMock({
       pictureCount: vi.fn().mockResolvedValue(0),

@@ -21,6 +21,7 @@ import {
   ProcessedImage,
 } from '../uploads/image-processing.service';
 import { UploadsService } from '../uploads/uploads.service';
+import { buildImageFilename } from '../uploads/image-name.util';
 import {
   CaminoPictureResponseDto,
   CaminoPicturesResponseDto,
@@ -94,6 +95,7 @@ export class CaminoPicturesService {
     file: Express.Multer.File,
     isPrimary: boolean,
     userId: string,
+    name?: string,
   ): Promise<CaminoPictureResponseDto> {
     // 1. Verify camino exists
     const camino = await this.prisma.camino.findUnique({
@@ -166,14 +168,17 @@ export class CaminoPicturesService {
       );
     }
 
-    // 5. Generate picture ID before S3 upload so DB record and key are consistent.
-    //    Only the gallery key/URL is ever stored — uploadImagePair uploads the
-    //    thumbnail to a derived sibling key that's never itself persisted.
+    // 5. Generate picture ID before S3 upload — this is the DB primary key,
+    //    deliberately decoupled from the S3 key filename below (the two used
+    //    to be the same UUID; buildImageFilename can now produce a name-based
+    //    filename instead, so the DB id can no longer just be reused as-is).
+    //    Only the gallery key/URL is ever stored — uploadImagePair uploads
+    //    the thumbnail to a derived sibling key that's never itself persisted.
     const pictureId = randomUUID();
-    const key = `camino-pictures/${caminoId}/${pictureId}.webp`;
+    const filename = buildImageFilename(name);
+    const key = `camino-pictures/${caminoId}/${filename}`;
 
-    // 6. Upload both derivatives to S3 — key uses only server-generated
-    //    values; no user filename.
+    // 6. Upload both derivatives to S3.
     let url: string;
     try {
       url = await this.uploadsService.uploadImagePair(key, images);

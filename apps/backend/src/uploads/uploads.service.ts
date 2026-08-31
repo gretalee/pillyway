@@ -12,8 +12,8 @@ import {
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
-import { randomUUID } from 'crypto';
 
+import { buildImageFilename } from './image-name.util';
 import {
   ImageProcessingService,
   ProcessedImage,
@@ -181,9 +181,16 @@ export class UploadsService {
    * see the 'waypoint-content' context in ImageProcessingService), each as
    * a gallery+thumbnail pair. Returns the gallery URLs only, in the same
    * flat string[] shape as before — no caller-facing/schema change.
+   *
+   * `names[i]` is an optional display name for `files[i]` (positional,
+   * sparse — pass undefined for files that should get a generated name).
+   * Sanitized + always suffixed with a unique fragment via
+   * buildImageFilename, so a caller-supplied name can never collide with
+   * (and overwrite) an existing image.
    */
   async uploadImages(
     files: Express.Multer.File[],
+    names?: (string | undefined)[],
   ): Promise<{ urls: string[] }> {
     this.logger.debug(
       `Uploading ${files.length} file(s) to bucket "${this.bucket}"`,
@@ -191,7 +198,8 @@ export class UploadsService {
 
     const urls: string[] = [];
 
-    for (const file of files) {
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
       let images: ProcessedImage;
       try {
         images = await this.imageProcessing.processForUpload(
@@ -207,9 +215,7 @@ export class UploadsService {
         );
       }
 
-      // Server-generated key only — no user filename — and always .webp,
-      // since the output format is fixed regardless of what was uploaded.
-      const key = `images/${randomUUID()}.webp`;
+      const key = `images/${buildImageFilename(names?.[i])}`;
 
       let url: string;
       try {

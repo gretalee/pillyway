@@ -111,6 +111,13 @@ export class CaminoPicturesController {
           enum: ['true', 'false'],
           description: 'Whether to upload as the primary (hero) picture',
         },
+        name: {
+          type: 'string',
+          description:
+            'Optional display name. Sanitized into the S3 key and combined ' +
+            'with a unique suffix so it can never overwrite an existing image. ' +
+            'If omitted, a filename is generated, as before.',
+        },
       },
     },
   })
@@ -152,6 +159,7 @@ export class CaminoPicturesController {
       file,
       dto.isPrimary,
       req.user.sub,
+      dto.name,
     );
   }
 
