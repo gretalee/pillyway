@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { deriveThumbnailUrl } from './utils';
 
 interface ThumbnailSrc {
@@ -27,10 +27,6 @@ export function useThumbnailSrc(fullUrl: string): ThumbnailSrc {
   // next render, no effect needed.
   const [failedUrl, setFailedUrl] = useState<string | null>(null);
   const failed = failedUrl === fullUrl;
-
-  useEffect(() => {
-    setFailed(false);
-  }, [fullUrl]);
 
   return {
     src: failed ? fullUrl : deriveThumbnailUrl(fullUrl),
