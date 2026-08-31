@@ -73,6 +73,7 @@ export function PictureGallery({
                 className="object-cover"
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                 unoptimized
+                data-testid="picture-gallery-thumbnail"
               />
               {renderThumbnailOverlay?.(picture, index)}
             </div>

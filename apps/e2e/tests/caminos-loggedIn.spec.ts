@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import * as path from 'path';
 import {
   createMockCamino,
   type CreatedCaminoPoint,
@@ -18,7 +19,7 @@ import {
 
 test.describe('Pilgrim creates, edits, and deletes a camino', () => {
   test.describe.configure({ mode: 'serial' });
-  test.setTimeout(180_000);
+  test.setTimeout(210_000);
 
   let caminoSlug: string | undefined;
   let caminoName: string;
@@ -100,6 +101,101 @@ test.describe('Pilgrim creates, edits, and deletes a camino', () => {
       page.getByRole('heading', { level: 1 }),
       '"View camino" must land on the detail page showing the new camino\'s name',
     ).toContainText(caminoName, { timeout: 10_000 });
+
+    // ─── Upload pictures: hero and gallery images actually render live ─────
+    // Regression coverage for the dual-derivative thumbnail pipeline: the
+    // hero image loads the full-size original directly, while the gallery
+    // grid must load the derived `-thumb.webp` (or fall back to the
+    // original if no thumbnail sibling exists) — see ThumbnailImage /
+    // useThumbnailSrc. Both file inputs are hidden (aria-hidden, sr-only)
+    // triggers next to their visible button, with no accessible-locator
+    // path of their own — setInputFiles targets them via data-testid.
+
+    const testImagePath = path.join(__dirname, '_fixtures', 'test-image.jpg');
+
+    const primaryFileInput = page.getByTestId('camino-primary-picture-input');
+    const [primaryUploadResponse] = await Promise.all([
+      page.waitForResponse(
+        (res) =>
+          res.request().method() === 'POST' &&
+          res.url().includes(`/caminos/${created.id}/pictures`),
+        { timeout: 15_000 },
+      ),
+      primaryFileInput.setInputFiles(testImagePath),
+    ]);
+    expect(
+      primaryUploadResponse.ok(),
+      'uploading the main picture must succeed',
+    ).toBeTruthy();
+
+    // The hero <Image alt={caminoName}> has a non-empty accessible name, so
+    // it's directly reachable via getByRole — no structural fallback needed.
+    const heroImage = page.getByRole('img', { name: caminoName });
+    await expect(
+      heroImage,
+      'the uploaded main picture must be visible on the detail page',
+    ).toBeVisible({ timeout: 10_000 });
+    await expect
+      .poll(
+        () =>
+          heroImage.evaluate(
+            (img: HTMLImageElement) => img.complete && img.naturalWidth > 0,
+          ),
+        {
+          timeout: 10_000,
+          message: 'main picture must actually finish loading, not just mount in the DOM',
+        },
+      )
+      .toBe(true);
+
+    const galleryFileInput = page.getByTestId('camino-gallery-picture-input');
+    const [galleryUploadResponse] = await Promise.all([
+      page.waitForResponse(
+        (res) =>
+          res.request().method() === 'POST' &&
+          res.url().includes(`/caminos/${created.id}/pictures`),
+        { timeout: 15_000 },
+      ),
+      galleryFileInput.setInputFiles(testImagePath),
+    ]);
+    expect(
+      galleryUploadResponse.ok(),
+      'uploading a gallery picture must succeed',
+    ).toBeTruthy();
+
+    // Scoped via the fullscreen-view button PictureGallery renders on every
+    // tile — plain getByRole('listitem') also matches unrelated <li>s
+    // elsewhere on the page (footer links, the stage list), so it needs a
+    // filter, not just a role, to identify gallery tiles specifically.
+    const galleryTiles = page
+      .getByRole('listitem')
+      .filter({ has: page.getByRole('button', { name: 'Open image fullscreen' }) });
+    await expect(
+      galleryTiles,
+      'the uploaded gallery picture must appear as exactly one gallery tile',
+    ).toHaveCount(1, { timeout: 10_000 });
+    // The gallery thumbnail is <img alt="">, which ARIA maps to role="none"
+    // (presentational) — an empty alt removes it from the accessibility
+    // tree entirely, so there's no accessible-locator path to it. Falling
+    // back to data-testid, scoped to the one known gallery tile.
+    const galleryImage = galleryTiles.first().getByTestId('picture-gallery-thumbnail');
+    await expect(
+      galleryImage,
+      'the uploaded gallery picture must be visible in the gallery grid',
+    ).toBeVisible({ timeout: 10_000 });
+    await expect
+      .poll(
+        () =>
+          galleryImage.evaluate(
+            (img: HTMLImageElement) => img.complete && img.naturalWidth > 0,
+          ),
+        {
+          timeout: 10_000,
+          message:
+            'gallery thumbnail must actually finish loading — proves the thumbnail (or its fallback to the original) resolves, not just that the tile mounted',
+        },
+      )
+      .toBe(true);
 
     // ─── New camino appears as a card with a working actions menu ─────────
 

@@ -202,6 +202,7 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
             className="sr-only"
             aria-hidden="true"
             onChange={handlePrimaryFileChange}
+            data-testid="camino-primary-picture-input"
           />
           <button
             type="button"
@@ -398,6 +399,7 @@ export function CaminoPictures({ caminoId, caminoName, section }: CaminoPictures
             className="sr-only"
             aria-hidden="true"
             onChange={handleGalleryFileChange}
+            data-testid="camino-gallery-picture-input"
           />
           <button
             type="button"
