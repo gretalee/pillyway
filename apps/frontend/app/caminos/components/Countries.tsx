@@ -30,7 +30,9 @@ const Countries = ({
 
   return (
     <Tooltip content={tooltipString} aria-label={tooltipString} inline offset={10}>
-      <span className={cn('text-base font-normal text-muted-foreground', className)}>
+      <span
+        className={cn('text-base font-normal text-muted-foreground', className)}
+        data-testid="camino-countries">
         {countriesString}
       </span>
     </Tooltip>

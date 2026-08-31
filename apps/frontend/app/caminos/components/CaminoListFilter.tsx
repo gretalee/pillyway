@@ -71,7 +71,9 @@ export function CaminoListFilter({
     const next = currentCountries.includes(country)
       ? currentCountries.filter((c) => c !== country)
       : [...currentCountries, country];
-    startTransition(() => router.push(buildUrl(currentVerified, next, 1), { scroll: false }));
+    startTransition(() =>
+      router.push(buildUrl(currentVerified, next, 1), { scroll: false }),
+    );
   }
 
   function resetFilters() {
@@ -120,7 +122,8 @@ export function CaminoListFilter({
           <div
             role="group"
             className="flex flex-wrap items-center bg-white gap-1 border rounded-sm px-2 py-1"
-            aria-label={t('filter_country_aria')}>
+            aria-label={t('filter_country_aria')}
+            data-testid="country-filter">
             {result.availableCountries.map((country) => {
               const selected = currentCountries.includes(country);
               return (

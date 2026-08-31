@@ -1,7 +1,9 @@
 import {
+  ConflictException,
   Injectable,
   InternalServerErrorException,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
@@ -47,5 +49,41 @@ export class CaminoPointsService {
       this.logger.error('camino_points search failed', err);
       throw new InternalServerErrorException('Failed to search camino points.');
     }
+  }
+
+  /**
+   * Deletes a camino point, but only if it is not currently used by any
+   * camino (zero camino_point_order rows) — camino deletion intentionally
+   * leaves camino_points untouched (a waypoint can be shared by other
+   * caminos), so this is the only path that can ever remove one, and it
+   * must never remove a point another camino still relies on.
+   */
+  async deleteIfUnused(id: string): Promise<void> {
+    await this.prisma.$transaction(async (tx) => {
+      const point = await tx.caminoPoint.findUnique({ where: { id } });
+      if (!point) {
+        throw new NotFoundException('Camino point not found.');
+      }
+
+      const usageCount = await tx.caminoPointOrder.count({
+        where: { caminoPointId: id },
+      });
+      if (usageCount > 0) {
+        throw new ConflictException(
+          'This camino point is still used by one or more caminos and cannot be deleted.',
+        );
+      }
+
+      // Stage has no cascade from CaminoPoint (Prisma default: Restrict) and
+      // is never deleted when a camino is — so any Stage still touching this
+      // now-confirmed-unused point is orphaned garbage too, safe to remove
+      // before the point itself.
+      await tx.stage.deleteMany({
+        where: { OR: [{ startPointId: id }, { endPointId: id }] },
+      });
+
+      // Cascades accommodations, sights, and any (already-zero) point-order rows.
+      await tx.caminoPoint.delete({ where: { id } });
+    });
   }
 }
