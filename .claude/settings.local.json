@@ -88,7 +88,8 @@
       "Bash(yarn --cwd apps/backend test uploads.service -t \"rejects if the thumbnail PUT fails\")",
       "Bash(yarn --cwd apps/backend test uploads camino-pictures image-processing image-url)",
       "Bash(yarn --cwd apps/backend lint)",
-      "Bash(yarn --cwd apps/backend test image-name)"
+      "Bash(yarn --cwd apps/backend test image-name)",
+      "Bash(yarn --cwd apps/backend test uploads.service camino-pictures.service)"
     ],
     "deny": [
       "Read(./.env)",

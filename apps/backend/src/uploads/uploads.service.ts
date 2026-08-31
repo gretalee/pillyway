@@ -90,16 +90,46 @@ export class UploadsService {
    * derived `-thumb.webp` sibling. Only the gallery URL is ever returned —
    * per the dual-derivative naming convention, the thumbnail is never
    * stored anywhere, only ever re-derived from the gallery URL on demand
-   * (see image-url.util.ts). Either PUT failing fails the whole pair: a
-   * gallery URL persisted without its thumbnail sibling would 404 the
-   * moment anything requests the derived thumbnail URL.
+   * (see image-url.util.ts). Either PUT failing fails the whole pair.
+   *
+   * Uses Promise.allSettled, not Promise.all: with .all, if one PUT rejects
+   * while the other has already succeeded, the successful upload is never
+   * cleaned up — an orphaned object leaks in storage, and worse, if it's
+   * the gallery side that succeeded, it breaks the invariant that every
+   * stored gallery has a thumbnail sibling (the next read 404s). allSettled
+   * lets us see both outcomes and delete whichever side did succeed before
+   * surfacing the failure.
    */
   async uploadImagePair(key: string, images: ProcessedImage): Promise<string> {
-    const [url] = await Promise.all([
+    const thumbnailKey = deriveThumbnailUrl(key);
+    const [galleryResult, thumbnailResult] = await Promise.allSettled([
       this.uploadImage(key, images.gallery, 'image/webp'),
-      this.uploadImage(deriveThumbnailUrl(key), images.thumbnail, 'image/webp'),
+      this.uploadImage(thumbnailKey, images.thumbnail, 'image/webp'),
     ]);
-    return url;
+
+    if (
+      galleryResult.status === 'fulfilled' &&
+      thumbnailResult.status === 'fulfilled'
+    ) {
+      return galleryResult.value;
+    }
+
+    // At least one side failed — roll back whichever side succeeded so a
+    // failed pair never leaves an orphan behind. deleteImagesRaw takes
+    // exact keys/URLs with no further thumbnail-derivation (unlike
+    // deleteImages), since these are already the precise objects to remove.
+    const uploadedUrls: string[] = [];
+    if (galleryResult.status === 'fulfilled')
+      uploadedUrls.push(galleryResult.value);
+    if (thumbnailResult.status === 'fulfilled')
+      uploadedUrls.push(thumbnailResult.value);
+    if (uploadedUrls.length > 0) {
+      await this.deleteImagesRaw(uploadedUrls);
+    }
+
+    throw galleryResult.status === 'rejected'
+      ? galleryResult.reason
+      : (thumbnailResult as PromiseRejectedResult).reason;
   }
 
   /**
@@ -162,18 +192,13 @@ export class UploadsService {
 
     this.logger.debug(`Object key="${key}" deleted successfully`);
 
-    // Best-effort thumbnail cleanup — see method doc. deleteImages() can
-    // itself throw on a hard SDK-level failure (it only self-handles the
-    // soft response.Errors case) — same convention as every other
-    // best-effort caller of deleteImages() in this codebase (e.g.
-    // CaminosService.delete()): wrap it here, don't let it escape.
-    try {
-      await this.deleteImages([deriveThumbnailUrl(url)]);
-    } catch (err) {
-      this.logger.error(
-        `Failed to delete thumbnail sibling for "${url}": ${String(err)}`,
-      );
-    }
+    // Best-effort thumbnail cleanup — see method doc. Uses deleteImagesRaw
+    // (exact keys, no further expansion), not deleteImages: the value here
+    // is ALREADY the derived thumbnail key — deleteImages would derive a
+    // thumbnail of a thumbnail ("...-thumb-thumb.webp") and attempt to
+    // delete that nonexistent key too. deleteImagesRaw never throws, so no
+    // try/catch needed here.
+    await this.deleteImagesRaw([deriveThumbnailUrl(url)]);
   }
 
   /**
@@ -237,25 +262,41 @@ export class UploadsService {
   }
 
   /**
-   * Best-effort bulk delete: every given URL AND its derived thumbnail
-   * sibling. Never throws — logs and continues, since every caller of this
-   * method treats it as best-effort cleanup (unlike deleteImageStrict).
+   * Best-effort bulk delete: every given (gallery) URL AND its derived
+   * thumbnail sibling. Never throws. Use this for gallery URLs — for
+   * exact keys/URLs that should NOT be re-expanded (e.g. a thumbnail URL
+   * you already derived yourself), use deleteImagesRaw instead.
    */
   async deleteImages(urls: string[]): Promise<void> {
     if (urls.length === 0) {
       return;
     }
-
     const expandedUrls = urls.flatMap((url) => [url, deriveThumbnailUrl(url)]);
+    await this.deleteImagesRaw(expandedUrls);
+  }
+
+  /**
+   * Best-effort bulk delete of exact S3 URLs — no thumbnail
+   * derivation/expansion. Genuinely never throws: both the "some keys
+   * failed" soft case (response.Errors) and a hard SDK-level rejection are
+   * caught and logged here, never propagated — every caller (deleteImages,
+   * deleteImageStrict's thumbnail cleanup, uploadImagePair's rollback)
+   * relies on this being true cleanup that can't itself fail the operation
+   * it's cleaning up after.
+   */
+  private async deleteImagesRaw(urls: string[]): Promise<void> {
+    if (urls.length === 0) {
+      return;
+    }
 
     const prefix = `${this.publicBaseUrl}/`;
-    const keys = expandedUrls
+    const keys = urls
       .filter((url) => url.startsWith(prefix))
       .map((url) => url.slice(prefix.length));
 
-    if (keys.length < expandedUrls.length) {
+    if (keys.length < urls.length) {
       this.logger.warn(
-        `deleteImages: ${expandedUrls.length - keys.length} of ${expandedUrls.length} URL(s)/derived key(s) did not match the expected prefix and will be skipped. ` +
+        `deleteImagesRaw: ${urls.length - keys.length} of ${urls.length} URL(s) did not match the expected prefix and will be skipped. ` +
           `Possible orphaned S3 objects. Prefix="${prefix}"`,
       );
     }
@@ -268,22 +309,28 @@ export class UploadsService {
       `Deleting ${keys.length} object(s) from bucket "${this.bucket}": ${keys.join(', ')}`,
     );
 
-    const response = await this.s3.send(
-      new DeleteObjectsCommand({
-        Bucket: this.bucket,
-        Delete: {
-          Objects: keys.map((Key) => ({ Key })),
-          Quiet: false,
-        },
-      }),
-    );
+    try {
+      const response = await this.s3.send(
+        new DeleteObjectsCommand({
+          Bucket: this.bucket,
+          Delete: {
+            Objects: keys.map((Key) => ({ Key })),
+            Quiet: false,
+          },
+        }),
+      );
 
-    if (response.Errors && response.Errors.length > 0) {
-      for (const err of response.Errors) {
-        this.logger.error(
-          `S3 delete failed for key "${err.Key ?? '?'}": [${err.Code ?? '?'}] ${err.Message ?? '?'}`,
-        );
+      if (response.Errors && response.Errors.length > 0) {
+        for (const err of response.Errors) {
+          this.logger.error(
+            `S3 delete failed for key "${err.Key ?? '?'}": [${err.Code ?? '?'}] ${err.Message ?? '?'}`,
+          );
+        }
       }
+    } catch (err) {
+      this.logger.error(
+        `S3 deleteImagesRaw SDK error for ${keys.length} key(s) [${keys.join(', ')}]: ${String(err)}`,
+      );
     }
   }
 }

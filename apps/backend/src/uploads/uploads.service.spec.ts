@@ -311,6 +311,71 @@ describe('UploadsService.uploadImagePair()', () => {
       }),
     ).rejects.toBeInstanceOf(InternalServerErrorException);
   });
+
+  it('rolls back the successfully-uploaded gallery object when the thumbnail PUT fails', async () => {
+    sendMock
+      .mockResolvedValueOnce({}) // gallery PUT succeeds
+      .mockRejectedValueOnce(new Error('S3 unavailable')) // thumbnail PUT fails
+      .mockResolvedValueOnce({ Errors: [] }); // rollback DELETE
+    const service = (await buildModule(defaultConfig)).get(UploadsService);
+
+    await expect(
+      service.uploadImagePair('images/abc.webp', {
+        gallery: GALLERY_BUFFER,
+        thumbnail: THUMBNAIL_BUFFER,
+      }),
+    ).rejects.toThrow();
+
+    const MockedDeleteObjectsCommand = vi.mocked(DeleteObjectsCommand);
+    expect(MockedDeleteObjectsCommand).toHaveBeenCalledOnce();
+    const deletedKeys =
+      MockedDeleteObjectsCommand.mock.calls[0][0].Delete!.Objects!.map(
+        (o) => o.Key,
+      );
+    // Only the gallery key — the thumbnail was never actually uploaded, so
+    // there's nothing to roll back for it.
+    expect(deletedKeys).toEqual(['images/abc.webp']);
+  });
+
+  it('rolls back the successfully-uploaded thumbnail object when the gallery PUT fails', async () => {
+    sendMock
+      .mockRejectedValueOnce(new Error('S3 unavailable')) // gallery PUT fails
+      .mockResolvedValueOnce({}) // thumbnail PUT succeeds
+      .mockResolvedValueOnce({ Errors: [] }); // rollback DELETE
+    const service = (await buildModule(defaultConfig)).get(UploadsService);
+
+    await expect(
+      service.uploadImagePair('images/abc.webp', {
+        gallery: GALLERY_BUFFER,
+        thumbnail: THUMBNAIL_BUFFER,
+      }),
+    ).rejects.toThrow();
+
+    const MockedDeleteObjectsCommand = vi.mocked(DeleteObjectsCommand);
+    expect(MockedDeleteObjectsCommand).toHaveBeenCalledOnce();
+    const deletedKeys =
+      MockedDeleteObjectsCommand.mock.calls[0][0].Delete!.Objects!.map(
+        (o) => o.Key,
+      );
+    expect(deletedKeys).toEqual(['images/abc-thumb.webp']);
+  });
+
+  it('does not attempt any rollback delete when both PUTs fail (nothing to clean up)', async () => {
+    sendMock
+      .mockRejectedValueOnce(new Error('S3 unavailable')) // gallery PUT fails
+      .mockRejectedValueOnce(new Error('S3 unavailable')); // thumbnail PUT fails
+    const service = (await buildModule(defaultConfig)).get(UploadsService);
+
+    await expect(
+      service.uploadImagePair('images/abc.webp', {
+        gallery: GALLERY_BUFFER,
+        thumbnail: THUMBNAIL_BUFFER,
+      }),
+    ).rejects.toThrow();
+
+    const MockedDeleteObjectsCommand = vi.mocked(DeleteObjectsCommand);
+    expect(MockedDeleteObjectsCommand).not.toHaveBeenCalled();
+  });
 });
 
 // ─── deleteImageStrict() ────────────────────────────────────────────────────────
@@ -330,6 +395,25 @@ describe('UploadsService.deleteImageStrict()', () => {
     );
     expect(allKeys).toContain('images/abc.webp');
     expect(allKeys).toContain('images/abc-thumb.webp');
+  });
+
+  it('deletes the thumbnail key exactly once, never a double-derived "-thumb-thumb" key', async () => {
+    sendMock.mockResolvedValue({ Errors: [] });
+    const service = (await buildModule(defaultConfig)).get(UploadsService);
+
+    await service.deleteImageStrict(`${PUBLIC_BASE_URL}/images/abc.webp`);
+
+    const MockedDeleteObjectsCommand = vi.mocked(DeleteObjectsCommand);
+    const allKeys = MockedDeleteObjectsCommand.mock.calls.flatMap((c) =>
+      c[0].Delete!.Objects!.map((o) => o.Key),
+    );
+    expect(allKeys).not.toContain('images/abc-thumb-thumb.webp');
+    expect(allKeys.filter((k) => k === 'images/abc-thumb.webp')).toHaveLength(
+      1,
+    );
+    // Exactly two DELETE calls: one for the strict gallery delete, one for
+    // the best-effort thumbnail cleanup — not a third for a re-derived key.
+    expect(MockedDeleteObjectsCommand).toHaveBeenCalledTimes(2);
   });
 
   it('throws BadGatewayException when the gallery delete fails, without letting a thumbnail failure mask it', async () => {
@@ -387,5 +471,14 @@ describe('UploadsService.deleteImages()', () => {
     await service.deleteImages([]);
 
     expect(sendMock).not.toHaveBeenCalled();
+  });
+
+  it('never throws, even when the S3 SDK call itself rejects (hard failure, not just response.Errors)', async () => {
+    sendMock.mockRejectedValue(new Error('S3 network error'));
+    const service = (await buildModule(defaultConfig)).get(UploadsService);
+
+    await expect(
+      service.deleteImages([`${PUBLIC_BASE_URL}/images/one.webp`]),
+    ).resolves.toBeUndefined();
   });
 });
