@@ -9,6 +9,7 @@ import { useCaminoPictures } from '@/app/api/camino-pictures/use-camino-pictures
 import { useUploadCaminoPicture } from '@/app/api/camino-pictures/use-upload-camino-picture';
 import { useDeleteCaminoPicture } from '@/app/api/camino-pictures/use-delete-camino-picture';
 import type { UploadCaminoPictureResult } from '@/app/api/camino-pictures/camino-picture-types';
+import { ThumbnailImage } from '@/app/components/ThumbnailImage';
 import {
   AlertDialog,
   AlertDialogContent,
@@ -163,7 +164,7 @@ export function CaminoPictureUploadSection({
             <div
               key={picture.id}
               className="group relative aspect-[4/3] overflow-hidden rounded-md">
-              <Image
+              <ThumbnailImage
                 src={picture.url}
                 alt=""
                 fill
@@ -196,7 +197,7 @@ export function CaminoPictureUploadSection({
               <input
                 ref={primaryFileInputRef}
                 type="file"
-                accept="image/jpeg,image/png,image/webp"
+                accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
                 className="sr-only"
                 aria-hidden="true"
                 onChange={handlePrimaryFileChange}
@@ -229,7 +230,7 @@ export function CaminoPictureUploadSection({
             <input
               ref={galleryFileInputRef}
               type="file"
-              accept="image/jpeg,image/png,image/webp"
+              accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
               className="sr-only"
               aria-hidden="true"
               onChange={handleGalleryFileChange}

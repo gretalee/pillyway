@@ -115,7 +115,7 @@ export class CaminoPicturesService {
       detected.mime !== file.mimetype
     ) {
       throw new UnsupportedMediaTypeException(
-        'File type not supported. Accepted types: image/jpeg, image/png, image/webp',
+        'File type not supported. Accepted types: image/jpeg, image/png, image/webp, image/heic, image/heif',
       );
     }
 

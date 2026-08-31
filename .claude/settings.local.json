@@ -89,7 +89,9 @@
       "Bash(yarn --cwd apps/backend test uploads camino-pictures image-processing image-url)",
       "Bash(yarn --cwd apps/backend lint)",
       "Bash(yarn --cwd apps/backend test image-name)",
-      "Bash(yarn --cwd apps/backend test uploads.service camino-pictures.service)"
+      "Bash(yarn --cwd apps/backend test uploads.service camino-pictures.service)",
+      "Bash(yarn --cwd apps/frontend test utils)",
+      "Bash(yarn --cwd apps/frontend build)"
     ],
     "deny": [
       "Read(./.env)",

@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useCallback, useRef } from 'react';
-import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import { Lightbox, type LightboxImage } from './Lightbox';
+import { ThumbnailImage } from './ThumbnailImage';
 
 export interface GalleryPicture {
   id: string;
@@ -66,13 +66,14 @@ export function PictureGallery({
                 )}>
                 <span className="sr-only">{t('open_fullscreen')}</span>
               </button>
-              <Image
+              <ThumbnailImage
                 src={picture.url}
                 alt={picture.label ?? ''}
                 fill
                 className="object-cover"
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                 unoptimized
+                data-testid="picture-gallery-thumbnail"
               />
               {renderThumbnailOverlay?.(picture, index)}
             </div>

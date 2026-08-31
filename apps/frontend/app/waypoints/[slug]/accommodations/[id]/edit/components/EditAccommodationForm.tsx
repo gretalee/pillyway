@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { useRef, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
@@ -17,6 +16,7 @@ import { Input } from '@/app/components/ui/input';
 import { Textarea } from '@/app/components/ui/textarea';
 import { Label } from '@/app/components/ui/label';
 import { Select } from '@/app/components/ui/select';
+import { ThumbnailImage } from '@/app/components/ThumbnailImage';
 import { useCountries } from '@/app/api/use-countries';
 
 interface EditAccommodationFormProps {
@@ -383,7 +383,7 @@ export function EditAccommodationForm({
           <ul className="mt-2 flex flex-wrap gap-3">
             {visibleExistingImages.map((url) => (
               <li key={url} className="relative">
-                <Image
+                <ThumbnailImage
                   src={url}
                   alt=""
                   width={96}
@@ -403,7 +403,7 @@ export function EditAccommodationForm({
             ))}
             {uploadedUrls.map((url) => (
               <li key={url} className="relative">
-                <Image
+                <ThumbnailImage
                   src={url}
                   alt=""
                   width={96}
