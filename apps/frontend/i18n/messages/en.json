@@ -306,6 +306,7 @@
     "error_loading": "Failed to load stage data for editing."
   },
   "countries": {
+    "austria": "Austria",
     "denmark": "Denmark",
     "england": "England",
     "france": "France",
@@ -320,6 +321,7 @@
     "switzerland": "Switzerland"
   },
   "country_codes": {
+    "austria": "AT",
     "denmark": "DK",
     "england": "GB",
     "france": "FR",

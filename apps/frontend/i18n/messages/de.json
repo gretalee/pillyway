@@ -306,6 +306,7 @@
     "error_loading": "Etappendaten konnten nicht zum Bearbeiten geladen werden."
   },
   "countries": {
+    "austria": "Österreich",
     "denmark": "Dänemark",
     "england": "England",
     "france": "Frankreich",
@@ -320,6 +321,7 @@
     "switzerland": "Schweiz"
   },
   "country_codes": {
+    "austria": "AT",
     "denmark": "DK",
     "england": "GB",
     "france": "FR",
