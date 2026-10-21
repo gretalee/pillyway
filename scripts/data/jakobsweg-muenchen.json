@@ -1,0 +1,579 @@
+{
+  "_meta": {
+    "route": "Münchner Jakobsweg (München – Andechs – Wessobrunn – Kempten – Scheidegg – Lindau)",
+    "section": "München → Schäftlarn → Andechs → Utting am Ammersee → Wessobrunn → Rottenbuch → Lechbruck am See → Marktoberdorf → Görisried → Kempten → Weitnau → Genhofen → Scheidegg → Lindau",
+    "distance_km": 309,
+    "stages": 13,
+    "created": "2026-10-21",
+    "sources": [
+      "https://jakobsweg-lebensweg.de/deutschland/muenchner-jakobsweg/",
+      "https://www.wildganz.com/pilgerweg/muenchner-jakobsweg",
+      "https://www.wandern.de/inspiration/muenchner-jakobsweg-pilgern-von-muenchen-nach-bregenz",
+      "https://www.abendzeitung-muenchen.de/panorama/ratgeber/gesundheit/muenchner-jakobsweg-pilgern-von-muenchen-durch-das-allgaeu-bis-zum-bodensee-art-1053606",
+      "https://www.outdooractive.com/de/route/pilgerweg/allgaeu/muenchener-jakobsweg-scheidegg-bregenz/24514948/",
+      "https://camino-europe.eu/en/eu/deutschland-en-US/jakobswege-en-US/d-muenchnerweg-muenchen-schweiz-rorschach/simmerberg-bregenz/",
+      "http://hanna-jakobsweg.de/page/wegbeschreibung/Unterkunftsliste.html",
+      "https://schulschwestern.de/jakobuspilger/",
+      "https://de.wikipedia.org/wiki/St._Jakob_(M%C3%BCnchen)",
+      "https://www.jugendherberge.de/jugendherbergen/muenchen-park/",
+      "https://www.klosterportal.org/angebote/germany/bayern/kloster-schaeftlarn/gaststaetten/",
+      "https://www.andechs.de/kloster/gaeste/jakobspilger.html",
+      "https://www.hotel-wittelsbacher-hof.de/",
+      "https://www.wessobrunn.de/freizeit-firmen/uebernachtungsmoeglichkeiten/",
+      "https://www.rottenbuch.de/de/gaestehaus-schratt.html",
+      "https://www.pension-elisa.de/",
+      "https://www.touristik-marktoberdorf.de/aktivitaeten/wandern-pilgern",
+      "https://pq-mod.de/",
+      "https://www.jufahotels.com/en/hotel/kempten/",
+      "https://www.krone-weitnau.de/",
+      "https://www.postinweiler.de/kontakt/",
+      "https://www.mehrerau.at/gast-sein/uebernachten-im-kloster",
+      "https://www.jufahotels.com/en/hotel/bregenz/",
+      "https://www.pilgern-schwaben.de/lechbruck-marktoberdorf/",
+      "https://www.pilgern-schwaben.de/marktoberdorf-kempten/",
+      "https://www.pilgern-schwaben.de/kempten-weitnau-lindau/",
+      "https://www.pilgern-schwaben.de/scheidegg/",
+      "https://www.klosterwessobrunn.de/uebernachtung/",
+      "https://audiigl.wixsite.com/pilgerzimmer-ammer",
+      "https://daspilgerforum.de/viewtopic.php?t=2087",
+      "https://klosterbraeustueberl-schaeftlarn.de/",
+      "https://scheidegg-evangelisch.de/adresse-und-kontakt-moeglichkeiten-pilgerzentrum/",
+      "https://www.sonntagsblatt.de/artikel/jakobsweg-pilgerherberge-scheidegg",
+      "https://www.outdooractive.com/de/route/pilgerweg/allgaeu/muenchner-jakobsweg-bayr-schwaeb-jw-weitnau-scheidegg/24515152/",
+      "https://www.hanna-jakobsweg.de/page/wegbeschreibung/aktweg.html",
+      "https://www.pilgern-schwaben.de/lindau/",
+      "https://camino-europe.eu/en/eu/deutschland-en-US/jakobswege-en-US/bayrisch-schwaebischer-jakobsweg/bayr-schwaeb-jw-scheidegg-lindau/",
+      "https://www.jugendherberge.de/jugendherbergen/lindau/",
+      "https://camino-europe.eu/en/eu/deutschland-en-US/jakobswege-en-US/d-muenchnerweg-muenchen-schweiz-rorschach/marktoberdorf-goerisried/",
+      "https://camino-europe.eu/en/eu/deutschland-en-US/jakobswege-en-US/d-muenchnerweg-muenchen-schweiz-rorschach/goerisried-kempten/",
+      "https://www.allgaeu.de/touren/muenchner-jakobsweg-im-allgaeu-variante-marktoberdorf-goerisried",
+      "https://www.hirsch-goerisried.de/",
+      "https://www.outdooractive.com/de/route/pilgerweg/allgaeu/jakobus-pilgerweg-weitnau-genhofen/194947222/",
+      "https://camino-europe.eu/en/eu/deutschland-en-US/jakobswege-en-US/bayrisch-schwaebischer-jakobsweg/bayr-schwaeb-jw-weitnau-scheidegg/",
+      "https://www.westallgaeu.de/a-bachhof"
+    ],
+    "note": "Etappeneinteilung folgt der gängigen 11-Etappen-Gliederung (jakobsweg-lebensweg.de / wildganz.com); Distanzen aus jakobsweg-lebensweg.de auf ganze km gerundet. Die Quellen weichen um 1-2 km pro Etappe voneinander ab (z. B. Marktoberdorf-Kempten 31,1 vs. 32,6 km) - Etappe 8 liegt damit knapp am 32-km-Limit. Letzte Etappe nimmt die Bregenz-Variante über Scheidegg und den Pfänder (27,8 km), nicht die Lindau-Variante (26,4 km). Nicht aufgenommene Varianten: Zulauf über Dießen am Ammersee, Zwischenübernachtung in Hohenpeißenberg (teilt Etappe 5), Variante Marktoberdorf-Görisried-Kempten, Etappenende Simmerberg statt Weiler. Für den Endpunkt Bregenz wurde 'austria' neu in countries.constants.ts sowie in die i18n-Namespaces countries/country_codes (de/en) aufgenommen. Koordinaten sind Ortsmitte bzw. Kloster/Kirche aus Kartenwissen, nicht aus einer Mapping-API - vor verified:true prüfen. priceRange überall geschätzt (Andechs ca. 50 EUR, Weitnau Pilgerpreis 50 EUR, Schäftlarn EZ ca. 31-68 EUR). Gästetrakt Kloster Andechs ist laut Website Anfang Mai bis Ende Juli für Einzelgäste geschlossen und wegen Baumaßnahmen eingeschränkt. Pilgerquartier Marktoberdorf: Name in Quellen uneinheitlich ('Elfies'/'Heidi's Pilgerquartier'); pq-mod.de lieferte bei der Recherche HTTP 500. Gästehaus Schratt Rottenbuch: Website ist die Gastgeberseite auf rottenbuch.de (aus dem Unterkunftsverzeichnis 2020 übernommen, nicht live geprüft). Private Pilgerunterkünfte mit privaten Handynummern (z. B. Uschi Schneider Wessobrunn, private Zimmer in Andechs-Machtlfing und Kempten) wurden bewusst nicht aufgenommen. Die Aussendungsfeiern an St. Jakob am Anger finden laut Schulschwestern 2026 nicht statt (Termine erst wieder 2027). createdBy vor dem Prod-Seed durch echte Kinde-User-ID ersetzen. UPDATE 2026-10-21: Günstigere Unterkünfte ergänzt - Uschi's Pilgerherberge (Wessobrunn-Haid; eigene Website jakobuswege-d.eu nicht mehr erreichbar, daher Gemeindeseite als website), Pilgerzimmer Iglhaut (Rottenbuch, ca. 27 EUR), Privatzimmer Brock (Kempten) und Privatzimmer Weilbach (Weitnau), beide aus den Etappenseiten der Jakobuspilgergemeinschaft Augsburg (Preise dort nicht angegeben). Kloster Andechs auf 'budget' gesetzt (ca. 20 EUR inkl. Frühstück laut Pilgerforum 2023), Klosterbräustüberl Schäftlarn auf 'moderate' (EZ ab 47 EUR, Bügelzimmer 29 EUR laut eigener Website). Für Utting, Lechbruck, Weiler und Bregenz wurde keine verlässlich bestätigte günstigere Unterkunft gefunden. Nicht aufgenommen, weil nicht bestätigt: Pfarrei St. Anton Kempten (Spendenbasis, nur ein Forumsbeitrag 2023), Privatzimmer Kuhlmann Hohenschäftlarn (nur alte Forumsbeiträge), Privatzimmer Casal Weiler (nur Hanna-Liste). Günstigste Option auf der Schlussetappe ist die ev. Pilgerherberge im Pilgerzentrum Scheidegg (ca. 7-8 km hinter Weiler) - nicht als eigener Etappenort aufgenommen. UPDATE 2026-10-21 (2): Scheidegg als Etappenort eingefügt (Pilgerzentrum, ca. 26 EUR mit Frühstück). Die bisherige Schlussetappe Weiler-Bregenz (28 km) ist jetzt geteilt in Weiler-Scheidegg (8 km, Kilometrierung laut Wegbeschreibung Weitnau-Scheidegg: Weiler km 29,5, Scheidegg km 37,5) und Scheidegg-Bregenz (21 km, outdooractive 20,8 km). Die alte Stage Weiler-Bregenz wird vom Seed-Skript nicht gelöscht und muss in bereits geseedeten DBs ggf. manuell entfernt werden. UPDATE 2026-10-21 (3): Endpunkt von Bregenz auf Lindau umgestellt (Variante über Scheidegg: Scheidegg-Lindau 21,5 km laut camino-europe.eu über Kinberg, Niederstaufen, Sigmarszell, Reutin). Die direkte Lindau-Variante Weiler-Lindenberg-Lindau (ca. 26 km) wurde nicht genommen, damit die Übernachtung im Pilgerzentrum Scheidegg möglich bleibt. Bregenz-Daten (Kloster Mehrerau, JUFA Bregenz, Stage Scheidegg-Bregenz über den Pfänder) entfernt; 'austria' bleibt in countries.constants.ts und i18n, weil der Bregenz-Punkt in bereits geseedeten DBs noch existiert. Hinweise oben zu Bregenz/Pfänder sind damit überholt. UPDATE 2026-10-21 (4): Lange Etappen entschärft. (a) Marktoberdorf-Kempten (31 km) ersetzt durch die südliche Variante über Görisried: Marktoberdorf-Görisried 20 km (allgaeu.de 20,0 km; camino-europe.eu 23,7 km) und Görisried-Kempten 20 km (camino-europe.eu 19,7 km) - insgesamt ca. 9-13 km länger, dafür weniger Straße und Wertach-Hängebrücke (vor Begehung Zustand in Marktoberdorf erfragen). Oberthingau als Teilungsort verworfen (nur 9,7 km hinter Marktoberdorf). (b) Weiler im Allgäu durch Genhofen ersetzt: Weitnau-Genhofen 19 km (outdooractive 19,3 km), Genhofen-Scheidegg 20 km (aus Weitnau-Scheidegg 38,9 km minus 19,3 km abgeleitet - nicht direkt belegt). Koordinaten Genhofen geschätzt. Bachhof Genhofen: Preisband aus allgemeiner Broschürenangabe abgeleitet; die dort gelistete E-Mail wirkte privat und wurde nicht übernommen. Alternative 3-4 km abseits: Landgasthof Rössle, Stiefenhofen (nicht aufgenommen). Kempten-Weitnau (30 km) bleibt auf Wunsch unverändert (Teilung in Buchenberg möglich, ca. 12 + 18 km). Weiler-Unterkunft Hotel Zur Post damit aus der Datei entfernt."
+  },
+  "camino": {
+    "name": "Jakobsweg München",
+    "description": "Der Münchner Jakobsweg führt auf rund 300 Kilometern in dreizehn Etappen von der bayerischen Landeshauptstadt durch das Fünfseenland, den Pfaffenwinkel und das Allgäu bis an den Bodensee in die Inselstadt Lindau. Von dort aus kann der Pilger mit dem Schiff nach Rorschach übersetzen und über Einsiedeln auf dem Schwabenweg weiter Richtung Santiago de Compostela ziehen.\n\nMünchen – ursprünglich die Siedlung „bei den Mönchen“ – war schon im Mittelalter ein Sammelpunkt für Pilger aus dem Osten auf dem Weg nach Santiago. Bereits 1221 wird am Unteren Anger eine dem Apostel Jakobus geweihte Kapelle erwähnt; die heutige Kirche St. Jakob am Anger ist Ausgangspunkt des Weges. Der Weg selbst wurde anhand historischer Reiseberichte von privaten und kirchlichen Initiativen rekonstruiert und 2003 durchgehend markiert.\n\nDie Route verläuft zunächst entlang der Isar zum Kloster Schäftlarn, quert das Fünfseenland mit Starnberger See und Maisinger Schlucht und erreicht den Heiligen Berg Andechs. Am Ammersee entlang geht es nach Wessobrunn, Heimat des berühmten Wessobrunner Gebets, und über den Hohen Peißenberg mit seinem großartigen Alpenpanorama nach Rottenbuch. Höhepunkt der zweiten Wochenhälfte ist die Wieskirche, seit 1983 UNESCO-Welterbe. Über das Lechtal, das Ostallgäu und die Hängebrücke über die Wertach führt der Weg nach Kempten, einer der ältesten Städte Deutschlands, und durch die hügelige Landschaft des Westallgäus zum Pilgerzentrum Scheidegg. Von dort führt der Weg über die Wendelinskapelle in Kinberg und das Leiblachtal hinunter an den Bodensee und endet im Hafen der Lindauer Insel.\n\nDer Weg ist abwechslungsreich, aber anspruchsvoll: Die Etappen sind meist 19 bis 27 Kilometer lang (nur zwischen Kempten und Weitnau sind es 30 Kilometer), und besonders zwischen Wessobrunn und Rottenbuch sowie im Allgäu sind viele Höhenmeter zu bewältigen. Klassische Pilgerherbergen sind selten – neben dem Gästetrakt des Klosters Andechs, der Walserherberge in Wessobrunn, dem Pilgerquartier in Marktoberdorf, dem Pilgerzentrum Scheidegg und der Pilgerherberge Lindau übernachtet man überwiegend in Gasthöfen und Pensionen, die frühzeitig reserviert werden sollten.\n\n**Pilgerpass (Credencial):** In der Kirche St. Jakob am Anger (St.-Jakobs-Platz, München) stellen die Armen Schulschwestern den Pilgerausweis im Rahmen einer Aussendungsfeier aus; die Anmeldung erfolgt online über schulschwestern.de/jakobuspilger (2026 finden dort keine Aussendungsfeiern statt, Termine sind ab 2027 wieder geplant). Den Pilgerstempel gibt es an der Klosterpforte von St. Jakob (Mo–Fr 7–19 Uhr, Sa 8–16 Uhr). Alternativ kann der Pilgerausweis bei der Deutschen St. Jakobus-Gesellschaft in Aachen (Tel. +49 241 4790127) oder bei der Fränkischen St. Jakobus-Gesellschaft Würzburg bestellt werden.",
+    "verified": false,
+    "createdBy": "seed"
+  },
+  "points": [
+    {
+      "position": 1,
+      "name": "München",
+      "country": "germany",
+      "slug": "muenchen",
+      "description": "Ausgangspunkt ist die Kirche St. Jakob am Anger am St.-Jakobs-Platz in der Münchner Altstadt, wo bereits 1221 eine Jakobuskapelle bestand. Hier erhalten Pilger den Stempel an der Klosterpforte der Armen Schulschwestern, bevor der Weg die Stadt entlang der Isar nach Süden verlässt.",
+      "accommodations": [
+        {
+          "name": "Jugendherberge München-Park",
+          "type": "hostel",
+          "description": "DJH-Jugendherberge im Stadtteil Thalkirchen, direkt an der Isar und damit unmittelbar am Verlauf der ersten Etappe - ein guter Startpunkt, um am nächsten Morgen ohne Stadtverkehr loszuwandern.",
+          "addressStreet": "Miesingstraße 4",
+          "addressZip": "81379",
+          "addressCity": "München",
+          "addressCountry": "germany",
+          "phone": "+49 89 78576770",
+          "website": "https://www.jugendherberge.de/jugendherbergen/muenchen-park/",
+          "email": "muenchen-park@jugendherberge.de",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 48.1347,
+      "lng": 11.5722
+    },
+    {
+      "position": 2,
+      "name": "Schäftlarn",
+      "country": "germany",
+      "slug": "schaeftlarn",
+      "description": "Die Benediktinerabtei Schäftlarn liegt malerisch im Isartal und beeindruckt mit ihrer prächtigen Rokoko-Klosterkirche St. Dionysius und Juliana. Die Übernachtungsmöglichkeiten direkt am Kloster sind sehr begrenzt, daher unbedingt vorab reservieren.",
+      "accommodations": [
+        {
+          "name": "Hotel Klosterbräustüberl Schäftlarn",
+          "type": "hotel",
+          "description": "Traditioneller Gasthof mit Biergarten direkt neben der Klosterkirche; rund zehn Einzel-, Doppel- und Dreibettzimmer (Einzelzimmer ab ca. 47 EUR, einfaches „Bügelzimmer“ ab ca. 29 EUR, Frühstück extra). Praktisch die einzige Unterkunft direkt am Etappenziel - frühzeitig anrufen.",
+          "addressStreet": "Kloster Schäftlarn 16",
+          "addressZip": "82067",
+          "addressCity": "Schäftlarn",
+          "addressCountry": "germany",
+          "phone": "+49 8178 3694",
+          "website": "https://www.klosterbraeustueberl-schaeftlarn.de",
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ],
+      "lat": 47.9803,
+      "lng": 11.4619
+    },
+    {
+      "position": 3,
+      "name": "Andechs",
+      "country": "germany",
+      "slug": "andechs",
+      "description": "Der Heilige Berg Andechs mit seiner Wallfahrtskirche und dem Benediktinerkloster ist der älteste Wallfahrtsort Bayerns und berühmt für sein Klosterbier. Jakobspilger können im Gästetrakt des Klosters übernachten und erhalten an der Klosterpforte ihren Stempel.",
+      "accommodations": [
+        {
+          "name": "Kloster Andechs - Gästetrakt für Jakobspilger",
+          "type": "monastery",
+          "description": "Schlichte Einzelzimmer im Gästetrakt des Benediktinerklosters mit Etagenduschen, Frühstück 7-9 Uhr; Pilger zahlten zuletzt rund 20 EUR inkl. Frühstück (Pilgerausweis erforderlich). Anmeldung bis 16:30 Uhr an der Klosterpforte (Zimmervergabe und Pilgerstempel), Reservierung mindestens zwei Wochen im Voraus. Von Anfang Mai bis Ende Juli wegen der Wallfahrten keine Einzelgäste.",
+          "addressStreet": "Bergstraße 2",
+          "addressZip": "82346",
+          "addressCity": "Andechs",
+          "addressCountry": "germany",
+          "phone": "+49 8152 3760",
+          "website": "https://www.andechs.de/kloster/gaeste/jakobspilger.html",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 47.9747,
+      "lng": 11.1828
+    },
+    {
+      "position": 4,
+      "name": "Utting am Ammersee",
+      "country": "germany",
+      "slug": "utting-am-ammersee",
+      "description": "Beschaulicher Ferienort am Westufer des Ammersees mit Dampfersteg und Strandbad. Nach dem Abstieg vom Heiligen Berg bietet der See eine willkommene Gelegenheit zur Erholung der Füße.",
+      "accommodations": [
+        {
+          "name": "Hotel Wittelsbacher Hof",
+          "type": "hotel",
+          "description": "Hotel am Bahnhofplatz im Ortszentrum, wenige Minuten vom Seeufer entfernt; mit Restaurant und Biergarten. Das Haus wurde von neuen Betreibern übernommen - Buchung derzeit telefonisch oder per E-Mail.",
+          "addressStreet": "Bahnhofplatz 6",
+          "addressZip": "86919",
+          "addressCity": "Utting am Ammersee",
+          "addressCountry": "germany",
+          "phone": "+49 8806 92040",
+          "website": "https://www.hotel-wittelsbacher-hof.de/",
+          "email": "info@hotel-wittelsbacher-hof.de",
+          "priceRange": "comfortable",
+          "verified": false
+        }
+      ],
+      "lat": 48.0258,
+      "lng": 11.0847
+    },
+    {
+      "position": 5,
+      "name": "Wessobrunn",
+      "country": "germany",
+      "slug": "wessobrunn",
+      "description": "Das ehemalige Benediktinerkloster Wessobrunn ist Fundort des Wessobrunner Gebets, eines der ältesten Zeugnisse deutscher Sprache, und Namensgeber der berühmten Wessobrunner Stuckateurschule. Sehenswert sind der Grauer Turm und die alte Gerichtslinde.",
+      "accommodations": [
+        {
+          "name": "Walserherberge",
+          "type": "hostel",
+          "description": "Kleine private Pilgerherberge von Gerhard und Johanna Thiel mit „Pilgersuite“ und „Pilger-Stübli“ für 1 bis 5 Personen, Übernachtung mit Frühstück. Liegt nahezu direkt am Weg.",
+          "addressStreet": "Walserstraße 12",
+          "addressZip": "82405",
+          "addressCity": "Wessobrunn",
+          "addressCountry": "germany",
+          "phone": "+49 8809 422",
+          "website": "https://www.walserherberge.de",
+          "email": "info@walserherberge.de",
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Uschi's Pilgerherberge",
+          "type": "hostel",
+          "description": "Private Pilgerherberge einer ehemaligen Hospitalera, die selbst in einer spanischen Pilgerherberge gearbeitet hat; Betten für 2-4 Personen mit Frühstück, Zelten im Garten möglich. Liegt im Ortsteil Haid, rund 2 km vom Kloster entfernt.",
+          "addressStreet": "Haiderstraße 1a",
+          "addressZip": "82405",
+          "addressCity": "Wessobrunn",
+          "addressCountry": "germany",
+          "phone": "+49 8809 786",
+          "website": "https://www.wessobrunn.de/freizeit-firmen/uebernachtungsmoeglichkeiten/",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Gasthaus zur Post",
+          "type": "hotel",
+          "description": "Traditionsgasthaus mit Gästezimmern im Ortskern von Wessobrunn, nur wenige Schritte vom ehemaligen Kloster entfernt.",
+          "addressStreet": "Zöpfstraße 2",
+          "addressZip": "82405",
+          "addressCity": "Wessobrunn",
+          "addressCountry": "germany",
+          "phone": "+49 8809 208",
+          "website": "https://www.post-wessobrunn.de",
+          "email": "kontakt@post-wessobrunn.de",
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ],
+      "lat": 47.8744,
+      "lng": 11.0247
+    },
+    {
+      "position": 6,
+      "name": "Rottenbuch",
+      "country": "germany",
+      "slug": "rottenbuch",
+      "description": "Das ehemalige Augustiner-Chorherrenstift Rottenbuch liegt hoch über der Ammer; die Klosterkirche Mariä Geburt gilt als eines der schönsten Rokoko-Gotteshäuser des Pfaffenwinkels. Nach der härtesten Etappe über den Hohen Peißenberg ein ruhiger, idyllischer Rastort.",
+      "accommodations": [
+        {
+          "name": "Pilgerzimmer Iglhaut",
+          "type": "private_room",
+          "description": "Privates Pilgerzimmer am Jakobs- und König-Ludwig-Weg mit Doppelbett und Zustellbett, fünf Gehminuten von Bäckerei, Café und Einkauf. Ca. 27 EUR für eine Person, 50 EUR für zwei Personen; Frühstück 8 EUR extra.",
+          "addressStreet": "Weihanger 8",
+          "addressZip": "82401",
+          "addressCity": "Rottenbuch",
+          "addressCountry": "germany",
+          "phone": "+49 8867 8212",
+          "website": "https://audiigl.wixsite.com/pilgerzimmer-ammer",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Gästehaus Schratt",
+          "type": "private_room",
+          "description": "Privat geführtes Gästehaus mit zwei Doppelzimmern in ruhiger Lage am Ortsrand. Wanderer und Pilger können nach Absprache im Ortskern abgeholt werden.",
+          "addressStreet": "Ziegelfeld 4",
+          "addressZip": "82401",
+          "addressCity": "Rottenbuch",
+          "addressCountry": "germany",
+          "phone": "+49 8867 707",
+          "website": "https://www.rottenbuch.de/de/gaestehaus-schratt.html",
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ],
+      "lat": 47.7303,
+      "lng": 10.9683
+    },
+    {
+      "position": 7,
+      "name": "Lechbruck am See",
+      "country": "germany",
+      "slug": "lechbruck-am-see",
+      "description": "Ehemaliges Flößerdorf am Lech und am Lechsee im Ostallgäu, mit Blick auf die Allgäuer und Ammergauer Alpen. Hier wechselt der Weg vom oberbayerischen Pfaffenwinkel ins Allgäu.",
+      "accommodations": [
+        {
+          "name": "Gästehaus Pension Elisa",
+          "type": "b_and_b",
+          "description": "Familiengeführte Pension mit Frühstück in ruhiger Lage in Lechbruck, wenige Gehminuten vom Ortskern.",
+          "addressStreet": "Am Bichl 12",
+          "addressZip": "86983",
+          "addressCity": "Lechbruck am See",
+          "addressCountry": "germany",
+          "phone": "+49 8862 8528",
+          "website": "https://www.pension-elisa.de/",
+          "email": "info@pension-elisa.de",
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ],
+      "lat": 47.7006,
+      "lng": 10.7978
+    },
+    {
+      "position": 8,
+      "name": "Marktoberdorf",
+      "country": "germany",
+      "slug": "marktoberdorf",
+      "description": "Die Kreisstadt des Ostallgäus wird von der barocken Stadtpfarrkirche St. Martin und dem ehemaligen fürstbischöflichen Jagdschloss auf dem Schlossberg überragt. Marktoberdorf ist Knotenpunkt mehrerer Varianten des Münchner Jakobswegs.",
+      "accommodations": [
+        {
+          "name": "Pilgerquartier Marktoberdorf",
+          "type": "hostel",
+          "description": "Private Pilgerherberge mit separatem Pilgereingang auf der Gartenseite; die Gastgeber wohnen im Erdgeschoss. Eine der wenigen echten Pilgerunterkünfte auf dem Münchner Jakobsweg.",
+          "addressStreet": "Reichshofstraße 4",
+          "addressZip": "87616",
+          "addressCity": "Marktoberdorf",
+          "addressCountry": "germany",
+          "phone": "+49 8342 7019718",
+          "website": "https://pq-mod.de/",
+          "email": "info@pq-mod.de",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 47.7783,
+      "lng": 10.6175
+    },
+    {
+      "position": 9,
+      "name": "Görisried",
+      "country": "germany",
+      "slug": "goerisried",
+      "description": "Ruhiges Dorf im Ostallgäu oberhalb des Wertachtals mit der Pfarrkirche St. Oswald. Kurz vor dem Ort liegen die Ursulakapelle auf dem Gelände des ehemaligen Pestfriedhofs und der Kalvarienberg mit Lourdesgrotte und Ölbergkapelle - ein schöner Rastplatz am Ende der Etappe.",
+      "accommodations": [
+        {
+          "name": "Gasthof zum Hirsch",
+          "type": "hotel",
+          "description": "Familiengeführter Gasthof am Kirchplatz im Ortszentrum mit Restaurant; Zimmer mit eigenem Bad. Wird in Pilgerlisten zum Münchner Jakobsweg empfohlen - Pilgerpreis telefonisch erfragen.",
+          "addressStreet": "Kirchplatz 6",
+          "addressZip": "87657",
+          "addressCity": "Görisried",
+          "addressCountry": "germany",
+          "phone": "+49 8302 249",
+          "website": "https://www.hirsch-goerisried.de/",
+          "email": null,
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ],
+      "lat": 47.7067,
+      "lng": 10.5108
+    },
+    {
+      "position": 10,
+      "name": "Kempten",
+      "country": "germany",
+      "slug": "kempten",
+      "description": "Kempten ist eine der ältesten Städte Deutschlands (römisch Cambodunum) mit Basilika St. Lorenz, Residenz der Fürstäbte und dem Archäologischen Park. Hier trifft der Münchner Jakobsweg auf den von Augsburg kommenden Weg.",
+      "accommodations": [
+        {
+          "name": "Privatzimmer Brock",
+          "type": "private_room",
+          "description": "Private Pilgerunterkunft, die von der Jakobuspilgergemeinschaft Augsburg für die Etappe Marktoberdorf-Kempten empfohlen wird. Preis bitte telefonisch erfragen.",
+          "addressStreet": "Hoföschle 11",
+          "addressZip": "87439",
+          "addressCity": "Kempten (Allgäu)",
+          "addressCountry": "germany",
+          "phone": "+49 831 29742",
+          "website": "https://www.pilgern-schwaben.de/marktoberdorf-kempten/",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "JUFA Familienresort Kempten",
+          "type": "hostel",
+          "description": "Jugend- und Familienhotel nahe dem Stadtzentrum mit Mehrbett-, Doppel- und Einzelzimmern; einfache und preiswerte Übernachtung mit Frühstück.",
+          "addressStreet": "Stadtbadstraße 5",
+          "addressZip": "87439",
+          "addressCity": "Kempten (Allgäu)",
+          "addressCountry": "germany",
+          "phone": "+49 831 52384080",
+          "website": "https://www.jufahotels.com/hotel/kempten/",
+          "email": "kempten@jufa.eu",
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ],
+      "lat": 47.7267,
+      "lng": 10.3139
+    },
+    {
+      "position": 11,
+      "name": "Weitnau",
+      "country": "germany",
+      "slug": "weitnau",
+      "description": "Kleiner Luftkurort im Westallgäu zu Füßen des Hauchenbergs, umgeben von Wiesen und Wäldern. Die Pfarrkirche St. Pelagius prägt den Ortskern.",
+      "accommodations": [
+        {
+          "name": "Privatzimmer Weilbach",
+          "type": "private_room",
+          "description": "Private Pilgerunterkunft für 2 bis 3 Personen mit Frühstück, empfohlen von der Jakobuspilgergemeinschaft Augsburg. Preis bitte telefonisch erfragen.",
+          "addressStreet": "An der Stelze 2",
+          "addressZip": "87480",
+          "addressCity": "Weitnau",
+          "addressCountry": "germany",
+          "phone": "+49 8375 929149",
+          "website": "https://www.pilgern-schwaben.de/kempten-weitnau-lindau/",
+          "email": "m-weilbach@web.de",
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Gasthof Pension Krone",
+          "type": "b_and_b",
+          "description": "Familiengeführter Gasthof direkt neben der Kirche, der ausdrücklich Pilger und Weitwanderer willkommen heißt; Pilgerpreis im Doppelzimmer mit Frühstück.",
+          "addressStreet": "Kirchstraße 33",
+          "addressZip": "87480",
+          "addressCity": "Weitnau",
+          "addressCountry": "germany",
+          "phone": "+49 8375 209",
+          "website": "https://www.krone-weitnau.de/",
+          "email": "info@krone-weitnau.de",
+          "priceRange": "moderate",
+          "verified": false
+        }
+      ],
+      "lat": 47.6411,
+      "lng": 10.1256
+    },
+    {
+      "position": 12,
+      "name": "Genhofen",
+      "country": "germany",
+      "slug": "genhofen",
+      "description": "Kleiner Weiler der Gemeinde Stiefenhofen nahe Oberstaufen. Die Filialkirche St. Stephan besitzt einen spätgotischen Hochaltar mit einer Figur des Apostels Jakobus sowie Wandmalereien aus den Jahren 1567 bis 1605, darunter die bekannte „Genhofer Hirschjagd“.",
+      "accommodations": [
+        {
+          "name": "Bachhof Genhofen",
+          "type": "private_room",
+          "description": "Bauernhof direkt am Jakobsweg mit Gästezimmern mit Dusche/WC, mit oder ohne Frühstück. Pilgerzimmer im Westallgäu kosten laut Jakobusweg-Broschüre etwa 19-28 EUR pro Person mit Frühstück; in den Sommermonaten unbedingt vorher anrufen.",
+          "addressStreet": "Genhofen 10",
+          "addressZip": "88167",
+          "addressCity": "Stiefenhofen",
+          "addressCountry": "germany",
+          "phone": "+49 8386 2895",
+          "website": "https://www.westallgaeu.de/a-bachhof",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 47.585,
+      "lng": 10.028
+    },
+    {
+      "position": 13,
+      "name": "Scheidegg",
+      "country": "germany",
+      "slug": "scheidegg",
+      "description": "Heilklimatischer Kurort und Kneippkurort auf rund 800 m Höhe mit Blick über das Westallgäu bis zum Bodensee. Scheidegg ist Knotenpunkt der Jakobswege nach Lindau, Bregenz und Rorschach; das evangelische Pilgerzentrum gehört zu den bekanntesten Pilgerherbergen am Münchner Jakobsweg.",
+      "accommodations": [
+        {
+          "name": "Ev. Pilgerzentrum Scheidegg",
+          "type": "hostel",
+          "description": "Pilgerherberge der Evangelisch-Lutherischen Kirchengemeinde mit 18 Betten in zwei Schlafräumen; Übernachtung mit Frühstück ca. 26 EUR, gemeinsames Abendessen gegen Spende. Geöffnet von Ostern bis Mitte Oktober täglich ab 16:30 Uhr, im Winter auf Anfrage. Pilgerausweis und Schlafsack erforderlich; Anmeldung über das Pilgerhandy oder das Pfarramt (+49 8381 948561).",
+          "addressStreet": "Am Hammerbach 14",
+          "addressZip": "88175",
+          "addressCity": "Scheidegg",
+          "addressCountry": "germany",
+          "phone": "+49 151 54875791",
+          "website": "https://scheidegg-evangelisch.de/pilgerzentrum/",
+          "email": "pfarramt@scheidegg-evangelisch.de",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 47.5833,
+      "lng": 9.85
+    },
+    {
+      "position": 14,
+      "name": "Lindau",
+      "country": "germany",
+      "slug": "lindau",
+      "description": "Die historische Inselstadt im Bodensee ist Ziel des Münchner Jakobswegs. Sehenswert sind die Altstadt mit dem Alten Rathaus, das Münster Unserer Lieben Frau, die Peterskirche mit Fresken aus der Holbein-Schule und die Hafeneinfahrt mit Löwe und Leuchtturm. Vom Hafen fährt das Schiff nach Rorschach in der Schweiz, wo der Weg Richtung Einsiedeln weiterführt.",
+      "accommodations": [
+        {
+          "name": "Pilgerherberge Lindau",
+          "type": "hostel",
+          "description": "Pilgerherberge im Stadtteil Reutin, wenige Minuten vom Jakobsweg entfernt, mit 12 Plätzen, Küche, Waschmaschine und Dusche/Bad; ca. 10 EUR pro Person und Nacht. Nur für Pilger mit Pilgerausweis; telefonische Anmeldung erforderlich, Einlass ab 17 Uhr, Saison ab April.",
+          "addressStreet": "Oberreutiner Weg 21",
+          "addressZip": "88131",
+          "addressCity": "Lindau (Bodensee)",
+          "addressCountry": "germany",
+          "phone": "+49 151 25697108",
+          "website": "https://www.pilgern-schwaben.de/lindau/",
+          "email": null,
+          "priceRange": "budget",
+          "verified": false
+        },
+        {
+          "name": "Jugendherberge Lindau",
+          "type": "hostel",
+          "description": "DJH-Jugendherberge im Stadtteil Reutin, nahe dem Weg vor der Insel. Wegen Modernisierung vom 23.10.2026 bis 28.03.2027 geschlossen - Öffnung vor der Buchung prüfen.",
+          "addressStreet": "Herbergsweg 11",
+          "addressZip": "88131",
+          "addressCity": "Lindau (Bodensee)",
+          "addressCountry": "germany",
+          "phone": "+49 8382 96710",
+          "website": "https://www.jugendherberge.de/jugendherbergen/lindau/",
+          "email": "lindau@jugendherberge.de",
+          "priceRange": "budget",
+          "verified": false
+        }
+      ],
+      "lat": 47.5458,
+      "lng": 9.6836
+    }
+  ],
+  "stages": [
+    {
+      "from": "München",
+      "to": "Schäftlarn",
+      "distance": 24,
+      "description": "Von St. Jakob am Anger geht es vorbei am Deutschen Museum und am Tierpark Hellabrunn die Isar aufwärts. Über die Römerschanze und das Isarwehr führt der Weg durch Pullach und Baierbrunn, meist im schattigen Auwald oder auf der Hangkante über dem Fluss, bis hinunter zum Kloster Schäftlarn."
+    },
+    {
+      "from": "Schäftlarn",
+      "to": "Andechs",
+      "distance": 27,
+      "description": "Nach dem Anstieg aus dem Isartal führt die Etappe über offene Felder und Wälder an den Starnberger See und durch die wildromantische Maisinger Schlucht. Erstmals öffnet sich der Blick auf das Alpenvorland, bevor der Weg zum Heiligen Berg Andechs hinaufsteigt."
+    },
+    {
+      "from": "Andechs",
+      "to": "Utting am Ammersee",
+      "distance": 24,
+      "description": "Eine der leichteren Etappen: Vom Klosterberg geht es überwiegend bergab durch schattige Wälder ins Kiental und hinunter an den Ammersee. Am Südufer entlang und vorbei an zahlreichen historischen Kirchen erreicht der Weg das Westufer bei Utting."
+    },
+    {
+      "from": "Utting am Ammersee",
+      "to": "Wessobrunn",
+      "distance": 23,
+      "description": "Vom See steigt der Weg in die Hügel des Pfaffenwinkels hinauf. Ruhige Feldwege und Hofzufahrten führen durch eine bäuerlich geprägte Landschaft mit Blick auf die Alpenkette bis zum ehemaligen Kloster Wessobrunn."
+    },
+    {
+      "from": "Wessobrunn",
+      "to": "Rottenbuch",
+      "distance": 27,
+      "description": "Die anspruchsvollste Etappe des Weges: Vorbei am Naturschutzgebiet Schwarzlaichmoor geht es hinauf auf den Hohen Peißenberg (988 m) mit Wallfahrtskirche und einem der schönsten Alpenpanoramen Bayerns. Danach führt der Weg durch das Ammertal, vorbei an der Guggenberg-Kapelle und Maria Egg, nach Rottenbuch."
+    },
+    {
+      "from": "Rottenbuch",
+      "to": "Lechbruck am See",
+      "distance": 27,
+      "description": "Durch Moorwiesen und Auenlandschaften geht es zur Wieskirche, dem UNESCO-Welterbe und Meisterwerk des Rokoko von Dominikus Zimmermann. Über Steingaden mit seinem Welfenmünster führt der Weg weiter hinab ins Lechtal nach Lechbruck."
+    },
+    {
+      "from": "Lechbruck am See",
+      "to": "Marktoberdorf",
+      "distance": 26,
+      "description": "Die Etappe markiert den Übergang vom Pfaffenwinkel ins waldreiche Allgäu. Auf Abschnitten des Prälaten- und Römerwegs führt die Strecke über sanfte Hügel und durch Weiler mit kleinen Kapellen bis nach Marktoberdorf."
+    },
+    {
+      "from": "Marktoberdorf",
+      "to": "Görisried",
+      "distance": 20,
+      "description": "Südliche Variante des Münchner Jakobswegs, die die verkehrsreichen Straßen der Hauptroute meidet: Vom Marktplatz geht es am Ettwieser Weiher mit dem kleinen Wallfahrtsort „Zum Kindle“ vorbei über Ellenberg, Fechsen und Ronried nach Wald, wo es in der Pfarrkirche St. Nikolaus einen Stempel gibt. Über Treppen steigt der Weg ins Wertachtal mit seinen orchideenreichen Blumenwiesen ab und quert den Fluss auf einer 30 Meter langen Hängebrücke, bevor er an der Ursulakapelle vorbei nach Görisried hinaufführt."
+    },
+    {
+      "from": "Görisried",
+      "to": "Kempten",
+      "distance": 20,
+      "description": "Über Beilstein erreicht der Weg die Kemptener Waldkapelle, wo er wieder auf die Hauptroute trifft. Durch den Kemptener Wald geht es vorbei am Dengelstein, einem mächtigen eiszeitlichen Findling, über Betzenried und Schweikarts zum Bachtelweiher und durch den Park an der Engelhalde hinunter an die Iller und in die Altstadt von Kempten."
+    },
+    {
+      "from": "Kempten",
+      "to": "Weitnau",
+      "distance": 30,
+      "description": "Eine lange Etappe mit gut 600 Höhenmetern: Aus dem Illertal steigt der Weg ins hügelige Westallgäu hinauf, über Buchenberg und durch ausgedehnte Wälder und Weiden. Wer kürzen möchte, kann in Buchenberg oder Bechen übernachten."
+    },
+    {
+      "from": "Weitnau",
+      "to": "Genhofen",
+      "distance": 19,
+      "description": "Nach dem Anstieg zur Schutzhütte Höllanger führt der Weg über die Höhe nach Wilhams und hinab ins Tal der Unteren Argen. Durch die Oberallgäuer Dörfer Aigis, Geratsried, Trabers, Mutten und Zell geht es über Wolfsried nach Genhofen. Zwischen Wilhams und Zell gibt es keine Einkehr - Verpflegung mitnehmen."
+    },
+    {
+      "from": "Genhofen",
+      "to": "Scheidegg",
+      "distance": 20,
+      "description": "Über Iringshofen, Hopfen und Burkatshofen geht es nach Simmerberg und hinunter nach Weiler im Allgäu mit der Kirche St. Blasius und dem Brau- und Brunnenmuseum. Hinter Weiler führt der Weg den Hausbach entlang über Bremenried zur Burgruine Altenburg aus dem 13. Jahrhundert und weiter über Böserscheidegg und Schalkenried, teils auf dem Kneipp-Rundwanderweg, nach Scheidegg."
+    },
+    {
+      "from": "Scheidegg",
+      "to": "Lindau",
+      "distance": 22,
+      "description": "In Scheidegg trennen sich die Wege nach Lindau und Bregenz. Der ausgeschilderte Verbindungsweg führt über Bieslings und Allmannsried zur Wendelinskapelle in Kinberg und weiter über Niederstaufen, durch das Leiblachtal nach Sigmarszell und am Schlachterner Weiher vorbei nach Weißensberg. Bei Streitelsfingen öffnet sich ein weiter Blick über den Bodensee; durch Oberreutin, vorbei an der Pilgerherberge, und Aeschach geht es hinunter auf die Lindauer Insel bis zum Hafen."
+    }
+  ]
+}

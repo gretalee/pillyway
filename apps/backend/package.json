@@ -44,6 +44,8 @@
     "seed:camino-sanabres:prod": "node --env-file=.env.prod ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/seed-camino.ts ../../scripts/data/camino-sanabres.json",
     "seed:olavsweg": "node --env-file=.env ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/seed-camino.ts ../../scripts/data/olavsweg-gudbrandsdalsleden.json",
     "seed:olavsweg:prod": "node --env-file=.env.prod ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/seed-camino.ts ../../scripts/data/olavsweg-gudbrandsdalsleden.json",
+    "seed:jakobsweg-muenchen": "node --env-file=.env ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/seed-camino.ts ../../scripts/data/jakobsweg-muenchen.json",
+    "seed:jakobsweg-muenchen:prod": "node --env-file=.env.prod ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/seed-camino.ts ../../scripts/data/jakobsweg-muenchen.json",
     "db:backup:dev": "DB_BACKUP_ENV=dev node --env-file=.env ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/backup-db.ts",
     "db:backup:prod": "DB_BACKUP_ENV=prod node --env-file=.env.prod ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/backup-db.ts",
     "backfill:camino-countries": "node --env-file=.env ./node_modules/.bin/ts-node --project tsconfig.scripts.json scripts/backfill-camino-countries.ts",
